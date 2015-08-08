@@ -1,0 +1,16 @@
+{
+  "name": "bitbucket-notifier-chrome",
+  "version": "0.0.1",
+  "authors": [
+    "Jakub Turek <jakub.turek@edpauto.com>"
+  ],
+  "license": "Apache",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
