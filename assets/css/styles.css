@@ -3,6 +3,9 @@
 /* darker-blue = #2e3d54*/
 /* white = #fff */
 /* light-blue = #3572b0 */
+/* icon-approved-color = #5cb85c */
+/* icon-unapproved-color = #d9534f */
+/* icon-waiting-color = #f0ad4e */
 
 /* === Dimensions === */
 /* popup_width = 800px  */
@@ -39,4 +42,16 @@ body {
 
 .navbar-right {
     margin-right: 0;
+}
+
+.icon-approved {
+    color: #5cb85c
+}
+
+.icon-unapproved {
+    color: #d9534f;
+}
+
+.icon-waiting {
+    color: #f0ad4e;
 }
