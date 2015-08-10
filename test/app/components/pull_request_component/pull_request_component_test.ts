@@ -4,7 +4,6 @@ describe('PullRequestComponent', () => {
     var element,
         $compile: ng.ICompileService,
         $scope: ng.IRootScopeService,
-        $templateCache: ng.ITemplateCacheService;
 
     beforeEach(module('bitbucketNotifier'));
     beforeEach(module('bitbucketNotifier.templates'));
@@ -13,11 +12,9 @@ describe('PullRequestComponent', () => {
         inject([
             '$compile',
             '$rootScope',
-            '$templateCache',
-            ($c, $s, $t) => {
+            ($c, $s) => {
                 $compile = $c;
                 $scope = $s;
-                $templateCache = $t;
             }
         ])
     );
