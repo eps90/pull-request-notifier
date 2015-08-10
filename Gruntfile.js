@@ -14,6 +14,15 @@ module.exports = function(grunt) {
                     basepath: ".",
                     sourceMap: true
                 }
+            },
+            test: {
+                src: ['test/**/*.ts', 'app/modules/bitbucket_notifier.ts'],
+                dest: 'build',
+                options: {
+                    target: "es5",
+                    basepath: ".",
+                    sourceMap: true
+                }
             }
         },
         copy: {
@@ -26,11 +35,23 @@ module.exports = function(grunt) {
                         cwd: 'app'
                     }
                 ]
+            },
+            test: {
+                files: [
+                    {
+                        expand: true,
+                        src: ['app/views/*.html', 'app/components/**/*.html'],
+                        dest: 'build'
+                    }
+                ]
             }
         },
         clean: {
             dist: {
                 src: ['dist']
+            },
+            test: {
+                src: ['build']
             }
         },
         watch: {
@@ -42,5 +63,6 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('dist', ['clean:dist', 'typescript:dist', 'copy:dist']);
+    grunt.registerTask('test', ['clean:test', 'typescript:test', 'copy:test']);
     grunt.registerTask('default', ['dist', 'watch:dist']);
 };
