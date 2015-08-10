@@ -6,7 +6,8 @@ module BitbucketNotifier {
         //require: 'pull-requests-list';
         templateUrl = '../components/pull_request_component/pull_request_component.html';
         scope = {
-            pullRequest: '=pr'
+            pullRequest: '=pr',
+            mode: '='
         };
 
         static factory(): ng.IDirectiveFactory {
