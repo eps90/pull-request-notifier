@@ -16,7 +16,7 @@ describe('PullRequestComponent', () => {
             '$templateCache',
             ($c, $s, $t) => {
                 $compile = $c;
-                $rootScope = $s;
+                $rootScope = $s.$new();
                 $templateCache = $t;
             }
         ])
