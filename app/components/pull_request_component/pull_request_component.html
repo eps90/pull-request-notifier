@@ -3,6 +3,8 @@
     <td>{{ pullRequest.title }}</td>
     <td>{{ pullRequest.targetRepository.name }}</td>
     <td>{{ pullRequest.author.displayName }}</td>
-    <td></td>
+    <td>
+        <approval-progress reviewers="pullRequest.reviewers"></approval-progress>
+    </td>
     <td></td>
 </tr>
