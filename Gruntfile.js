@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-karma');
 
     grunt.initConfig({
         typescript: {
@@ -59,10 +60,17 @@ module.exports = function(grunt) {
                 files: ['app/**/*.ts', 'app/**/*.css', 'app/**/*.html'],
                 tasks: ['dist']
             }
+        },
+        karma: {
+            unit: {
+                options: {
+                    configFile: 'karma.conf.js'
+                }
+            }
         }
     });
 
     grunt.registerTask('dist', ['clean:dist', 'typescript:dist', 'copy:dist']);
-    grunt.registerTask('test', ['clean:test', 'typescript:test', 'copy:test']);
+    grunt.registerTask('test', ['clean:test', 'typescript:test', 'copy:test', 'karma']);
     grunt.registerTask('default', ['dist', 'watch:dist']);
 };
