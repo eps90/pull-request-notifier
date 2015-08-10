@@ -45,7 +45,7 @@ describe('PullRequestComponent', () => {
         pullRequest.id = 1;
         pullRequest.title = 'This is a pull request';
         pullRequest.author = author;
-        pullRequest.reviewers.push(reviewer);
+        pullRequest.reviewers.push(reviewer, secondReviewer);
         pullRequest.targetRepository = project;
         pullRequest.targetBranch = 'master';
     });
@@ -64,7 +64,7 @@ describe('PullRequestComponent', () => {
             expect(element.html()).toContain('John Smith');
             expect(element.html()).toContain('This is a pull request');
             expect(element.html()).toContain('CRM');
-            //expect(element.html()).toContain('1/2');
+            expect(element.html()).toContain('1/2');
         });
     });
 });
