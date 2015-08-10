@@ -1,0 +1,1 @@
+# Bitbucket Notifier - Chrome Extension
