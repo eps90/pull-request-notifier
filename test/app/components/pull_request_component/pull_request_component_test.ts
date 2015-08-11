@@ -1,30 +1,70 @@
 ///<reference path="../../../../app/_typings.ts"/>
 
 describe('PullRequestComponent', () => {
-    beforeEach(module('bitbucketNotifier'));
-    beforeEach(module('bitbucketNotifier.templates'));
-
     var element,
         $compile: ng.ICompileService,
-        $rootScope: ng.IRootScopeService,
-        $templateCache: ng.ITemplateCacheService;
+        $scope: ng.IRootScopeService,
+        pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+
+    beforeEach(module('bitbucketNotifier'));
+    beforeEach(module('bitbucketNotifier.templates'));
 
     beforeEach(
         inject([
             '$compile',
             '$rootScope',
-            '$templateCache',
-            ($c, $s, $t) => {
+            ($c, $s) => {
                 $compile = $c;
-                $rootScope = $s.$new();
-                $templateCache = $t;
+                $scope = $s;
             }
         ])
     );
 
-    it("should render 'Hello world'", () => {
-        element = $compile('<pull-request></pull-request>')($rootScope);
-        $rootScope.$digest();
-        expect(element.html()).toContain('Hello world');
+    beforeEach(() => {
+        var author:BitbucketNotifier.User = new BitbucketNotifier.User();
+        author.displayName = 'John Smith';
+
+        var userAsReviewer:BitbucketNotifier.User = new BitbucketNotifier.User();
+        userAsReviewer.displayName = 'Anna Kowalsky';
+
+        var secondUserAsReviewer:BitbucketNotifier.User = new BitbucketNotifier.User();
+        secondUserAsReviewer.displayName = 'Jack Sparrow';
+
+        var reviewer:BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        reviewer.user = userAsReviewer;
+        reviewer.approved = true;
+
+        var secondReviewer:BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        secondReviewer.user = secondUserAsReviewer;
+        secondReviewer.approved = false;
+
+        var project:BitbucketNotifier.Project = new BitbucketNotifier.Project();
+        project.name = 'CRM';
+        project.fullName = 'dacsoftware/crm';
+
+        pullRequest.id = 1;
+        pullRequest.title = 'This is a pull request';
+        pullRequest.author = author;
+        pullRequest.reviewers.push(reviewer, secondReviewer);
+        pullRequest.targetRepository = project;
+        pullRequest.targetBranch = 'master';
+    });
+
+    describe('Authored mode', () => {
+        beforeEach(() => {
+            $scope['pullRequest'] = pullRequest;
+            $scope['displayMode'] = 'AUTHORED';
+
+            element = $compile('<pull-request pr="pullRequest" mode="displayMode"></pull-request>')($scope);
+            $scope.$digest();
+        });
+
+        it("should render basic pull request information", () => {
+            expect(element.html()).toContain('1');
+            expect(element.html()).toContain('John Smith');
+            expect(element.html()).toContain('This is a pull request');
+            expect(element.html()).toContain('CRM');
+            expect(element.html()).toContain('1/2');
+        });
     });
 });

@@ -5,4 +5,5 @@ module BitbucketNotifier {
 
     var application = angular.module('bitbucketNotifier', []);
     application.directive('pullRequest', PullRequestComponent.factory());
+    application.directive('approvalProgress', ApprovalProgressComponent.factory());
 }
