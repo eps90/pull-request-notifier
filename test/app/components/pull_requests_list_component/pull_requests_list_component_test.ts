@@ -53,17 +53,18 @@ describe('PullRequestsListComponent', () => {
         pullRequest.targetBranch = 'master';
 
         pullRequests.push(pullRequest);
-
-        $scope['pullRequests'] = pullRequests;
-        element = $compile('<pull-requests-list pull-requests="pullRequests"></pull-requests-list>')($scope);
-        $scope.$digest();
     });
 
-    it('should render list of pull requests', () => {
-        expect(element.html()).toContain('1');
-        expect(element.html()).toContain('John Smith');
-        expect(element.html()).toContain('This is a pull request');
-        expect(element.html()).toContain('CRM');
-        expect(element.html()).toContain('1/2');
+    describe('Authored mode', () => {
+        it('should render list of pull requests', () => {
+            $scope['pullRequests'] = pullRequests;
+            element = $compile('<pull-requests-list pull-requests="pullRequests" mode="\'AUTHORED\'"></pull-requests-list>')($scope);
+            $scope.$digest();
+
+            var childPullRequest = element.find('pull-request');
+
+            expect(childPullRequest.length).toEqual(1);
+            expect(childPullRequest.scope().mode).toEqual('AUTHORED');
+        });
     });
 });
