@@ -8,4 +8,13 @@
             <approval-progress reviewers="pullRequest.reviewers"></approval-progress>
         </div>
     </div>
+    <div class="row" ng-if="mode == 'ASSIGNED'">
+        <div class="col-lg-1">{{ pullRequest.id }}</div>
+        <div class="col-lg-6">{{ pullRequest.title }}</div>
+        <div class="col-lg-2">{{ pullRequest.targetRepository.name }}</div>
+        <div class="col-lg-2">{{ pullRequest.author.displayName }}</div>
+        <div class="col-lg-1">
+            <user-vote reviewers="pullRequest.reviewers"></user-vote>
+        </div>
+    </div>
 </div>
