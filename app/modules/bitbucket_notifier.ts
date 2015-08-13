@@ -9,4 +9,5 @@ module BitbucketNotifier {
     application.directive('approvalProgress', ApprovalProgressComponent.factory());
 
     application.filter('authored' , AuthoredFilter);
+    application.filter('assigned', AssignedFilter);
 }

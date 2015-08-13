@@ -4,4 +4,5 @@
 ///<reference path="components/pull_requests_list_component/pull_requests_list_component.ts"/>
 ///<reference path="components/approval_progress_component/approval_progress_component.ts"/>
 ///<reference path="filters/authored_filter.ts"/>
+///<reference path="filters/assigned_filter.ts"/>
 
