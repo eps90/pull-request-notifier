@@ -18,6 +18,7 @@ module.exports = function(config) {
         'bower_components/jquery/dist/jquery.min.js',
         'bower_components/angular/angular.min.js',
         'bower_components/angular-mocks/angular-mocks.js',
+        'bower_components/angular-local-storage/dist/angular-local-storage.min.js',
         'build/**/*.js',
         'build/**/*.html'
     ],
