@@ -64,7 +64,25 @@ describe('PullRequestComponent', () => {
             expect(element.html()).toContain('John Smith');
             expect(element.html()).toContain('This is a pull request');
             expect(element.html()).toContain('CRM');
-            expect(element.html()).toContain('1/2');
+            expect(element.find('approval-progress').length).toEqual(1);
+        });
+    });
+
+    describe('Assigned mode', () => {
+        beforeEach(() => {
+            $scope['pullRequest'] = pullRequest;
+            $scope['displayMode'] = 'ASSIGNED';
+
+            element = $compile('<pull-request pr="pullRequest" mode="displayMode"></pull-request>')($scope);
+            $scope.$digest();
+        });
+
+        it("should render basic pull request information", () => {
+            expect(element.html()).toContain('1');
+            expect(element.html()).toContain('John Smith');
+            expect(element.html()).toContain('This is a pull request');
+            expect(element.html()).toContain('CRM');
+            expect(element.find('user-vote').length).toEqual(1);
         });
     });
 });
