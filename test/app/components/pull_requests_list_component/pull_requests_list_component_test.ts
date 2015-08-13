@@ -5,7 +5,8 @@ describe('PullRequestsListComponent', () => {
     var element,
         $compile: ng.ICompileService,
         $scope: ng.IRootScopeService,
-        pullRequests: Array<BitbucketNotifier.PullRequest> = [];
+        pullRequests: Array<BitbucketNotifier.PullRequest> = [],
+        localStorageService: angular.local.storage.ILocalStorageService;
 
     beforeEach(module('bitbucketNotifier'));
     beforeEach(module('bitbucketNotifier.templates'));
@@ -14,48 +15,61 @@ describe('PullRequestsListComponent', () => {
         inject([
             '$compile',
             '$rootScope',
-            ($c, $s) => {
+            'localStorageService',
+            ($c, $s, $l) => {
                 $compile = $c;
                 $scope = $s;
+                localStorageService = $l;
             }
         ])
     );
 
     beforeEach(() => {
-        var author:BitbucketNotifier.User = new BitbucketNotifier.User();
-        author.displayName = 'John Smith';
+        var loggedInUser:BitbucketNotifier.User = new BitbucketNotifier.User();
+        loggedInUser.displayName = 'John Smith';
+        loggedInUser.username = 'john.smith';
 
-        var userAsReviewer:BitbucketNotifier.User = new BitbucketNotifier.User();
-        userAsReviewer.displayName = 'Anna Kowalsky';
+        var nonLoggedInUser:BitbucketNotifier.User = new BitbucketNotifier.User();
+        nonLoggedInUser.displayName = 'Anna Kowalsky';
+        nonLoggedInUser.username = 'anna.kowalsky';
 
-        var secondUserAsReviewer:BitbucketNotifier.User = new BitbucketNotifier.User();
-        secondUserAsReviewer.displayName = 'Jack Sparrow';
+        var loggedInReviewer:BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        loggedInReviewer.user = nonLoggedInUser;
+        loggedInReviewer.approved = true;
 
-        var reviewer:BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
-        reviewer.user = userAsReviewer;
-        reviewer.approved = true;
-
-        var secondReviewer:BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
-        secondReviewer.user = secondUserAsReviewer;
-        secondReviewer.approved = false;
+        var nonLoggedInReviewer:BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        nonLoggedInReviewer.user = nonLoggedInUser;
+        nonLoggedInReviewer.approved = false;
 
         var project:BitbucketNotifier.Project = new BitbucketNotifier.Project();
         project.name = 'CRM';
         project.fullName = 'dacsoftware/crm';
 
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        var authoredPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
 
-        pullRequest.id = 1;
-        pullRequest.title = 'This is a pull request';
-        pullRequest.author = author;
-        pullRequest.reviewers.push(reviewer, secondReviewer);
-        pullRequest.targetRepository = project;
-        pullRequest.targetBranch = 'master';
+        authoredPullRequest.id = 1;
+        authoredPullRequest.title = 'This is a pull request';
+        authoredPullRequest.author = loggedInUser;
+        authoredPullRequest.reviewers.push(nonLoggedInReviewer);
+        authoredPullRequest.targetRepository = project;
+        authoredPullRequest.targetBranch = 'master';
 
-        pullRequests.push(pullRequest);
+        var assignedPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        assignedPullRequest.id = 2;
+        assignedPullRequest.author = nonLoggedInUser;
+        assignedPullRequest.title = 'This is another title';
+        assignedPullRequest.reviewers = [loggedInReviewer, nonLoggedInReviewer];
+        assignedPullRequest.targetRepository = project;
+        assignedPullRequest.targetBranch = 'master';
+
+        pullRequests = [authoredPullRequest, assignedPullRequest];
     });
 
     describe('Authored mode', () => {
+        beforeEach(() => {
+            localStorageService.set('app:user', 'john.smith');
+        });
+
         it('should render list of pull requests', () => {
             $scope['pullRequests'] = pullRequests;
             element = $compile('<pull-requests-list pull-requests="pullRequests" mode="\'AUTHORED\'"></pull-requests-list>')($scope);
