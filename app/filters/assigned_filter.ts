@@ -13,7 +13,7 @@ module BitbucketNotifier {
                 var reviewers = pullRequest.reviewers;
                 for (var reviewerIdx = 0, reviewersLength = reviewers.length; reviewerIdx < reviewersLength; reviewerIdx++) {
                     var reviewer = reviewers[reviewerIdx];
-                    if (reviewer.user.username === loggedInUser) {
+                    if (reviewer.user.username === loggedInUser && result.indexOf(pullRequest) === -1) {
                         result.push(pullRequest);
                     }
                 }
