@@ -2,4 +2,7 @@
     <div class="row" ng-if="mode === 'AUTHORED'">
         <pull-request ng-repeat="pr in pullRequests | authored" pr="pr" mode="mode"></pull-request>
     </div>
+    <div class="row" ng-if="mode === 'ASSIGNED'">
+        <pull-request ng-repeat="pr in pullRequests | assigned" pr="pr" mode="mode"></pull-request>
+    </div>
 </div>
