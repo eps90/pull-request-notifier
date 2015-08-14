@@ -59,4 +59,25 @@ describe('AssignedFilter', () => {
         localStorageService.set('app:user', 'jon.snow');
         expect(assignedFilter(pullRequests).length).toEqual(0);
     });
+
+    it('should not return duplicates', () => {
+        localStorageService.set('app:user', 'john.smith');
+
+        var assignedUser: BitbucketNotifier.User = new BitbucketNotifier.User();
+        assignedUser.username = 'john.smith';
+
+        var loggedInReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        loggedInReviewer.user = assignedUser;
+
+        var duplicatedReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        duplicatedReviewer.user = assignedUser;
+
+        var assignedPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        assignedPullRequest.id = 101;
+        assignedPullRequest.reviewers = [loggedInReviewer, duplicatedReviewer];
+
+        pullRequests = [assignedPullRequest];
+
+        expect(assignedFilter(pullRequests).length).toEqual(1);
+    })
 });
