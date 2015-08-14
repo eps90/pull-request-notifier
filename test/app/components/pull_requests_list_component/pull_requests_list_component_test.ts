@@ -6,7 +6,8 @@ describe('PullRequestsListComponent', () => {
         $compile: ng.ICompileService,
         $scope: ng.IRootScopeService,
         pullRequests: Array<BitbucketNotifier.PullRequest> = [],
-        localStorageService: angular.local.storage.ILocalStorageService;
+        localStorageService: angular.local.storage.ILocalStorageService,
+        pullRequestRepository: BitbucketNotifier.PullRequestRepository;
 
     beforeEach(module('bitbucketNotifier'));
     beforeEach(module('bitbucketNotifier.templates'));
@@ -16,10 +17,12 @@ describe('PullRequestsListComponent', () => {
             '$compile',
             '$rootScope',
             'localStorageService',
-            ($c, $s, $l) => {
+            'PullRequestRepository',
+            ($c, $s, $l, $p) => {
                 $compile = $c;
                 $scope = $s;
                 localStorageService = $l;
+                pullRequestRepository = $p;
             }
         ])
     );
@@ -63,6 +66,8 @@ describe('PullRequestsListComponent', () => {
         assignedPullRequest.targetBranch = 'master';
 
         pullRequests = [authoredPullRequest, assignedPullRequest];
+
+        pullRequestRepository.pullRequests = pullRequests;
     });
 
     describe('Authored mode', () => {
@@ -71,8 +76,7 @@ describe('PullRequestsListComponent', () => {
         });
 
         it('should render list of pull requests', () => {
-            $scope['pullRequests'] = pullRequests;
-            element = $compile('<pull-requests-list pull-requests="pullRequests" mode="\'AUTHORED\'"></pull-requests-list>')($scope);
+            element = $compile('<pull-requests-list mode="\'AUTHORED\'"></pull-requests-list>')($scope);
             $scope.$digest();
 
             var childPullRequest = element.find('pull-request');
@@ -88,8 +92,7 @@ describe('PullRequestsListComponent', () => {
         });
 
         it('should render list of pull requests', () => {
-            $scope['pullRequests'] = pullRequests;
-            element = $compile('<pull-requests-list pull-requests="pullRequests" mode="\'ASSIGNED\'"></pull-requests-list>')($scope);
+            element = $compile('<pull-requests-list mode="\'ASSIGNED\'"></pull-requests-list>')($scope);
             $scope.$digest();
 
             var childPullRequest = element.find('pull-request');
