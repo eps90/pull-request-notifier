@@ -11,4 +11,6 @@ module BitbucketNotifier {
 
     application.filter('authored' , AuthoredFilter);
     application.filter('assigned', AssignedFilter);
+
+    application.factory('PullRequestRepository', () => new PullRequestRepository());
 }
