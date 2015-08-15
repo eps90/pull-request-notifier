@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "grunt test",
-    "postinstall": "tsd install"
+    "postinstall": "tsd --version && bower -v && tsd install && bower install"
   },
   "license": "Apache-2.0",
   "dependencies": {
