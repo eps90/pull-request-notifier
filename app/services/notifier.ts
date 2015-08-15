@@ -1,9 +1,18 @@
 ///<reference path="../_typings.ts"/>
 
 module BitbucketNotifier {
+    interface NotificationOptions {
+        type?: string;
+        iconUrl?: string;
+        title?: string;
+        message?: string;
+        contextMessage?: string;
+        priority?: number;
+    }
+
     export class Notifier {
         private chrome;
-        private defaultOptions = {
+        private defaultOptions: NotificationOptions = {
             type: 'basic',
             iconUrl: '../../assets/img/bitbucket_logo_raster.jpg',
             title: '',
@@ -16,7 +25,7 @@ module BitbucketNotifier {
             this.chrome = window['chrome'];
         }
 
-        notify(opts, notificationId?) {
+        notify(opts: NotificationOptions, notificationId?) {
             notificationId = notificationId || Math.random();
             var targetOpts = _.assign(this.defaultOptions, opts);
             this.chrome.notifications.create(notificationId, targetOpts);
