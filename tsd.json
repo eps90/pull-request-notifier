@@ -19,6 +19,9 @@
     },
     "angular-local-storage/angular-local-storage.d.ts": {
       "commit": "da995655d8f810e5e860d908bf5422ee59ef8ab6"
+    },
+    "socket.io-client/socket.io-client.d.ts": {
+      "commit": "5109e1269d6ab8e8e73b1a5e85d8ceb836d3099f"
     }
   }
 }
