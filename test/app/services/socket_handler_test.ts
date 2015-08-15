@@ -3,17 +3,20 @@
 describe('SocketHandler', () => {
     var socketHandler,
         socket,
-        localStorageService: angular.local.storage.ILocalStorageService;
+        localStorageService: angular.local.storage.ILocalStorageService,
+        pullRequestRepository: BitbucketNotifier.PullRequestRepository;
 
     beforeEach(module('bitbucketNotifier'));
     beforeEach(inject([
         'SocketHandler',
         'Socket',
         'localStorageService',
-        (sh, s, l) => {
+        'PullRequestRepository',
+        (sh, s, l, prr) => {
             socketHandler = sh;
             socket = s;
             localStorageService = l;
+            pullRequestRepository = prr;
         }
     ]));
     beforeEach(() => {
@@ -24,5 +27,18 @@ describe('SocketHandler', () => {
         socket.receive('connect');
         expect(socket.emits).toEqual(jasmine.objectContaining({'client:introduce': jasmine.anything()}));
         expect(socket.emits['client:introduce'][0]).toEqual(['john.smith']);
+    });
+
+    it('should update pull request repository on server:pullrequests:updated', () => {
+        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        var userPullRequest: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
+        userPullRequest.triggeredEvent = 'pullrequest:created';
+        userPullRequest.pullRequests = [pullRequest];
+        userPullRequest.context = pullRequest;
+
+        socket.receive('server:pullrequests:updated', userPullRequest);
+
+        expect(pullRequestRepository.pullRequests.length).toBe(1);
+        expect(pullRequestRepository.pullRequests[0]).toEqual(pullRequest);
     });
 });
