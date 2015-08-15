@@ -2,14 +2,18 @@
 
 fdescribe('Notifier', () => {
     var notifier: BitbucketNotifier.Notifier,
+        expectedOptions;
+
+    beforeEach(() => {
         expectedOptions = {
             type: 'basic',
-            iconUrl: '../assets/img/bitbucket_logo_raster.jpg',
+            iconUrl: '../../assets/img/bitbucket_logo_raster.jpg',
             title: '',
             message: '',
+            contextMessage: '',
             priority: 2
         };
-
+    });
     beforeEach(module('bitbucketNotifier'));
     beforeEach(() => {
         window['chrome'] = {notifications: {create: () => {}}};
@@ -32,11 +36,16 @@ fdescribe('Notifier', () => {
     it('should notify about new pull request', () => {
         spyOn(window['chrome'].notifications, 'create');
 
+        var author = new BitbucketNotifier.User();
+        author.displayName = 'John Smith';
+
         var pullRequest = new BitbucketNotifier.PullRequest();
         pullRequest.title = 'This is some title';
+        pullRequest.author = author;
 
         expectedOptions.title = 'New pull request assigned to you!';
         expectedOptions.message = pullRequest.title;
+        expectedOptions.contextMessage = 'by John Smith';
 
         notifier.notifyNewPullRequestAssigned(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(expectedOptions);
@@ -44,9 +53,13 @@ fdescribe('Notifier', () => {
 
     it('should notify about merged pull request', () => {
         spyOn(window['chrome'].notifications, 'create');
+        var author = new BitbucketNotifier.User();
+        author.displayName = 'John Smith';
 
         var pullRequest = new BitbucketNotifier.PullRequest();
         pullRequest.title = 'This is some title';
+        pullRequest.author = author;
+
         expectedOptions.title = 'Your pull request has been merged';
         expectedOptions.message = pullRequest.title;
 

@@ -8,6 +8,7 @@ module BitbucketNotifier {
             iconUrl: '../../assets/img/bitbucket_logo_raster.jpg',
             title: '',
             message: '',
+            contextMessage: '',
             priority: 2
         };
 
@@ -23,7 +24,8 @@ module BitbucketNotifier {
         notifyNewPullRequestAssigned(pullRequest: PullRequest) {
             var options = {
                 title: 'New pull request assigned to you!',
-                message: pullRequest.title
+                message: pullRequest.title,
+                contextMessage: 'by ' + pullRequest.author.displayName
             };
 
             this.notify(options);
