@@ -5,7 +5,7 @@ module BitbucketNotifier {
         private chrome;
         private defaultOptions = {
             type: 'basic',
-            iconUrl: '../assets/img/bitbucket_logo_raster.jpg',
+            iconUrl: '../../assets/img/bitbucket_logo_raster.jpg',
             title: '',
             message: '',
             priority: 2
