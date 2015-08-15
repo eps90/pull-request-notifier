@@ -84,6 +84,26 @@ describe('PullRequestsListComponent', () => {
             expect(childPullRequest.length).toEqual(1);
             expect(childPullRequest.scope().mode).toEqual('AUTHORED');
         });
+
+        it('should update pull requests list when pull requests repository changes', () => {
+            element = $compile('<pull-requests-list mode="\'AUTHORED\'"></pull-requests-list>')($scope);
+            $scope.$digest();
+
+            var childPullRequest = element.find('pull-request');
+
+            expect(childPullRequest.length).toEqual(1);
+
+            var loggedInUser = new BitbucketNotifier.User();
+            loggedInUser.username = 'john.smith';
+            var newPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            newPullRequest.author = loggedInUser;
+
+            pullRequestRepository.pullRequests.push(newPullRequest);
+            $scope.$digest();
+
+            childPullRequest = element.find('pull-request');
+            expect(childPullRequest.length).toEqual(2);
+        });
     });
 
     describe('Assigned mode', () => {
@@ -99,6 +119,30 @@ describe('PullRequestsListComponent', () => {
 
             expect(childPullRequest.length).toEqual(2);
             expect(childPullRequest.scope().mode).toEqual('ASSIGNED');
+        });
+
+        it('should update pull requests list when pull requests repository changes', () => {
+            element = $compile('<pull-requests-list mode="\'ASSIGNED\'"></pull-requests-list>')($scope);
+            $scope.$digest();
+
+            var childPullRequest = element.find('pull-request');
+
+            expect(childPullRequest.length).toEqual(2);
+
+            var loggedInUser = new BitbucketNotifier.User();
+            loggedInUser.username = 'anna.kowalsky';
+            var loggedInReviewer = new BitbucketNotifier.Reviewer();
+            loggedInReviewer.user = loggedInUser;
+            loggedInReviewer.approved = false;
+
+            var newPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            newPullRequest.reviewers.push(loggedInReviewer);
+
+            pullRequestRepository.pullRequests.push(newPullRequest);
+            $scope.$digest();
+
+            childPullRequest = element.find('pull-request');
+            expect(childPullRequest.length).toEqual(3);
         });
     });
 });

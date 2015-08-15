@@ -10,8 +10,8 @@ module BitbucketNotifier {
 
         constructor(private pullRequestRepository: PullRequestRepository) {}
 
-        link = (scope: any) => {
-            scope.pullRequests = this.pullRequestRepository.pullRequests;
+        link = (scope: ng.IScope) => {
+            scope['pullRequests'] = this.pullRequestRepository.pullRequests;
         };
 
         static factory(): ng.IDirectiveFactory {
