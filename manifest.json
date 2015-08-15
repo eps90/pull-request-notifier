@@ -6,5 +6,10 @@
   "browser_action": {
     "default_icon": "assets/img/bitbucket_logo.png",
     "default_popup": "dist/views/popup.html"
-  }
+  },
+  "permissions": [
+    "notifications",
+    "http://*/*",
+    "https://*/*"
+  ]
 }
