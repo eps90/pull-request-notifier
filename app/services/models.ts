@@ -32,4 +32,10 @@ module BitbucketNotifier {
         state: PullRequestState;
         selfLink: string;
     }
+
+    export class PullRequestEvent implements ModelInterface {
+        triggeredEvent: string;
+        pullRequests: Array<PullRequest>;
+        context: PullRequest
+    }
 }
