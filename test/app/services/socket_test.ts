@@ -1,6 +1,6 @@
 ///<reference path="../../../app/_typings.ts"/>
 
-fdescribe('Socket', () => {
+describe('Socket', () => {
     beforeEach(module('bitbucketNotifier'));
     var socket, secondSocket;
 
