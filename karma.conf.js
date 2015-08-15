@@ -20,6 +20,7 @@ module.exports = function(config) {
         'bower_components/angular-mocks/angular-mocks.js',
         'bower_components/angular-local-storage/dist/angular-local-storage.min.js',
         'bower_components/socket.io-client/socket.io.js',
+        'bower_components/lodash/lodash.js',
         'bower_components/angular-socket.io-mock/angular-socket.io-mock.js',
         'build/**/!(bitbucket_notifier).js',
         'build/app/modules/bitbucket_notifier.js',
