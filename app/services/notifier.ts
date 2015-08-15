@@ -3,12 +3,21 @@
 module BitbucketNotifier {
     export class Notifier {
         private chrome;
+        private defaultOptions = {
+            type: 'basic',
+            iconUrl: '../assets/img/bitbucket_logo_raster.jpg',
+            title: '',
+            message: '',
+            priority: 2
+        };
+
         constructor() {
             this.chrome = window['chrome'];
         }
 
         notify(opts) {
-            this.chrome.notifications.create(opts);
+            var targetOpts = _.assign(this.defaultOptions, opts);
+            this.chrome.notifications.create(targetOpts);
         }
 
         notifyNewPullRequestAssigned(pullRequest: PullRequest) {
