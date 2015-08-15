@@ -16,9 +16,10 @@ module BitbucketNotifier {
             this.chrome = window['chrome'];
         }
 
-        notify(opts) {
+        notify(opts, notificationId?) {
+            notificationId = notificationId || Math.random();
             var targetOpts = _.assign(this.defaultOptions, opts);
-            this.chrome.notifications.create(targetOpts);
+            this.chrome.notifications.create(notificationId, targetOpts);
         }
 
         notifyNewPullRequestAssigned(pullRequest: PullRequest) {

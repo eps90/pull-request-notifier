@@ -30,7 +30,7 @@ fdescribe('Notifier', () => {
 
         expectedOptions.title = 'Test title';
         notifier.notify(expectedOptions);
-        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(expectedOptions);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
     it('should notify about new pull request', () => {
@@ -48,7 +48,7 @@ fdescribe('Notifier', () => {
         expectedOptions.contextMessage = 'by John Smith';
 
         notifier.notifyNewPullRequestAssigned(pullRequest);
-        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(expectedOptions);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
     it('should notify about merged pull request', () => {
@@ -64,6 +64,6 @@ fdescribe('Notifier', () => {
         expectedOptions.message = pullRequest.title;
 
         notifier.notifyPullRequestMerged(pullRequest);
-        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(expectedOptions);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 });
