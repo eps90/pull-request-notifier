@@ -36,7 +36,7 @@ describe('SocketHandler', () => {
     it('should emit client:introduce event with logged in user, on connection', () => {
         socket.receive('connect');
         expect(socket.emits).toEqual(jasmine.objectContaining({'client:introduce': jasmine.anything()}));
-        expect(socket.emits['client:introduce'][0]).toEqual(['john.smith']);
+        expect(socket.emits[BitbucketNotifier.SocketClientEvent.INTRODUCE][0]).toEqual(['john.smith']);
     });
 
     it('should update pull request repository on server:pullrequests:updated', () => {
@@ -145,7 +145,7 @@ describe('SocketHandler', () => {
             });
 
             it('should not notify logged in user about approval, if he is not the author of this PR', () => {
-                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_APPROVED;;
+                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_APPROVED;
                 pullRequest.author = annaKowalsky;
                 pullRequestEvent.actor = johnSmith;
 
