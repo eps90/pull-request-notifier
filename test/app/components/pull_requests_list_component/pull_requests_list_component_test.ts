@@ -72,7 +72,7 @@ describe('PullRequestsListComponent', () => {
 
     describe('Authored mode', () => {
         beforeEach(() => {
-            localStorageService.set('app:user', 'john.smith');
+            localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'john.smith');
         });
 
         it('should render list of pull requests', () => {
@@ -108,7 +108,7 @@ describe('PullRequestsListComponent', () => {
 
     describe('Assigned mode', () => {
         beforeEach(() => {
-            localStorageService.set('app:user', 'anna.kowalsky');
+            localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'anna.kowalsky');
         });
 
         it('should render list of pull requests', () => {

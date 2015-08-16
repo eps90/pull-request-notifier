@@ -14,12 +14,12 @@ module BitbucketNotifier {
 
         private initListeners() {
             this.socket.on('connect', () => {
-                var loggedInUser = this.localStorageService.get('app:user');
+                var loggedInUser = this.localStorageService.get(ConfigObject.USER);
                 this.socket.emit(SocketClientEvent.INTRODUCE, loggedInUser);
             });
 
             this.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: BitbucketNotifier.PullRequestEvent) => {
-                var loggedInUser = this.localStorageService.get('app:user');
+                var loggedInUser = this.localStorageService.get(ConfigObject.USER);
 
                 this.pullRequestRepository.pullRequests = userPrs.pullRequests;
                 var contextPr: PullRequest = userPrs.context;

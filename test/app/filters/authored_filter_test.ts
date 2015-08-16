@@ -40,7 +40,7 @@ describe('AuthoredFilter', () => {
     });
 
     it('should include only pull requests authored by logged in user', () => {
-        localStorageService.set('app:user', 'john.smith');
+        localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'john.smith');
 
         var result: Array<BitbucketNotifier.PullRequest> = authoredFilter(pullRequests);
         expect(result.length).toEqual(2);
@@ -49,7 +49,7 @@ describe('AuthoredFilter', () => {
     });
 
     it('should return empty set if there are no pull requests authored by a user', () => {
-        localStorageService.set('app:user', 'jon.snow');
+        localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'jon.snow');
         expect(authoredFilter(pullRequests).length).toEqual(0);
     });
 });

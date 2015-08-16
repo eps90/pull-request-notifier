@@ -30,7 +30,7 @@ describe('SocketHandler', () => {
         }
     ]));
     beforeEach(() => {
-        localStorageService.set('app:user', 'john.smith');
+        localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'john.smith');
     });
 
     it('should emit client:introduce event with logged in user, on connection', () => {

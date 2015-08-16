@@ -19,7 +19,7 @@ describe('UserVoteComponent', () => {
         }
     ]));
     beforeEach(() => {
-        localStorageService.set('app:user', 'john.smith');
+        localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'john.smith');
     });
 
     it('should set awaiting icon if user has not voted yet', () => {
