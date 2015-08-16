@@ -45,7 +45,8 @@ module BitbucketNotifier {
         notifyPullRequestMerged(pullRequest: PullRequest) {
             var options = {
                 title: 'Your pull request has been merged',
-                message: pullRequest.title
+                message: pullRequest.title,
+                iconUrl: '../../assets/img/bitbucket_merged.png'
             };
 
             this.notify(options);
