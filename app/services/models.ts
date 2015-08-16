@@ -34,6 +34,7 @@ module BitbucketNotifier {
     }
 
     export class PullRequestEvent implements ModelInterface {
+        actor: User;
         sourceEvent: string;
         pullRequests: Array<PullRequest>;
         context: PullRequest
