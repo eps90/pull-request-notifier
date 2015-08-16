@@ -48,4 +48,8 @@ module BitbucketNotifier {
         static PULLREQUEST_FULFILLED = 'webhook:pullrequest:fulfilled';
         static PULLREQUEST_REJECTED = 'webhook:pullrequest:rejected';
     }
+
+    export class SocketClientEvent {
+        static INTRODUCE = 'client:introduce';
+    }
 }
