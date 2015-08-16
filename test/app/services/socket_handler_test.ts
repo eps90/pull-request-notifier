@@ -50,7 +50,7 @@ describe('SocketHandler', () => {
         expect(pullRequestRepository.pullRequests[0]).toEqual(pullRequest);
     });
 
-    fdescribe('chrome notifications', () => {
+    describe('chrome notifications', () => {
         var pullRequestEvent: BitbucketNotifier.PullRequestEvent;
         var pullRequest: BitbucketNotifier.PullRequest;
         var johnSmith: BitbucketNotifier.User;
