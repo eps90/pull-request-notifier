@@ -5,7 +5,7 @@ module BitbucketNotifier {
         this.$inject = ['localStorageService'];
 
         return (pullRequests: Array<PullRequest>) => {
-            var loggedInUser = localStorageService.get('app:user');
+            var loggedInUser = localStorageService.get(ConfigObject.USER);
             var result: Array<PullRequest> = [];
 
             for (var prIndex = 0, prsLength = pullRequests.length; prIndex < prsLength; prIndex++) {

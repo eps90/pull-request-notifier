@@ -47,7 +47,7 @@ describe('AssignedFilter', () => {
     });
 
     it('should include only pull requests authored by logged in user', () => {
-        localStorageService.set('app:user', 'john.smith');
+        localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'john.smith');
 
         var actual: Array<BitbucketNotifier.PullRequest> = assignedFilter(pullRequests);
         expect(actual.length).toEqual(2);
@@ -56,12 +56,12 @@ describe('AssignedFilter', () => {
     });
 
     it('should return empty set if there are no pull requests authored by a user', () => {
-        localStorageService.set('app:user', 'jon.snow');
+        localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'jon.snow');
         expect(assignedFilter(pullRequests).length).toEqual(0);
     });
 
     it('should not return duplicates', () => {
-        localStorageService.set('app:user', 'john.smith');
+        localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'john.smith');
 
         var assignedUser: BitbucketNotifier.User = new BitbucketNotifier.User();
         assignedUser.username = 'john.smith';
