@@ -52,4 +52,8 @@ module BitbucketNotifier {
     export class SocketClientEvent {
         static INTRODUCE = 'client:introduce';
     }
+
+    export class SocketServerEvent {
+        static PULLREQUESTS_UPDATED = 'server:pullrequests:updated';
+    }
 }
