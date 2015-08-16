@@ -10,7 +10,8 @@ describe('SocketHandler', () => {
     beforeEach(module('bitbucketNotifier'));
     beforeEach(module(['$provide', ($p: ng.auto.IProvideService) => {
         $p.value('Notifier', {
-            notifyNewPullRequestAssigned: jasmine.createSpy('notifyNewPullRequestAssigned')
+            notifyNewPullRequestAssigned: jasmine.createSpy('notifyNewPullRequestAssigned'),
+            notifyPullRequestMerged: jasmine.createSpy('notifyPullRequestMerged')
         });
     }]));
     beforeEach(inject([
@@ -50,7 +51,7 @@ describe('SocketHandler', () => {
         expect(pullRequestRepository.pullRequests[0]).toEqual(pullRequest);
     });
 
-    describe('chrome notifications', () => {
+    fdescribe('chrome notifications', () => {
         var pullRequestEvent: BitbucketNotifier.PullRequestEvent;
         var pullRequest: BitbucketNotifier.PullRequest;
         var johnSmith: BitbucketNotifier.User;
@@ -72,7 +73,7 @@ describe('SocketHandler', () => {
         });
 
         describe('on new pull request', () => {
-            it('should notify about new merge request assignment on webhook:pullrequest:created', () => {
+            it('should notify about new pull request assignment on webhook:pullrequest:created', () => {
                 pullRequestEvent.triggeredEvent = 'webhook:pullrequest:created';
 
                 var loggedInReviewer = new BitbucketNotifier.Reviewer();
@@ -86,7 +87,7 @@ describe('SocketHandler', () => {
                 expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest)
             });
 
-            it('should not notify about new merge request on webhook:pullrequest:created, if author is assigned user', () => {
+            it('should not notify about new pull request on webhook:pullrequest:created, if author is assigned user', () => {
                 pullRequestEvent.triggeredEvent ='webhook:pullrequest:created';
                 pullRequest.author = johnSmith;
 
@@ -94,7 +95,7 @@ describe('SocketHandler', () => {
                 expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
             });
 
-            it('should not notify about new merge request on other event than pull:request:created', () => {
+            it('should not notify about new pull request on other event than pull:request:created', () => {
                 pullRequestEvent.triggeredEvent = 'webhook:pullrequest:updated';
 
                 var loggedInReviewer = new BitbucketNotifier.Reviewer();
@@ -106,6 +107,29 @@ describe('SocketHandler', () => {
 
                 socket.receive('server:pullrequests:updated', pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('on merged pull request', () => {
+            it('should notify author about merged pull request on webhook:pullrequest:fulfilled event', () => {
+                pullRequestEvent.triggeredEvent = 'webhook:pullrequest:fulfilled';
+                pullRequest.author = johnSmith;
+
+                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                expect(notifier.notifyPullRequestMerged).toHaveBeenCalledWith(pullRequest);
+            });
+
+            it('should not notify about merged pull request on webhook:pullrequest:fulfilled event, if user is a reviewer', () => {
+                pullRequestEvent.triggeredEvent = 'webhook:pullrequest:fulfilled';
+                pullRequest.author = annaKowalsky;
+
+                var loggedInReviewer = new BitbucketNotifier.Reviewer();
+                loggedInReviewer.user = johnSmith;
+                loggedInReviewer.approved = false;
+                pullRequest.reviewers.push(loggedInReviewer);
+
+                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                expect(notifier.notifyPullRequestMerged).not.toHaveBeenCalled();
             });
         });
     });
