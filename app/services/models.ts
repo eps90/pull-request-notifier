@@ -39,4 +39,13 @@ module BitbucketNotifier {
         pullRequests: Array<PullRequest>;
         context: PullRequest
     }
+
+    export class WebhookEvent {
+        static PULLREQUEST_CREATED = 'webhook:pullrequest:created';
+        static PULLREQUEST_UPDATED = 'webhook:pullrequest:updated';
+        static PULLREQUEST_APPROVED = 'webhook:pullrequest:approved';
+        static PULLREQUEST_UNAPPROVED = 'webhook:pullrequest:unapproved';
+        static PULLREQUEST_FULFILLED = 'webhook:pullrequest:fulfilled';
+        static PULLREQUEST_REJECTED = 'webhook:pullrequest:rejected';
+    }
 }
