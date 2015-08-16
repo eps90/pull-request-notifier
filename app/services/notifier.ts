@@ -35,7 +35,8 @@ module BitbucketNotifier {
             var options = {
                 title: 'New pull request assigned to you!',
                 message: pullRequest.title,
-                contextMessage: 'by ' + pullRequest.author.displayName
+                contextMessage: 'by ' + pullRequest.author.displayName,
+                iconUrl: '../../assets/img/bitbucket_new.png'
             };
 
             this.notify(options);
