@@ -37,6 +37,10 @@ module BitbucketNotifier {
                     if (contextPr.author.username === loggedInUser) {
                         this.notifier.notifyPullRequestMerged(contextPr);
                     }
+                } else if (sourceEvent === 'webhook:pullrequest:approved') {
+                    if (contextPr.author.username === loggedInUser) {
+                        this.notifier.notifyPullRequestApproved(contextPr, userPrs.actor);
+                    }
                 }
             });
         }

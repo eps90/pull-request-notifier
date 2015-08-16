@@ -11,7 +11,8 @@ describe('SocketHandler', () => {
     beforeEach(module(['$provide', ($p: ng.auto.IProvideService) => {
         $p.value('Notifier', {
             notifyNewPullRequestAssigned: jasmine.createSpy('notifyNewPullRequestAssigned'),
-            notifyPullRequestMerged: jasmine.createSpy('notifyPullRequestMerged')
+            notifyPullRequestMerged: jasmine.createSpy('notifyPullRequestMerged'),
+            notifyPullRequestApproved: jasmine.createSpy('notifyPullRequestApproved')
         });
     }]));
     beforeEach(inject([
@@ -130,6 +131,26 @@ describe('SocketHandler', () => {
 
                 socket.receive('server:pullrequests:updated', pullRequestEvent);
                 expect(notifier.notifyPullRequestMerged).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('on approval',() => {
+            it('should notify author of pull request about approval', () => {
+                pullRequestEvent.sourceEvent = 'webhook:pullrequest:approved';
+                pullRequest.author = johnSmith;
+                pullRequestEvent.actor = annaKowalsky;
+
+                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                expect(notifier.notifyPullRequestApproved).toHaveBeenCalledWith(pullRequest, annaKowalsky);
+            });
+
+            it('should not notify logged in user about approval, if he is not the author of this PR', () => {
+                pullRequestEvent.sourceEvent = 'webhook:pullrequest:approved';
+                pullRequest.author = annaKowalsky;
+                pullRequestEvent.actor = johnSmith;
+
+                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                expect(notifier.notifyPullRequestApproved).not.toHaveBeenCalled();
             });
         });
     });
