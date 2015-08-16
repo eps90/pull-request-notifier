@@ -1,6 +1,6 @@
 ///<reference path="../../../app/_typings.ts"/>
 
-fdescribe('Notifier', () => {
+describe('Notifier', () => {
     var notifier: BitbucketNotifier.Notifier,
         expectedOptions;
 
