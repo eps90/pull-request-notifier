@@ -29,9 +29,13 @@ module BitbucketNotifier {
                     for (var reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
                         var reviewer = contextPr.reviewers[reviewerIdx];
                         if (reviewer.user.username === loggedInUser) {
-                            this.notifier.notifyNewPullRequestAssigned(userPrs.context);
+                            this.notifier.notifyNewPullRequestAssigned(contextPr);
                             break;
                         }
+                    }
+                } else if (sourceEvent === 'webhook:pullrequest:fulfilled') {
+                    if (contextPr.author.username === loggedInUser) {
+                        this.notifier.notifyPullRequestMerged(contextPr);
                     }
                 }
             });
