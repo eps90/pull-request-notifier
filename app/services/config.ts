@@ -12,5 +12,11 @@ module BitbucketNotifier {
         getUsername() {
             return this.localStorageService.get(ConfigObject.USER);
         }
+
+        getSocketServerAddress() {
+            var address: string = <string>this.localStorageService.get(ConfigObject.SOCKET_SERVER);
+            var addressWithHttp = _.trimLeft(address, 'http://');
+            return 'http://' + addressWithHttp;
+        }
     }
 }
