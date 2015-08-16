@@ -24,4 +24,10 @@ fdescribe('Config', () => {
         localStorageService.set(key, value);
         expect(config.getParameter(key)).toEqual(value);
     });
+
+    it('should fetch currently logged in user', () => {
+        var username = 'some_user';
+        localStorageService.set(BitbucketNotifier.ConfigObject.USER, username);
+        expect(config.getUsername()).toEqual(username);
+    });
 });
