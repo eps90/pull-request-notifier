@@ -56,4 +56,8 @@ module BitbucketNotifier {
     export class SocketServerEvent {
         static PULLREQUESTS_UPDATED = 'server:pullrequests:updated';
     }
+
+    export class ConfigObject {
+        static USER = 'app:user';
+    }
 }
