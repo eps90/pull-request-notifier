@@ -8,5 +8,9 @@ module BitbucketNotifier {
         getParameter(key: string) {
             return this.localStorageService.get(key);
         }
+
+        getUsername() {
+            return this.localStorageService.get(ConfigObject.USER);
+        }
     }
 }
