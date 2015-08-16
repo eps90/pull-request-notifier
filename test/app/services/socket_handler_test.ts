@@ -75,7 +75,7 @@ describe('SocketHandler', () => {
 
         describe('on new pull request', () => {
             it('should notify about new pull request assignment on webhook:pullrequest:created', () => {
-                pullRequestEvent.sourceEvent = 'webhook:pullrequest:created';
+                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_CREATED;
 
                 var loggedInReviewer = new BitbucketNotifier.Reviewer();
                 loggedInReviewer.user = johnSmith;
@@ -89,7 +89,7 @@ describe('SocketHandler', () => {
             });
 
             it('should not notify about new pull request on webhook:pullrequest:created, if author is assigned user', () => {
-                pullRequestEvent.sourceEvent ='webhook:pullrequest:created';
+                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_CREATED;
                 pullRequest.author = johnSmith;
 
                 socket.receive('server:pullrequests:updated', pullRequestEvent);
@@ -113,7 +113,7 @@ describe('SocketHandler', () => {
 
         describe('on merged pull request', () => {
             it('should notify author about merged pull request on webhook:pullrequest:fulfilled event', () => {
-                pullRequestEvent.sourceEvent = 'webhook:pullrequest:fulfilled';
+                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_FULFILLED;
                 pullRequest.author = johnSmith;
 
                 socket.receive('server:pullrequests:updated', pullRequestEvent);
@@ -121,7 +121,7 @@ describe('SocketHandler', () => {
             });
 
             it('should not notify about merged pull request on webhook:pullrequest:fulfilled event, if user is a reviewer', () => {
-                pullRequestEvent.sourceEvent = 'webhook:pullrequest:fulfilled';
+                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_FULFILLED;
                 pullRequest.author = annaKowalsky;
 
                 var loggedInReviewer = new BitbucketNotifier.Reviewer();
@@ -136,7 +136,7 @@ describe('SocketHandler', () => {
 
         describe('on approval',() => {
             it('should notify author of pull request about approval', () => {
-                pullRequestEvent.sourceEvent = 'webhook:pullrequest:approved';
+                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_APPROVED;
                 pullRequest.author = johnSmith;
                 pullRequestEvent.actor = annaKowalsky;
 
@@ -145,7 +145,7 @@ describe('SocketHandler', () => {
             });
 
             it('should not notify logged in user about approval, if he is not the author of this PR', () => {
-                pullRequestEvent.sourceEvent = 'webhook:pullrequest:approved';
+                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_APPROVED;;
                 pullRequest.author = annaKowalsky;
                 pullRequestEvent.actor = johnSmith;
 
