@@ -50,7 +50,7 @@ describe('SocketHandler', () => {
         expect(pullRequestRepository.pullRequests[0]).toEqual(pullRequest);
     });
 
-    describe('chrome notifications', () => {
+    fdescribe('chrome notifications', () => {
         var pullRequestEvent: BitbucketNotifier.PullRequestEvent;
         var pullRequest: BitbucketNotifier.PullRequest;
         var johnSmith: BitbucketNotifier.User;
@@ -71,40 +71,42 @@ describe('SocketHandler', () => {
             annaKowalsky.username = 'anna.kowalsky';
         });
 
-        it('should notify about new merge request assignment on webhook:pullrequest:created', () => {
-            pullRequestEvent.triggeredEvent = 'webhook:pullrequest:created';
+        describe('on new pull request', () => {
+            it('should notify about new merge request assignment on webhook:pullrequest:created', () => {
+                pullRequestEvent.triggeredEvent = 'webhook:pullrequest:created';
 
-            var loggedInReviewer = new BitbucketNotifier.Reviewer();
-            loggedInReviewer.user = johnSmith;
-            loggedInReviewer.approved = false;
+                var loggedInReviewer = new BitbucketNotifier.Reviewer();
+                loggedInReviewer.user = johnSmith;
+                loggedInReviewer.approved = false;
 
-            pullRequest.author = annaKowalsky;
-            pullRequest.reviewers.push(loggedInReviewer);
+                pullRequest.author = annaKowalsky;
+                pullRequest.reviewers.push(loggedInReviewer);
 
-            socket.receive('server:pullrequests:updated', pullRequestEvent);
-            expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest)
-        });
+                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest)
+            });
 
-        it('should not notify about new merge request on webhook:pullrequest:created, if author is assigned user', () => {
-            pullRequestEvent.triggeredEvent ='webhook:pullrequest:created';
-            pullRequest.author = johnSmith;
+            it('should not notify about new merge request on webhook:pullrequest:created, if author is assigned user', () => {
+                pullRequestEvent.triggeredEvent ='webhook:pullrequest:created';
+                pullRequest.author = johnSmith;
 
-            socket.receive('server:pullrequests:updated', pullRequestEvent);
-            expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
-        });
+                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
+            });
 
-        it('should not notify about new merge request on other event than pull:request:created', () => {
-            pullRequestEvent.triggeredEvent = 'webhook:pullrequest:updated';
+            it('should not notify about new merge request on other event than pull:request:created', () => {
+                pullRequestEvent.triggeredEvent = 'webhook:pullrequest:updated';
 
-            var loggedInReviewer = new BitbucketNotifier.Reviewer();
-            loggedInReviewer.user = johnSmith;
-            loggedInReviewer.approved = false;
+                var loggedInReviewer = new BitbucketNotifier.Reviewer();
+                loggedInReviewer.user = johnSmith;
+                loggedInReviewer.approved = false;
 
-            pullRequest.author = annaKowalsky;
-            pullRequest.reviewers.push(loggedInReviewer);
+                pullRequest.author = annaKowalsky;
+                pullRequest.reviewers.push(loggedInReviewer);
 
-            socket.receive('server:pullrequests:updated', pullRequestEvent);
-            expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
+                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
+            });
         });
     });
 });
