@@ -16,4 +16,5 @@ module BitbucketNotifier {
     application.factory('Socket', (socketFactory) => (new Socket(socketFactory)).factory());
     application.service('SocketHandler', SocketHandler);
     application.service('Notifier', Notifier);
+    application.service('Config', Config);
 }
