@@ -34,7 +34,7 @@ module BitbucketNotifier {
     }
 
     export class PullRequestEvent implements ModelInterface {
-        triggeredEvent: string;
+        sourceEvent: string;
         pullRequests: Array<PullRequest>;
         context: PullRequest
     }
