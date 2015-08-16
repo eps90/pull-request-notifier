@@ -25,7 +25,7 @@ module BitbucketNotifier {
                 var contextPr: PullRequest = userPrs.context;
                 var sourceEvent: string = userPrs.sourceEvent;
 
-                if (sourceEvent === 'webhook:pullrequest:created') {
+                if (sourceEvent === WebhookEvent.PULLREQUEST_CREATED) {
                     for (var reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
                         var reviewer = contextPr.reviewers[reviewerIdx];
                         if (reviewer.user.username === loggedInUser) {
@@ -33,11 +33,11 @@ module BitbucketNotifier {
                             break;
                         }
                     }
-                } else if (sourceEvent === 'webhook:pullrequest:fulfilled') {
+                } else if (sourceEvent === WebhookEvent.PULLREQUEST_FULFILLED) {
                     if (contextPr.author.username === loggedInUser) {
                         this.notifier.notifyPullRequestMerged(contextPr);
                     }
-                } else if (sourceEvent === 'webhook:pullrequest:approved') {
+                } else if (sourceEvent === WebhookEvent.PULLREQUEST_APPROVED) {
                     if (contextPr.author.username === loggedInUser) {
                         this.notifier.notifyPullRequestApproved(contextPr, userPrs.actor);
                     }
