@@ -46,6 +46,7 @@ describe('Notifier', () => {
         expectedOptions.title = 'New pull request assigned to you!';
         expectedOptions.message = pullRequest.title;
         expectedOptions.contextMessage = 'by John Smith';
+        expectedOptions.iconUrl = '../../assets/img/bitbucket_new.png';
 
         notifier.notifyNewPullRequestAssigned(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
@@ -62,6 +63,7 @@ describe('Notifier', () => {
 
         expectedOptions.title = 'Your pull request has been merged';
         expectedOptions.message = pullRequest.title;
+        expectedOptions.iconUrl = '../../assets/img/bitbucket_merged.png';
 
         notifier.notifyPullRequestMerged(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
