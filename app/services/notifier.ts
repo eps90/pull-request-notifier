@@ -51,5 +51,15 @@ module BitbucketNotifier {
 
             this.notify(options);
         }
+
+        notifyPullRequestApproved(pullRequest: PullRequest, actor: User) {
+            var options = {
+                title: 'Your pull request has been approved',
+                message: pullRequest.title,
+                contextMessage: 'by ' + actor.displayName
+            };
+
+            this.notify(options);
+        }
     }
 }

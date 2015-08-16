@@ -68,4 +68,20 @@ describe('Notifier', () => {
         notifier.notifyPullRequestMerged(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
+
+    it('should notify about approvals', () => {
+        spyOn(window['chrome'].notifications, 'create');
+        var mergingUser = new BitbucketNotifier.User();
+        mergingUser.displayName = 'John Smith';
+
+        var pullRequest = new BitbucketNotifier.PullRequest();
+        pullRequest.title = 'This is some title';
+
+        expectedOptions.title = 'Your pull request has been approved';
+        expectedOptions.message = pullRequest.title;
+        expectedOptions.contextMessage = 'by John Smith';
+
+        notifier.notifyPullRequestApproved(pullRequest, mergingUser);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
+    });
 });
