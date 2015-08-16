@@ -2,11 +2,12 @@
 
 module BitbucketNotifier {
     export class SocketHandler {
-        static $inject = ['Socket', 'localStorageService', 'PullRequestRepository'];
+        static $inject = ['Socket', 'localStorageService', 'PullRequestRepository', 'Notifier'];
         constructor(
             private socket,
             private localStorageService: angular.local.storage.ILocalStorageService,
-            private pullRequestRepository: BitbucketNotifier.PullRequestRepository
+            private pullRequestRepository: PullRequestRepository,
+            private notifier: Notifier
         ) {
             this.initListeners();
         }
@@ -19,6 +20,7 @@ module BitbucketNotifier {
 
             this.socket.on('server:pullrequests:updated', (userPrs: BitbucketNotifier.PullRequestEvent) => {
                 this.pullRequestRepository.pullRequests = userPrs.pullRequests;
+                this.notifier.notifyNewPullRequestAssigned(userPrs.context);
             });
         }
     }
