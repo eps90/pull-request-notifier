@@ -46,7 +46,7 @@ describe('SocketHandler', () => {
         userPullRequest.pullRequests = [pullRequest];
         userPullRequest.context = pullRequest;
 
-        socket.receive('server:pullrequests:updated', userPullRequest);
+        socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, userPullRequest);
 
         expect(pullRequestRepository.pullRequests.length).toBe(1);
         expect(pullRequestRepository.pullRequests[0]).toEqual(pullRequest);
@@ -84,7 +84,7 @@ describe('SocketHandler', () => {
                 pullRequest.author = annaKowalsky;
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest)
             });
 
@@ -92,7 +92,7 @@ describe('SocketHandler', () => {
                 pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_CREATED;
                 pullRequest.author = johnSmith;
 
-                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
             });
 
@@ -106,7 +106,7 @@ describe('SocketHandler', () => {
                 pullRequest.author = annaKowalsky;
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
             });
         });
@@ -116,7 +116,7 @@ describe('SocketHandler', () => {
                 pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_FULFILLED;
                 pullRequest.author = johnSmith;
 
-                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestMerged).toHaveBeenCalledWith(pullRequest);
             });
 
@@ -129,7 +129,7 @@ describe('SocketHandler', () => {
                 loggedInReviewer.approved = false;
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestMerged).not.toHaveBeenCalled();
             });
         });
@@ -140,7 +140,7 @@ describe('SocketHandler', () => {
                 pullRequest.author = johnSmith;
                 pullRequestEvent.actor = annaKowalsky;
 
-                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestApproved).toHaveBeenCalledWith(pullRequest, annaKowalsky);
             });
 
@@ -149,7 +149,7 @@ describe('SocketHandler', () => {
                 pullRequest.author = annaKowalsky;
                 pullRequestEvent.actor = johnSmith;
 
-                socket.receive('server:pullrequests:updated', pullRequestEvent);
+                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestApproved).not.toHaveBeenCalled();
             });
         });

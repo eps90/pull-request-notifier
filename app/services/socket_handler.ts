@@ -18,7 +18,7 @@ module BitbucketNotifier {
                 this.socket.emit(SocketClientEvent.INTRODUCE, loggedInUser);
             });
 
-            this.socket.on('server:pullrequests:updated', (userPrs: BitbucketNotifier.PullRequestEvent) => {
+            this.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: BitbucketNotifier.PullRequestEvent) => {
                 var loggedInUser = this.localStorageService.get('app:user');
 
                 this.pullRequestRepository.pullRequests = userPrs.pullRequests;
