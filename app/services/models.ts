@@ -59,5 +59,6 @@ module BitbucketNotifier {
 
     export class ConfigObject {
         static USER = 'app:user';
+        static SOCKET_SERVER = 'app:socket_server';
     }
 }
