@@ -19,8 +19,21 @@ module BitbucketNotifier {
             });
 
             this.socket.on('server:pullrequests:updated', (userPrs: BitbucketNotifier.PullRequestEvent) => {
+                var loggedInUser = this.localStorageService.get('app:user');
+
                 this.pullRequestRepository.pullRequests = userPrs.pullRequests;
-                this.notifier.notifyNewPullRequestAssigned(userPrs.context);
+                var contextPr: PullRequest = userPrs.context;
+                var sourceEvent: string = userPrs.triggeredEvent;
+
+                if (sourceEvent === 'webhook:pullrequest:created') {
+                    for (var reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
+                        var reviewer = contextPr.reviewers[reviewerIdx];
+                        if (reviewer.user.username === loggedInUser) {
+                            this.notifier.notifyNewPullRequestAssigned(userPrs.context);
+                            break;
+                        }
+                    }
+                }
             });
         }
     }
