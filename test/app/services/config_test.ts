@@ -30,4 +30,20 @@ fdescribe('Config', () => {
         localStorageService.set(BitbucketNotifier.ConfigObject.USER, username);
         expect(config.getUsername()).toEqual(username);
     });
+
+    describe('socket server', () => {
+        it ('should fetch an HTTP address to socket server', () => {
+            var address = 'http://localhost:1234';
+            localStorageService.set(BitbucketNotifier.ConfigObject.SOCKET_SERVER, address);
+            expect(config.getSocketServerAddress()).toEqual(address);
+        });
+
+        it('should fetch a proper HTTP address even if does not start from \'http\'', () => {
+            var address = 'localhost:1234';
+            var expectedAddress = 'http://localhost:1234';
+
+            localStorageService.set(BitbucketNotifier.ConfigObject.SOCKET_SERVER, expectedAddress);
+            expect(config.getSocketServerAddress()).toEqual(expectedAddress);
+        });
+    });
 });
