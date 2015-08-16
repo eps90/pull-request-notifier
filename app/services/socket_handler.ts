@@ -23,7 +23,7 @@ module BitbucketNotifier {
 
                 this.pullRequestRepository.pullRequests = userPrs.pullRequests;
                 var contextPr: PullRequest = userPrs.context;
-                var sourceEvent: string = userPrs.triggeredEvent;
+                var sourceEvent: string = userPrs.sourceEvent;
 
                 if (sourceEvent === 'webhook:pullrequest:created') {
                     for (var reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
