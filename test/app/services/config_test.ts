@@ -24,6 +24,12 @@ describe('Config', () => {
             localStorageService.set(BitbucketNotifier.ConfigObject.USER, username);
             expect(config.getUsername()).toEqual(username);
         });
+
+        it('should save logged in user', () => {
+            var username = 'some_user';
+            config.setUsername(username);
+            expect(localStorageService.get(BitbucketNotifier.ConfigObject.USER)).toEqual(username);
+        });
     });
 
     describe('of socket server', () => {
@@ -39,6 +45,12 @@ describe('Config', () => {
 
             localStorageService.set(BitbucketNotifier.ConfigObject.SOCKET_SERVER, expectedAddress);
             expect(config.getSocketServerAddress()).toEqual(expectedAddress);
+        });
+
+        it('should set socket server address', () => {
+            var address = 'localhost:1234';
+            config.setSocketServerAddress(address);
+            expect(localStorageService.get(BitbucketNotifier.ConfigObject.SOCKET_SERVER)).toEqual(address);
         });
     });
 });
