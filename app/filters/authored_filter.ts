@@ -1,11 +1,9 @@
 ///<reference path="../_typings.ts"/>
 
 module BitbucketNotifier {
-    export function AuthoredFilter(localStorageService: angular.local.storage.ILocalStorageService) {
-        this.$inject = ['localStorageService'];
-
+    export function AuthoredFilter(config: Config) {
         return (pullRequests: Array<PullRequest>) => {
-            var loggedInUser = localStorageService.get(ConfigObject.USER);
+            var loggedInUser = config.getUsername()
             var result: Array<PullRequest> = [];
 
             for (var prIndex = 0, prsLength = pullRequests.length; prIndex < prsLength; prIndex++) {
@@ -18,4 +16,6 @@ module BitbucketNotifier {
             return result;
         }
     }
+
+    AuthoredFilter.$inject = ['Config'];
 }

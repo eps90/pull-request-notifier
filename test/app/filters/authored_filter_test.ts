@@ -2,17 +2,29 @@
 
 describe('AuthoredFilter', () => {
     var $filter,
-        localStorageService: angular.local.storage.ILocalStorageService,
+        config: BitbucketNotifier.Config,
         pullRequests: Array<BitbucketNotifier.PullRequest>,
-        authoredFilter;
+        authoredFilter,
+        loggedInUsername: string;
 
     beforeEach(module('bitbucketNotifier'));
+
+    beforeEach(module([
+        '$provide', ($provide: ng.auto.IProvideService) => {
+            $provide.value('Config', {
+                getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
+                    return loggedInUsername;
+                })
+            });
+        }
+    ]));
+
     beforeEach(inject([
         '$filter',
-        'localStorageService',
-        ($f, $l) => {
+        'Config',
+        ($f, c) => {
             $filter = $f;
-            localStorageService = $l;
+            config = c;
         }
     ]));
 
@@ -40,7 +52,7 @@ describe('AuthoredFilter', () => {
     });
 
     it('should include only pull requests authored by logged in user', () => {
-        localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'john.smith');
+        loggedInUsername = 'john.smith';
 
         var result: Array<BitbucketNotifier.PullRequest> = authoredFilter(pullRequests);
         expect(result.length).toEqual(2);
@@ -49,7 +61,7 @@ describe('AuthoredFilter', () => {
     });
 
     it('should return empty set if there are no pull requests authored by a user', () => {
-        localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'jon.snow');
+        loggedInUsername = 'jon.snow';
         expect(authoredFilter(pullRequests).length).toEqual(0);
     });
 });
