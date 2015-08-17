@@ -2,7 +2,7 @@
 
 module BitbucketNotifier {
     export class UserVoteComponent implements ng.IDirective {
-        constructor(private localStorageService: angular.local.storage.ILocalStorageService) {}
+        constructor(private config: Config) {}
 
         restrict: string = 'E';
         scope = {
@@ -14,7 +14,7 @@ module BitbucketNotifier {
             var classes = ['pr-icon'];
             for (var reviewerIdx = 0, reviewerLength = scope.reviewers.length; reviewerIdx < reviewerLength; reviewerIdx++) {
                 var reviewer: Reviewer = scope.reviewers[reviewerIdx];
-                if (reviewer.user.username === this.localStorageService.get(ConfigObject.USER)) {
+                if (reviewer.user.username === this.config.getUsername()) {
                     if (reviewer.approved) {
                         classes.push('fa-check-circle', 'icon-approved');
                     } else {
@@ -28,8 +28,8 @@ module BitbucketNotifier {
         };
 
         static factory() {
-            var directive = (localStorageService) => new UserVoteComponent(localStorageService);
-            directive.$inject = ['localStorageService'];
+            var directive = (config) => new UserVoteComponent(config);
+            directive.$inject = ['Config'];
 
             return directive;
         }
