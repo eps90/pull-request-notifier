@@ -3,24 +3,32 @@
 describe('UserVoteComponent', () => {
     var $scope: ng.IScope,
         $compile: ng.ICompileService,
-        localStorageService: angular.local.storage.ILocalStorageService,
+        config: BitbucketNotifier.Config,
         pullRequest: BitbucketNotifier.PullRequest;
 
     beforeEach(module('bitbucketNotifier'));
     beforeEach(module('bitbucketNotifier.templates'));
+
+    beforeEach(module([
+        '$provide', ($provide: ng.auto.IProvideService) => {
+            $provide.value('Config', {
+                getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
+                    return 'john.smith';
+                })
+            });
+        }
+    ]));
+
     beforeEach(inject([
         '$rootScope',
         '$compile',
-        'localStorageService',
-        ($s, $c, $l) => {
+        'Config',
+        ($s, $c, c) => {
             $scope = $s;
             $compile = $c;
-            localStorageService = $l;
+            config = c;
         }
     ]));
-    beforeEach(() => {
-        localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'john.smith');
-    });
 
     it('should set awaiting icon if user has not voted yet', () => {
         var loggedInUser: BitbucketNotifier.User = new BitbucketNotifier.User();
