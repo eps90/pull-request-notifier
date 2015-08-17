@@ -18,20 +18,15 @@ fdescribe('Config', () => {
         localStorageService.clearAll();
     });
 
-    it('should be able to fetch config variables from local storage', () => {
-        var key = 'some_key';
-        var value = 'some_value';
-        localStorageService.set(key, value);
-        expect(config.getParameter(key)).toEqual(value);
+    describe('of app user', () => {
+        it('should fetch currently logged in user', () => {
+            var username = 'some_user';
+            localStorageService.set(BitbucketNotifier.ConfigObject.USER, username);
+            expect(config.getUsername()).toEqual(username);
+        });
     });
 
-    it('should fetch currently logged in user', () => {
-        var username = 'some_user';
-        localStorageService.set(BitbucketNotifier.ConfigObject.USER, username);
-        expect(config.getUsername()).toEqual(username);
-    });
-
-    describe('socket server', () => {
+    describe('of socket server', () => {
         it ('should fetch an HTTP address to socket server', () => {
             var address = 'http://localhost:1234';
             localStorageService.set(BitbucketNotifier.ConfigObject.SOCKET_SERVER, address);
