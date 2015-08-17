@@ -3,7 +3,7 @@
 describe('SocketHandler', () => {
     var socketHandler,
         socket,
-        localStorageService: angular.local.storage.ILocalStorageService,
+        config: BitbucketNotifier.Config,
         pullRequestRepository: BitbucketNotifier.PullRequestRepository,
         notifier: BitbucketNotifier.Notifier;
 
@@ -14,24 +14,27 @@ describe('SocketHandler', () => {
             notifyPullRequestMerged: jasmine.createSpy('notifyPullRequestMerged'),
             notifyPullRequestApproved: jasmine.createSpy('notifyPullRequestApproved')
         });
+
+        $p.value('Config', {
+            getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
+                return 'john.smith';
+            })
+        });
     }]));
     beforeEach(inject([
         'SocketHandler',
         'Socket',
-        'localStorageService',
+        'Config',
         'PullRequestRepository',
         'Notifier',
-        (sh, s, l, prr, n) => {
+        (sh, s, c, prr, n) => {
             socketHandler = sh;
             socket = s;
-            localStorageService = l;
+            config = c;
             pullRequestRepository = prr;
             notifier = n;
         }
     ]));
-    beforeEach(() => {
-        localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'john.smith');
-    });
 
     it('should emit client:introduce event with logged in user, on connection', () => {
         socket.receive('connect');
