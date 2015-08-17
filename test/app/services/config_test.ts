@@ -43,7 +43,7 @@ describe('Config', () => {
             var address = 'localhost:1234';
             var expectedAddress = 'http://localhost:1234';
 
-            localStorageService.set(BitbucketNotifier.ConfigObject.SOCKET_SERVER, expectedAddress);
+            localStorageService.set(BitbucketNotifier.ConfigObject.SOCKET_SERVER, address);
             expect(config.getSocketServerAddress()).toEqual(expectedAddress);
         });
 
