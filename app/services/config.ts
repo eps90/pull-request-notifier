@@ -1,6 +1,7 @@
 ///<reference path="../_typings.ts"/>
 
 module BitbucketNotifier {
+    // @todo Are the setters event necessary here?
     export class Config {
         static $inject = ['localStorageService'];
 
