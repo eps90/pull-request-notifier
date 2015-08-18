@@ -18,6 +18,9 @@ describe('SocketHandler', () => {
         $p.value('Config', {
             getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
                 return 'john.smith';
+            }),
+            getSocketServerAddress: jasmine.createSpy('getSocketServerAddress').and.callFake(() => {
+                return 'http://localhost:1234';
             })
         });
     }]));
