@@ -1,12 +1,12 @@
 ///<reference path="../_typings.ts"/>
 
 module BitbucketNotifier {
-    export function Socket(socketFactory) {
-        this.$inject = ['socketFactory'];
-        // @todo Get host and port from config
-        var socket = io.connect('http://localhost:8765');
+    export function Socket(socketFactory, config: Config) {
+        var socket = io.connect(config.getSocketServerAddress());
         return socketFactory({
             ioSocket: socket
         });
     }
+
+    Socket.$inject = ['socketFactory', 'Config'];
 }
