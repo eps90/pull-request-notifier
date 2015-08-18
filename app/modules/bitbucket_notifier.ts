@@ -13,7 +13,7 @@ module BitbucketNotifier {
     application.filter('assigned', AssignedFilter);
 
     application.factory('PullRequestRepository', () => new PullRequestRepository());
-    application.factory('Socket', (socketFactory) => (new Socket(socketFactory)).factory());
+    application.factory('Socket', Socket);
     application.service('SocketHandler', SocketHandler);
     application.service('Notifier', Notifier);
     application.service('Config', Config);
