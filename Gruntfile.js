@@ -4,6 +4,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-angular-templates');
 
     grunt.initConfig({
         typescript: {
@@ -65,6 +66,18 @@ module.exports = function(grunt) {
             unit: {
                 options: {
                     configFile: 'karma.conf.js'
+                }
+            }
+        },
+        ngtemplates: {
+            dist: {
+                src: 'app/components/**/*.html',
+                dest: 'dist/modules/templates.js',
+                module: 'bitbucketNotifier',
+                options: {
+                    url: function (templateUrl) {
+                        return templateUrl.replace(/^app/, '..');
+                    }
                 }
             }
         }
