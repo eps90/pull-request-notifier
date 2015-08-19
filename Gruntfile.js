@@ -1,3 +1,6 @@
+// @todo Think about stages naming (dist and test)
+// @todo Import typescript sourcemaps when minifying/uglifying
+
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-typescript');
     grunt.loadNpmTasks('grunt-contrib-copy');
