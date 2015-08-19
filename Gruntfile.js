@@ -40,6 +40,12 @@ module.exports = function(grunt) {
                         src: ['views/*.html', 'components/**/*.html'],
                         dest: 'dist',
                         cwd: 'app'
+                    },
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['bower_components/bootstrap/fonts/*.*', 'bower_components/fontawesome/fonts/*.*'],
+                        dest: 'dist/fonts'
                     }
                 ]
             },
