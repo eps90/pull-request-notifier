@@ -85,6 +85,20 @@ module.exports = function(grunt) {
                     }
                 }
             }
+        },
+        filerev: {
+            dist: {
+                src: ['dist/scripts/*.js', 'dist/styles/*.css']
+            }
+        },
+        useminPrepare: {
+            html: 'app/views/*.html',
+            options: {
+                dest: 'dist/views'
+            }
+        },
+        usemin: {
+            html: 'dist/views/popup.html'
         }
     });
 
