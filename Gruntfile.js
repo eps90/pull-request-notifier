@@ -162,6 +162,10 @@ module.exports = function(grunt) {
 
         cfg.files.push(filesDef);
         context.outFiles = [block.dest];
+
+        context.options.options = {
+            compress: true
+        };
         return cfg;
     }
 };
