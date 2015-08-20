@@ -91,7 +91,8 @@ module.exports = function(grunt) {
                 options: {
                     url: function (templateUrl) {
                         return templateUrl.replace(/^app/, '..');
-                    }
+                    },
+                    concat: 'generated'
                 }
             }
         },
@@ -117,6 +118,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'dist',
         'useminPrepare',
+        'ngtemplates:dist',
         'concat:generated',
         'uglify:generated',
         'cssmin:generated',
