@@ -102,13 +102,17 @@ module.exports = function(grunt) {
             }
         },
         useminPrepare: {
-            html: 'app/views/*.html',
+            dist:{
+                src: ['app/views/*.html']
+            },
             options: {
                 dest: 'dist/views'
             }
         },
         usemin: {
-            html: 'dist/views/popup.html'
+            dist: {
+                src: 'dist/views/popup.html'
+            }
         }
     });
 
