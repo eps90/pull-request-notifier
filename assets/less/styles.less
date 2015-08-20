@@ -1,0 +1,57 @@
+@darkBlue: #205081;
+@darkerBlue: #2e3d54;
+@white: #fff;
+@lightBlue: #3572b0;
+@iconApprovedColor: #5cb85c;
+@iconUnapprovedColor: #d9534f;
+@iconWaitingColor: #f0ad4e;
+
+@popupWidth: 800px;
+@headerHeight: 20px;
+
+@navbarFontSize: 20px;
+
+body {
+    padding-top: 50px;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.container {
+    width: @popupWidth;
+
+    .navbar-default {
+        background-color: @darkBlue;
+        border-color: @darkerBlue;
+
+        .navbar-brand {
+            color: @white;
+            font-weight: bold;
+            font-size: @navbarFontSize;
+
+            &:hover, &:focus {
+                background-color: @lightBlue;
+                color: @white;
+            }
+        }
+
+        .navbar-text {
+            color: @white;
+        }
+
+        .navbar-right {
+            margin-right: 0;
+        }
+    }
+}
+
+.icon-approved {
+    color: @iconApprovedColor
+}
+
+.icon-unapproved {
+    color: @iconUnapprovedColor;
+}
+
+.icon-waiting {
+    color: @iconWaitingColor;
+}
