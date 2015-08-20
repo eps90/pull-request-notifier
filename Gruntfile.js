@@ -110,9 +110,7 @@ module.exports = function(grunt) {
             }
         },
         usemin: {
-            dist: {
-                src: 'dist/views/popup.html'
-            }
+            html: 'dist/views/popup.html'
         }
     });
 
