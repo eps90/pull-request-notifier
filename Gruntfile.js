@@ -1,6 +1,7 @@
+var path = require('path');
+
 // @todo Think about stages naming (dist and test)
 // @todo Import typescript sourcemaps when minifying/uglifying
-
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-typescript');
     grunt.loadNpmTasks('grunt-contrib-copy');
@@ -107,11 +108,29 @@ module.exports = function(grunt) {
                 src: ['app/views/*.html']
             },
             options: {
-                dest: 'dist/views'
+                dest: 'dist/views',
+                flow: {
+                    steps: {
+                        js: ['concat', 'uglify'],
+                        css: ['concat', 'cssmin'],
+                        'less': [{
+                            name: 'less',
+                            createConfig: lessCreateConfig
+                        }]
+                    },
+                    post: {}
+                }
             }
         },
         usemin: {
-            html: 'dist/views/popup.html'
+            html: 'dist/views/popup.html',
+            options: {
+                blockReplacements: {
+                    less: function (block) {
+                        return '<link type="stylesheet" href="' + block.dest + '" />';
+                    }
+                }
+            }
         }
     });
 
@@ -128,4 +147,20 @@ module.exports = function(grunt) {
         'filerev',
         'usemin'
     ]);
+
+    function lessCreateConfig(context, block) {
+        var cfg = {files: []},
+            filesDef = {},
+            destPath = path.join(context.outDir, block.dest);
+
+        filesDef[destPath] = [];
+
+        context.inFiles.forEach(function (inFile) {
+            filesDef[destPath].push(path.join(context.inDir, inFile));
+        });
+
+        cfg.files.push(filesDef);
+        context.outFiles = [block.dest];
+        return cfg;
+    }
 };
