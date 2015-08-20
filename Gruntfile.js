@@ -141,6 +141,7 @@ module.exports = function(grunt) {
         'dist',
         'useminPrepare',
         'ngtemplates:dist',
+        'less:generated',
         'concat:generated',
         'uglify:generated',
         'cssmin:generated',
