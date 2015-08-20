@@ -22,6 +22,8 @@ module.exports = function(config) {
         'bower_components/socket.io-client/socket.io.js',
         'bower_components/lodash/lodash.js',
         'bower_components/angular-socket.io-mock/angular-socket.io-mock.js',
+        'bower_components/angular-bootstrap/ui-bootstrap.js',
+        'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
         'build/**/!(bitbucket_notifier).js',
         'build/app/modules/bitbucket_notifier.js',
         'build/**/*.html'
