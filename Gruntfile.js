@@ -127,7 +127,7 @@ module.exports = function(grunt) {
             options: {
                 blockReplacements: {
                     less: function (block) {
-                        return '<link type="stylesheet" href="' + block.dest + '" />';
+                        return '<link rel="stylesheet" href="' + block.dest + '" />';
                     }
                 }
             }
