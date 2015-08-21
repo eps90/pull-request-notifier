@@ -89,12 +89,12 @@ module.exports = function(grunt) {
             dist: {
                 src: 'app/components/**/*.html',
                 dest: 'dist/modules/templates.js',
-                module: 'bitbucketNotifier',
                 options: {
                     url: function (templateUrl) {
                         return templateUrl.replace(/^app/, '..');
                     },
-                    concat: 'generated'
+                    concat: 'generated',
+                    module: 'bitbucketNotifier'
                 }
             }
         },
