@@ -4,40 +4,38 @@ module BitbucketNotifier {
     export interface ModelInterface {}
 
     export class Project implements ModelInterface {
-        name: string;
-        fullName: string;
-        pullRequestsUrl: string;
+        name: string = '';
+        fullName: string = '';
     }
 
     export class User implements ModelInterface {
-        username: string;
-        displayName: string;
+        username: string = '';
+        displayName: string = '';
     }
 
     export class Reviewer implements ModelInterface {
         approved: boolean;
-        user: User;
+        user: User = new User();
     }
 
     export enum PullRequestState {Open, Merged, Declined}
 
     export class PullRequest implements ModelInterface {
         id: number;
-        title: string;
-        description: string;
-        author: User;
-        targetRepository: Project;
-        targetBranch: string;
+        title: string = '';
+        description: string = '';
+        author: User = new User();
+        targetRepository: Project = new Project();
+        targetBranch: string = '';
         reviewers: Array<Reviewer> = [];
         state: PullRequestState;
-        selfLink: string;
     }
 
     export class PullRequestEvent implements ModelInterface {
-        actor: User;
-        sourceEvent: string;
-        pullRequests: Array<PullRequest>;
-        context: PullRequest
+        actor: User = new User();
+        sourceEvent: string = '';
+        pullRequests: Array<PullRequest> = [];
+        context: PullRequest = new PullRequest();
     }
 
     export class WebhookEvent {
