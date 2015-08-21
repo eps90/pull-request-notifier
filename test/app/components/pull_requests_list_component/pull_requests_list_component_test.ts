@@ -76,20 +76,20 @@ describe('PullRequestsListComponent', () => {
         });
 
         it('should render list of pull requests', () => {
-            element = $compile('<pull-requests-list mode="\'AUTHORED\'"></pull-requests-list>')($scope);
+            element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('pull-request');
+            var childPullRequest = element.find('.pull-requests-list.authored pull-request');
 
             expect(childPullRequest.length).toEqual(1);
-            expect(childPullRequest.scope().mode).toEqual('AUTHORED');
+            expect(childPullRequest.isolateScope().mode).toEqual('AUTHORED');
         });
 
         it('should update pull requests list when pull requests repository changes', () => {
-            element = $compile('<pull-requests-list mode="\'AUTHORED\'"></pull-requests-list>')($scope);
+            element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('pull-request');
+            var childPullRequest = element.find('.pull-requests-list.authored pull-request');
 
             expect(childPullRequest.length).toEqual(1);
 
@@ -101,39 +101,40 @@ describe('PullRequestsListComponent', () => {
             pullRequestRepository.pullRequests.push(newPullRequest);
             $scope.$digest();
 
-            childPullRequest = element.find('pull-request');
+            childPullRequest = element.find('.pull-requests-list.authored pull-request');
             expect(childPullRequest.length).toEqual(2);
         });
 
         it('should display proper message when pull requests list is empty', () => {
-            pullRequestRepository.pullRequests = [];
-            element = $compile('<pull-requests-list mode="\'AUTHORED\'"></pull-requests-list>')($scope);
+            pullRequestRepository.pullRequests.splice(0, 1);
+
+            element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
             expect(element.text()).toContain('There are no pull requests created by you');
         });
     });
 
-    describe('Assigned mode', () => {
+      describe('Assigned mode', () => {
         beforeEach(() => {
             localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'anna.kowalsky');
         });
 
         it('should render list of pull requests', () => {
-            element = $compile('<pull-requests-list mode="\'ASSIGNED\'"></pull-requests-list>')($scope);
+            element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('pull-request');
+            var childPullRequest = element.find('.pull-requests-list.assigned pull-request');
 
             expect(childPullRequest.length).toEqual(2);
-            expect(childPullRequest.scope().mode).toEqual('ASSIGNED');
+            expect(childPullRequest.isolateScope().mode).toEqual('ASSIGNED');
         });
 
         it('should update pull requests list when pull requests repository changes', () => {
-            element = $compile('<pull-requests-list mode="\'ASSIGNED\'"></pull-requests-list>')($scope);
+            element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('pull-request');
+            var childPullRequest = element.find('.pull-requests-list.assigned pull-request');
 
             expect(childPullRequest.length).toEqual(2);
 
@@ -149,14 +150,16 @@ describe('PullRequestsListComponent', () => {
             pullRequestRepository.pullRequests.push(newPullRequest);
             $scope.$digest();
 
-            childPullRequest = element.find('pull-request');
+            childPullRequest = element.find('.pull-requests-list.assigned pull-request');
             expect(childPullRequest.length).toEqual(3);
         });
 
         it('should display proper message when pull requests list is empty', () => {
-            pullRequestRepository.pullRequests = [];
-            element = $compile('<pull-requests-list mode="\'ASSIGNED\'"></pull-requests-list>')($scope);
+            pullRequestRepository.pullRequests.splice(0,1);
+
+            element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
+            return;
 
             expect(element.text()).toContain('There are no pull requests assigned to you');
         });
