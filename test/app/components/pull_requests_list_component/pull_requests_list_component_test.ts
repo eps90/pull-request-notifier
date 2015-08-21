@@ -104,6 +104,14 @@ describe('PullRequestsListComponent', () => {
             childPullRequest = element.find('pull-request');
             expect(childPullRequest.length).toEqual(2);
         });
+
+        it('should display proper message when pull requests list is empty', () => {
+            pullRequestRepository.pullRequests = [];
+            element = $compile('<pull-requests-list mode="\'AUTHORED\'"></pull-requests-list>')($scope);
+            $scope.$digest();
+
+            expect(element.text()).toContain('There are no pull requests created by you');
+        });
     });
 
     describe('Assigned mode', () => {
@@ -143,6 +151,14 @@ describe('PullRequestsListComponent', () => {
 
             childPullRequest = element.find('pull-request');
             expect(childPullRequest.length).toEqual(3);
+        });
+
+        it('should display proper message when pull requests list is empty', () => {
+            pullRequestRepository.pullRequests = [];
+            element = $compile('<pull-requests-list mode="\'ASSIGNED\'"></pull-requests-list>')($scope);
+            $scope.$digest();
+
+            expect(element.text()).toContain('There are no pull requests assigned to you');
         });
     });
 });
