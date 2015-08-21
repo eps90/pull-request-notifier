@@ -9,7 +9,7 @@
                <p ng-if="(pullRequests | assigned).length === 0">
                    There are no pull requests assigned to you
                </p>
-               <pull-request ng-repeat="pr in pullRequests | assigned" pr="pr" mode="'ASSIGNED'"></pull-request>
+               <pull-request ng-repeat="pr in pullRequests | assigned" pr="pr" mode="ASSIGNED"></pull-request>
            </div>
        </div>
    </tab>
@@ -22,7 +22,7 @@
                 <p ng-if="(pullRequests | authored).length === 0">
                     There are no pull requests created by you
                 </p>
-                <pull-request ng-repeat="pr in pullRequests | authored" pr="pr" mode="'AUTHORED'"></pull-request>
+                <pull-request ng-repeat="pr in pullRequests | authored" pr="pr" mode="AUTHORED"></pull-request>
             </div>
         </div>
     </tab>

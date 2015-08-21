@@ -53,9 +53,8 @@ describe('PullRequestComponent', () => {
     describe('Authored mode', () => {
         beforeEach(() => {
             $scope['pullRequest'] = pullRequest;
-            $scope['displayMode'] = 'AUTHORED';
 
-            element = $compile('<pull-request pr="pullRequest" mode="displayMode"></pull-request>')($scope);
+            element = $compile('<pull-request pr="pullRequest" mode="AUTHORED"></pull-request>')($scope);
             $scope.$digest();
         });
 
@@ -71,9 +70,8 @@ describe('PullRequestComponent', () => {
     describe('Assigned mode', () => {
         beforeEach(() => {
             $scope['pullRequest'] = pullRequest;
-            $scope['displayMode'] = 'ASSIGNED';
 
-            element = $compile('<pull-request pr="pullRequest" mode="displayMode"></pull-request>')($scope);
+            element = $compile('<pull-request pr="pullRequest" mode="ASSIGNED"></pull-request>')($scope);
             $scope.$digest();
         });
 

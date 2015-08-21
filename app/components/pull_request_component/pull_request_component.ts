@@ -7,7 +7,7 @@ module BitbucketNotifier {
         templateUrl = '../components/pull_request_component/pull_request_component.html';
         scope = {
             pullRequest: '=pr',
-            mode: '='
+            mode: '@'
         };
 
         static factory(): ng.IDirectiveFactory {
