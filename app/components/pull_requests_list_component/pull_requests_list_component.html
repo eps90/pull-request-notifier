@@ -1,8 +1,26 @@
-<div class="col-lg-12">
-    <div class="row" ng-if="mode === 'AUTHORED'">
-        <pull-request ng-repeat="pr in pullRequests | authored" pr="pr" mode="mode"></pull-request>
-    </div>
-    <div class="row" ng-if="mode === 'ASSIGNED'">
-        <pull-request ng-repeat="pr in pullRequests | assigned" pr="pr" mode="mode"></pull-request>
-    </div>
-</div>
+<h2>Active pull requests</h2>
+<tabset justified="true" type="pills">
+   <tab>
+       <tab-heading>
+           <i class="fa fa-thumb-tack"></i> Assigned
+       </tab-heading>
+       <div class="col-lg-12">
+           <div class="row" ng-if="mode === 'ASSIGNED'">
+               <pull-request ng-repeat="pr in pullRequests | assigned" pr="pr" mode="mode"></pull-request>
+           </div>
+       </div>
+   </tab>
+    <tab>
+        <tab-heading>
+            <i class="fa fa-user"></i> Authored
+        </tab-heading>
+        <div class="col-lg-12">
+            <div class="row" ng-if="mode === 'AUTHORED'">
+                <pull-request ng-repeat="pr in pullRequests | authored" pr="pr" mode="mode"></pull-request>
+            </div>
+        </div>
+    </tab>
+    <tab disable="true">
+        <tab-heading><i class="fa fa-eye"></i> Subscribed</tab-heading>
+    </tab>
+</tabset>
