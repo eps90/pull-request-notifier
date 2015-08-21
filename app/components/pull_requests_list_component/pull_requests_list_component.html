@@ -1,32 +1,38 @@
-<h2>Active pull requests</h2>
-<tabset justified="true" type="pills">
-   <tab>
-       <tab-heading>
-           <i class="fa fa-thumb-tack"></i> Assigned
-       </tab-heading>
-       <div class="col-lg-12 pull-requests-list assigned">
-           <div class="row">
-               <p ng-if="(pullRequests | assigned).length === 0">
-                   There are no pull requests assigned to you
-               </p>
-               <pull-request ng-repeat="pr in pullRequests | assigned" pr="pr" mode="ASSIGNED"></pull-request>
-           </div>
-       </div>
-   </tab>
-    <tab>
-        <tab-heading>
-            <i class="fa fa-user"></i> Authored
-        </tab-heading>
-        <div class="col-lg-12 pull-requests-list authored">
-            <div class="row">
-                <p ng-if="(pullRequests | authored).length === 0">
-                    There are no pull requests created by you
-                </p>
-                <pull-request ng-repeat="pr in pullRequests | authored" pr="pr" mode="AUTHORED"></pull-request>
-            </div>
-        </div>
-    </tab>
-    <tab disable="true">
-        <tab-heading><i class="fa fa-eye"></i> Subscribed</tab-heading>
-    </tab>
-</tabset>
+<div class="row pull-requests">
+    <div class="col-lg-12">
+        <h2 class="title">
+            <i class="fa fa-code-fork title-icon"></i> Active pull requests
+        </h2>
+        <tabset justified="true" type="pills">
+            <tab>
+                <tab-heading>
+                    <i class="fa fa-thumb-tack"></i> Assigned
+                </tab-heading>
+                <div class="col-lg-12 pull-requests-list assigned">
+                    <div class="row">
+                        <div class="alert alert-info" ng-if="(pullRequests | assigned).length === 0">
+                            <i class="fa fa-info-circle"></i> There are no pull requests assigned to you
+                        </div>
+                        <pull-request ng-repeat="pr in pullRequests | assigned" pr="pr" mode="ASSIGNED"></pull-request>
+                    </div>
+                </div>
+            </tab>
+            <tab>
+                <tab-heading>
+                    <i class="fa fa-user"></i> Authored
+                </tab-heading>
+                <div class="col-lg-12 pull-requests-list authored">
+                    <div class="row">
+                        <div class="alert alert-info" ng-if="(pullRequests | authored).length === 0">
+                            <i class="fa fa-info-circle"></i> There are no pull requests created by you
+                        </div>
+                        <pull-request ng-repeat="pr in pullRequests | authored" pr="pr" mode="AUTHORED"></pull-request>
+                    </div>
+                </div>
+            </tab>
+            <tab disable="true">
+                <tab-heading><i class="fa fa-eye"></i> Subscribed</tab-heading>
+            </tab>
+        </tabset>
+    </div>
+</div>

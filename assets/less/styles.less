@@ -2,6 +2,7 @@
 @darkerBlue: #2e3d54;
 @white: #fff;
 @lightBlue: #3572b0;
+@lighterBlue: #bce8f1;
 @iconApprovedColor: #5cb85c;
 @iconUnapprovedColor: #d9534f;
 @iconWaitingColor: #f0ad4e;
@@ -42,6 +43,22 @@ body {
 
 .container {
     width: @popupWidth;
+}
+
+.pull-requests {
+    h2.title {
+        border-bottom: 1px solid @lighterBlue;
+        width: 50%;
+        padding: 10px 0;
+
+        .title-icon {
+            color: #999;
+        }
+    }
+
+    .pull-requests-list {
+        margin: 10px 0;
+    }
 }
 
 .icon-approved {
