@@ -74,8 +74,8 @@ module.exports = function(grunt) {
         },
         watch: {
             dist: {
-                files: ['app/**/*.ts', 'app/**/*.css', 'app/**/*.html'],
-                tasks: ['dist']
+                files: ['app/**/*.ts', 'app/**/*.css', 'app/**/*.html', 'assets/**/*.less', 'app/**/*.less'],
+                tasks: ['build']
             }
         },
         karma: {
