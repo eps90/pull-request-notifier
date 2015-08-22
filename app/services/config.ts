@@ -9,7 +9,7 @@ module BitbucketNotifier {
 
         constructor(private localStorageService: angular.local.storage.ILocalStorageService) {}
 
-        getUsername(): string {
+        getUsername(): any {
             return this.localStorageService.get(ConfigObject.USER);
         }
 

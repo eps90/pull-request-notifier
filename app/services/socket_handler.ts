@@ -4,7 +4,7 @@ module BitbucketNotifier {
     'use strict';
 
     export class SocketHandler {
-        static $inject: Array<String> = ['Socket', 'Config', 'PullRequestRepository', 'Notifier'];
+        static $inject: Array<string> = ['Socket', 'Config', 'PullRequestRepository', 'Notifier'];
         constructor(
             private socket,
             private config: Config,
