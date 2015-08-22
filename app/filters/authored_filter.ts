@@ -1,9 +1,11 @@
 ///<reference path="../_typings.ts"/>
 
 module BitbucketNotifier {
-    export function AuthoredFilter(config: Config) {
+    'use strict';
+
+    export function AuthoredFilter(config: Config): Function {
         return (pullRequests: Array<PullRequest>) => {
-            var loggedInUser = config.getUsername()
+            var loggedInUser = config.getUsername();
             var result: Array<PullRequest> = [];
 
             for (var prIndex = 0, prsLength = pullRequests.length; prIndex < prsLength; prIndex++) {
@@ -14,7 +16,7 @@ module BitbucketNotifier {
             }
 
             return result;
-        }
+        };
     }
 
     AuthoredFilter.$inject = ['Config'];

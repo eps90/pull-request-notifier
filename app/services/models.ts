@@ -1,6 +1,8 @@
 ///<reference path="../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     export interface ModelInterface {}
 
     export class Project implements ModelInterface {
@@ -39,24 +41,24 @@ module BitbucketNotifier {
     }
 
     export class WebhookEvent {
-        static PULLREQUEST_CREATED = 'webhook:pullrequest:created';
-        static PULLREQUEST_UPDATED = 'webhook:pullrequest:updated';
-        static PULLREQUEST_APPROVED = 'webhook:pullrequest:approved';
-        static PULLREQUEST_UNAPPROVED = 'webhook:pullrequest:unapproved';
-        static PULLREQUEST_FULFILLED = 'webhook:pullrequest:fulfilled';
-        static PULLREQUEST_REJECTED = 'webhook:pullrequest:rejected';
+        static PULLREQUEST_CREATED: string = 'webhook:pullrequest:created';
+        static PULLREQUEST_UPDATED: string = 'webhook:pullrequest:updated';
+        static PULLREQUEST_APPROVED: string = 'webhook:pullrequest:approved';
+        static PULLREQUEST_UNAPPROVED: string = 'webhook:pullrequest:unapproved';
+        static PULLREQUEST_FULFILLED: string = 'webhook:pullrequest:fulfilled';
+        static PULLREQUEST_REJECTED: string = 'webhook:pullrequest:rejected';
     }
 
     export class SocketClientEvent {
-        static INTRODUCE = 'client:introduce';
+        static INTRODUCE: string = 'client:introduce';
     }
 
     export class SocketServerEvent {
-        static PULLREQUESTS_UPDATED = 'server:pullrequests:updated';
+        static PULLREQUESTS_UPDATED: string = 'server:pullrequests:updated';
     }
 
     export class ConfigObject {
-        static USER = 'app:user';
-        static SOCKET_SERVER = 'app:socket_server';
+        static USER: string = 'app:user';
+        static SOCKET_SERVER: string = 'app:socket_server';
     }
 }

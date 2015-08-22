@@ -1,6 +1,8 @@
 ///<reference path="../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     interface NotificationOptions {
         type?: string;
         iconUrl?: string;
@@ -11,7 +13,7 @@ module BitbucketNotifier {
     }
 
     export class Notifier {
-        private chrome;
+        private chrome: any;
         private defaultOptions: NotificationOptions = {
             type: 'basic',
             iconUrl: '../../assets/img/bitbucket_logo_raster.jpg',
@@ -25,13 +27,13 @@ module BitbucketNotifier {
             this.chrome = window['chrome'];
         }
 
-        notify(opts: NotificationOptions, notificationId?) {
+        notify(opts: NotificationOptions, notificationId?): void {
             notificationId = notificationId || _.uniqueId('pull_request_');
             var targetOpts = _.assign(this.defaultOptions, opts);
             this.chrome.notifications.create(notificationId, targetOpts);
         }
 
-        notifyNewPullRequestAssigned(pullRequest: PullRequest) {
+        notifyNewPullRequestAssigned(pullRequest: PullRequest): void {
             var options = {
                 title: 'New pull request assigned to you!',
                 message: pullRequest.title,
@@ -42,7 +44,7 @@ module BitbucketNotifier {
             this.notify(options);
         }
 
-        notifyPullRequestMerged(pullRequest: PullRequest) {
+        notifyPullRequestMerged(pullRequest: PullRequest): void {
             var options = {
                 title: 'Your pull request has been merged',
                 message: pullRequest.title,
@@ -52,7 +54,7 @@ module BitbucketNotifier {
             this.notify(options);
         }
 
-        notifyPullRequestApproved(pullRequest: PullRequest, actor: User) {
+        notifyPullRequestApproved(pullRequest: PullRequest, actor: User): void {
             var options = {
                 title: 'Your pull request has been approved',
                 message: pullRequest.title,

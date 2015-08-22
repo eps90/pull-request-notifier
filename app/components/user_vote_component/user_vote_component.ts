@@ -1,16 +1,18 @@
 ///<reference path="../../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     export class UserVoteComponent implements ng.IDirective {
         constructor(private config: Config) {}
 
         restrict: string = 'E';
-        scope = {
+        scope: any = {
             reviewers: '='
         };
-        templateUrl = '../components/user_vote_component/user_vote_component.html';
+        templateUrl: string = '../components/user_vote_component/user_vote_component.html';
 
-        link = (scope: any) => {
+        link: ng.IDirectiveLinkFn = (scope: any) => {
             var classes = ['pr-icon'];
             for (var reviewerIdx = 0, reviewerLength = scope.reviewers.length; reviewerIdx < reviewerLength; reviewerIdx++) {
                 var reviewer: Reviewer = scope.reviewers[reviewerIdx];
@@ -27,7 +29,7 @@ module BitbucketNotifier {
             scope.icon = classes.join(' ');
         };
 
-        static factory() {
+        static factory(): ng.IDirectiveFactory {
             var directive = (config) => new UserVoteComponent(config);
             directive.$inject = ['Config'];
 

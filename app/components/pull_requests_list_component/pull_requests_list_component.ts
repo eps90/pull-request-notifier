@@ -1,13 +1,15 @@
 ///<reference path="../../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     export class PullRequestsListComponent implements ng.IDirective {
         restrict: string = 'E';
         templateUrl: string = '../components/pull_requests_list_component/pull_requests_list_component.html';
 
         constructor(private pullRequestRepository: PullRequestRepository) {}
 
-        link = (scope: ng.IScope) => {
+        link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
             scope['pullRequests'] = this.pullRequestRepository.pullRequests;
         };
 
