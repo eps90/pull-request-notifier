@@ -15,6 +15,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-filerev');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-tslint');
 
     grunt.initConfig({
         typescript: {
@@ -130,6 +131,14 @@ module.exports = function(grunt) {
                         return '<link rel="stylesheet" href="' + block.dest + '" />';
                     }
                 }
+            }
+        },
+        tslint: {
+            options: {
+                configuration: grunt.file.readJSON("tslint.json")
+            },
+            files: {
+                src: ['app/**/*.ts', 'test/**/*.ts']
             }
         }
     });
