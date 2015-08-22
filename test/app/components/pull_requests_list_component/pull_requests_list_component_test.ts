@@ -155,7 +155,7 @@ describe('PullRequestsListComponent', () => {
         });
 
         it('should display proper message when pull requests list is empty', () => {
-            pullRequestRepository.pullRequests.splice(0, 1);
+            pullRequestRepository.pullRequests = [];
 
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
