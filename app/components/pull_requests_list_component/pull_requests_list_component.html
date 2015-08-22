@@ -13,6 +13,7 @@
                         <div class="alert alert-info" ng-if="(pullRequests | assigned).length === 0">
                             <i class="fa fa-info-circle"></i> There are no pull requests assigned to you
                         </div>
+                        <pull-requests-header mode="ASSIGNED"></pull-requests-header>
                         <pull-request ng-repeat="pr in pullRequests | assigned" pr="pr" mode="ASSIGNED"></pull-request>
                     </div>
                 </div>
@@ -26,6 +27,7 @@
                         <div class="alert alert-info" ng-if="(pullRequests | authored).length === 0">
                             <i class="fa fa-info-circle"></i> There are no pull requests created by you
                         </div>
+                        <pull-requests-header mode="AUTHORED"></pull-requests-header>
                         <pull-request ng-repeat="pr in pullRequests | authored" pr="pr" mode="AUTHORED"></pull-request>
                     </div>
                 </div>
