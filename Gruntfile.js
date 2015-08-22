@@ -136,7 +136,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('dist', ['clean:dist', 'typescript:dist', 'copy:dist']);
     grunt.registerTask('test', ['clean:test', 'typescript:test', 'copy:test', 'karma']);
-    grunt.registerTask('default', ['dist', 'watch:dist']);
+    grunt.registerTask('default', ['build', 'watch:dist']);
     grunt.registerTask('build', [
         'dist',
         'useminPrepare',
