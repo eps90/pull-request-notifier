@@ -90,5 +90,5 @@ describe('AssignedFilter', () => {
         pullRequests = [assignedPullRequest];
 
         expect(assignedFilter(pullRequests).length).toEqual(1);
-    })
+    });
 });

@@ -28,23 +28,23 @@ describe('PullRequestsListComponent', () => {
     );
 
     beforeEach(() => {
-        var loggedInUser:BitbucketNotifier.User = new BitbucketNotifier.User();
+        var loggedInUser: BitbucketNotifier.User = new BitbucketNotifier.User();
         loggedInUser.displayName = 'John Smith';
         loggedInUser.username = 'john.smith';
 
-        var nonLoggedInUser:BitbucketNotifier.User = new BitbucketNotifier.User();
+        var nonLoggedInUser: BitbucketNotifier.User = new BitbucketNotifier.User();
         nonLoggedInUser.displayName = 'Anna Kowalsky';
         nonLoggedInUser.username = 'anna.kowalsky';
 
-        var loggedInReviewer:BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        var loggedInReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = true;
 
-        var nonLoggedInReviewer:BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        var nonLoggedInReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
         nonLoggedInReviewer.user = nonLoggedInUser;
         nonLoggedInReviewer.approved = false;
 
-        var project:BitbucketNotifier.Project = new BitbucketNotifier.Project();
+        var project: BitbucketNotifier.Project = new BitbucketNotifier.Project();
         project.name = 'CRM';
         project.fullName = 'dacsoftware/crm';
 
@@ -115,7 +115,7 @@ describe('PullRequestsListComponent', () => {
         });
     });
 
-      describe('Assigned mode', () => {
+    describe('Assigned mode', () => {
         beforeEach(() => {
             localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'anna.kowalsky');
         });
@@ -155,11 +155,10 @@ describe('PullRequestsListComponent', () => {
         });
 
         it('should display proper message when pull requests list is empty', () => {
-            pullRequestRepository.pullRequests.splice(0,1);
+            pullRequestRepository.pullRequests.splice(0, 1);
 
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
-            return;
 
             expect(element.text()).toContain('There are no pull requests assigned to you');
         });

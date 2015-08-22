@@ -21,24 +21,24 @@ describe('PullRequestComponent', () => {
     );
 
     beforeEach(() => {
-        var author:BitbucketNotifier.User = new BitbucketNotifier.User();
+        var author: BitbucketNotifier.User = new BitbucketNotifier.User();
         author.displayName = 'John Smith';
 
-        var userAsReviewer:BitbucketNotifier.User = new BitbucketNotifier.User();
+        var userAsReviewer: BitbucketNotifier.User = new BitbucketNotifier.User();
         userAsReviewer.displayName = 'Anna Kowalsky';
 
-        var secondUserAsReviewer:BitbucketNotifier.User = new BitbucketNotifier.User();
+        var secondUserAsReviewer: BitbucketNotifier.User = new BitbucketNotifier.User();
         secondUserAsReviewer.displayName = 'Jack Sparrow';
 
-        var reviewer:BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        var reviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
         reviewer.user = userAsReviewer;
         reviewer.approved = true;
 
-        var secondReviewer:BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        var secondReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
         secondReviewer.user = secondUserAsReviewer;
         secondReviewer.approved = false;
 
-        var project:BitbucketNotifier.Project = new BitbucketNotifier.Project();
+        var project: BitbucketNotifier.Project = new BitbucketNotifier.Project();
         project.name = 'CRM';
         project.fullName = 'dacsoftware/crm';
 
