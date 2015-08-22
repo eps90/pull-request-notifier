@@ -1,8 +1,10 @@
 ///<reference path="../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     export class SocketHandler {
-        static $inject = ['Socket', 'Config', 'PullRequestRepository', 'Notifier'];
+        static $inject: Array<String> = ['Socket', 'Config', 'PullRequestRepository', 'Notifier'];
         constructor(
             private socket,
             private config: Config,
@@ -12,7 +14,7 @@ module BitbucketNotifier {
             this.initListeners();
         }
 
-        private initListeners() {
+        private initListeners(): void {
             this.socket.on('connect', () => {
                 var loggedInUser = this.config.getUsername();
                 this.socket.emit(SocketClientEvent.INTRODUCE, loggedInUser);

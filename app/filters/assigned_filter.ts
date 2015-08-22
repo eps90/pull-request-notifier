@@ -1,7 +1,9 @@
 ///<reference path="../_typings.ts"/>
 
 module BitbucketNotifier {
-    export function AssignedFilter(config: Config) {
+    'use strict';
+
+    export function AssignedFilter(config: Config): Function {
         return (pullRequests: Array<PullRequest>) => {
             var loggedInUser = config.getUsername();
             var result: Array<PullRequest> = [];

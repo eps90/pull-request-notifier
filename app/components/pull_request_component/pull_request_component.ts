@@ -1,11 +1,12 @@
 ///<reference path="../../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     export class PullRequestComponent implements ng.IDirective {
-        restrict = 'E';
-        //require: 'pull-requests-list';
-        templateUrl = '../components/pull_request_component/pull_request_component.html';
-        scope = {
+        restrict: string = 'E';
+        templateUrl: string = '../components/pull_request_component/pull_request_component.html';
+        scope: any = {
             pullRequest: '=pr',
             mode: '@'
         };
