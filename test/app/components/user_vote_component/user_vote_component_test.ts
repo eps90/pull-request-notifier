@@ -3,8 +3,7 @@
 describe('UserVoteComponent', () => {
     var $scope: ng.IScope,
         $compile: ng.ICompileService,
-        config: BitbucketNotifier.Config,
-        pullRequest: BitbucketNotifier.PullRequest;
+        config: BitbucketNotifier.Config;
 
     beforeEach(module('bitbucketNotifier'));
     beforeEach(module('bitbucketNotifier.templates'));

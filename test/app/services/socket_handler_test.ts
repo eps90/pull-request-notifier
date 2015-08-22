@@ -91,7 +91,7 @@ describe('SocketHandler', () => {
                 pullRequest.reviewers.push(loggedInReviewer);
 
                 socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
-                expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest)
+                expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest);
             });
 
             it('should not notify about new pull request on webhook:pullrequest:created, if author is assigned user', () => {
@@ -140,7 +140,7 @@ describe('SocketHandler', () => {
             });
         });
 
-        describe('on approval',() => {
+        describe('on approval', () => {
             it('should notify author of pull request about approval', () => {
                 pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_APPROVED;
                 pullRequest.author = johnSmith;

@@ -16,7 +16,7 @@ describe('Notifier', () => {
     });
     beforeEach(module('bitbucketNotifier'));
     beforeEach(() => {
-        window['chrome'] = {notifications: {create: () => {}}};
+        window['chrome'] = {notifications: {create: (): any => { return true; }}};
     });
     beforeEach(inject([
         'Notifier',
