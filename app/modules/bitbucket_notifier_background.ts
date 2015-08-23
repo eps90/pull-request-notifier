@@ -1,0 +1,13 @@
+///<reference path="../_typings.ts"/>
+
+module BitbucketNotifier {
+    'use strict';
+
+    var application = angular.module('bitbucketNotifier.background', ['LocalStorageModule', 'btford.socket-io']);
+
+    application.factory('PullRequestRepository', () => new PullRequestRepository());
+    application.factory('Socket', Socket);
+    application.service('SocketHandler', SocketHandler);
+    application.service('Notifier', Notifier);
+    application.service('Config', Config);
+}

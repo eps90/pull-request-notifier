@@ -7,7 +7,7 @@ describe('SocketHandler', () => {
         pullRequestRepository: BitbucketNotifier.PullRequestRepository,
         notifier: BitbucketNotifier.Notifier;
 
-    beforeEach(module('bitbucketNotifier'));
+    beforeEach(module('bitbucketNotifier.background'));
     beforeEach(module(['$provide', ($p: ng.auto.IProvideService) => {
         $p.value('Notifier', {
             notifyNewPullRequestAssigned: jasmine.createSpy('notifyNewPullRequestAssigned'),

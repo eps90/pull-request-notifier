@@ -14,7 +14,7 @@ describe('Notifier', () => {
             priority: 2
         };
     });
-    beforeEach(module('bitbucketNotifier'));
+    beforeEach(module('bitbucketNotifier.background'));
     beforeEach(() => {
         window['chrome'] = {notifications: {create: (): any => { return true; }}};
     });
