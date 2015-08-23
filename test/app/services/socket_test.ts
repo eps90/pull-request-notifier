@@ -1,7 +1,7 @@
 ///<reference path="../../../app/_typings.ts"/>
 
 describe('Socket', () => {
-    beforeEach(module('bitbucketNotifier'));
+    beforeEach(module('bitbucketNotifier.background'));
     var socket, secondSocket;
 
     beforeEach(inject([
