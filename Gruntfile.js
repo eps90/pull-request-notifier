@@ -124,7 +124,7 @@ module.exports = function(grunt) {
             }
         },
         usemin: {
-            html: 'dist/views/popup.html',
+            html: 'dist/views/*.html',
             options: {
                 blockReplacements: {
                     less: function (block) {
