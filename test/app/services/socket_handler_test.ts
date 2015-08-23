@@ -79,6 +79,20 @@ describe('SocketHandler', () => {
             annaKowalsky.username = 'anna.kowalsky';
         });
 
+        describe('on introduce', () => {
+            it('should notify about author\'s pull requests', () => {
+                var loggedInReviewer = new BitbucketNotifier.Reviewer();
+                loggedInReviewer.user = johnSmith;
+                loggedInReviewer.approved = false;
+
+                pullRequest.reviewers.push(loggedInReviewer);
+
+                socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
+                var stub: jasmine.Spy = <jasmine.Spy> notifier.notifyNewPullRequestAssigned;
+                expect(stub.calls.count()).toEqual(1);
+            });
+        });
+
         describe('on new pull request', () => {
             it('should notify about new pull request assignment on webhook:pullrequest:created', () => {
                 pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_CREATED;

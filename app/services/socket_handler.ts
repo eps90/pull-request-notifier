@@ -3,6 +3,7 @@
 module BitbucketNotifier {
     'use strict';
 
+    // @todo Move socket handling into another service?
     export class SocketHandler {
         static $inject: Array<string> = ['Socket', 'Config', 'PullRequestRepository', 'Notifier'];
         constructor(
@@ -18,6 +19,20 @@ module BitbucketNotifier {
             this.socket.on('connect', () => {
                 var loggedInUser = this.config.getUsername();
                 this.socket.emit(SocketClientEvent.INTRODUCE, loggedInUser);
+            });
+
+            this.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
+                var loggedInUser = this.config.getUsername();
+
+                for (var prIndex = 0, prLen = userPrs.pullRequests.length; prIndex < prLen; prIndex++) {
+                    var pr = userPrs.pullRequests[prIndex];
+                    for (var reviewerIdx = 0, reviewersLen = pr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
+                        var reviewer = pr.reviewers[reviewerIdx];
+                        if (reviewer.user.username === loggedInUser) {
+                            this.notifier.notifyNewPullRequestAssigned(pr);
+                        }
+                    }
+                }
             });
 
             this.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: BitbucketNotifier.PullRequestEvent) => {
