@@ -5,6 +5,8 @@ module BitbucketNotifier {
 
     var application = angular.module('bitbucketNotifier.background', ['LocalStorageModule', 'btford.socket-io']);
 
+    application.directive('background', BackgroundComponent.factory());
+
     application.factory('PullRequestRepository', () => new PullRequestRepository());
     application.factory('Socket', Socket);
     application.service('SocketHandler', SocketHandler);
