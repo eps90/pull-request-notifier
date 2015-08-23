@@ -94,7 +94,6 @@ module.exports = function(grunt) {
                     url: function (templateUrl) {
                         return templateUrl.replace(/^app/, '..');
                     },
-                    concat: 'generated',
                     module: 'bitbucketNotifier'
                 }
             }
