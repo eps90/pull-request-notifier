@@ -58,6 +58,11 @@ module BitbucketNotifier {
         static INTRODUCED: string = 'server:introduced';
     }
 
+    export class ChromeExtensionEvent {
+        static UPDATE_PULLREQUESTS: string = 'backend:update_pullrequests';
+        static PULLREQUESTS_UPDATED: string = 'app:pullrequests_updated';
+    }
+
     export class ConfigObject {
         static USER: string = 'app:user';
         static SOCKET_SERVER: string = 'app:socket_server';
