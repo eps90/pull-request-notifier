@@ -12,5 +12,9 @@
     "storage",
     "http://*/*",
     "https://*/*"
-  ]
+  ],
+  "background": {
+    "page": "dist/views/background.html",
+    "persistent": true
+  }
 }
