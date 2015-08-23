@@ -11,6 +11,18 @@ module BitbucketNotifier {
 
         link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
             scope['pullRequests'] = this.pullRequestRepository.pullRequests;
+
+            scope.$watch(
+                () => {
+                    return this.pullRequestRepository.pullRequests;
+                },
+                (newValue, oldValue) => {
+                    if (newValue !== oldValue) {
+                        scope['pullRequests'] = newValue
+                    }
+                },
+                true
+            );
         };
 
         static factory(): ng.IDirectiveFactory {
