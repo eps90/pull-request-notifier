@@ -12,8 +12,18 @@ describe('PullRequestsListComponent', () => {
     beforeEach(() => {
         window['chrome'] = {
             extension: {
+                connect: jasmine.createSpy('chrome.extension.connect').and.callFake(() => {
+                    return {
+                        onMessage: {
+                            addListener: jasmine.createSpy('port.onMessage.addListener')
+                        }
+                    }
+                }),
                 onMessage: {
                     addListener: jasmine.createSpy('chrome.extension.onMessage.addListener')
+                },
+                onConnect: {
+                    addListener: jasmine.createSpy('chrome.extension.onConnect.addListener')
                 }
             }
         }

@@ -3,10 +3,20 @@
 module BitbucketNotifier {
     'use strict';
 
+    // @todo Make event object more standarized
     export class PullRequestRepository {
         pullRequests: Array<PullRequest> = [];
 
         constructor() {
+            window['chrome'].extension.onConnect.addListener((port) => {
+                port.postMessage(this.pullRequests);
+            });
+
+            var port = window['chrome'].extension.connect({name: "Bitbucket Notifier"});
+            port.onMessage.addListener((message) => {
+                this.pullRequests = message;
+            });
+
             window['chrome'].extension.onMessage.addListener((message) => {
                 if (message.type === ChromeExtensionEvent.PULLREQUESTS_UPDATED) {
                     this.pullRequests = message.content;
