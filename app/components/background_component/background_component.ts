@@ -4,15 +4,11 @@ module BitbucketNotifier {
     export class BackgroundComponent implements ng.IDirective {
         restrict: string = 'A';
 
-        constructor(private socketHandler: SocketHandler) {}
-
-        link: ng.IDirectiveLinkFn = () => {
-            console.log('linked!');
-        };
+        constructor(private socketHandler: SocketHandler, private indicator: Indicator) {}
 
         static factory(): ng.IDirectiveFactory {
-            var component = (socketHandler) => new BackgroundComponent(socketHandler);
-            component.$inject = ['SocketHandler'];
+            var component = (socketHandler, indicator) => new BackgroundComponent(socketHandler, indicator);
+            component.$inject = ['SocketHandler', 'Indicator'];
             return component;
         }
     }
