@@ -23,6 +23,8 @@ module BitbucketNotifier {
 
             this.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
                 var loggedInUser = this.config.getUsername();
+                // @todo Adapt tests
+                this.pullRequestRepository.setPullRequests(userPrs.pullRequests);
 
                 for (var prIndex = 0, prLen = userPrs.pullRequests.length; prIndex < prLen; prIndex++) {
                     var pr = userPrs.pullRequests[prIndex];
@@ -38,7 +40,8 @@ module BitbucketNotifier {
             this.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: BitbucketNotifier.PullRequestEvent) => {
                 var loggedInUser = this.config.getUsername();
 
-                this.pullRequestRepository.pullRequests = userPrs.pullRequests;
+                // @todo Adapt tests
+                this.pullRequestRepository.setPullRequests(userPrs.pullRequests);
                 var contextPr: PullRequest = userPrs.context;
                 var sourceEvent: string = userPrs.sourceEvent;
 
