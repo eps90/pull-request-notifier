@@ -3,15 +3,28 @@
 describe('Repositories', () => {
     var pullRequestRepositoryOne: BitbucketNotifier.PullRequestRepository,
         pullRequestRepositoryTwo: BitbucketNotifier.PullRequestRepository,
-        messageFunc;
+        messageFunc, connectionFunc, connectPort, connectPortFn;
 
     beforeEach(() => {
+        connectPort = {
+            onMessage: {
+                addListener: jasmine.createSpy('port.onMessage.addListener').and.callFake((fn) => {
+                    connectPortFn = fn;
+                })
+            }
+        };
         window['chrome'] = {
             extension: {
+                connect: jasmine.createSpy('chrome.extension.connect').and.returnValue(connectPort),
                 sendMessage: jasmine.createSpy('chrome.extension.sendMessage'),
                 onMessage: {
                     addListener: jasmine.createSpy('chrome.extension.onMessage.addListener').and.callFake((fn) => {
                         messageFunc = fn;
+                    })
+                },
+                onConnect: {
+                    addListener: jasmine.createSpy('chrome.extension.onConnect.addListener').and.callFake((fn) => {
+                        connectionFunc = fn;
                     })
                 }
             }
@@ -63,6 +76,26 @@ describe('Repositories', () => {
 
         expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
         messageFunc({type: BitbucketNotifier.ChromeExtensionEvent.PULLREQUESTS_UPDATED, content: pullRequestsList});
+        expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
+    });
+
+    it('should send all pull requests on connection', () => {
+        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        pullRequestRepositoryOne.pullRequests = [pullRequest];
+
+        var port = {
+            postMessage: jasmine.createSpy('port.postMessage')
+        };
+        connectionFunc(port);
+        expect(port.postMessage).toHaveBeenCalledWith([pullRequest]);
+    });
+
+    it('should receive all pull requests on connection', () => {
+        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequestsList = [pullRequest];
+
+        expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
+        connectPortFn(pullRequestsList);
         expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
     });
 });
