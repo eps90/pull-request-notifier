@@ -12,4 +12,5 @@ module BitbucketNotifier {
     application.service('SocketHandler', SocketHandler);
     application.service('Notifier', Notifier);
     application.service('Config', Config);
+    application.service('Indicator', Indicator);
 }
