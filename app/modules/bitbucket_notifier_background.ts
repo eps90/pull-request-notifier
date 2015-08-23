@@ -7,7 +7,7 @@ module BitbucketNotifier {
 
     application.directive('background', BackgroundComponent.factory());
 
-    application.factory('PullRequestRepository', () => new PullRequestRepository());
+    application.service('PullRequestRepository', PullRequestRepository);
     application.factory('Socket', Socket);
     application.service('SocketHandler', SocketHandler);
     application.service('Notifier', Notifier);
