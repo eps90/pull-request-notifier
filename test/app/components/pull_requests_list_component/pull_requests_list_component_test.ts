@@ -9,6 +9,16 @@ describe('PullRequestsListComponent', () => {
         localStorageService: angular.local.storage.ILocalStorageService,
         pullRequestRepository: BitbucketNotifier.PullRequestRepository;
 
+    beforeEach(() => {
+        window['chrome'] = {
+            extension: {
+                onMessage: {
+                    addListener: jasmine.createSpy('chrome.extension.onMessage.addListener')
+                }
+            }
+        }
+    });
+
     beforeEach(module('bitbucketNotifier'));
     beforeEach(module('bitbucketNotifier.templates'));
 

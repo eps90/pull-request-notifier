@@ -2,7 +2,21 @@
 
 describe('Repositories', () => {
     var pullRequestRepositoryOne: BitbucketNotifier.PullRequestRepository,
-        pullRequestRepositoryTwo: BitbucketNotifier.PullRequestRepository;
+        pullRequestRepositoryTwo: BitbucketNotifier.PullRequestRepository,
+        messageFunc;
+
+    beforeEach(() => {
+        window['chrome'] = {
+            extension: {
+                sendMessage: jasmine.createSpy('chrome.extension.sendMessage'),
+                onMessage: {
+                    addListener: jasmine.createSpy('chrome.extension.onMessage.addListener').and.callFake((fn) => {
+                        messageFunc = fn;
+                    })
+                }
+            }
+        };
+    });
     beforeEach(module('bitbucketNotifier'));
     beforeEach(inject([
         'PullRequestRepository',
@@ -21,5 +35,34 @@ describe('Repositories', () => {
         pullRequestRepositoryTwo.pullRequests.push(pullRequestTwo);
 
         expect(pullRequestRepositoryOne.pullRequests === pullRequestRepositoryTwo.pullRequests);
+    });
+
+    it('should set the list of pull requests', () => {
+        expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
+
+        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequestsList = [pullRequest];
+
+        pullRequestRepositoryOne.setPullRequests(pullRequestsList);
+
+        expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
+    });
+
+    it('should emit chrome event on pull request collection change', () => {
+        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequestsList = [pullRequest];
+
+        pullRequestRepositoryOne.setPullRequests(pullRequestsList);
+        expect(window['chrome'].extension.sendMessage)
+            .toHaveBeenCalledWith({type: BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: pullRequestsList});
+    });
+
+    it('should listen to event to update pull requests', () => {
+        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequestsList = [pullRequest];
+
+        expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
+        messageFunc({type: BitbucketNotifier.ChromeExtensionEvent.PULLREQUESTS_UPDATED, content: pullRequestsList});
+        expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
     });
 });
