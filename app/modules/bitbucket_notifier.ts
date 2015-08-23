@@ -3,7 +3,7 @@
 module BitbucketNotifier {
     'use strict';
 
-    var application = angular.module('bitbucketNotifier', ['LocalStorageModule', 'btford.socket-io', 'ui.bootstrap']);
+    var application = angular.module('bitbucketNotifier', ['LocalStorageModule', 'ui.bootstrap']);
     application.directive('pullRequest', PullRequestComponent.factory());
     application.directive('pullRequestsList', PullRequestsListComponent.factory());
     application.directive('pullRequestsHeader', PullRequestsHeaderComponent.factory());
@@ -14,8 +14,5 @@ module BitbucketNotifier {
     application.filter('assigned', AssignedFilter);
 
     application.factory('PullRequestRepository', () => new PullRequestRepository());
-    application.factory('Socket', Socket);
-    application.service('SocketHandler', SocketHandler);
-    application.service('Notifier', Notifier);
     application.service('Config', Config);
 }
