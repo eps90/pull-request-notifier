@@ -17,7 +17,7 @@ describe('PullRequestsListComponent', () => {
                         onMessage: {
                             addListener: jasmine.createSpy('port.onMessage.addListener')
                         }
-                    }
+                    };
                 }),
                 onMessage: {
                     addListener: jasmine.createSpy('chrome.extension.onMessage.addListener')
@@ -26,7 +26,7 @@ describe('PullRequestsListComponent', () => {
                     addListener: jasmine.createSpy('chrome.extension.onConnect.addListener')
                 }
             }
-        }
+        };
     });
 
     beforeEach(module('bitbucketNotifier'));

@@ -5,9 +5,9 @@ module BitbucketNotifier {
 
     // @todo Make event object more standarized
     export class PullRequestRepository {
-        pullRequests: Array<PullRequest> = [];
+        static $inject: Array<string> = ['$rootScope'];
 
-        static $inject = ['$rootScope'];
+        pullRequests: Array<PullRequest> = [];
 
         constructor(private $rootScope: ng.IRootScopeService) {
             window['chrome'].extension.onConnect.addListener((port) => {
@@ -28,7 +28,7 @@ module BitbucketNotifier {
             });
         }
 
-        setPullRequests(pullRequests:Array<PullRequest>): void {
+        setPullRequests(pullRequests: Array<PullRequest>): void {
             this.pullRequests = pullRequests;
             window['chrome'].extension.sendMessage({type: ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: this.pullRequests});
         }

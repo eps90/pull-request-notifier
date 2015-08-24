@@ -8,7 +8,7 @@ describe('Indicator', () => {
             browserAction: {
                 setBadgeText: jasmine.createSpy('chrome.browserAction.setBadgeText')
             }
-        }
+        };
     });
     beforeEach(module('bitbucketNotifier.background'));
     beforeEach(inject([

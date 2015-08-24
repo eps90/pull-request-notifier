@@ -1,6 +1,8 @@
 ///<reference path="../../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     export class BackgroundComponent implements ng.IDirective {
         restrict: string = 'A';
 
