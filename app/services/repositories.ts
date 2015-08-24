@@ -7,14 +7,18 @@ module BitbucketNotifier {
     export class PullRequestRepository {
         pullRequests: Array<PullRequest> = [];
 
-        constructor() {
+        static $inject = ['$rootScope'];
+
+        constructor(private $rootScope: ng.IRootScopeService) {
             window['chrome'].extension.onConnect.addListener((port) => {
                 port.postMessage(this.pullRequests);
             });
 
             var port = window['chrome'].extension.connect({name: "Bitbucket Notifier"});
             port.onMessage.addListener((message) => {
-                this.pullRequests = message;
+                this.$rootScope.$apply(() => {
+                    this.pullRequests = message;
+                });
             });
 
             window['chrome'].extension.onMessage.addListener((message) => {
