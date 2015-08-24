@@ -18,7 +18,7 @@ module BitbucketNotifier {
                 },
                 (newValue, oldValue) => {
                     if (newValue !== oldValue) {
-                        scope['pullRequests'] = newValue
+                        scope['pullRequests'] = newValue;
                     }
                 },
                 true
