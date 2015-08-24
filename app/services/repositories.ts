@@ -18,7 +18,7 @@ module BitbucketNotifier {
             });
 
             window['chrome'].extension.onMessage.addListener((message) => {
-                if (message.type === ChromeExtensionEvent.PULLREQUESTS_UPDATED) {
+                if (message.type === ChromeExtensionEvent.UPDATE_PULLREQUESTS) {
                     this.pullRequests = message.content;
                 }
             });
