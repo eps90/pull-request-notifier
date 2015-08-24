@@ -1,20 +1,22 @@
 <div class="col-sm-12 pull-request">
     <div class="row" ng-if="mode == 'AUTHORED'">
         <div class="col-sm-1">{{ pullRequest.id }}</div>
-        <div class="col-sm-5">{{ pullRequest.title }}</div>
+        <div class="col-sm-4">{{ pullRequest.title }}</div>
         <div class="col-sm-2">{{ pullRequest.targetRepository.name }}</div>
         <div class="col-sm-2">{{ pullRequest.author.displayName }}</div>
         <div class="col-sm-2">
             <approval-progress reviewers="pullRequest.reviewers"></approval-progress>
         </div>
+        <div class="col-sm-1"></div>
     </div>
     <div class="row" ng-if="mode == 'ASSIGNED'">
         <div class="col-sm-1">{{ pullRequest.id }}</div>
-        <div class="col-sm-5">{{ pullRequest.title }}</div>
+        <div class="col-sm-4">{{ pullRequest.title }}</div>
         <div class="col-sm-2">{{ pullRequest.targetRepository.name }}</div>
         <div class="col-sm-2">{{ pullRequest.author.displayName }}</div>
         <div class="col-sm-2">
             <user-vote reviewers="pullRequest.reviewers"></user-vote>
         </div>
+        <div class="col-sm-1"></div>
     </div>
 </div>
