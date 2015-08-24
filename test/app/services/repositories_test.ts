@@ -75,7 +75,7 @@ describe('Repositories', () => {
         var pullRequestsList = [pullRequest];
 
         expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
-        messageFunc({type: BitbucketNotifier.ChromeExtensionEvent.PULLREQUESTS_UPDATED, content: pullRequestsList});
+        messageFunc({type: BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: pullRequestsList});
         expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
     });
 
