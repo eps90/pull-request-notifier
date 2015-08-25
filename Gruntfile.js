@@ -29,7 +29,7 @@ module.exports = function(grunt) {
                 }
             },
             test: {
-                src: ['test/**/*.ts', 'app/modules/bitbucket_notifier.ts', 'app/modules/bitbucket_notifier_background.ts'],
+                src: ['test/**/*.ts', 'app/modules/*.ts'],
                 dest: 'build',
                 options: {
                     target: "es5",
