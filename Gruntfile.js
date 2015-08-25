@@ -87,7 +87,7 @@ module.exports = function(grunt) {
             }
         },
         ngtemplates: {
-            dist: {
+            popup: {
                 src: 'app/components/**/*.html',
                 dest: 'dist/modules/templates.js',
                 options: {
@@ -95,6 +95,16 @@ module.exports = function(grunt) {
                         return templateUrl.replace(/^app/, '..');
                     },
                     module: 'bitbucketNotifier'
+                }
+            },
+            options_module: {
+                src: 'app/components/**/*.html',
+                dest: 'dist/modules/templates_options_module.js',
+                options: {
+                    url: function (templateUrl) {
+                        return templateUrl.replace(/^app/, '..');
+                    },
+                    module: 'bitbucketNotifier.options'
                 }
             }
         },
@@ -148,7 +158,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'dist',
         'useminPrepare',
-        'ngtemplates:dist',
+        'ngtemplates',
         'less:generated',
         'concat:generated',
         'uglify:generated',
