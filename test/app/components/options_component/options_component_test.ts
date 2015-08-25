@@ -1,6 +1,6 @@
 ///<reference path="../../../../app/_typings.ts"/>
 
-fdescribe('OptionsComponent', () => {
+describe('OptionsComponent', () => {
     var config: BitbucketNotifier.Config,
         appUser,
         socketServer,
@@ -9,22 +9,27 @@ fdescribe('OptionsComponent', () => {
         $scope: ng.IScope,
         $compile: ng.ICompileService;
 
+    beforeEach(module('bitbucketNotifier.options'));
+    beforeEach(module('bitbucketNotifier.templates'));
+
     beforeEach(module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
-            appUser = socketServer = null;
+            appUser = null;
+            socketServer = null;
+
             $provide.value('Config', {
                 getUsername: jasmine.createSpy('Config.getUsername').and.callFake(() => {
                     return appUser;
                 }),
                 getSocketServerAddress: jasmine.createSpy('Config.getSocketServerAddress').and.callFake(() => {
                     return socketServer;
-                })
+                }),
+                setUsername: jasmine.createSpy('Config.setUsername'),
+                setSocketServerAddress: jasmine.createSpy('Config.setSocketServerAddress')
             });
         }
     ]));
-    beforeEach(module('bitbucketNotifier.options'));
-    beforeEach(module('bitbucketNotifier.templates'));
     beforeEach(inject([
         'Config',
         '$rootScope',
@@ -55,5 +60,36 @@ fdescribe('OptionsComponent', () => {
 
         expect(userElement.val()).toEqual('');
         expect(socketServerElement.val()).toEqual('');
+    });
+
+    it('should show completed form if config is set', () => {
+        appUser = 'john.smith';
+        socketServer = 'http://localhost:1234';
+
+        element = $compile('<options></options>')($scope);
+        $scope.$digest();
+
+        var userElement = element.find('#app-user');
+        var socketServerElement = element.find('#socket-server-address');
+
+        expect(userElement.val()).toEqual(appUser);
+        expect(socketServerElement.val()).toEqual(socketServer);
+    });
+
+    it('should save config', () => {
+        element = $compile('<options></options>')($scope);
+        $scope.$digest();
+
+        var username = 'aaaaa';
+        var address = 'bbbbb';
+
+        element.find('#app-user').val(username).trigger('input');
+        element.find('#socket-server-address').val(address).trigger('input');
+
+        var saveButton = element.find('#submit');
+        saveButton.triggerHandler('click');
+
+        expect(config.setUsername).toHaveBeenCalledWith(username);
+        expect(config.setSocketServerAddress).toHaveBeenCalledWith(address);
     });
 });
