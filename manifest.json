@@ -16,5 +16,6 @@
   "background": {
     "page": "dist/views/background.html",
     "persistent": true
-  }
+  },
+  "options_page": "dist/views/options.html"
 }
