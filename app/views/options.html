@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app="bitbucketNotifier.options">
+    <head>
+        <meta charset="UTF-8">
+        <title>Bitbucket Notifier || Options</title>
+
+        <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,700,900,600,300,200&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <!-- build:css ../styles/vendor.css -->
+        <link rel="stylesheet" type="text/css" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="../../bower_components/fontawesome/css/font-awesome.css">
+        <!-- endbuild -->
+        <!-- build:less ../styles/options.css -->
+        <link rel="stylesheet/less" href="../../assets/less/styles.less">
+        <link rel="stylesheet/less" href="../../assets/less/options.less">
+        <link rel="stylesheet/less" href="../components/options_component/options_component.less">
+        <!-- endbuild -->
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand bitbucket-logo" href="#">
+                        <i class="fa fa-bitbucket"></i> Bitbucket Notifier
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <options></options>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- build:js ../scripts/options.js -->
+        <script src="../../bower_components/jquery/dist/jquery.js"></script>
+        <script type="text/javascript" src="../../bower_components/angular/angular.min.js"></script>
+        <script type="text/javascript" src="../../bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+
+        <script type="text/javascript" src="../../dist/components/options_component/options_component.js"></script>
+        <script type="text/javascript" src="../../dist/services/config.js"></script>
+        <script type="text/javascript" src="../../dist/modules/bitbucket_notifier_options.js"></script>
+        <script type="text/javascript" src="../../dist/modules/templates_options_module.js"></script>
+        <!-- endbuild -->
+    </body>
+</html>
