@@ -20,7 +20,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         typescript: {
             dist: {
-                src: ['app/modules/bitbucket_notifier.ts', 'app/modules/bitbucket_notifier_background.ts'],
+                src: ['app/modules/*.ts'],
                 dest: 'dist',
                 options: {
                     target: "es5",
@@ -159,21 +159,18 @@ module.exports = function(grunt) {
 
     function lessCreateConfig(context, block) {
         var cfg = {files: []},
-            filesDef = {},
-            destPath = path.join(context.outDir, block.dest);
+            outfile = path.join(context.outDir, block.dest),
+            filesDef = {};
 
-        filesDef[destPath] = [];
+        filesDef.dest = outfile;
+        filesDef.src = [];
 
         context.inFiles.forEach(function (inFile) {
-            filesDef[destPath].push(path.join(context.inDir, inFile));
+            filesDef.src.push(path.join(context.inDir, inFile));
         });
 
         cfg.files.push(filesDef);
         context.outFiles = [block.dest];
-
-        context.options.options = {
-            compress: true
-        };
         return cfg;
     }
 };
