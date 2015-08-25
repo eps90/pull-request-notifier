@@ -27,6 +27,7 @@ module.exports = function(config) {
         'build/**/!(bitbucket_notifier*).js',
         'build/app/modules/bitbucket_notifier.js',
         'build/app/modules/bitbucket_notifier_background.js',
+        'build/app/modules/bitbucket_notifier_options.js',
         'build/**/*.html'
     ],
 
