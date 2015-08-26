@@ -11,6 +11,12 @@ module BitbucketNotifier {
         link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
             var prLink = scope['pr'].links.html;
             scope['_link'] = prLink
+
+            scope['goToPullRequest'] = () => {
+                window['chrome'].tabs.create({
+                    url: prLink
+                });
+            };
         };
 
         static factory(): ng.IDirectiveFactory {
