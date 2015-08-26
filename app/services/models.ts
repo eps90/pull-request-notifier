@@ -22,6 +22,11 @@ module BitbucketNotifier {
 
     export enum PullRequestState {Open, Merged, Declined}
 
+    export class PullRequestLinks implements ModelInterface{
+        self: string = '';
+        html: string = '';
+    }
+
     export class PullRequest implements ModelInterface {
         id: number;
         title: string = '';
@@ -31,6 +36,7 @@ module BitbucketNotifier {
         targetBranch: string = '';
         reviewers: Array<Reviewer> = [];
         state: PullRequestState;
+        links: PullRequestLinks = new PullRequestLinks();
     }
 
     export class PullRequestEvent implements ModelInterface {
