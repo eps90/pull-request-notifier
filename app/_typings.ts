@@ -14,6 +14,7 @@
 ///<reference path="components/user_vote_component/user_vote_component.ts"/>
 ///<reference path="components/options_component/options_component.ts"/>
 ///<reference path="components/section_title_component/section_title_component.ts"/>
+///<reference path="components/pull_request_link_component/pull_request_link_component.ts"/>
 ///<reference path="filters/authored_filter.ts"/>
 ///<reference path="filters/assigned_filter.ts"/>
 

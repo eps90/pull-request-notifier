@@ -10,6 +10,7 @@ module BitbucketNotifier {
     application.directive('approvalProgress', ApprovalProgressComponent.factory());
     application.directive('userVote', UserVoteComponent.factory());
     application.directive('sectionTitle', SectionTitleComponent.factory());
+    application.directive('pullRequestLink', PullRequestLinkComponent.factory());
 
     application.filter('authored' , AuthoredFilter);
     application.filter('assigned', AssignedFilter);
