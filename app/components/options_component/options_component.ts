@@ -14,12 +14,10 @@ module BitbucketNotifier {
                 appUser: this.config.getUsername(),
                 socketServerAddress: this.config.getSocketServerAddress()
             };
-        };
 
-        controller = ($scope: ng.IScope) => {
-            $scope['saveOptions'] = () => {
-                this.config.setUsername($scope['options'].appUser);
-                this.config.setSocketServerAddress($scope['options'].socketServerAddress);
+            scope['saveOptions'] = () => {
+                this.config.setUsername(scope['options'].appUser);
+                this.config.setSocketServerAddress(scope['options'].socketServerAddress);
             }
         };
 
