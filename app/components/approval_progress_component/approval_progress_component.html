@@ -1,5 +1,7 @@
-<span class="label label-info" ng-if="reviewersCount">{{ approvalsCount + '/' + reviewersCount }}</span>
+<div class="approval-progress">
+    <span class="label label-info" ng-if="reviewersCount">{{ approvalsCount + '/' + reviewersCount }}</span>
 
-<span class="label label-danger" ng-if="!reviewersCount">
-    <i class="fa fa-times-circle fa-inverse icon-no-assigned"></i>
-</span>
+    <span class="label label-danger" ng-if="!reviewersCount">
+        <i class="fa fa-times-circle fa-inverse icon-no-assigned" tooltip="No assignees"></i>
+    </span>
+</div>
