@@ -100,4 +100,35 @@ describe('Repositories', () => {
             expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
         });
     });
+
+    describe('NotificationRepository', () => {
+        var notificationRepository: BitbucketNotifier.NotificationRepository;
+
+        beforeEach(module('bitbucketNotifier.background'));
+        beforeEach(inject([
+            'NotificationRepository',
+            (n) => {
+                notificationRepository = n;
+            }
+        ]));
+
+        it('should add notification to repository', () => {
+            var notification = new BitbucketNotifier.PullRequestNotification();
+
+            notificationRepository.add(notification);
+            expect(notificationRepository.getAll().length).toEqual(1);
+        });
+
+        it('should find single notification', () => {
+            var notificationId = 'abcd';
+            var notification = new BitbucketNotifier.PullRequestNotification();
+            notification.notificationId = notificationId;
+            notification.pullRequestHtmlLink = 'http://example.com';
+
+            notificationRepository.add(notification);
+            var actualNotification = <BitbucketNotifier.PullRequestNotification> notificationRepository.find(notificationId);
+
+            expect(actualNotification.pullRequestHtmlLink).toEqual('http://example.com');
+        });
+    });
 });

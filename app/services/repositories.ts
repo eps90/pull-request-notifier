@@ -4,6 +4,7 @@ module BitbucketNotifier {
     'use strict';
 
     // @todo Make event object more standarized
+    // @todo Move event handling to some "Chrome events handler/emitter"
     export class PullRequestRepository {
         static $inject: Array<string> = ['$rootScope'];
 
@@ -34,5 +35,30 @@ module BitbucketNotifier {
             this.pullRequests = pullRequests;
             window['chrome'].extension.sendMessage({type: ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: this.pullRequests});
         }
+    }
+
+    export class NotificationRepository {
+        private notifications:Array<Notification> = [];
+
+        add(notification: Notification): void {
+            this.notifications.push(notification);
+        }
+
+        getAll(): Array<Notification> {
+            return this.notifications;
+        }
+
+        find(notificationId: string): Notification {
+            for (var notifIdx = 0, notifLen = this.notifications.length; notifIdx < notifLen; notifIdx++) {
+                var notification = this.notifications[notifIdx];
+                if (notification.notificationId === notificationId) {
+                    return notification;
+                }
+            }
+
+            return new PullRequestNotification();
+        }
+
+
     }
 }

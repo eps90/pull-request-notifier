@@ -73,7 +73,11 @@ module BitbucketNotifier {
         static SOCKET_SERVER: string = 'app:socket_server';
     }
 
-    export class PullRequestNotification {
+    export interface Notification {
+        notificationId: string;
+    }
+
+    export class PullRequestNotification implements Notification {
         notificationId: string = '';
         pullRequestHtmlLink: string = '';
     }
