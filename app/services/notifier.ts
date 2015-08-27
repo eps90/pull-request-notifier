@@ -27,11 +27,16 @@ module BitbucketNotifier {
 
         constructor(private notificationRepository: NotificationRepository) {
             this.chrome = window['chrome'];
+            this.chrome.notifications.onClicked.addListener((notificationId) => {
+                var notification = <PullRequestNotification> this.notificationRepository.find(notificationId);
+                this.chrome.tabs.create({url: notification.pullRequestHtmlLink});
+            });
         }
 
-        notify(opts: NotificationOptions, notificationId: string): void {
+        notify(opts: NotificationOptions, notificationId: string, pullRequestLink: string): void {
             var targetOpts = _.assign(this.defaultOptions, opts);
             this.chrome.notifications.create(notificationId, targetOpts);
+            this.notificationRepository.add(notificationId, pullRequestLink);
         }
 
         notifyNewPullRequestAssigned(pullRequest: PullRequest): void {
@@ -43,7 +48,7 @@ module BitbucketNotifier {
             };
             var notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options, notificationId);
+            this.notify(options, notificationId, pullRequest.links.html);
         }
 
         notifyPullRequestMerged(pullRequest: PullRequest): void {
@@ -54,7 +59,7 @@ module BitbucketNotifier {
             };
             var notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options, notificationId);
+            this.notify(options, notificationId, pullRequest.links.html);
         }
 
         notifyPullRequestApproved(pullRequest: PullRequest, actor: User): void {
@@ -65,7 +70,7 @@ module BitbucketNotifier {
             };
             var notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options, notificationId);
+            this.notify(options, notificationId, pullRequest.links.html);
         }
 
         private getNotificationId(pullRequest: PullRequest) {

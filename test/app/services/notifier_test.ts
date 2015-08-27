@@ -2,7 +2,10 @@
 
 describe('Notifier', () => {
     var notifier: BitbucketNotifier.Notifier,
-        expectedOptions;
+        expectedOptions,
+        notificationRepostory: BitbucketNotifier.NotificationRepository,
+        notificationStub: BitbucketNotifier.PullRequestNotification,
+        onClickedStub;
 
     beforeEach(() => {
         expectedOptions = {
@@ -16,12 +19,39 @@ describe('Notifier', () => {
     });
     beforeEach(module('bitbucketNotifier.background'));
     beforeEach(() => {
-        window['chrome'] = {notifications: {create: (): any => { return true; }}};
+        window['chrome'] = {
+            notifications: {
+                create: (): any => {
+                    return true;
+                },
+                onClicked: {
+                    addListener: jasmine.createSpy('chrome.notifications.onClicked.addListener').and.callFake((fn) => {
+                        onClickedStub = fn;
+                    })
+                }
+            },
+            tabs: {
+                create: jasmine.createSpy('chrome.tabs.create')
+            }
+        };
     });
+    beforeEach(module([
+        '$provide',
+        ($provide: ng.auto.IProvideService) => {
+            $provide.value('NotificationRepository', {
+                add: jasmine.createSpy('NotificationRepository.add'),
+                find: jasmine.createSpy('NotificationRepository.find').and.callFake(() => {
+                    return notificationStub;
+                })
+            });
+        }
+    ]));
     beforeEach(inject([
         'Notifier',
-        (n) => {
+        'NotificationRepository',
+        (n, nr) => {
             notifier = n;
+            notificationRepostory = nr;
         }
     ]));
 
@@ -30,8 +60,22 @@ describe('Notifier', () => {
 
         expectedOptions.title = 'Test title';
         var notificationId = 'aaabbbb';
-        notifier.notify(expectedOptions, notificationId);
+        var notificationLink = 'http://example.com';
+        notifier.notify(expectedOptions, notificationId, notificationLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(notificationId, expectedOptions);
+        expect(notificationRepostory.add).toHaveBeenCalledWith(notificationId, notificationLink);
+    });
+
+    it('should open new tab with pull request on click', () => {
+        var notification = new BitbucketNotifier.PullRequestNotification();
+        var notificationId = 'abcd123';
+        var pullRequestHtmlLink = 'http://example.com';
+        notification.notificationId = notificationId;
+        notification.pullRequestHtmlLink = pullRequestHtmlLink;
+
+        notificationStub = notification;
+        onClickedStub();
+        expect(window['chrome'].tabs.create).toHaveBeenCalledWith({url: pullRequestHtmlLink});
     });
 
     it('should notify about new pull request', () => {
