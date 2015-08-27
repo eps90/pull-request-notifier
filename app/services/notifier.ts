@@ -13,6 +13,8 @@ module BitbucketNotifier {
     }
 
     export class Notifier {
+        static $inject: Array<string> = ['NotificationRepository'];
+
         private chrome: any;
         private defaultOptions: NotificationOptions = {
             type: 'basic',
@@ -23,7 +25,7 @@ module BitbucketNotifier {
             priority: 2
         };
 
-        constructor() {
+        constructor(private notificationRepository: NotificationRepository) {
             this.chrome = window['chrome'];
         }
 
