@@ -113,19 +113,18 @@ describe('Repositories', () => {
         ]));
 
         it('should add notification to repository', () => {
-            var notification = new BitbucketNotifier.PullRequestNotification();
+            var notificationId = 'aaaa';
+            var prLink = 'http://example.com';
 
-            notificationRepository.add(notification);
+            notificationRepository.add(notificationId, prLink);
             expect(notificationRepository.getAll().length).toEqual(1);
         });
 
         it('should find single notification', () => {
             var notificationId = 'abcd';
-            var notification = new BitbucketNotifier.PullRequestNotification();
-            notification.notificationId = notificationId;
-            notification.pullRequestHtmlLink = 'http://example.com';
+            var prLink = 'http://example.com';
 
-            notificationRepository.add(notification);
+            notificationRepository.add(notificationId, prLink);
             var actualNotification = <BitbucketNotifier.PullRequestNotification> notificationRepository.find(notificationId);
 
             expect(actualNotification.pullRequestHtmlLink).toEqual('http://example.com');
