@@ -29,8 +29,9 @@ describe('Notifier', () => {
         spyOn(window['chrome'].notifications, 'create');
 
         expectedOptions.title = 'Test title';
-        notifier.notify(expectedOptions);
-        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
+        var notificationId = 'aaabbbb';
+        notifier.notify(expectedOptions, notificationId);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(notificationId, expectedOptions);
     });
 
     it('should notify about new pull request', () => {

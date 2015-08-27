@@ -27,8 +27,7 @@ module BitbucketNotifier {
             this.chrome = window['chrome'];
         }
 
-        notify(opts: NotificationOptions, notificationId?): void {
-            notificationId = notificationId || _.uniqueId('pull_request_');
+        notify(opts: NotificationOptions, notificationId: string): void {
             var targetOpts = _.assign(this.defaultOptions, opts);
             this.chrome.notifications.create(notificationId, targetOpts);
         }
@@ -40,8 +39,9 @@ module BitbucketNotifier {
                 contextMessage: 'by ' + pullRequest.author.displayName,
                 iconUrl: '../../assets/img/bitbucket_new.png'
             };
+            var notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options);
+            this.notify(options, notificationId);
         }
 
         notifyPullRequestMerged(pullRequest: PullRequest): void {
@@ -50,8 +50,9 @@ module BitbucketNotifier {
                 message: pullRequest.title,
                 iconUrl: '../../assets/img/bitbucket_merged.png'
             };
+            var notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options);
+            this.notify(options, notificationId);
         }
 
         notifyPullRequestApproved(pullRequest: PullRequest, actor: User): void {
@@ -60,8 +61,13 @@ module BitbucketNotifier {
                 message: pullRequest.title,
                 contextMessage: 'by ' + actor.displayName
             };
+            var notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options);
+            this.notify(options, notificationId);
+        }
+
+        private getNotificationId(pullRequest: PullRequest) {
+            return _.uniqueId('pull_request_');
         }
     }
 }
