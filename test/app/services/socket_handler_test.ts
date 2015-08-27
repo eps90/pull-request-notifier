@@ -5,7 +5,8 @@ describe('SocketHandler', () => {
         socket,
         config: BitbucketNotifier.Config,
         pullRequestRepository: BitbucketNotifier.PullRequestRepository,
-        notifier: BitbucketNotifier.Notifier;
+        notifier: BitbucketNotifier.Notifier,
+        indicator: BitbucketNotifier.Indicator;
 
     beforeEach(module('bitbucketNotifier.background'));
     beforeEach(module(['$provide', ($p: ng.auto.IProvideService) => {
@@ -23,6 +24,10 @@ describe('SocketHandler', () => {
                 return 'http://localhost:1234';
             })
         });
+
+        $p.value('Indicator', {
+            setText: jasmine.createSpy('Indicator.setText')
+        });
     }]));
     beforeEach(inject([
         'SocketHandler',
@@ -30,12 +35,14 @@ describe('SocketHandler', () => {
         'Config',
         'PullRequestRepository',
         'Notifier',
-        (sh, s, c, prr, n) => {
+        'Indicator',
+        (sh, s, c, prr, n, i) => {
             socketHandler = sh;
             socket = s;
             config = c;
             pullRequestRepository = prr;
             notifier = n;
+            indicator = i;
         }
     ]));
 
@@ -172,6 +179,30 @@ describe('SocketHandler', () => {
                 socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestApproved).not.toHaveBeenCalled();
             });
+        });
+    });
+
+    describe('indicator state', () => {
+        it('should show number of pull requests on introduced event', () => {
+            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
+            pullRequestEvent.sourceEvent = 'pullrequest:created';
+            pullRequestEvent.pullRequests = [pullRequest];
+            pullRequestEvent.context = pullRequest;
+
+            socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
+            expect(indicator.setText).toHaveBeenCalledWith('1');
+        });
+
+        it('should show number of pull requests on pullrequest updated event', () => {
+            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
+            pullRequestEvent.sourceEvent = 'pullrequest:created';
+            pullRequestEvent.pullRequests = [pullRequest];
+            pullRequestEvent.context = pullRequest;
+
+            socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+            expect(indicator.setText).toHaveBeenCalledWith('1');
         });
     });
 });

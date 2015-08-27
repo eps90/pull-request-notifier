@@ -5,12 +5,13 @@ module BitbucketNotifier {
 
     // @todo Move socket handling into another service?
     export class SocketHandler {
-        static $inject: Array<string> = ['Socket', 'Config', 'PullRequestRepository', 'Notifier'];
+        static $inject: Array<string> = ['Socket', 'Config', 'PullRequestRepository', 'Notifier', 'Indicator'];
         constructor(
             private socket,
             private config: Config,
             private pullRequestRepository: PullRequestRepository,
-            private notifier: Notifier
+            private notifier: Notifier,
+            private indicator: Indicator
         ) {
             this.initListeners();
         }
@@ -25,6 +26,7 @@ module BitbucketNotifier {
                 var loggedInUser = this.config.getUsername();
                 // @todo Adapt tests
                 this.pullRequestRepository.setPullRequests(userPrs.pullRequests);
+                this.indicator.setText(this.pullRequestRepository.pullRequests.length.toString());
 
                 for (var prIndex = 0, prLen = userPrs.pullRequests.length; prIndex < prLen; prIndex++) {
                     var pr = userPrs.pullRequests[prIndex];
@@ -44,6 +46,7 @@ module BitbucketNotifier {
                 this.pullRequestRepository.setPullRequests(userPrs.pullRequests);
                 var contextPr: PullRequest = userPrs.context;
                 var sourceEvent: string = userPrs.sourceEvent;
+                this.indicator.setText(this.pullRequestRepository.pullRequests.length.toString());
 
                 if (sourceEvent === WebhookEvent.PULLREQUEST_CREATED) {
                     for (var reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
