@@ -22,6 +22,10 @@ module BitbucketNotifier {
                 this.socket.emit(SocketClientEvent.INTRODUCE, loggedInUser);
             });
 
+            this.socket.on('disconnect', () => {
+                this.pullRequestRepository.setPullRequests([]);
+            });
+
             this.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
                 var loggedInUser = this.config.getUsername();
                 // @todo Adapt tests
