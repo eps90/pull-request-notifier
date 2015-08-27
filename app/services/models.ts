@@ -72,4 +72,9 @@ module BitbucketNotifier {
         static USER: string = 'app:user';
         static SOCKET_SERVER: string = 'app:socket_server';
     }
+
+    export class PullRequestNotification {
+        notificationId: string = '';
+        pullRequestHtmlLink: string = '';
+    }
 }
