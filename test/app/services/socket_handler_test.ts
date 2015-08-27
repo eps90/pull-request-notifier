@@ -214,5 +214,19 @@ describe('SocketHandler', () => {
             socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
             expect(indicator.setText).toHaveBeenCalledWith('1');
         });
+
+        it('should bring back default badge text on disconnection', () => {
+            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
+            pullRequestEvent.sourceEvent = 'pullrequest:created';
+            pullRequestEvent.pullRequests = [pullRequest];
+            pullRequestEvent.context = pullRequest;
+
+            socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+            expect(indicator.setText).toHaveBeenCalledWith('1');
+
+            socket.receive('disconnect');
+            expect(indicator.setText).toHaveBeenCalledWith('?');
+        });
     });
 });
