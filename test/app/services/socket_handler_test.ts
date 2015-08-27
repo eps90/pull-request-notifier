@@ -65,6 +65,16 @@ describe('SocketHandler', () => {
         expect(pullRequestRepository.pullRequests[0]).toEqual(pullRequest);
     });
 
+    it('should clean pull request repository on disconnection', () => {
+        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        pullRequestRepository.pullRequests.push(pullRequest);
+
+        expect(pullRequestRepository.pullRequests.length).toBe(1);
+
+        socket.receive('disconnect');
+        expect(pullRequestRepository.pullRequests.length).toBe(0);
+    });
+
     describe('chrome notifications', () => {
         var pullRequestEvent: BitbucketNotifier.PullRequestEvent;
         var pullRequest: BitbucketNotifier.PullRequest;
