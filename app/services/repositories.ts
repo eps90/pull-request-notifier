@@ -40,8 +40,12 @@ module BitbucketNotifier {
     export class NotificationRepository {
         private notifications:Array<Notification> = [];
 
-        add(notification: Notification): void {
-            this.notifications.push(notification);
+        add(notificationId: string, pullRequestLink: string): void {
+            var prNotification = new PullRequestNotification();
+            prNotification.notificationId = notificationId;
+            prNotification.pullRequestHtmlLink = pullRequestLink;
+
+            this.notifications.push(prNotification);
         }
 
         getAll(): Array<Notification> {
@@ -58,7 +62,5 @@ module BitbucketNotifier {
 
             return new PullRequestNotification();
         }
-
-
     }
 }
