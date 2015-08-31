@@ -62,42 +62,44 @@ describe('Repositories', () => {
             expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
         });
 
-        it('should emit chrome event on pull request collection change', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-            var pullRequestsList = [pullRequest];
+        describe('with chrome events', () => {
+            it('should emit chrome event on pull request collection change', () => {
+                var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+                var pullRequestsList = [pullRequest];
 
-            pullRequestRepositoryOne.setPullRequests(pullRequestsList);
-            expect(window['chrome'].extension.sendMessage)
-                .toHaveBeenCalledWith({type: BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: pullRequestsList});
-        });
+                pullRequestRepositoryOne.setPullRequests(pullRequestsList);
+                expect(window['chrome'].extension.sendMessage)
+                    .toHaveBeenCalledWith({type: BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: pullRequestsList});
+            });
 
-        it('should listen to event to update pull requests', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-            var pullRequestsList = [pullRequest];
+            it('should listen to event to update pull requests', () => {
+                var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+                var pullRequestsList = [pullRequest];
 
-            expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
-            messageFunc({type: BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: pullRequestsList});
-            expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
-        });
+                expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
+                messageFunc({type: BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: pullRequestsList});
+                expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
+            });
 
-        it('should send all pull requests on connection', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-            pullRequestRepositoryOne.pullRequests = [pullRequest];
+            it('should send all pull requests on connection', () => {
+                var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+                pullRequestRepositoryOne.pullRequests = [pullRequest];
 
-            var port = {
-                postMessage: jasmine.createSpy('port.postMessage')
-            };
-            connectionFunc(port);
-            expect(port.postMessage).toHaveBeenCalledWith([pullRequest]);
-        });
+                var port = {
+                    postMessage: jasmine.createSpy('port.postMessage')
+                };
+                connectionFunc(port);
+                expect(port.postMessage).toHaveBeenCalledWith([pullRequest]);
+            });
 
-        it('should receive all pull requests on connection', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-            var pullRequestsList = [pullRequest];
+            it('should receive all pull requests on connection', () => {
+                var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+                var pullRequestsList = [pullRequest];
 
-            expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
-            connectPortFn(pullRequestsList);
-            expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
+                expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
+                connectPortFn(pullRequestsList);
+                expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
+            });
         });
     });
 
