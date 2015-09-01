@@ -6,7 +6,8 @@ describe('SocketHandler', () => {
         config: BitbucketNotifier.Config,
         pullRequestRepository: BitbucketNotifier.PullRequestRepository,
         notifier: BitbucketNotifier.Notifier,
-        indicator: BitbucketNotifier.Indicator;
+        indicator: BitbucketNotifier.Indicator,
+        hasAssignmentChanged = false;
 
     beforeEach(module('bitbucketNotifier.background'));
     beforeEach(module(['$provide', ($p: ng.auto.IProvideService) => {
@@ -27,6 +28,18 @@ describe('SocketHandler', () => {
 
         $p.value('Indicator', {
             setText: jasmine.createSpy('Indicator.setText')
+        });
+
+        $p.value('PullRequestRepository', {
+            pullRequests: [],
+            setPullRequests: jasmine.createSpy('PullRequestRepository.setpullRequests')
+                .and.callFake((pullRequests: BitbucketNotifier.PullRequest[]) => {
+                    this.pullRequests = pullRequests;
+                }),
+            hasAssignmentChanged: jasmine.createSpy('PullRequestRepository.hasAssignmentChanged')
+                .and.callFake(() => {
+                    return hasAssignmentChanged;
+                })
         });
     }]));
     beforeEach(inject([
@@ -61,18 +74,12 @@ describe('SocketHandler', () => {
 
         socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, userPullRequest);
 
-        expect(pullRequestRepository.pullRequests.length).toBe(1);
-        expect(pullRequestRepository.pullRequests[0]).toEqual(pullRequest);
+        expect(pullRequestRepository.setPullRequests).toHaveBeenCalledWith([pullRequest]);
     });
 
     it('should clean pull request repository on disconnection', () => {
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-        pullRequestRepository.pullRequests.push(pullRequest);
-
-        expect(pullRequestRepository.pullRequests.length).toBe(1);
-
         socket.receive('disconnect');
-        expect(pullRequestRepository.pullRequests.length).toBe(0);
+        expect(pullRequestRepository.setPullRequests).toHaveBeenCalledWith([]);
     });
 
     describe('chrome notifications', () => {
@@ -116,15 +123,7 @@ describe('SocketHandler', () => {
         describe('on updated pull request', () => {
             it('should notify about new assignment when assignment has changed', () => {
                 pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_UPDATED;
-
-                var notLoggedInReviewer = new BitbucketNotifier.Reviewer();
-                notLoggedInReviewer.user = annaKowalsky;
-                notLoggedInReviewer.approved = false;
-                var pr = angular.copy(pullRequest);
-
-                pr.reviewers.push(notLoggedInReviewer);
-
-                pullRequestRepository.pullRequests = [pr];
+                hasAssignmentChanged = true;
 
                 var loggedInReviewer = new BitbucketNotifier.Reviewer();
                 loggedInReviewer.user = johnSmith;
@@ -161,7 +160,7 @@ describe('SocketHandler', () => {
             });
 
             it('should not notify about new pull request on other event than pull:request:created', () => {
-                pullRequestEvent.sourceEvent = 'webhook:pullrequest:updated';
+                pullRequestEvent.sourceEvent = 'webhook:pullrequest:fulfilled';
 
                 var loggedInReviewer = new BitbucketNotifier.Reviewer();
                 loggedInReviewer.user = johnSmith;
@@ -223,9 +222,7 @@ describe('SocketHandler', () => {
         it('should show number of pull requests on introduced event', () => {
             var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
             var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
-            pullRequestEvent.sourceEvent = 'pullrequest:created';
-            pullRequestEvent.pullRequests = [pullRequest];
-            pullRequestEvent.context = pullRequest;
+            pullRequestRepository.pullRequests = [pullRequest];
 
             socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
             expect(indicator.setText).toHaveBeenCalledWith('1');
@@ -234,9 +231,7 @@ describe('SocketHandler', () => {
         it('should show number of pull requests on pullrequest updated event', () => {
             var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
             var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
-            pullRequestEvent.sourceEvent = 'pullrequest:created';
-            pullRequestEvent.pullRequests = [pullRequest];
-            pullRequestEvent.context = pullRequest;
+            pullRequestRepository.pullRequests = [pullRequest];
 
             socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
             expect(indicator.setText).toHaveBeenCalledWith('1');
@@ -245,9 +240,7 @@ describe('SocketHandler', () => {
         it('should bring back default badge text on disconnection', () => {
             var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
             var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
-            pullRequestEvent.sourceEvent = 'pullrequest:created';
-            pullRequestEvent.pullRequests = [pullRequest];
-            pullRequestEvent.context = pullRequest;
+            pullRequestRepository.pullRequests = [pullRequest];
 
             socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
             expect(indicator.setText).toHaveBeenCalledWith('1');
