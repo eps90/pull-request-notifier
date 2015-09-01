@@ -1,4 +1,8 @@
 var path = require('path');
+var builder = require('xmlbuilder');
+var fs = require('fs');
+var NodeRSA = require('node-rsa');
+var crypto = require('crypto');
 
 // @todo Think about stages naming (dist and test)
 // @todo Import typescript sourcemaps when minifying/uglifying
@@ -22,7 +26,13 @@ module.exports = function(grunt) {
         project: {
             appName: require('./bower.json').name,
             appVersion: require('./manifest.json').version,
-            privateKeyPath: '../bitbucket-notifier-chrome.pem'
+            distDir: 'dist',
+            // @todo To change
+            privateKeyPath: '../bitbucket-notifier-chrome.pem',
+            // @todo To change
+            destinationPackageServer: 'http://example.com',
+            destinationPackagePath: '<%= project.distDir %>/<%= project.appName %>.crx',
+            updateXmlPath: '<%= project.distDir %>/update.xml'
         },
 
         typescript: {
@@ -176,7 +186,7 @@ module.exports = function(grunt) {
         crx: {
             dist: {
                 src: ['dist/**/*'],
-                dest: 'dist/pkg.crx',
+                dest: '<%= project.destinationPackagePath %>',
                 options: {
                     // @todo Find more efficient way to load the key
                     privateKey: '<%= project.privateKeyPath %>'
@@ -194,6 +204,29 @@ module.exports = function(grunt) {
         grunt.file.write(file, JSON.stringify(contents, null, 2))
     });
 
+    grunt.registerTask('update:xml', function () {
+        var appId = getExtensionId(grunt.config.get('project.privateKeyPath'));
+        var updateServer = grunt.config.get('project.destinationPackageServer') + '/' + grunt.config.get('project.appName') + '.crx';
+        var appVersion = grunt.config.get('project.appVersion');
+        var destinationXml = grunt.config.get('project.updateXmlPath');
+        var xml = builder.create({
+                gupdate: {
+                    '@xmlns': 'http://www.google.com/update2/response',
+                    '@protocol': '2.0',
+                    app: {
+                        '@appid': appId,
+                        updatecheck: {
+                            '@codebase': updateServer,
+                            '@version': appVersion
+                        }
+                    }
+                }
+            }).end({ pretty: true });
+
+        fs.writeFileSync(destinationXml, xml);
+        grunt.log.ok('Update manifest XML created');
+    });
+
     grunt.registerTask('dist', ['clean:build', 'typescript:build', 'copy:build']);
     grunt.registerTask('test', ['clean:test', 'typescript:test', 'copy:test', 'karma']);
     grunt.registerTask('default', ['build', 'watch:dist']);
@@ -209,7 +242,8 @@ module.exports = function(grunt) {
         'usemin',
         'copy:dist',
         'update:manifest',
-        'crx:dist'
+        'crx:dist',
+        'update:xml'
     ]);
 
     function lessCreateConfig(context, block) {
@@ -227,5 +261,18 @@ module.exports = function(grunt) {
         cfg.files.push(filesDef);
         context.outFiles = [block.dest];
         return cfg;
+    }
+
+    function getExtensionId(privateKeyPath) {
+        var key = new NodeRSA(fs.readFileSync(privateKeyPath));
+        var derred = key.exportKey('pkcs8-public-der');
+        var hashed = crypto.createHash('sha256').update(derred).digest('hex');
+        var letters = hashed.split("");
+        var result = letters.map(function(letter) {
+            var charCode = parseInt(letter, 16);
+            return String.fromCharCode(charCode + 97);
+        });
+
+        return result.join('').substring(0, 32);
     }
 };
