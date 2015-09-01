@@ -69,8 +69,14 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         src: ['views/*.html', 'scripts/*.js', 'fonts/*', 'styles/*.css'],
-                        dest: 'dist',
+                        dest: 'dist/dist',
                         cwd: 'build'
+                    },
+                    {
+                        expand: true,
+                        src: ['manifest.json', 'assets/img/*.png'],
+                        dest: 'dist',
+                        cwd: '.'
                     }
                 ]
             }
@@ -162,6 +168,15 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.registerTask('update:manifest', function () {
+        var file = 'dist/manifest.json';
+        var contents = grunt.file.readJSON(file);
+        contents.background.page = 'dist/views/background.html';
+        contents.options_page = 'dist/views/options.html';
+        contents.browser_action.default_popup = 'dist/views/popup.html';
+        grunt.file.write(file, JSON.stringify(contents, null, 2))
+    });
+
     grunt.registerTask('dist', ['clean:build', 'typescript:build', 'copy:build']);
     grunt.registerTask('test', ['clean:test', 'typescript:test', 'copy:test', 'karma']);
     grunt.registerTask('default', ['build', 'watch:dist']);
@@ -175,7 +190,8 @@ module.exports = function(grunt) {
         'cssmin:generated',
         'filerev',
         'usemin',
-        'copy:dist'
+        'copy:dist',
+        'update:manifest'
     ]);
 
     function lessCreateConfig(context, block) {
