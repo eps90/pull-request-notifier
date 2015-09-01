@@ -16,6 +16,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-filerev');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-tslint');
+    grunt.loadNpmTasks('grunt-crx');
 
     grunt.initConfig({
         typescript: {
@@ -165,6 +166,16 @@ module.exports = function(grunt) {
             files: {
                 src: ['app/**/*.ts', 'test/**/*.ts']
             }
+        },
+        crx: {
+            dist: {
+                src: ['dist/**/*'],
+                dest: 'dist/pkg.crx',
+                options: {
+                    // @todo Find more efficient way to load the key
+                    //privateKey: '../bitbucket-notifier-chrome.pem'
+                }
+            }
         }
     });
 
@@ -191,7 +202,8 @@ module.exports = function(grunt) {
         'filerev',
         'usemin',
         'copy:dist',
-        'update:manifest'
+        'update:manifest',
+        'crx:dist'
     ]);
 
     function lessCreateConfig(context, block) {
