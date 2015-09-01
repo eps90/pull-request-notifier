@@ -42,6 +42,12 @@ module BitbucketNotifier {
             return otherPr.id === this.id
                 && otherPr.targetRepository.fullName === this.targetRepository.fullName;
         }
+
+        getReviewersList(): string[] {
+            return _.map(this.reviewers, (reviewer: Reviewer) => {
+                return reviewer.user.username;
+            });
+        }
     }
 
     export class PullRequestEvent implements ModelInterface {
