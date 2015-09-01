@@ -39,19 +39,14 @@ module BitbucketNotifier {
         hasAssignmentChanged(newPullRequest: PullRequest): boolean {
             for (var prIdx = 0, prLen = this.pullRequests.length; prIdx < this.pullRequests.length; prIdx++) {
                 var pullRequest = this.pullRequests[prIdx];
-                if (pullRequest.id === newPullRequest.id
-                    && pullRequest.targetRepository.fullName === newPullRequest.targetRepository.fullName
-                ) {
+                if (pullRequest.equals(newPullRequest)) {
                     if (newPullRequest.reviewers.length !== pullRequest.reviewers.length) {
                         return true;
                     } else {
-                        var reviewers: Array<string> = _.map(pullRequest.reviewers, (reviewer: Reviewer) => {
-                            return reviewer.user.username;
-                        });
-                        var newReviewers: Array<string> = _.map(newPullRequest.reviewers, (reviewer: Reviewer) => {
-                            return reviewer.user.username;
-                        });
-                        var usersDiff = _.difference(newReviewers, reviewers);
+                        var usersDiff = _.difference(
+                            newPullRequest.getReviewersList(),
+                            pullRequest.getReviewersList()
+                        );
 
                         if (usersDiff.length > 0) {
                             return true;
