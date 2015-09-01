@@ -19,9 +19,9 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         typescript: {
-            dist: {
+            build: {
                 src: ['app/modules/*.ts'],
-                dest: 'dist',
+                dest: 'build',
                 options: {
                     target: "es5",
                     basepath: ".",
@@ -39,19 +39,19 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-            dist: {
+            build: {
                 files: [
                     {
                         expand: true,
                         src: ['views/*.html', 'components/**/*.html'],
-                        dest: 'dist',
+                        dest: 'build',
                         cwd: 'app'
                     },
                     {
                         expand: true,
                         flatten: true,
                         src: ['bower_components/bootstrap/fonts/*.*', 'bower_components/fontawesome/fonts/*.*'],
-                        dest: 'dist/fonts'
+                        dest: 'build/fonts'
                     }
                 ]
             },
@@ -63,11 +63,21 @@ module.exports = function(grunt) {
                         dest: 'build'
                     }
                 ]
+            },
+            dist: {
+                files: [
+                    {
+                        expand: true,
+                        src: ['views/*.html', 'scripts/*.js', 'fonts/*', 'styles/*.css'],
+                        dest: 'dist',
+                        cwd: 'build'
+                    }
+                ]
             }
         },
         clean: {
-            dist: {
-                src: ['dist']
+            build: {
+                src: ['dist', 'build']
             },
             test: {
                 src: ['build']
@@ -89,7 +99,7 @@ module.exports = function(grunt) {
         ngtemplates: {
             popup: {
                 src: 'app/components/**/*.html',
-                dest: 'dist/modules/templates.js',
+                dest: 'build/modules/templates.js',
                 options: {
                     url: function (templateUrl) {
                         return templateUrl.replace(/^app/, '..');
@@ -99,7 +109,7 @@ module.exports = function(grunt) {
             },
             options_module: {
                 src: 'app/components/**/*.html',
-                dest: 'dist/modules/templates_options_module.js',
+                dest: 'build/modules/templates_options_module.js',
                 options: {
                     url: function (templateUrl) {
                         return templateUrl.replace(/^app/, '..');
@@ -109,16 +119,16 @@ module.exports = function(grunt) {
             }
         },
         filerev: {
-            dist: {
-                src: ['dist/scripts/*.js', 'dist/styles/*.css']
+            build: {
+                src: ['build/scripts/*.js', 'build/styles/*.css']
             }
         },
         useminPrepare: {
-            dist:{
+            build:{
                 src: ['app/views/*.html']
             },
             options: {
-                dest: 'dist/views',
+                dest: 'build/views',
                 flow: {
                     steps: {
                         js: ['concat', 'uglify'],
@@ -133,7 +143,7 @@ module.exports = function(grunt) {
             }
         },
         usemin: {
-            html: 'dist/views/*.html',
+            html: 'build/views/*.html',
             options: {
                 blockReplacements: {
                     less: function (block) {
@@ -152,7 +162,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('dist', ['clean:dist', 'typescript:dist', 'copy:dist']);
+    grunt.registerTask('dist', ['clean:build', 'typescript:build', 'copy:build']);
     grunt.registerTask('test', ['clean:test', 'typescript:test', 'copy:test', 'karma']);
     grunt.registerTask('default', ['build', 'watch:dist']);
     grunt.registerTask('build', [
@@ -164,7 +174,8 @@ module.exports = function(grunt) {
         'uglify:generated',
         'cssmin:generated',
         'filerev',
-        'usemin'
+        'usemin',
+        'copy:dist'
     ]);
 
     function lessCreateConfig(context, block) {
