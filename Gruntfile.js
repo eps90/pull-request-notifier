@@ -26,6 +26,7 @@ module.exports = function(grunt) {
         project: {
             appName: require('./bower.json').name,
             appVersion: require('./manifest.json').version,
+            buildDir: 'build',
             distDir: 'dist',
             // @todo To change
             privateKeyPath: '../bitbucket-notifier-chrome.pem',
@@ -38,7 +39,7 @@ module.exports = function(grunt) {
         typescript: {
             build: {
                 src: ['app/modules/*.ts'],
-                dest: 'build',
+                dest: '<%= project.buildDir %>',
                 options: {
                     target: "es5",
                     basepath: ".",
@@ -47,7 +48,7 @@ module.exports = function(grunt) {
             },
             test: {
                 src: ['test/**/*.ts', 'app/modules/*.ts'],
-                dest: 'build',
+                dest: '<%= project.buildDir %>',
                 options: {
                     target: "es5",
                     basepath: ".",
@@ -61,14 +62,14 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         src: ['views/*.html', 'components/**/*.html'],
-                        dest: 'build',
+                        dest: '<%= project.buildDir %>',
                         cwd: 'app'
                     },
                     {
                         expand: true,
                         flatten: true,
                         src: ['bower_components/bootstrap/fonts/*.*', 'bower_components/fontawesome/fonts/*.*'],
-                        dest: 'build/fonts'
+                        dest: '<%= project.buildDir %>/fonts'
                     }
                 ]
             },
@@ -77,7 +78,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         src: ['app/views/*.html', 'app/components/**/*.html'],
-                        dest: 'build'
+                        dest: '<%= project.buildDir %>'
                     }
                 ]
             },
@@ -86,13 +87,13 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         src: ['views/*.html', 'scripts/*.js', 'fonts/*', 'styles/*.css'],
-                        dest: 'dist/dist',
-                        cwd: 'build'
+                        dest: '<%= project.distDir %>/dist',
+                        cwd: '<%= project.buildDir %>'
                     },
                     {
                         expand: true,
                         src: ['manifest.json', 'assets/img/*.png'],
-                        dest: 'dist',
+                        dest: '<%= project.distDir %>',
                         cwd: '.'
                     }
                 ]
@@ -100,10 +101,10 @@ module.exports = function(grunt) {
         },
         clean: {
             build: {
-                src: ['dist', 'build']
+                src: ['<%= project.distDir %>', '<%= project.buildDir %>']
             },
             test: {
-                src: ['build']
+                src: ['<%= project.buildDir %>']
             }
         },
         watch: {
@@ -122,7 +123,7 @@ module.exports = function(grunt) {
         ngtemplates: {
             popup: {
                 src: 'app/components/**/*.html',
-                dest: 'build/modules/templates.js',
+                dest: '<%= project.buildDir %>/modules/templates.js',
                 options: {
                     url: function (templateUrl) {
                         return templateUrl.replace(/^app/, '..');
@@ -132,7 +133,7 @@ module.exports = function(grunt) {
             },
             options_module: {
                 src: 'app/components/**/*.html',
-                dest: 'build/modules/templates_options_module.js',
+                dest: '<%= project.buildDir %>/modules/templates_options_module.js',
                 options: {
                     url: function (templateUrl) {
                         return templateUrl.replace(/^app/, '..');
@@ -143,7 +144,7 @@ module.exports = function(grunt) {
         },
         filerev: {
             build: {
-                src: ['build/scripts/*.js', 'build/styles/*.css']
+                src: ['<%= project.buildDir %>/scripts/*.js', '<%= project.buildDir %>/styles/*.css']
             }
         },
         useminPrepare: {
@@ -151,7 +152,7 @@ module.exports = function(grunt) {
                 src: ['app/views/*.html']
             },
             options: {
-                dest: 'build/views',
+                dest: '<%= project.buildDir %>/views',
                 flow: {
                     steps: {
                         js: ['concat', 'uglify'],
@@ -166,7 +167,7 @@ module.exports = function(grunt) {
             }
         },
         usemin: {
-            html: 'build/views/*.html',
+            html: '<%= project.buildDir %>/views/*.html',
             options: {
                 blockReplacements: {
                     less: function (block) {
@@ -185,7 +186,7 @@ module.exports = function(grunt) {
         },
         crx: {
             dist: {
-                src: ['dist/**/*'],
+                src: ['<%= project.distDir %>/**/*'],
                 dest: '<%= project.destinationPackagePath %>',
                 options: {
                     // @todo Find more efficient way to load the key
@@ -198,8 +199,8 @@ module.exports = function(grunt) {
     grunt.registerTask('update:manifest', function () {
         var file = 'dist/manifest.json';
         var contents = grunt.file.readJSON(file);
-        contents.background.page = 'dist/views/background.html';
-        contents.options_page = 'dist/views/options.html';
+        contents.background.page = '<%= project.distDir %>/views/background.html';
+        contents.options_page = '<%= project.distDir %>/views/options.html';
         contents.browser_action.default_popup = 'dist/views/popup.html';
         grunt.file.write(file, JSON.stringify(contents, null, 2))
     });
