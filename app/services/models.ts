@@ -37,6 +37,11 @@ module BitbucketNotifier {
         reviewers: Array<Reviewer> = [];
         state: PullRequestState;
         links: PullRequestLinks = new PullRequestLinks();
+
+        equals(otherPr: PullRequest): boolean {
+            return otherPr.id === this.id
+                && otherPr.targetRepository.fullName === this.targetRepository.fullName;
+        }
     }
 
     export class PullRequestEvent implements ModelInterface {
