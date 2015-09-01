@@ -18,7 +18,7 @@ module BitbucketNotifier {
             scope['saveOptions'] = () => {
                 this.config.setUsername(scope['options'].appUser);
                 this.config.setSocketServerAddress(scope['options'].socketServerAddress);
-            }
+            };
         };
 
         static factory(): ng.IDirectiveFactory {

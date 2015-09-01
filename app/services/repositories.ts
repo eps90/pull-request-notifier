@@ -37,7 +37,7 @@ module BitbucketNotifier {
         }
 
         hasAssignmentChanged(newPullRequest: PullRequest): boolean {
-            for (var prIdx = 0, prLen = this.pullRequests.length; prIdx < this.pullRequests.length; prIdx++) {
+            for (var prIdx = 0, prLen = this.pullRequests.length; prIdx < prLen; prIdx++) {
                 var pullRequest = this.pullRequests[prIdx];
                 if (pullRequest.equals(newPullRequest)) {
                     if (newPullRequest.reviewers.length !== pullRequest.reviewers.length) {
@@ -60,7 +60,7 @@ module BitbucketNotifier {
     }
 
     export class NotificationRepository {
-        private notifications:Array<Notification> = [];
+        private notifications: Array<Notification> = [];
 
         add(notificationId: string, pullRequestLink: string): void {
             var prNotification = new PullRequestNotification();

@@ -54,8 +54,8 @@ module BitbucketNotifier {
                 if (sourceEvent === WebhookEvent.PULLREQUEST_UPDATED
                     && this.pullRequestRepository.hasAssignmentChanged(contextPr)
                 ) {
-                    for (var reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
-                        var reviewer = contextPr.reviewers[reviewerIdx];
+                    for (let reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
+                        let reviewer = contextPr.reviewers[reviewerIdx];
                         if (reviewer.user.username === loggedInUser) {
                             this.notifier.notifyNewPullRequestAssigned(contextPr);
                             break;
@@ -68,8 +68,8 @@ module BitbucketNotifier {
                 this.indicator.setText(this.pullRequestRepository.pullRequests.length.toString());
 
                 if (sourceEvent === WebhookEvent.PULLREQUEST_CREATED) {
-                    for (var reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
-                        var reviewer = contextPr.reviewers[reviewerIdx];
+                    for (let reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
+                        let reviewer = contextPr.reviewers[reviewerIdx];
                         if (reviewer.user.username === loggedInUser) {
                             this.notifier.notifyNewPullRequestAssigned(contextPr);
                             break;
