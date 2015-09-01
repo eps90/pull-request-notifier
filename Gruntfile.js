@@ -19,6 +19,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-crx');
 
     grunt.initConfig({
+        project: {
+            appName: require('./bower.json').name,
+            appVersion: require('./manifest.json').version,
+            privateKeyPath: '../bitbucket-notifier-chrome.pem'
+        },
+
         typescript: {
             build: {
                 src: ['app/modules/*.ts'],
@@ -173,7 +179,7 @@ module.exports = function(grunt) {
                 dest: 'dist/pkg.crx',
                 options: {
                     // @todo Find more efficient way to load the key
-                    //privateKey: '../bitbucket-notifier-chrome.pem'
+                    privateKey: '<%= project.privateKeyPath %>'
                 }
             }
         }
