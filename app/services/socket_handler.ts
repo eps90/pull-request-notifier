@@ -47,10 +47,24 @@ module BitbucketNotifier {
             this.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: BitbucketNotifier.PullRequestEvent) => {
                 var loggedInUser = this.config.getUsername();
 
-                // @todo Adapt tests
-                this.pullRequestRepository.setPullRequests(userPrs.pullRequests);
                 var contextPr: PullRequest = userPrs.context;
                 var sourceEvent: string = userPrs.sourceEvent;
+
+
+                if (sourceEvent === WebhookEvent.PULLREQUEST_UPDATED
+                    && this.pullRequestRepository.hasAssignmentChanged(contextPr)
+                ) {
+                    for (var reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
+                        var reviewer = contextPr.reviewers[reviewerIdx];
+                        if (reviewer.user.username === loggedInUser) {
+                            this.notifier.notifyNewPullRequestAssigned(contextPr);
+                            break;
+                        }
+                    }
+                }
+
+                // @todo Adapt tests
+                this.pullRequestRepository.setPullRequests(userPrs.pullRequests);
                 this.indicator.setText(this.pullRequestRepository.pullRequests.length.toString());
 
                 if (sourceEvent === WebhookEvent.PULLREQUEST_CREATED) {

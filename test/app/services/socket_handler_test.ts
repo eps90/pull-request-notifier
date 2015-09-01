@@ -83,6 +83,9 @@ describe('SocketHandler', () => {
 
         beforeEach(() => {
             pullRequest = new BitbucketNotifier.PullRequest();
+            pullRequest.id = 1;
+            pullRequest.targetRepository.fullName = 'team_name/repo_name';
+
             pullRequestEvent = new BitbucketNotifier.PullRequestEvent();
             pullRequestEvent.pullRequests = [pullRequest];
             pullRequestEvent.context = pullRequest;
@@ -107,6 +110,30 @@ describe('SocketHandler', () => {
                 socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
                 var stub: jasmine.Spy = <jasmine.Spy> notifier.notifyNewPullRequestAssigned;
                 expect(stub.calls.count()).toEqual(1);
+            });
+        });
+
+        describe('on updated pull request', () => {
+            it('should notify about new assignment when assignment has changed', () => {
+                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_UPDATED;
+
+                var notLoggedInReviewer = new BitbucketNotifier.Reviewer();
+                notLoggedInReviewer.user = annaKowalsky;
+                notLoggedInReviewer.approved = false;
+                var pr = angular.copy(pullRequest);
+
+                pr.reviewers.push(notLoggedInReviewer);
+
+                pullRequestRepository.pullRequests = [pr];
+
+                var loggedInReviewer = new BitbucketNotifier.Reviewer();
+                loggedInReviewer.user = johnSmith;
+                loggedInReviewer.approved = false;
+
+                pullRequest.reviewers.push(loggedInReviewer);
+
+                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest);
             });
         });
 
