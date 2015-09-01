@@ -15,7 +15,7 @@ describe('PullRequestLinkComponent', () => {
                     newTabObj = obj;
                 })
             }
-        }
+        };
     });
 
     beforeEach(inject([

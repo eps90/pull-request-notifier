@@ -1,6 +1,8 @@
 ///<reference path="../../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     export class PullRequestLinkComponent implements ng.IDirective {
         restrict: string = 'E';
         templateUrl: string = '../components/pull_request_link_component/pull_request_link_component.html';
@@ -10,7 +12,7 @@ module BitbucketNotifier {
 
         link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
             var prLink = scope['pr'].links.html;
-            scope['_link'] = prLink
+            scope['_link'] = prLink;
 
             scope['goToPullRequest'] = () => {
                 window['chrome'].tabs.create({

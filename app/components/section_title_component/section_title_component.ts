@@ -1,6 +1,8 @@
 ///<reference path="../../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     export class SectionTitleComponent implements ng.IDirective {
         restrict: string = 'E';
         templateUrl: string = '../components/section_title_component/section_title_component.html';
