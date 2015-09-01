@@ -35,6 +35,33 @@ module BitbucketNotifier {
             this.pullRequests = pullRequests;
             window['chrome'].extension.sendMessage({type: ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: this.pullRequests});
         }
+
+        hasAssignmentChanged(newPullRequest: PullRequest): boolean {
+            for (var prIdx = 0, prLen = this.pullRequests.length; prIdx < this.pullRequests.length; prIdx++) {
+                var pullRequest = this.pullRequests[prIdx];
+                if (pullRequest.id === newPullRequest.id
+                    && pullRequest.targetRepository.fullName === newPullRequest.targetRepository.fullName
+                ) {
+                    if (newPullRequest.reviewers.length !== pullRequest.reviewers.length) {
+                        return true;
+                    } else {
+                        var reviewers: Array<string> = _.map(pullRequest.reviewers, (reviewer: Reviewer) => {
+                            return reviewer.user.username;
+                        });
+                        var newReviewers: Array<string> = _.map(newPullRequest.reviewers, (reviewer: Reviewer) => {
+                            return reviewer.user.username;
+                        });
+                        var usersDiff = _.difference(newReviewers, reviewers);
+
+                        if (usersDiff.length > 0) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 
     export class NotificationRepository {

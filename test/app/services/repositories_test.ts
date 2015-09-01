@@ -62,6 +62,62 @@ describe('Repositories', () => {
             expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
         });
 
+        it('should be able to detect new assignment', () => {
+            var project = new BitbucketNotifier.Project();
+            project.fullName = 'team_name/repo_name';
+
+            var user = new BitbucketNotifier.User();
+            user.username = 'john.smith';
+            var reviewer = new BitbucketNotifier.Reviewer();
+            reviewer.user = user;
+            reviewer.approved = false;
+
+            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            pullRequest.id = 1;
+            pullRequest.targetRepository = project;
+            pullRequest.reviewers = [];
+
+            var changedPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            changedPullRequest.id = 1;
+            changedPullRequest.targetRepository = project;
+            changedPullRequest.reviewers = [reviewer];
+
+            pullRequestRepositoryOne.pullRequests = [pullRequest];
+            var actual: boolean = pullRequestRepositoryOne.hasAssignmentChanged(changedPullRequest);
+            expect(actual).toBeTruthy();
+        });
+
+        it('should be able to detect when user is assigned', () => {
+            var project = new BitbucketNotifier.Project();
+            project.fullName = 'team_name/repo_name';
+
+            var user = new BitbucketNotifier.User();
+            user.username = 'john.smith';
+            var newUser = new BitbucketNotifier.User();
+            newUser.username = 'anna.kowalsky';
+
+            var reviewer = new BitbucketNotifier.Reviewer();
+            reviewer.user = user;
+            reviewer.approved = false;
+            var newReviewer = new BitbucketNotifier.Reviewer();
+            newReviewer.user = newUser;
+            newReviewer.approved = false;
+
+            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            pullRequest.id = 1;
+            pullRequest.targetRepository = project;
+            pullRequest.reviewers = [reviewer];
+
+            var changedPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            changedPullRequest.id = 1;
+            changedPullRequest.targetRepository = project;
+            changedPullRequest.reviewers = [newReviewer];
+
+            pullRequestRepositoryOne.pullRequests = [pullRequest];
+            var actual: boolean = pullRequestRepositoryOne.hasAssignmentChanged(changedPullRequest);
+            expect(actual).toBeTruthy();
+        });
+
         describe('with chrome events', () => {
             it('should emit chrome event on pull request collection change', () => {
                 var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
