@@ -3,7 +3,6 @@
 module BitbucketNotifier {
     'use strict';
 
-    // @todo Are the setters event necessary here?
     export class Config {
         static $inject: Array<string> = ['localStorageService'];
 
