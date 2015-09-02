@@ -18,4 +18,6 @@ module BitbucketNotifier {
 
     application.service('PullRequestRepository', PullRequestRepository);
     application.service('Config', Config);
+
+    application.value('bitbucketUrl', 'https://bitbucket.org');
 }

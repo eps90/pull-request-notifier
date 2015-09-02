@@ -10,6 +10,8 @@ module BitbucketNotifier {
     application.directive('navigationBar', NavigationBarComponent.factory());
     application.service('Config', Config);
 
+    application.value('bitbucketUrl', 'https://bitbucket.org');
+
     application.config(['growlProvider', (growlProvider: angular.growl.IGrowlProvider) => {
         growlProvider.globalPosition('top-center');
         growlProvider.globalTimeToLive(5000);
