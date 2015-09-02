@@ -7,7 +7,7 @@ module BitbucketNotifier {
         restrict: string =  'E';
         templateUrl: string = '../components/options_component/options_component.html';
 
-        constructor(private config: Config) {}
+        constructor(private config: Config, private growl: angular.growl.IGrowlService) {}
 
         link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
             scope['options'] = {
@@ -18,12 +18,13 @@ module BitbucketNotifier {
             scope['saveOptions'] = () => {
                 this.config.setUsername(scope['options'].appUser);
                 this.config.setSocketServerAddress(scope['options'].socketServerAddress);
+                this.growl.success('Settings applied!');
             };
         };
 
         static factory(): ng.IDirectiveFactory {
-            var component = (config) => new OptionsComponent(config);
-            component.$inject = ['Config'];
+            var component = (config, growl) => new OptionsComponent(config, growl);
+            component.$inject = ['Config', 'growl'];
             return component;
         }
     }
