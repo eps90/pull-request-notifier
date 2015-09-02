@@ -65,7 +65,8 @@ module BitbucketNotifier {
             var options = {
                 title: 'Your pull request has been approved',
                 message: pullRequest.title,
-                contextMessage: 'by ' + actor.displayName
+                contextMessage: 'by ' + actor.displayName,
+                iconUrl: '../../assets/img/bitbucket_approved.png'
             };
             var notificationId = this.getNotificationId(pullRequest);
 
