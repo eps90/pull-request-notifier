@@ -110,7 +110,7 @@ module.exports = function(grunt) {
         watch: {
             dist: {
                 files: ['app/**/*.ts', 'app/**/*.css', 'app/**/*.html', 'assets/**/*.less', 'app/**/*.less'],
-                tasks: ['build']
+                tasks: ['dist']
             }
         },
         karma: {
@@ -228,11 +228,10 @@ module.exports = function(grunt) {
         grunt.log.ok('Update manifest XML created');
     });
 
-    grunt.registerTask('dist', ['clean:build', 'typescript:build', 'copy:build']);
-    grunt.registerTask('test', ['clean:test', 'typescript:test', 'copy:test', 'karma']);
-    grunt.registerTask('default', ['build', 'watch:dist']);
-    grunt.registerTask('build', [
-        'dist',
+    grunt.registerTask('dist', [
+        'clean:build',
+        'typescript:build',
+        'copy:build',
         'useminPrepare',
         'ngtemplates',
         'less:generated',
@@ -240,7 +239,12 @@ module.exports = function(grunt) {
         'uglify:generated',
         'cssmin:generated',
         'filerev',
-        'usemin',
+        'usemin'
+    ]);
+    grunt.registerTask('test', ['clean:test', 'typescript:test', 'copy:test', 'karma']);
+    grunt.registerTask('default', ['dist', 'watch:dist']);
+    grunt.registerTask('build', [
+        'dist',
         'copy:dist',
         'update:manifest',
         'crx:dist',
