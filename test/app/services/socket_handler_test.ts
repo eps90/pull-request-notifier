@@ -27,6 +27,7 @@ describe('SocketHandler', () => {
         });
 
         $p.value('Indicator', {
+            reset: jasmine.createSpy('Indicator.reset'),
             setText: jasmine.createSpy('Indicator.setText')
         });
 
@@ -246,7 +247,7 @@ describe('SocketHandler', () => {
             expect(indicator.setText).toHaveBeenCalledWith('1');
 
             socket.receive('disconnect');
-            expect(indicator.setText).toHaveBeenCalledWith('?');
+            expect(indicator.reset).toHaveBeenCalled();
         });
     });
 });
