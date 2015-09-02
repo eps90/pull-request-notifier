@@ -25,7 +25,7 @@ module BitbucketNotifier {
 
             this.socket.on('disconnect', () => {
                 this.pullRequestRepository.setPullRequests([]);
-                this.indicator.setText('?');
+                this.indicator.reset();
             });
 
             this.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
