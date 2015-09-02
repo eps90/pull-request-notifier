@@ -1,6 +1,8 @@
 ///<reference path="../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     export class NotificationRepository {
         private notifications: Array<Notification> = [];
 

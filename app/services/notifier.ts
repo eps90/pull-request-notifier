@@ -33,9 +33,10 @@ module BitbucketNotifier {
                 contextMessage: '',
                 priority: 2
             };
-            var targetOpts = _.extend(defaultOptions, opts);
-            this.chrome.notifications.create(notificationId, targetOpts);
-            this.notificationRepository.add(notificationId, pullRequestLink);
+           var targetOpts = _.extend(defaultOptions, opts);
+
+           this.chrome.notifications.create(notificationId, targetOpts);
+           this.notificationRepository.add(notificationId, pullRequestLink);
         }
 
         notifyNewPullRequestAssigned(pullRequest: PullRequest): void {
