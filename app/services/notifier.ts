@@ -16,15 +16,6 @@ module BitbucketNotifier {
         static $inject: Array<string> = ['NotificationRepository'];
 
         private chrome: any;
-        private defaultOptions: NotificationOptions = {
-            type: 'basic',
-            iconUrl: '../../assets/img/bitbucket_logo_raster.jpg',
-            title: '',
-            message: '',
-            contextMessage: '',
-            priority: 2
-        };
-
         constructor(private notificationRepository: NotificationRepository) {
             this.chrome = window['chrome'];
             this.chrome.notifications.onClicked.addListener((notificationId) => {
@@ -34,7 +25,15 @@ module BitbucketNotifier {
         }
 
         notify(opts: NotificationOptions, notificationId: string, pullRequestLink: string): void {
-            var targetOpts = _.assign(this.defaultOptions, opts);
+           var defaultOptions: NotificationOptions = {
+                type: 'basic',
+                iconUrl: '../../assets/img/bitbucket_logo_raster.jpg',
+                title: '',
+                message: '',
+                contextMessage: '',
+                priority: 2
+            };
+            var targetOpts = _.extend(defaultOptions, opts);
             this.chrome.notifications.create(notificationId, targetOpts);
             this.notificationRepository.add(notificationId, pullRequestLink);
         }
