@@ -27,7 +27,7 @@ module BitbucketNotifier {
         notify(opts: NotificationOptions, notificationId: string, pullRequestLink: string): void {
            var defaultOptions: NotificationOptions = {
                 type: 'basic',
-                iconUrl: '../../assets/img/bitbucket_logo_raster.jpg',
+                iconUrl: '../../assets/img/bitbucket_logo_raw.png',
                 title: '',
                 message: '',
                 contextMessage: '',
