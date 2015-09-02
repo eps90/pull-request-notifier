@@ -125,6 +125,7 @@ describe('Notifier', () => {
         expectedOptions.title = 'Your pull request has been approved';
         expectedOptions.message = pullRequest.title;
         expectedOptions.contextMessage = 'by John Smith';
+        expectedOptions.iconUrl = '../../assets/img/bitbucket_approved.png';
 
         notifier.notifyPullRequestApproved(pullRequest, mergingUser);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
