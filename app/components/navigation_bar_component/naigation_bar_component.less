@@ -1,0 +1,25 @@
+@import '../../../assets/less/_variables';
+
+.navbar-default {
+    background-color: @darkBlue;
+    border-color: @darkerBlue;
+
+    .navbar-brand {
+        color: @white;
+        font-weight: bold;
+        font-size: @navbarFontSize;
+
+        &:hover, &:focus {
+            background-color: @lightBlue;
+            color: @white;
+        }
+    }
+
+    .navbar-text {
+        color: @white;
+    }
+
+    .navbar-right {
+        margin-right: 0;
+    }
+}
