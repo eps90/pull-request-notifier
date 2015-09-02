@@ -107,6 +107,9 @@ module.exports = function(grunt) {
             },
             test: {
                 src: ['<%= project.buildDir %>']
+            },
+            dist: {
+                src: ['<%= project.distDir %>/assets', '<%= project.distDir %>/dist', '<%= project.distDir %>/manifest.json']
             }
         },
         watch: {
@@ -276,7 +279,8 @@ module.exports = function(grunt) {
         'copy:dist',
         'update:manifest',
         'crx:dist',
-        'update:xml'
+        'update:xml',
+        'clean:dist'
     ]);
 
     function lessCreateConfig(context, block) {
