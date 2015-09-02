@@ -7,11 +7,15 @@ module BitbucketNotifier {
         DEFAULT_BADGE: string = '?';
 
         constructor() {
-            window['chrome'].browserAction.setBadgeText({text: this.DEFAULT_BADGE});
+            this.reset();
         }
 
         setText(badgeContent: string): void {
             window['chrome'].browserAction.setBadgeText({text: badgeContent});
+        }
+
+        reset(): void {
+            window['chrome'].browserAction.setBadgeText({text: this.DEFAULT_BADGE});
         }
     }
 }
