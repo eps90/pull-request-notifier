@@ -199,8 +199,8 @@ module.exports = function(grunt) {
     grunt.registerTask('update:manifest', function () {
         var file = 'dist/manifest.json';
         var contents = grunt.file.readJSON(file);
-        contents.background.page = '<%= project.distDir %>/views/background.html';
-        contents.options_page = '<%= project.distDir %>/views/options.html';
+        contents.background.page = grunt.config.get('project.distDir') + '/views/background.html';
+        contents.options_page = grunt.config.get('project.distDir') + '/views/options.html';
         contents.browser_action.default_popup = 'dist/views/popup.html';
         grunt.file.write(file, JSON.stringify(contents, null, 2))
     });
