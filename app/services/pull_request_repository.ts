@@ -2,7 +2,7 @@
 
 module BitbucketNotifier {
     'use strict';
-    
+
     // @todo Move event handling to some "Chrome events handler/emitter"
     export class PullRequestRepository {
         static $inject: Array<string> = ['$rootScope'];

@@ -30,7 +30,7 @@ describe("NavigationBarComponent", () => {
         '$rootScope',
         ($c, $r: ng.IRootScopeService) => {
             $compile = $c;
-            $scope = $r.$new()
+            $scope = $r.$new();
         }
     ]));
 
