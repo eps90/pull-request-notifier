@@ -29,7 +29,7 @@ module.exports = function(grunt) {
             buildDir: 'build',
             distDir: 'dist',
             // @todo To change
-            privateKeyPath: '../bitbucket-notifier-chrome.pem',
+            privateKeyPath: process.env.CRX_PEM_PATH || '../bitbucket-notifier-chrome.pem',
             // @todo To change
             destinationPackageServer: 'http://example.com',
             destinationPackagePath: '<%= project.distDir %>/<%= project.appName %>.crx',
