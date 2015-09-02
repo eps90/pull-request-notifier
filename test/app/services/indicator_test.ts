@@ -28,4 +28,10 @@ describe('Indicator', () => {
         indicator.setText(badgeText);
         expect(window['chrome'].browserAction.setBadgeText).toHaveBeenCalledWith({text: badgeText});
     });
+
+    it('should be able to set default by resetting', () => {
+        window['chrome'].browserAction.setBadgeText.calls.reset();
+        indicator.reset();
+        expect(window['chrome'].browserAction.setBadgeText).toHaveBeenCalledWith({text: '?'});
+    });
 });
