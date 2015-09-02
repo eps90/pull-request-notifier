@@ -21,6 +21,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-tslint');
     grunt.loadNpmTasks('grunt-crx');
+    grunt.loadNpmTasks('grunt-shipit');
+    grunt.loadNpmTasks('shipit-deploy');
 
     grunt.initConfig({
         project: {
@@ -193,7 +195,33 @@ module.exports = function(grunt) {
                     privateKey: '<%= project.privateKeyPath %>'
                 }
             }
+        },
+        shipit: {
+            options: {
+                workspace: '/tmp/bitbucket-notifier-chrome',
+                deployTo: '/tmp/bitbucket-notifier-chrome',
+                dirToCopy: 'dist',
+                repositoryUrl: 'git@bitbucket.org:dacsoftware/bitbucket-notifier-chrome-extension.git',
+                ignores: ['.git', 'node_modules'],
+                keepReleases: 3
+            },
+            staging: {
+                servers: 'root@127.0.0.1'
+            }
         }
+    });
+
+
+    grunt.registerTask('deploy:install', function () {
+        grunt.shipit.local('npm install', {cwd: grunt.shipit.config.workspace}, this.async());
+    });
+
+    grunt.registerTask('deploy:compile', function () {
+        grunt.shipit.local('grunt build', {cwd: grunt.shipit.config.workspace}, this.async());
+    });
+
+    grunt.shipit.on('fetched', function () {
+        grunt.task.run(['deploy:install', 'deploy:compile']);
     });
 
     grunt.registerTask('update:manifest', function () {
