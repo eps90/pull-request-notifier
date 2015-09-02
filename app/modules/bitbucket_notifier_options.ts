@@ -7,6 +7,7 @@ module BitbucketNotifier {
 
     application.directive('options', OptionsComponent.factory());
     application.directive('sectionTitle', SectionTitleComponent.factory());
+    application.directive('navigationBar', NavigationBarComponent.factory());
     application.service('Config', Config);
 
     application.config(['growlProvider', (growlProvider: angular.growl.IGrowlProvider) => {
