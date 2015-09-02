@@ -8,4 +8,10 @@ module BitbucketNotifier {
     application.directive('options', OptionsComponent.factory());
     application.directive('sectionTitle', SectionTitleComponent.factory());
     application.service('Config', Config);
+
+    application.config(['growlProvider', (growlProvider: angular.growl.IGrowlProvider) => {
+        growlProvider.globalPosition('top-center');
+        growlProvider.globalTimeToLive(5000);
+        growlProvider.globalDisableCountDown(true);
+    }]);
 }
