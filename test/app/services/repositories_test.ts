@@ -125,7 +125,12 @@ describe('Repositories', () => {
 
                 pullRequestRepositoryOne.setPullRequests(pullRequestsList);
                 expect(window['chrome'].extension.sendMessage)
-                    .toHaveBeenCalledWith({type: BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: pullRequestsList});
+                    .toHaveBeenCalledWith(
+                        new BitbucketNotifier.ChromeExtensionEvent(
+                            BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS,
+                            pullRequestsList
+                        )
+                    );
             });
 
             it('should listen to event to update pull requests', () => {
@@ -145,7 +150,12 @@ describe('Repositories', () => {
                     postMessage: jasmine.createSpy('port.postMessage')
                 };
                 connectionFunc(port);
-                expect(port.postMessage).toHaveBeenCalledWith([pullRequest]);
+                expect(port.postMessage).toHaveBeenCalledWith(
+                    new BitbucketNotifier.ChromeExtensionEvent(
+                        BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS,
+                        [pullRequest]
+                    )
+                );
             });
 
             it('should receive all pull requests on connection', () => {
@@ -153,7 +163,12 @@ describe('Repositories', () => {
                 var pullRequestsList = [pullRequest];
 
                 expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
-                connectPortFn(pullRequestsList);
+                connectPortFn(
+                    new BitbucketNotifier.ChromeExtensionEvent(
+                        BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS,
+                        pullRequestsList
+                    )
+                );
                 expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
             });
         });
