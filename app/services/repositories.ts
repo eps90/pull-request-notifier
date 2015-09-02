@@ -2,8 +2,7 @@
 
 module BitbucketNotifier {
     'use strict';
-
-    // @todo Make event object more standarized
+    
     // @todo Move event handling to some "Chrome events handler/emitter"
     export class PullRequestRepository {
         static $inject: Array<string> = ['$rootScope'];
@@ -12,17 +11,17 @@ module BitbucketNotifier {
 
         constructor(private $rootScope: ng.IRootScopeService) {
             window['chrome'].extension.onConnect.addListener((port) => {
-                port.postMessage(this.pullRequests);
+                port.postMessage(new ChromeExtensionEvent(ChromeExtensionEvent.UPDATE_PULLREQUESTS, this.pullRequests));
             });
 
             var port = window['chrome'].extension.connect({name: "Bitbucket Notifier"});
-            port.onMessage.addListener((message) => {
+            port.onMessage.addListener((message: ChromeExtensionEvent) => {
                 this.$rootScope.$apply(() => {
-                    this.pullRequests = message;
+                    this.pullRequests = message.content;
                 });
             });
 
-            window['chrome'].extension.onMessage.addListener((message) => {
+            window['chrome'].extension.onMessage.addListener((message: ChromeExtensionEvent) => {
                 if (message.type === ChromeExtensionEvent.UPDATE_PULLREQUESTS) {
                     $rootScope.$apply(() => {
                         this.pullRequests = message.content;
@@ -33,7 +32,12 @@ module BitbucketNotifier {
 
         setPullRequests(pullRequests: Array<PullRequest>): void {
             this.pullRequests = pullRequests;
-            window['chrome'].extension.sendMessage({type: ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: this.pullRequests});
+            window['chrome'].extension.sendMessage(
+                new ChromeExtensionEvent(
+                    ChromeExtensionEvent.UPDATE_PULLREQUESTS,
+                    this.pullRequests
+                )
+            );
         }
 
         hasAssignmentChanged(newPullRequest: PullRequest): boolean {

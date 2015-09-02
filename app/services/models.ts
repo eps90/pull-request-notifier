@@ -77,6 +77,13 @@ module BitbucketNotifier {
 
     export class ChromeExtensionEvent {
         static UPDATE_PULLREQUESTS: string = 'backend:update_pullrequests';
+        type: string = '';
+        content: any;
+
+        constructor(type: string, content: any = {}) {
+            this.type = type;
+            this.content = content;
+        }
     }
 
     export class ConfigObject {
