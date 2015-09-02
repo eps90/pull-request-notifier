@@ -10,7 +10,7 @@ describe('Notifier', () => {
     beforeEach(() => {
         expectedOptions = {
             type: 'basic',
-            iconUrl: '../../assets/img/bitbucket_logo_raster.jpg',
+            iconUrl: '../../assets/img/bitbucket_logo_raw.png',
             title: '',
             message: '',
             contextMessage: '',
