@@ -8,7 +8,7 @@ module BitbucketNotifier {
     export class SocketHandler {
         static $inject: Array<string> = ['SocketManager', 'Config', 'PullRequestRepository', 'Notifier', 'Indicator'];
         constructor(
-            private socket,
+            private socketManager: BitbucketNotifier.SocketManager,
             private config: Config,
             private pullRequestRepository: PullRequestRepository,
             private notifier: Notifier,
@@ -18,17 +18,17 @@ module BitbucketNotifier {
         }
 
         private initListeners(): void {
-            this.socket.on('connect', () => {
+            this.socketManager.socket.on('connect', () => {
                 var loggedInUser = this.config.getUsername();
-                this.socket.emit(SocketClientEvent.INTRODUCE, loggedInUser);
+                this.socketManager.socket.emit(SocketClientEvent.INTRODUCE, loggedInUser);
             });
 
-            this.socket.on('disconnect', () => {
+            this.socketManager.socket.on('disconnect', () => {
                 this.pullRequestRepository.setPullRequests([]);
                 this.indicator.reset();
             });
 
-            this.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
+            this.socketManager.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
                 var loggedInUser = this.config.getUsername();
                 this.pullRequestRepository.setPullRequests(userPrs.pullRequests);
                 this.indicator.setText(this.pullRequestRepository.pullRequests.length.toString());
@@ -44,7 +44,7 @@ module BitbucketNotifier {
                 }
             });
 
-            this.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: BitbucketNotifier.PullRequestEvent) => {
+            this.socketManager.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: BitbucketNotifier.PullRequestEvent) => {
                 var loggedInUser = this.config.getUsername();
 
                 var contextPr: PullRequest = userPrs.context;
