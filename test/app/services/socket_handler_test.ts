@@ -2,7 +2,7 @@
 
 describe('SocketHandler', () => {
     var socketHandler,
-        socket,
+        socketManager: BitbucketNotifier.SocketManager,
         config: BitbucketNotifier.Config,
         pullRequestRepository: BitbucketNotifier.PullRequestRepository,
         notifier: BitbucketNotifier.Notifier,
@@ -52,7 +52,7 @@ describe('SocketHandler', () => {
         'Indicator',
         (sh, s, c, prr, n, i) => {
             socketHandler = sh;
-            socket = s;
+            socketManager = s;
             config = c;
             pullRequestRepository = prr;
             notifier = n;
@@ -61,9 +61,9 @@ describe('SocketHandler', () => {
     ]));
 
     it('should emit client:introduce event with logged in user, on connection', () => {
-        socket.receive('connect');
-        expect(socket.emits).toEqual(jasmine.objectContaining({'client:introduce': jasmine.anything()}));
-        expect(socket.emits[BitbucketNotifier.SocketClientEvent.INTRODUCE][0]).toEqual(['john.smith']);
+        socketManager.socket.receive('connect');
+        expect(socketManager.socket.emits).toEqual(jasmine.objectContaining({'client:introduce': jasmine.anything()}));
+        expect(socketManager.socket.emits[BitbucketNotifier.SocketClientEvent.INTRODUCE][0]).toEqual(['john.smith']);
     });
 
     it('should update pull request repository on server:pullrequests:updated', () => {
@@ -73,13 +73,13 @@ describe('SocketHandler', () => {
         userPullRequest.pullRequests = [pullRequest];
         userPullRequest.context = pullRequest;
 
-        socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, userPullRequest);
+        socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, userPullRequest);
 
         expect(pullRequestRepository.setPullRequests).toHaveBeenCalledWith([pullRequest]);
     });
 
     it('should clean pull request repository on disconnection', () => {
-        socket.receive('disconnect');
+        socketManager.socket.receive('disconnect');
         expect(pullRequestRepository.setPullRequests).toHaveBeenCalledWith([]);
     });
 
@@ -115,7 +115,7 @@ describe('SocketHandler', () => {
 
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
                 var stub: jasmine.Spy = <jasmine.Spy> notifier.notifyNewPullRequestAssigned;
                 expect(stub.calls.count()).toEqual(1);
             });
@@ -132,7 +132,7 @@ describe('SocketHandler', () => {
 
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest);
             });
         });
@@ -148,7 +148,7 @@ describe('SocketHandler', () => {
                 pullRequest.author = annaKowalsky;
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest);
             });
 
@@ -156,7 +156,7 @@ describe('SocketHandler', () => {
                 pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_CREATED;
                 pullRequest.author = johnSmith;
 
-                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
             });
 
@@ -170,7 +170,7 @@ describe('SocketHandler', () => {
                 pullRequest.author = annaKowalsky;
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
             });
         });
@@ -180,7 +180,7 @@ describe('SocketHandler', () => {
                 pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_FULFILLED;
                 pullRequest.author = johnSmith;
 
-                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestMerged).toHaveBeenCalledWith(pullRequest);
             });
 
@@ -193,7 +193,7 @@ describe('SocketHandler', () => {
                 loggedInReviewer.approved = false;
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestMerged).not.toHaveBeenCalled();
             });
         });
@@ -204,7 +204,7 @@ describe('SocketHandler', () => {
                 pullRequest.author = johnSmith;
                 pullRequestEvent.actor = annaKowalsky;
 
-                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestApproved).toHaveBeenCalledWith(pullRequest, annaKowalsky);
             });
 
@@ -213,7 +213,7 @@ describe('SocketHandler', () => {
                 pullRequest.author = annaKowalsky;
                 pullRequestEvent.actor = johnSmith;
 
-                socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestApproved).not.toHaveBeenCalled();
             });
         });
@@ -225,7 +225,7 @@ describe('SocketHandler', () => {
             var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
             pullRequestRepository.pullRequests = [pullRequest];
 
-            socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
+            socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
             expect(indicator.setText).toHaveBeenCalledWith('1');
         });
 
@@ -234,7 +234,7 @@ describe('SocketHandler', () => {
             var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
             pullRequestRepository.pullRequests = [pullRequest];
 
-            socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+            socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
             expect(indicator.setText).toHaveBeenCalledWith('1');
         });
 
@@ -243,10 +243,10 @@ describe('SocketHandler', () => {
             var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
             pullRequestRepository.pullRequests = [pullRequest];
 
-            socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+            socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
             expect(indicator.setText).toHaveBeenCalledWith('1');
 
-            socket.receive('disconnect');
+            socketManager.socket.receive('disconnect');
             expect(indicator.reset).toHaveBeenCalled();
         });
     });

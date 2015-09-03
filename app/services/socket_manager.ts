@@ -2,13 +2,18 @@
 
 module BitbucketNotifier {
     'use strict';
+    
+    export class SocketManager {
+        static $inject: string[] = ['socketFactory', 'Config'];
 
-    export function SocketManager(socketFactory, config: Config): any {
-        var socket = io.connect(config.getSocketServerAddress());
-        return socketFactory({
-            ioSocket: socket
-        });
+        private connection: SocketIOClient.Socket;
+        public socket;
+
+        constructor(private socketFactory, config: Config) {
+            this.connection = io.connect(config.getSocketServerAddress());
+            this.socket = socketFactory({
+                ioSocket: this.connection
+            });
+        }
     }
-
-    SocketManager.$inject = ['socketFactory', 'Config'];
 }
