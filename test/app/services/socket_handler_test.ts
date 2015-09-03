@@ -45,7 +45,7 @@ describe('SocketHandler', () => {
     }]));
     beforeEach(inject([
         'SocketHandler',
-        'Socket',
+        'SocketManager',
         'Config',
         'PullRequestRepository',
         'Notifier',

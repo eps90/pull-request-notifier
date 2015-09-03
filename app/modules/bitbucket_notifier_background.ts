@@ -9,7 +9,7 @@ module BitbucketNotifier {
 
     application.service('PullRequestRepository', PullRequestRepository);
     application.service('NotificationRepository', NotificationRepository);
-    application.factory('Socket', Socket);
+    application.factory('SocketManager', SocketManager);
     application.service('SocketHandler', SocketHandler);
     application.service('Notifier', Notifier);
     application.service('Config', Config);
