@@ -2,7 +2,7 @@
 ///<reference path="services/models.ts"/>
 ///<reference path="services/pull_request_repository.ts"/>
 ///<reference path="services/notification_repository.ts"/>
-///<reference path="services/socket.ts"/>
+///<reference path="services/socket_manager.ts"/>
 ///<reference path="services/socket_handler.ts"/>
 ///<reference path="services/notifier.ts"/>
 ///<reference path="services/config.ts"/>

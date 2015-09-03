@@ -6,7 +6,7 @@ module BitbucketNotifier {
     // @todo TO REFACTOR!!!
     // @todo Move socket handling into another service?
     export class SocketHandler {
-        static $inject: Array<string> = ['Socket', 'Config', 'PullRequestRepository', 'Notifier', 'Indicator'];
+        static $inject: Array<string> = ['SocketManager', 'Config', 'PullRequestRepository', 'Notifier', 'Indicator'];
         constructor(
             private socket,
             private config: Config,
