@@ -20,5 +20,6 @@
     "page": "build/views/background.html",
     "persistent": true
   },
-  "options_page": "build/views/options.html"
+  "options_page": "build/views/options.html",
+  "update_url": "http://bitbucket-notifier.kubaturek.pl/update.xml"
 }
