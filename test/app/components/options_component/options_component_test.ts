@@ -32,6 +32,7 @@ describe('OptionsComponent', () => {
 
             $provide.value('growl', {
                 success: jasmine.createSpy('growl.success'),
+                warning: jasmine.createSpy('growl.warning'),
                 inlineMessages: jasmine.createSpy('growl.inlineMessages'),
                 position: jasmine.createSpy('growl.position')
             });
@@ -116,5 +117,21 @@ describe('OptionsComponent', () => {
         saveButton.triggerHandler('click');
 
         expect(growl.success).toHaveBeenCalled();
+    });
+
+    it('should show warning that extension will soon reboot', () => {
+        element = $compile('<options></options>')($scope);
+        $scope.$digest();
+
+        var username = 'aaaaa';
+        var address = 'bbbbb';
+
+        element.find('#app-user').val(username).trigger('input');
+        element.find('#socket-server-address').val(address).trigger('input');
+
+        var saveButton = element.find('#submit');
+        saveButton.triggerHandler('click');
+
+        expect(growl.warning).toHaveBeenCalled();
     });
 });
