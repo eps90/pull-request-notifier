@@ -19,6 +19,15 @@ module BitbucketNotifier {
                 this.config.setUsername(scope['options'].appUser);
                 this.config.setSocketServerAddress(scope['options'].socketServerAddress);
                 this.growl.success('Settings applied!');
+                this.growl.warning(
+                    'Extension will reboot in in 5 seconds',
+                    {
+                        disableCountDown: false,
+                        onclose: () => {
+                            window['chrome'].runtime.reload();
+                        }
+                    }
+                );
             };
         };
 
