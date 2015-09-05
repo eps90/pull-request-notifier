@@ -23,6 +23,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-crx');
     grunt.loadNpmTasks('grunt-shipit');
     grunt.loadNpmTasks('shipit-deploy');
+    grunt.loadNpmTasks('grunt-bump');
 
     grunt.initConfig({
         project: {
@@ -199,6 +200,16 @@ module.exports = function(grunt) {
                 }
             }
         },
+        bump: {
+            options: {
+                files: ['package.json'],
+                commit: false,
+                push: false,
+                tagName: 'v%VERSION%',
+                tagMessage: 'Release version v%VERSION%'
+            }
+        },
+
         shipit: {
             options: {
                 workspace: '/tmp/bitbucket-notifier-chrome',
