@@ -1,6 +1,6 @@
 ///<reference path="../../../app/_typings.ts"/>
 
-describe('Notifier', () => {
+fdescribe('Notifier', () => {
     var notifier: BitbucketNotifier.Notifier,
         expectedOptions,
         notificationRepostory: BitbucketNotifier.NotificationRepository,
@@ -21,9 +21,7 @@ describe('Notifier', () => {
     beforeEach(() => {
         window['chrome'] = {
             notifications: {
-                create: (): any => {
-                    return true;
-                },
+                create: jasmine.createSpy('chrome.notifications.create'),
                 onClicked: {
                     addListener: jasmine.createSpy('chrome.notifications.onClicked.addListener').and.callFake((fn) => {
                         onClickedStub = fn;
@@ -56,8 +54,6 @@ describe('Notifier', () => {
     ]));
 
     it('should create notificaion via Chrome API', () => {
-        spyOn(window['chrome'].notifications, 'create');
-
         expectedOptions.title = 'Test title';
         var notificationId = 'aaabbbb';
         var notificationLink = 'http://example.com';
@@ -79,8 +75,6 @@ describe('Notifier', () => {
     });
 
     it('should notify about new pull request', () => {
-        spyOn(window['chrome'].notifications, 'create');
-
         var author = new BitbucketNotifier.User();
         author.displayName = 'John Smith';
 
@@ -98,7 +92,6 @@ describe('Notifier', () => {
     });
 
     it('should notify about merged pull request', () => {
-        spyOn(window['chrome'].notifications, 'create');
         var author = new BitbucketNotifier.User();
         author.displayName = 'John Smith';
 
@@ -115,7 +108,6 @@ describe('Notifier', () => {
     });
 
     it('should notify about approvals', () => {
-        spyOn(window['chrome'].notifications, 'create');
         var mergingUser = new BitbucketNotifier.User();
         mergingUser.displayName = 'John Smith';
 
