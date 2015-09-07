@@ -28,6 +28,10 @@ module BitbucketNotifier {
                 this.indicator.reset();
             });
 
+            this.socketManager.socket.on(SocketServerEvent.REMIND, (pullRequest: PullRequest) => {
+                this.notifier.notifyReminder(pullRequest);
+            });
+
             this.socketManager.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
                 var loggedInUser = this.config.getUsername();
                 this.pullRequestRepository.setPullRequests(userPrs.pullRequests);

@@ -14,7 +14,8 @@ describe('SocketHandler', () => {
         $p.value('Notifier', {
             notifyNewPullRequestAssigned: jasmine.createSpy('notifyNewPullRequestAssigned'),
             notifyPullRequestMerged: jasmine.createSpy('notifyPullRequestMerged'),
-            notifyPullRequestApproved: jasmine.createSpy('notifyPullRequestApproved')
+            notifyPullRequestApproved: jasmine.createSpy('notifyPullRequestApproved'),
+            notifyReminder: jasmine.createSpy('notifyReminder')
         });
 
         $p.value('Config', {
@@ -215,6 +216,13 @@ describe('SocketHandler', () => {
 
                 socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestApproved).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('on reminder', () => {
+            it('should notify assignee with reminder about pull request', () => {
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.REMIND, pullRequest);
+                expect(notifier.notifyReminder).toHaveBeenCalledWith(pullRequest);
             });
         });
     });
