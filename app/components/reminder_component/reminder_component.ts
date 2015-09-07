@@ -8,8 +8,15 @@ module BitbucketNotifier {
             pullRequest: '='
         };
 
-        link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
-
+        link: ng.IDirectiveLinkFn = (scope: ng.IScope, element: ng.IAugmentedJQuery) => {
+            scope['remind'] = () => {
+                window['chrome'].extension.sendMessage(
+                    new ChromeExtensionEvent(
+                        ChromeExtensionEvent.REMIND,
+                        scope['pullRequest']
+                    )
+                );
+            };
         };
 
         static factory(): ng.IDirectiveFactory {
