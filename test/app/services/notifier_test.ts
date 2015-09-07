@@ -1,6 +1,6 @@
 ///<reference path="../../../app/_typings.ts"/>
 
-fdescribe('Notifier', () => {
+describe('Notifier', () => {
     var notifier: BitbucketNotifier.Notifier,
         expectedOptions,
         notificationRepostory: BitbucketNotifier.NotificationRepository,
@@ -120,6 +120,17 @@ fdescribe('Notifier', () => {
         expectedOptions.iconUrl = '../../assets/img/bitbucket_approved.png';
 
         notifier.notifyPullRequestApproved(pullRequest, mergingUser);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
+    });
+
+    it('should notify on reminders', () => {
+        var pullRequest = new BitbucketNotifier.PullRequest();
+        pullRequest.title = 'This is some title';
+
+        expectedOptions.title = 'Someone reminds you to review a pull request';
+        expectedOptions.message = pullRequest.title;
+
+        notifier.notifyReminder(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 });
