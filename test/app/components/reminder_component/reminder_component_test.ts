@@ -33,4 +33,22 @@ describe('ReminderComponent', () => {
         expect(remindLink.length).toEqual(1);
         expect(remindLink.find('i').first().hasClass('fa-bell')).toBeTruthy();
     });
+
+    it('should call chrome.extension.sendMessage on click', () => {
+        var pullRequest = new BitbucketNotifier.PullRequest();
+        $scope['myPr'] = pullRequest;
+
+        element = $compile('<reminder pull-request="myPr"></reminder>')($scope);
+        $scope.$digest();
+
+        var linkElement = element.find('a');
+        linkElement.triggerHandler('click');
+
+        expect(window['chrome'].extension.sendMessage).toHaveBeenCalledWith(
+            new BitbucketNotifier.ChromeExtensionEvent(
+                BitbucketNotifier.ChromeExtensionEvent.REMIND,
+                pullRequest
+            )
+        );
+    });
 });
