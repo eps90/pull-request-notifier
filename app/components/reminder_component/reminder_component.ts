@@ -1,6 +1,8 @@
 ///<reference path="../../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     export class ReminderComponent implements ng.IDirective {
         restrict: string = 'E';
         templateUrl: string = '../components/reminder_component/reminder_component.html';

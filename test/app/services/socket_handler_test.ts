@@ -53,7 +53,7 @@ describe('SocketHandler', () => {
                     })
                 }
             }
-        }
+        };
     }]));
     beforeEach(inject([
         'SocketHandler',
