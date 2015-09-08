@@ -15,6 +15,15 @@ module BitbucketNotifier {
             private indicator: Indicator
         ) {
             this.initListeners();
+            this.initChromeEvents();
+        }
+
+        private initChromeEvents(): void {
+            window['chrome'].extension.onMessage.addListener((event: ChromeExtensionEvent) => {
+                if (event.type == ChromeExtensionEvent.REMIND) {
+                    this.socketManager.socket.emit(SocketClientEvent.REMIND, event.content);
+                }
+            });
         }
 
         private initListeners(): void {

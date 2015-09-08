@@ -7,7 +7,8 @@ describe('SocketHandler', () => {
         pullRequestRepository: BitbucketNotifier.PullRequestRepository,
         notifier: BitbucketNotifier.Notifier,
         indicator: BitbucketNotifier.Indicator,
-        hasAssignmentChanged = false;
+        hasAssignmentChanged = false,
+        extensionListener: Function;
 
     beforeEach(module('bitbucketNotifier.background'));
     beforeEach(module(['$provide', ($p: ng.auto.IProvideService) => {
@@ -43,6 +44,16 @@ describe('SocketHandler', () => {
                     return hasAssignmentChanged;
                 })
         });
+
+        window['chrome'] = {
+            extension: {
+                onMessage: {
+                    addListener: jasmine.createSpy('chrome.extension.onMessage.addListener').and.callFake((fn) => {
+                        extensionListener = fn;
+                    })
+                }
+            }
+        }
     }]));
     beforeEach(inject([
         'SocketHandler',
@@ -82,6 +93,17 @@ describe('SocketHandler', () => {
     it('should clean pull request repository on disconnection', () => {
         socketManager.socket.receive('disconnect');
         expect(pullRequestRepository.setPullRequests).toHaveBeenCalledWith([]);
+    });
+
+    it('should emit client:remind on chrome event', () => {
+        var pullRequest = new BitbucketNotifier.PullRequest();
+        var chromeEvent = new BitbucketNotifier.ChromeExtensionEvent(
+            BitbucketNotifier.ChromeExtensionEvent.REMIND,
+            pullRequest
+        );
+
+        extensionListener(chromeEvent);
+        expect(socketManager.socket.emits).toEqual({'client:remind': [[pullRequest]]});
     });
 
     describe('chrome notifications', () => {
