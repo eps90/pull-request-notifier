@@ -85,7 +85,7 @@ module BitbucketNotifier {
         }
 
         private getNotificationId(pullRequest: PullRequest): string {
-            return _.uniqueId('pull_request_');
+            return _.uniqueId('pull_request_' + pullRequest.id);
         }
     }
 }
