@@ -88,6 +88,10 @@ module BitbucketNotifier {
             this.type = type;
             this.content = content;
         }
+
+        static isBackground(): boolean {
+            return window.location.href.match(/background\.html/) !== null;
+        }
     }
 
     export class ConfigObject {

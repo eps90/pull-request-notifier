@@ -22,7 +22,7 @@ module BitbucketNotifier {
             });
 
             window['chrome'].extension.onMessage.addListener((message: ChromeExtensionEvent) => {
-                if (message.type === ChromeExtensionEvent.UPDATE_PULLREQUESTS) {
+                if (message.type === ChromeExtensionEvent.UPDATE_PULLREQUESTS && !ChromeExtensionEvent.isBackground()) {
                     $rootScope.$apply(() => {
                         this.pullRequests = message.content;
                     });
