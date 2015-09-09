@@ -74,17 +74,7 @@ module BitbucketNotifier {
             if (rawObject.hasOwnProperty('reviewers') && Array.isArray(rawObject.reviewers)) {
                 pullRequest.reviewers = [];
                 for (var ridx = 0, rlen = rawObject.reviewers.length; ridx < rlen; ridx++) {
-                    var targetReviewer = new Reviewer();
-                    var currentReviewer = rawObject.reviewers[ridx];
-                    if (currentReviewer.hasOwnProperty('approved')) {
-                        targetReviewer.approved = currentReviewer.approved;
-                    }
-
-                    if (currentReviewer.hasOwnProperty('user')) {
-                        targetReviewer.user = UserFactory.create(currentReviewer.user);
-                    }
-
-                    pullRequest.reviewers.push(targetReviewer);
+                    pullRequest.reviewers.push(ReviewerFactory.create(rawObject.reviewers[ridx]));
                 }
             }
 
