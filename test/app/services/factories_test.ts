@@ -27,6 +27,23 @@ describe('Factories', () => {
         });
     });
 
+    describe('ReviewerFactory', () => {
+        it('should create a Reviewer object from raw object', () => {
+            var rawObject = {
+                user: {
+                    username: 'john.kowalsky',
+                    displayName: 'John Kowalsky'
+                },
+                approved: true
+            };
+
+            var reviewer = BitbucketNotifier.ReviewerFactory.create(rawObject);
+            expect(reviewer.user.username).toEqual('john.kowalsky');
+            expect(reviewer.user.displayName).toEqual('John Kowalsky');
+            expect(reviewer.approved).toEqual(true);
+        });
+    });
+
     describe('PullRequestFactory', () => {
         it('should create a PullRequest model object from raw object', () => {
             var rawObject = {

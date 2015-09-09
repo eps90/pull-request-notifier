@@ -29,6 +29,21 @@ module BitbucketNotifier {
         }
     }
 
+    export class ReviewerFactory {
+        static create(rawObject): Reviewer {
+            var reviewer = new Reviewer();
+            if (rawObject.hasOwnProperty('user')) {
+                reviewer.user = UserFactory.create(rawObject.user);
+            }
+
+            if (rawObject.hasOwnProperty('approved')) {
+                reviewer.approved = rawObject.approved;
+            }
+
+            return reviewer;
+        }
+    }
+
     export class PullRequestFactory {
         static create(rawObject: any): PullRequest {
             var pullRequest = new PullRequest();
