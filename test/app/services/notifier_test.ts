@@ -129,6 +129,7 @@ describe('Notifier', () => {
 
         expectedOptions.title = 'Someone reminds you to review a pull request';
         expectedOptions.message = pullRequest.title;
+        expectedOptions.iconUrl = '../../assets/img/bitbucket_reminder.png';
 
         notifier.notifyReminder(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
