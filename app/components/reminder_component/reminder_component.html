@@ -1,3 +1,7 @@
-<a href="#" class="remind-link" ng-click="remind()" tooltip="Remind assignees">
+<a href="#" class="remind-link" ng-click="remind()" tooltip="Remind assignees" ng-if="!disabled" >
     <i class="fa fa-bell"></i>
 </a>
+<a href="#" class="remind-link" disabled="disabled" ng-if="disabled" >
+    <i class="fa fa-check"></i>
+</a>
+

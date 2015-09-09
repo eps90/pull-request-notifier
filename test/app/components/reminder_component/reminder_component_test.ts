@@ -51,4 +51,29 @@ describe('ReminderComponent', () => {
             )
         );
     });
+
+    it('should lock reminder link on click', () => {
+        element = $compile('<reminder></reminder>')($scope);
+        $scope.$digest();
+
+        expect(element.isolateScope()['disabled']).toBeFalsy();
+        var linkElement = element.find('a');
+        linkElement.triggerHandler('click');
+
+        expect(element.isolateScope()['disabled']).toBeTruthy();
+    });
+
+    it('should change reminder icon on click', () => {
+        element = $compile('<reminder></reminder>')($scope);
+        $scope.$digest();
+
+        // Make sure that only one icon is shown at time
+        expect(element.find('a i.fa-check').length).toEqual(0);
+
+        var linkElement = element.find('a');
+        linkElement.triggerHandler('click');
+
+        linkElement = element.find('a');
+        expect(linkElement.find('i').hasClass('fa-check')).toBeTruthy();
+    })
 });
