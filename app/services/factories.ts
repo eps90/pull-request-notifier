@@ -44,6 +44,22 @@ module BitbucketNotifier {
         }
     }
 
+    export class PullRequestLinksFactory {
+        static create(rawObject: any): PullRequestLinks {
+            var links = new PullRequestLinks();
+
+            if (rawObject.hasOwnProperty('self')) {
+                links.self = rawObject.self;
+            }
+
+            if (rawObject.hasOwnProperty('html')) {
+                links.html = rawObject.html;
+            }
+
+            return links;
+        }
+    }
+
     export class PullRequestFactory {
         static create(rawObject: any): PullRequest {
             var pullRequest = new PullRequest();

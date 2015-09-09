@@ -44,6 +44,19 @@ describe('Factories', () => {
         });
     });
 
+    describe('PullRequestLinksFactory', () => {
+        it('should create PullRequestLinks object from raw object', () => {
+            var rawObject = {
+                self: 'http://example.com/self',
+                html: 'http://example.com/html'
+            };
+
+            var links = BitbucketNotifier.PullRequestLinksFactory.create(rawObject);
+            expect(links.self).toEqual('http://example.com/self');
+            expect(links.html).toEqual('http://example.com/html');
+        });
+    });
+
     describe('PullRequestFactory', () => {
         it('should create a PullRequest model object from raw object', () => {
             var rawObject = {
