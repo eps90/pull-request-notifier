@@ -14,4 +14,18 @@ module BitbucketNotifier {
             return user;
         }
     }
+
+    export class ProjectFactory {
+        static create(rawObject: any): Project {
+            var project = new Project();
+            if (rawObject.hasOwnProperty('name')) {
+                project.name = rawObject.name;
+            }
+            if (rawObject.hasOwnProperty('fullName')) {
+                project.fullName = rawObject.fullName;
+            }
+
+            return project;
+        }
+    }
 }
