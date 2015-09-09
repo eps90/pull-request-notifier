@@ -95,13 +95,7 @@ module BitbucketNotifier {
             }
 
             if (rawObject.hasOwnProperty('links')) {
-                if (rawObject.links.hasOwnProperty('self')) {
-                    pullRequest.links.self = rawObject.links.self;
-                }
-
-                if (rawObject.links.hasOwnProperty('html')) {
-                    pullRequest.links.html = rawObject.links.html;
-                }
+                pullRequest.links = PullRequestLinksFactory.create(rawObject.links);
             }
 
             if (rawObject.hasOwnProperty('state')) {
