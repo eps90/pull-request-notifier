@@ -13,4 +13,17 @@ describe('Factories', () => {
             expect(user.username).toEqual('john.kowalsky');
         });
     });
+
+    describe('ProjectFactory', () => {
+        it('should create Project object from raw object', () => {
+            var rawObject = {
+                name: 'Awesome project',
+                fullName: 'team_name/repo_name'
+            };
+
+            var project = BitbucketNotifier.ProjectFactory.create(rawObject);
+            expect(project.fullName).toEqual('team_name/repo_name');
+            expect(project.name).toEqual('Awesome project');
+        });
+    });
 });
