@@ -15,6 +15,15 @@ module BitbucketNotifier {
             private indicator: Indicator
         ) {
             this.initListeners();
+            this.initChromeEvents();
+        }
+
+        private initChromeEvents(): void {
+            window['chrome'].extension.onMessage.addListener((event: ChromeExtensionEvent) => {
+                if (event.type === ChromeExtensionEvent.REMIND) {
+                    this.socketManager.socket.emit(SocketClientEvent.REMIND, event.content);
+                }
+            });
         }
 
         private initListeners(): void {
@@ -26,6 +35,10 @@ module BitbucketNotifier {
             this.socketManager.socket.on('disconnect', () => {
                 this.pullRequestRepository.setPullRequests([]);
                 this.indicator.reset();
+            });
+
+            this.socketManager.socket.on(SocketServerEvent.REMIND, (pullRequest: PullRequest) => {
+                this.notifier.notifyReminder(pullRequest);
             });
 
             this.socketManager.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {

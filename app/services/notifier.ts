@@ -74,8 +74,18 @@ module BitbucketNotifier {
             this.notify(options, notificationId, pullRequest.links.html);
         }
 
+        notifyReminder(pullRequest: PullRequest): void {
+            var options = {
+                title: 'Someone reminds you to review a pull request',
+                message: pullRequest.title
+            };
+            var notificationId = this.getNotificationId(pullRequest);
+
+            this.notify(options, notificationId, pullRequest.links.html);
+        }
+
         private getNotificationId(pullRequest: PullRequest): string {
-            return _.uniqueId('pull_request_');
+            return _.uniqueId('pull_request_' + pullRequest.id);
         }
     }
 }
