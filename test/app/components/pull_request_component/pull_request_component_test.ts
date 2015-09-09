@@ -64,6 +64,7 @@ describe('PullRequestComponent', () => {
             expect(element.html()).toContain('This is a pull request');
             expect(element.html()).toContain('CRM');
             expect(element.find('approval-progress').length).toEqual(1);
+            expect(element.find('reminder').length).toEqual(1);
         });
     });
 
@@ -81,6 +82,7 @@ describe('PullRequestComponent', () => {
             expect(element.html()).toContain('This is a pull request');
             expect(element.html()).toContain('CRM');
             expect(element.find('user-vote').length).toEqual(1);
+            expect(element.find('reminder').length).toEqual(1);
         });
     });
 });

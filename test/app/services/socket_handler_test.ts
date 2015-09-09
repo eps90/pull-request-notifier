@@ -7,14 +7,16 @@ describe('SocketHandler', () => {
         pullRequestRepository: BitbucketNotifier.PullRequestRepository,
         notifier: BitbucketNotifier.Notifier,
         indicator: BitbucketNotifier.Indicator,
-        hasAssignmentChanged = false;
+        hasAssignmentChanged = false,
+        extensionListener: Function;
 
     beforeEach(module('bitbucketNotifier.background'));
     beforeEach(module(['$provide', ($p: ng.auto.IProvideService) => {
         $p.value('Notifier', {
             notifyNewPullRequestAssigned: jasmine.createSpy('notifyNewPullRequestAssigned'),
             notifyPullRequestMerged: jasmine.createSpy('notifyPullRequestMerged'),
-            notifyPullRequestApproved: jasmine.createSpy('notifyPullRequestApproved')
+            notifyPullRequestApproved: jasmine.createSpy('notifyPullRequestApproved'),
+            notifyReminder: jasmine.createSpy('notifyReminder')
         });
 
         $p.value('Config', {
@@ -42,6 +44,16 @@ describe('SocketHandler', () => {
                     return hasAssignmentChanged;
                 })
         });
+
+        window['chrome'] = {
+            extension: {
+                onMessage: {
+                    addListener: jasmine.createSpy('chrome.extension.onMessage.addListener').and.callFake((fn) => {
+                        extensionListener = fn;
+                    })
+                }
+            }
+        };
     }]));
     beforeEach(inject([
         'SocketHandler',
@@ -81,6 +93,17 @@ describe('SocketHandler', () => {
     it('should clean pull request repository on disconnection', () => {
         socketManager.socket.receive('disconnect');
         expect(pullRequestRepository.setPullRequests).toHaveBeenCalledWith([]);
+    });
+
+    it('should emit client:remind on chrome event', () => {
+        var pullRequest = new BitbucketNotifier.PullRequest();
+        var chromeEvent = new BitbucketNotifier.ChromeExtensionEvent(
+            BitbucketNotifier.ChromeExtensionEvent.REMIND,
+            pullRequest
+        );
+
+        extensionListener(chromeEvent);
+        expect(socketManager.socket.emits).toEqual({'client:remind': [[pullRequest]]});
     });
 
     describe('chrome notifications', () => {
@@ -215,6 +238,13 @@ describe('SocketHandler', () => {
 
                 socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestApproved).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('on reminder', () => {
+            it('should notify assignee with reminder about pull request', () => {
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.REMIND, pullRequest);
+                expect(notifier.notifyReminder).toHaveBeenCalledWith(pullRequest);
             });
         });
     });
