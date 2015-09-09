@@ -106,4 +106,36 @@ describe('Factories', () => {
             expect(pullRequest.links.html).toEqual('http://example.com/html');
         });
     });
+
+    describe('PullRequestEventFactory', () => {
+        it('should create a PullRequestEvent object from raw object', () => {
+            var rawObject = {
+                actor: {
+                    username: 'john.kowalsky',
+                    displayName: 'John Kowalsky'
+                },
+                sourceEvent: 'webhook:pullrequest:updated',
+                pullRequests: [
+                    {
+                        id: 1,
+                        title: 'This is some title'
+                    }
+                ],
+                context: {
+                    id: 2,
+                    title: 'This is another title'
+                }
+            };
+
+            var event = BitbucketNotifier.PullRequestEventFactory.create(rawObject);
+            expect(event.actor.username).toEqual('john.kowalsky');
+            expect(event.actor.displayName).toEqual('John Kowalsky');
+            expect(event.sourceEvent).toEqual('webhook:pullrequest:updated');
+            expect(event.pullRequests.length).toBe(1);
+            expect(event.pullRequests[0].id).toEqual(1);
+            expect(event.pullRequests[0].title).toEqual('This is some title');
+            expect(event.context.id).toEqual(2);
+            expect(event.context.title).toEqual('This is another title');
+        });
+    });
 });

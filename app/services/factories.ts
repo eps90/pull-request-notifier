@@ -115,4 +115,31 @@ module BitbucketNotifier {
             return pullRequest;
         }
     }
+
+    export class PullRequestEventFactory {
+        static create(rawObject: any): PullRequestEvent {
+            var event = new PullRequestEvent();
+            if (rawObject.hasOwnProperty('actor')) {
+                event.actor = UserFactory.create(rawObject.actor);
+            }
+
+            if (rawObject.hasOwnProperty('sourceEvent')) {
+                event.sourceEvent = rawObject.sourceEvent;
+            }
+
+            if (rawObject.hasOwnProperty('pullRequests')) {
+                event.pullRequests = [];
+                for (var prIdx = 0, prLen = rawObject.pullRequests.length; prIdx < prLen; prIdx++) {
+                    var currentPr = rawObject.pullRequests[prIdx];
+                    event.pullRequests.push(PullRequestFactory.create(currentPr));
+                }
+            }
+
+            if (rawObject.hasOwnProperty('context')) {
+                event.context = PullRequestFactory.create(rawObject.context);
+            }
+
+            return event;
+        }
+    }
 }
