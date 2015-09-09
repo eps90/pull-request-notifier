@@ -42,6 +42,8 @@ module BitbucketNotifier {
             });
 
             this.socketManager.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
+                userPrs = PullRequestEventFactory.create(userPrs);
+
                 var loggedInUser = this.config.getUsername();
                 this.pullRequestRepository.setPullRequests(userPrs.pullRequests);
                 this.indicator.setText(this.pullRequestRepository.pullRequests.length.toString());
@@ -57,12 +59,13 @@ module BitbucketNotifier {
                 }
             });
 
-            this.socketManager.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: BitbucketNotifier.PullRequestEvent) => {
+            this.socketManager.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: PullRequestEvent) => {
+                userPrs = PullRequestEventFactory.create(userPrs);
+
                 var loggedInUser = this.config.getUsername();
 
                 var contextPr: PullRequest = userPrs.context;
                 var sourceEvent: string = userPrs.sourceEvent;
-
 
                 if (sourceEvent === WebhookEvent.PULLREQUEST_UPDATED
                     && this.pullRequestRepository.hasAssignmentChanged(contextPr)
