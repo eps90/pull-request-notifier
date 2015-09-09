@@ -11,7 +11,9 @@ module BitbucketNotifier {
         };
 
         link: ng.IDirectiveLinkFn = (scope: ng.IScope, element: ng.IAugmentedJQuery) => {
+            scope['disabled'] = false;
             scope['remind'] = () => {
+                scope['disabled'] = true;
                 window['chrome'].extension.sendMessage(
                     new ChromeExtensionEvent(
                         ChromeExtensionEvent.REMIND,

@@ -4,6 +4,14 @@ a.remind-link {
     color: black;
     margin: 8px;
 
+    &[disabled] {
+        color: @lightGreen;
+        &:hover {
+            cursor: not-allowed;
+            color: darken(@lightGreen, 20%);
+        }
+    }
+
     &:hover {
         color: @darkRed;
         text-decoration: none;
