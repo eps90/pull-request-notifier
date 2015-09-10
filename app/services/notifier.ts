@@ -77,7 +77,8 @@ module BitbucketNotifier {
         notifyReminder(pullRequest: PullRequest): void {
             var options = {
                 title: 'Someone reminds you to review a pull request',
-                message: pullRequest.title
+                message: pullRequest.title,
+                iconUrl: '../../assets/img/bitbucket_reminder.png'
             };
             var notificationId = this.getNotificationId(pullRequest);
 
