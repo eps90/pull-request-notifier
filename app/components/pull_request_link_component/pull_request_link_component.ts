@@ -14,10 +14,12 @@ module BitbucketNotifier {
             var prLink = scope['pr'].links.html;
             scope['_link'] = prLink;
 
-            scope['goToPullRequest'] = () => {
-                window['chrome'].tabs.create({
-                    url: prLink
-                });
+            scope['goToPullRequest'] = ($event) => {
+                if ($event.which === 1) {
+                    window['chrome'].tabs.create({
+                        url: prLink
+                    });
+                }
             };
         };
 

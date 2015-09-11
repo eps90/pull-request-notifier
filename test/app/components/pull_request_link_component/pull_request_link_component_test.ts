@@ -65,7 +65,8 @@ describe('PullRequestLinkComponent', () => {
         $scope.$digest();
 
         var linkElement = element.find('a');
-        linkElement.triggerHandler('click');
+        var handler = <JQueryEventObject>{type: 'click', which: 1};
+        linkElement.triggerHandler(handler);
 
         expect(window['chrome'].tabs.create).toHaveBeenCalled();
         expect(newTabObj.url).toEqual(pullRequestLink);
