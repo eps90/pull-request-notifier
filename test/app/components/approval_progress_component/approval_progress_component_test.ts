@@ -99,5 +99,13 @@ describe('ApprovalProgressComponent', () => {
             expect(element.find('.progress').length).toEqual(1);
             expect(element.find('.progress-bar').css('width')).toEqual('33%');
         });
+
+        it('should allow to override progress type by passing it to attribute', () => {
+            prProgress = BitbucketNotifier.PullRequestProgress.PERCENT;
+            element = $compile('<approval-progress reviewers="reviewers" mode="progress_bar"></approval-progress>')($scope);
+            $scope.$digest();
+
+            expect(element.isolateScope()['pullRequestProgress']).toEqual('progress_bar');
+        });
     });
 });

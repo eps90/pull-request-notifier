@@ -6,7 +6,8 @@ module BitbucketNotifier {
     export class ApprovalProgressComponent implements ng.IDirective {
         restrict: string = 'E';
         scope: any = {
-            reviewers: '='
+            reviewers: '=',
+            mode: '@'
         };
         templateUrl: string = '../components/approval_progress_component/approval_progress_component.html';
 
@@ -22,7 +23,7 @@ module BitbucketNotifier {
                 0
             );
 
-            scope.pullRequestProgress = this.config.getPullRequestProgress();
+            scope.pullRequestProgress = scope.mode || this.config.getPullRequestProgress();
             scope.progress = {
                 proportions: scope.approvalsCount + '/' + scope.reviewersCount,
                 percentage: Math.floor(scope.approvalsCount / scope.reviewersCount * 100) + '%'
