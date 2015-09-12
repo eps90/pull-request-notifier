@@ -10,6 +10,22 @@ module BitbucketNotifier {
         constructor(private config: Config, private growl: angular.growl.IGrowlService) {}
 
         link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
+            var exampleReviewers = [
+                {
+                    approved: true
+                },
+                {
+                    approved: false,
+                },
+                {
+                    approved: false
+                }
+            ];
+
+            scope['examples'] = {
+                reviewers: exampleReviewers
+            };
+
             scope['options'] = {
                 appUser: this.config.getUsername(),
                 socketServerAddress: this.config.getSocketServerAddress(),
