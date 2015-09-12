@@ -4,6 +4,7 @@ describe('OptionsComponent', () => {
     var config: BitbucketNotifier.Config,
         appUser,
         socketServer,
+        pullRequestProgress,
         element: ng.IAugmentedJQuery,
         $rootScope: ng.IRootScopeService,
         $scope: ng.IScope,
@@ -18,6 +19,7 @@ describe('OptionsComponent', () => {
         ($provide: ng.auto.IProvideService) => {
             appUser = null;
             socketServer = null;
+            pullRequestProgress = BitbucketNotifier.PullRequestProgress.PROPORTIONS;
 
             $provide.value('Config', {
                 getUsername: jasmine.createSpy('Config.getUsername').and.callFake(() => {
@@ -26,8 +28,12 @@ describe('OptionsComponent', () => {
                 getSocketServerAddress: jasmine.createSpy('Config.getSocketServerAddress').and.callFake(() => {
                     return socketServer;
                 }),
+                getPullRequestProgress: jasmine.createSpy('Config.getPullRequestProgress').and.callFake(() => {
+                    return pullRequestProgress;
+                }),
                 setUsername: jasmine.createSpy('Config.setUsername'),
-                setSocketServerAddress: jasmine.createSpy('Config.setSocketServerAddress')
+                setSocketServerAddress: jasmine.createSpy('Config.setSocketServerAddress'),
+                setPullRequestProgress: jasmine.createSpy('Config.setPullRequestProgress')
             });
 
             $provide.value('growl', {
@@ -52,7 +58,7 @@ describe('OptionsComponent', () => {
         }
     ]));
 
-    it('should have title', () => {
+    it('should have a title', () => {
         element = $compile('<options></options>')($scope);
         $scope.$digest();
 
@@ -67,23 +73,28 @@ describe('OptionsComponent', () => {
 
         var userElement = element.find('#app-user');
         var socketServerElement = element.find('#socket-server-address');
+        var prProgressElement = element.find('input[name="pull-request-progress"]:checked');
 
         expect(userElement.val()).toEqual('');
         expect(socketServerElement.val()).toEqual('');
+        expect(prProgressElement.val()).toEqual(BitbucketNotifier.PullRequestProgress.PROPORTIONS);
     });
 
     it('should show completed form if config is set', () => {
         appUser = 'john.smith';
         socketServer = 'http://localhost:1234';
+        pullRequestProgress = BitbucketNotifier.PullRequestProgress.PERCENT;
 
         element = $compile('<options></options>')($scope);
         $scope.$digest();
 
         var userElement = element.find('#app-user');
         var socketServerElement = element.find('#socket-server-address');
+        var prProgressElement = element.find('input[name="pull-request-progress"]:checked');
 
         expect(userElement.val()).toEqual(appUser);
         expect(socketServerElement.val()).toEqual(socketServer);
+        expect(prProgressElement.val()).toEqual(pullRequestProgress);
     });
 
     it('should save config', () => {
@@ -95,12 +106,14 @@ describe('OptionsComponent', () => {
 
         element.find('#app-user').val(username).trigger('input');
         element.find('#socket-server-address').val(address).trigger('input');
+        element.find('input[name="pull-request-progress"][value="percent"]').click().triggerHandler('click');
 
         var saveButton = element.find('#submit');
         saveButton.triggerHandler('click');
 
         expect(config.setUsername).toHaveBeenCalledWith(username);
         expect(config.setSocketServerAddress).toHaveBeenCalledWith(address);
+        expect(config.setPullRequestProgress).toHaveBeenCalledWith(BitbucketNotifier.PullRequestProgress.PERCENT);
     });
 
     it('should show growl message on save', () => {
