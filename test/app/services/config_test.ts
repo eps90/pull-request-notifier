@@ -33,7 +33,7 @@ describe('Config', () => {
     });
 
     describe('of socket server', () => {
-        it ('should fetch an HTTP address to socket server', () => {
+        it('should fetch an HTTP address to socket server', () => {
             var address = 'http://localhost:1234';
             localStorageService.set(BitbucketNotifier.ConfigObject.SOCKET_SERVER, address);
             expect(config.getSocketServerAddress()).toEqual(address);
@@ -51,6 +51,24 @@ describe('Config', () => {
             var address = 'localhost:1234';
             config.setSocketServerAddress(address);
             expect(localStorageService.get(BitbucketNotifier.ConfigObject.SOCKET_SERVER)).toEqual(address);
+        });
+    });
+
+    describe('of pull request progress', () => {
+        it('should get a pull request progress option', () => {
+            var option = 'proportions';
+            localStorageService.set(BitbucketNotifier.ConfigObject.PULLREQUEST_PROGRESS, option);
+            expect(config.getPullRequestProgress()).toEqual(option);
+        });
+
+        it("should get 'proportions' options as default", () => {
+            expect(config.getPullRequestProgress()).toEqual('proportions');
+        });
+
+        it('should set pull request progress option', () => {
+            var option = 'percent';
+            config.setPullRequestProgress(option);
+            expect(localStorageService.get(BitbucketNotifier.ConfigObject.PULLREQUEST_PROGRESS)).toEqual(option);
         });
     });
 });
