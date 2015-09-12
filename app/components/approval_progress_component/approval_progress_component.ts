@@ -15,19 +15,34 @@ module BitbucketNotifier {
 
         link: ng.IDirectiveLinkFn = (scope: any) => {
             var reviewers: Array<Reviewer> = scope['reviewers'] || [];
-            scope.reviewersCount = reviewers.length;
-            scope.approvalsCount = reviewers.reduce(
-                (amount: number, reviewer: Reviewer) => {
-                    return amount + (reviewer.approved ? 1 : 0);
+            scope.pullRequestProgress = scope.mode || this.config.getPullRequestProgress();
+
+            scope.$watch(
+                () => {
+                    return reviewers;
                 },
-                0
+                (newValue, oldValue) => {
+                    newValue !== oldValue && updateReviewers()
+                },
+                true
             );
 
-            scope.pullRequestProgress = scope.mode || this.config.getPullRequestProgress();
-            scope.progress = {
-                proportions: scope.approvalsCount + '/' + scope.reviewersCount,
-                percentage: Math.floor(scope.approvalsCount / scope.reviewersCount * 100) + '%'
-            };
+            function updateReviewers() {
+                scope.reviewersCount = reviewers.length;
+                scope.approvalsCount = reviewers.reduce(
+                    (amount: number, reviewer: Reviewer) => {
+                        return amount + (reviewer.approved ? 1 : 0);
+                    },
+                    0
+                );
+
+                scope.progress = {
+                    proportions: scope.approvalsCount + '/' + scope.reviewersCount,
+                    percentage: Math.floor(scope.approvalsCount / scope.reviewersCount * 100) + '%'
+                };
+            }
+
+            updateReviewers();
         };
 
         static factory(): ng.IDirectiveFactory {
