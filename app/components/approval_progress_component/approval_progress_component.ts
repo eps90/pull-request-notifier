@@ -26,7 +26,7 @@ module BitbucketNotifier {
             scope.progress = {
                 proportions: scope.approvalsCount + '/' + scope.reviewersCount,
                 percentage: Math.floor(scope.approvalsCount / scope.reviewersCount * 100) + '%'
-            }
+            };
         };
 
         static factory(): ng.IDirectiveFactory {

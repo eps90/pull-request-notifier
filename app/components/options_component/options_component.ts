@@ -26,7 +26,7 @@ module BitbucketNotifier {
                     'Extension will reboot in in 5 seconds',
                     {
                         disableCountDown: false,
-                        onclose: () => {
+                        onclose: () : void => {
                             window['chrome'].runtime.reload();
                         }
                     }
