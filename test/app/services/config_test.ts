@@ -56,17 +56,17 @@ describe('Config', () => {
 
     describe('of pull request progress', () => {
         it('should get a pull request progress option', () => {
-            var option = 'proportions';
+            var option = BitbucketNotifier.PullRequestProgress.PROPORTIONS;
             localStorageService.set(BitbucketNotifier.ConfigObject.PULLREQUEST_PROGRESS, option);
             expect(config.getPullRequestProgress()).toEqual(option);
         });
 
         it("should get 'proportions' options as default", () => {
-            expect(config.getPullRequestProgress()).toEqual('proportions');
+            expect(config.getPullRequestProgress()).toEqual(BitbucketNotifier.PullRequestProgress.PROPORTIONS);
         });
 
         it('should set pull request progress option', () => {
-            var option = 'percent';
+            var option = BitbucketNotifier.PullRequestProgress.PERCENT;
             config.setPullRequestProgress(option);
             expect(localStorageService.get(BitbucketNotifier.ConfigObject.PULLREQUEST_PROGRESS)).toEqual(option);
         });
