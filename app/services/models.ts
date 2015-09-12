@@ -108,4 +108,10 @@ module BitbucketNotifier {
         notificationId: string = '';
         pullRequestHtmlLink: string = '';
     }
+
+    export class PullRequestProgress {
+        static PROPORTIONS: string = 'proportions';
+        static PERCENT: string = 'percent';
+        static PROGRESS_BAR: string = 'progress_bar';
+    }
 }
