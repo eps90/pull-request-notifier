@@ -10,6 +10,8 @@ module BitbucketNotifier {
         };
         templateUrl: string = '../components/approval_progress_component/approval_progress_component.html';
 
+        constructor(private config: Config) {}
+
         link: ng.IDirectiveLinkFn = (scope: any) => {
             var reviewers: Array<Reviewer> = scope['reviewers'] || [];
             scope.reviewersCount = reviewers.length;
@@ -19,10 +21,18 @@ module BitbucketNotifier {
                 },
                 0
             );
+
+            scope.pullRequestProgress = this.config.getPullRequestProgress();
+            scope.progress = {
+                proportions: scope.approvalsCount + '/' + scope.reviewersCount,
+                percentage: Math.floor(scope.approvalsCount / scope.reviewersCount * 100) + '%'
+            }
         };
 
         static factory(): ng.IDirectiveFactory {
-            return () => new ApprovalProgressComponent();
+            var directive = (config) => new ApprovalProgressComponent(config);
+            directive.$inject = ['Config'];
+            return directive;
         }
     }
 }
