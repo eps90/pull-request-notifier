@@ -73,6 +73,12 @@ module.exports = function(grunt) {
                         flatten: true,
                         src: ['bower_components/bootstrap/fonts/*.*', 'bower_components/fontawesome/fonts/*.*'],
                         dest: '<%= project.buildDir %>/fonts'
+                    },
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['bower_components/angular-emoji-filter/dist/emoji.png'],
+                        dest: '<%= project.buildDir %>/styles'
                     }
                 ]
             },
