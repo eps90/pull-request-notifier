@@ -1,7 +1,7 @@
 <div class="col-sm-12 pull-request">
     <div class="row" ng-if="mode == 'AUTHORED'">
         <div class="col-sm-1">{{ pullRequest.id }}</div>
-        <div class="col-sm-4" ng-bind-html="pullRequest.title | emoji"></div>
+        <div class="col-sm-4 collapsable" ng-bind-html="pullRequest.title | emoji"></div>
         <div class="col-sm-2">{{ pullRequest.targetRepository.name }}</div>
         <div class="col-sm-2">{{ pullRequest.author.displayName }}</div>
         <div class="col-sm-1">
@@ -14,7 +14,7 @@
     </div>
     <div class="row" ng-if="mode == 'ASSIGNED'">
         <div class="col-sm-1">{{ pullRequest.id }}</div>
-        <div class="col-sm-4" ng-bind-html="pullRequest.title | emoji"></div>
+        <div class="col-sm-4 collapsable" ng-bind-html="pullRequest.title | emoji"></div>
         <div class="col-sm-2">{{ pullRequest.targetRepository.name }}</div>
         <div class="col-sm-2">{{ pullRequest.author.displayName }}</div>
         <div class="col-sm-1">
