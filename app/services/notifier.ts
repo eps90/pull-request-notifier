@@ -36,8 +36,8 @@ module BitbucketNotifier {
             var targetOpts: NotificationOptions = _.extend(defaultOptions, opts);
             targetOpts.message = _.trim(targetOpts.message.replace(/:[^\s:]+:/g, ''));
 
-           this.chrome.notifications.create(notificationId, targetOpts);
-           this.notificationRepository.add(notificationId, pullRequestLink);
+            this.chrome.notifications.create(notificationId, targetOpts);
+            this.notificationRepository.add(notificationId, pullRequestLink);
         }
 
         notifyNewPullRequestAssigned(pullRequest: PullRequest): void {
