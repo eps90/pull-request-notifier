@@ -3,7 +3,7 @@
 module BitbucketNotifier {
     'use strict';
 
-    var application = angular.module('bitbucketNotifier', ['LocalStorageModule', 'ui.bootstrap']);
+    var application = angular.module('bitbucketNotifier', ['LocalStorageModule', 'ui.bootstrap', 'emoji', 'ngSanitize']);
     application.directive('pullRequest', PullRequestComponent.factory());
     application.directive('pullRequestsList', PullRequestsListComponent.factory());
     application.directive('pullRequestsHeader', PullRequestsHeaderComponent.factory());
