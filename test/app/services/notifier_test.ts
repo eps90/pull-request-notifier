@@ -134,4 +134,18 @@ describe('Notifier', () => {
         notifier.notifyReminder(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
+
+    it('should filter out emojis from title', () => {
+        var pullRequest = new BitbucketNotifier.PullRequest();
+        pullRequest.title = ':name_badge: This is some title';
+        pullRequest.author.displayName = 'John Smith';
+
+        expectedOptions.title = 'New pull request assigned to you!';
+        expectedOptions.message = 'This is some title';
+        expectedOptions.contextMessage = 'by John Smith';
+        expectedOptions.iconUrl = '../../assets/img/bitbucket_new.png';
+
+        notifier.notifyNewPullRequestAssigned(pullRequest);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
+    });
 });

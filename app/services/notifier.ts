@@ -25,7 +25,7 @@ module BitbucketNotifier {
         }
 
         notify(opts: NotificationOptions, notificationId: string, pullRequestLink: string): void {
-           var defaultOptions: NotificationOptions = {
+            var defaultOptions: NotificationOptions = {
                 type: 'basic',
                 iconUrl: '../../assets/img/bitbucket_logo_raw.png',
                 title: '',
@@ -33,7 +33,8 @@ module BitbucketNotifier {
                 contextMessage: '',
                 priority: 2
             };
-           var targetOpts = _.extend(defaultOptions, opts);
+            var targetOpts: NotificationOptions = _.extend(defaultOptions, opts);
+            targetOpts.message = _.trim(targetOpts.message.replace(/:[^\s:]+:/g, ''));
 
            this.chrome.notifications.create(notificationId, targetOpts);
            this.notificationRepository.add(notificationId, pullRequestLink);
