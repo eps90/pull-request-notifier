@@ -25,6 +25,8 @@ module.exports = function(config) {
         'bower_components/angular-bootstrap/ui-bootstrap.js',
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
         'bower_components/angular-growl-v2/build/angular-growl.js',
+        'bower_components/angular-emoji-filter/dist/emoji.min.js',
+        'bower_components/angular-sanitize/angular-sanitize.js',
         'build/**/!(bitbucket_notifier*).js',
         'build/app/modules/bitbucket_notifier.js',
         'build/app/modules/bitbucket_notifier_background.js',

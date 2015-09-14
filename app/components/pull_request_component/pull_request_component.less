@@ -8,12 +8,18 @@ pull-request {
 
         border-bottom: 1px solid @grey;
 
-        .row div {
+        .row > div {
             padding: 8px;
 
             &:last-child {
                 text-align: center;
             }
+        }
+
+        .collapsable {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 
