@@ -97,6 +97,7 @@ module BitbucketNotifier {
     export class ConfigObject {
         static USER: string = 'app:user';
         static SOCKET_SERVER: string = 'app:socket_server';
+        static PULLREQUEST_PROGRESS: string = 'app:pullrequest_progress';
     }
 
     export interface Notification {
@@ -106,5 +107,11 @@ module BitbucketNotifier {
     export class PullRequestNotification implements Notification {
         notificationId: string = '';
         pullRequestHtmlLink: string = '';
+    }
+
+    export class PullRequestProgress {
+        static PROPORTIONS: string = 'proportions';
+        static PERCENT: string = 'percent';
+        static PROGRESS_BAR: string = 'progress_bar';
     }
 }

@@ -25,5 +25,13 @@ module BitbucketNotifier {
         setSocketServerAddress(socketServerAddress: string): void {
             this.localStorageService.set(ConfigObject.SOCKET_SERVER, socketServerAddress);
         }
+
+        getPullRequestProgress(): string {
+            return this.localStorageService.get<string>(ConfigObject.PULLREQUEST_PROGRESS) || 'proportions';
+        }
+
+        setPullRequestProgress(option: string): void {
+            this.localStorageService.set(ConfigObject.PULLREQUEST_PROGRESS, option);
+        }
     }
 }
