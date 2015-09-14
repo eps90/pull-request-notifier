@@ -95,7 +95,7 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        src: ['views/*.html', 'scripts/*.js', 'fonts/*', 'styles/*.css'],
+                        src: ['views/*.html', 'scripts/*.js', 'fonts/*', 'styles/*'],
                         dest: '<%= project.distDir %>/dist',
                         cwd: '<%= project.buildDir %>'
                     },
