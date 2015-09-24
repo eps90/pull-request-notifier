@@ -22,12 +22,12 @@ module BitbucketNotifier {
                     return reviewers;
                 },
                 (newValue, oldValue) => {
-                    newValue !== oldValue && updateReviewers()
+                    return newValue !== oldValue && updateReviewers();
                 },
                 true
             );
 
-            function updateReviewers() {
+            function updateReviewers(): void {
                 scope.reviewersCount = reviewers.length;
                 scope.approvalsCount = reviewers.reduce(
                     (amount: number, reviewer: Reviewer) => {

@@ -2,12 +2,12 @@
 
 module BitbucketNotifier {
     'use strict';
-    
+
     export class SocketManager {
         static $inject: string[] = ['socketFactory', 'Config'];
+        public socket: any;
 
         private connection: SocketIOClient.Socket;
-        public socket;
 
         constructor(private socketFactory, config: Config) {
             this.connection = io.connect(config.getSocketServerAddress());

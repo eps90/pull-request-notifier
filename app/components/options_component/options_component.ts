@@ -16,7 +16,7 @@ module BitbucketNotifier {
                         approved: true
                     },
                     {
-                        approved: false,
+                        approved: false
                     },
                     {
                         approved: false
@@ -25,28 +25,36 @@ module BitbucketNotifier {
             };
 
             // @todo Anyone know how to test it? :)
-            this.$interval(() => {
-                var approvalsCount = scope['examples'].reviewers.reduce((prev, curr: {approved: boolean}) => {
-                    return curr.approved ? prev + 1 : prev;
-                }, 0);
+            this.$interval(
+                () => {
+                    var approvalsCount = scope['examples'].reviewers.reduce(
+                        (prev, curr: {approved: boolean}) => {
+                            return curr.approved ? prev + 1 : prev;
+                        },
+                        0
+                    );
 
-                switch (approvalsCount) {
-                    case 0:
-                        scope['examples'].reviewers[0].approved = true;
-                        break;
-                    case 1:
-                        scope['examples'].reviewers[1].approved = true;
-                        break;
-                    case 2:
-                        scope['examples'].reviewers[2].approved = true;
-                        break;
-                    case 3:
-                        scope['examples'].reviewers[0].approved = false;
-                        scope['examples'].reviewers[1].approved = false;
-                        scope['examples'].reviewers[2].approved = false;
-                        break;
-                }
-            }, 1000);
+                    switch (approvalsCount) {
+                        case 0:
+                            scope['examples'].reviewers[0].approved = true;
+                            break;
+                        case 1:
+                            scope['examples'].reviewers[1].approved = true;
+                            break;
+                        case 2:
+                            scope['examples'].reviewers[2].approved = true;
+                            break;
+                        case 3:
+                            scope['examples'].reviewers[0].approved = false;
+                            scope['examples'].reviewers[1].approved = false;
+                            scope['examples'].reviewers[2].approved = false;
+                            break;
+                        default:
+                            break;
+                    }
+                },
+                1000
+            );
 
             scope['options'] = {
                 appUser: this.config.getUsername(),

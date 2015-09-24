@@ -67,7 +67,7 @@ describe('ReminderComponent', () => {
         element = $compile('<reminder></reminder>')($scope);
         $scope.$digest();
 
-        // Make sure that only one icon is shown at time
+        // make sure that only one icon is shown at time
         expect(element.find('a i.fa-check').length).toEqual(0);
 
         var linkElement = element.find('a');
@@ -75,5 +75,5 @@ describe('ReminderComponent', () => {
 
         linkElement = element.find('a');
         expect(linkElement.find('i').hasClass('fa-check')).toBeTruthy();
-    })
+    });
 });
