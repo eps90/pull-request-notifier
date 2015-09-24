@@ -1,6 +1,8 @@
 ///<reference path="../_typings.ts"/>
 
 module BitbucketNotifier {
+    'use strict';
+
     export class UserFactory {
         static create(rawObject: any): User {
             var user = new User();
@@ -108,6 +110,8 @@ module BitbucketNotifier {
                         break;
                     case 2:
                         pullRequest.state = PullRequestState.Declined;
+                        break;
+                    default:
                         break;
                 }
             }
