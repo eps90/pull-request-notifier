@@ -38,28 +38,28 @@ module BitbucketNotifier {
             this.localStorageService.set(Sound.NEW_PULLREQUEST, soundPath);
         }
 
-        setApprovedPullRequestSound(soundPath: string): void {
-            this.localStorageService.set(Sound.APPROVED_PULLREQUEST, soundPath);
-        }
-
-        setMergedPullRequestSound(soundPath: string): void {
-            this.localStorageService.set(Sound.MERGED_PULLREQUEST, soundPath);
-        }
-
-        setReminderSound(soundPath: string): void {
-            this.localStorageService.set(Sound.REMINDER, soundPath);
-        }
-
         getNewPullRequestSound(): string {
             return <string> this.localStorageService.get(Sound.NEW_PULLREQUEST);
+        }
+
+        setApprovedPullRequestSound(soundPath: string): void {
+            this.localStorageService.set(Sound.APPROVED_PULLREQUEST, soundPath);
         }
 
         getApprovedPullRequestSound(): string {
             return <string> this.localStorageService.get(Sound.APPROVED_PULLREQUEST);
         }
 
+        setMergedPullRequestSound(soundPath: string): void {
+            this.localStorageService.set(Sound.MERGED_PULLREQUEST, soundPath);
+        }
+
         getMergedPullRequestSound(): string {
             return <string> this.localStorageService.get(Sound.MERGED_PULLREQUEST);
+        }
+
+        setReminderSound(soundPath: string): void {
+            this.localStorageService.set(Sound.REMINDER, soundPath);
         }
 
         getReminderSound(): string {
