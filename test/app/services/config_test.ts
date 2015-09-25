@@ -1,6 +1,6 @@
 ///<reference path="../../../app/_typings.ts"/>
 
-describe('Config', () => {
+fdescribe('Config', () => {
     var config: BitbucketNotifier.Config,
         localStorageService: angular.local.storage.ILocalStorageService;
 
@@ -69,6 +69,56 @@ describe('Config', () => {
             var option = BitbucketNotifier.PullRequestProgress.PERCENT;
             config.setPullRequestProgress(option);
             expect(localStorageService.get(BitbucketNotifier.ConfigObject.PULLREQUEST_PROGRESS)).toEqual(option);
+        });
+    });
+
+    describe('of sounds', () => {
+        it('should set sound path to new pull request notification', () => {
+            var soundPath = 'path/to/sound.ogg';
+            config.setNewPullRequestSound(soundPath);
+            expect(localStorageService.get(BitbucketNotifier.Sound.NEW_PULLREQUEST)).toEqual(soundPath);
+        });
+
+        it('should set sound path to approved pull request notification', () => {
+            var soundPath = 'path/to/sound.ogg';
+            config.setApprovedPullRequestSound(soundPath);
+            expect(localStorageService.get(BitbucketNotifier.Sound.APPROVED_PULLREQUEST)).toEqual(soundPath);
+        });
+
+        it('should set sound path to merged pull request notification', () => {
+            var soundPath = 'path/to/sound.ogg';
+            config.setMergedPullRequestSound(soundPath);
+            expect(localStorageService.get(BitbucketNotifier.Sound.MERGED_PULLREQUEST)).toEqual(soundPath);
+        });
+
+        it('should set sound path to reminder notification', () => {
+            var soundPath = 'path/to/sound.ogg';
+            config.setReminderSound(soundPath);
+            expect(localStorageService.get(BitbucketNotifier.Sound.REMINDER)).toEqual(soundPath);
+        });
+
+        it('should get sound path to new pull request notification', () => {
+            var soundPath = 'path/to/sound.ogg';
+            localStorageService.set(BitbucketNotifier.Sound.NEW_PULLREQUEST, soundPath);
+            expect(config.getNewPullRequestSound()).toEqual(soundPath);
+        });
+
+        it('should get sound path to approved pull request notification', () => {
+            var soundPath = 'path/to/sound.ogg';
+            localStorageService.set(BitbucketNotifier.Sound.APPROVED_PULLREQUEST, soundPath);
+            expect(config.getApprovedPullRequestSound()).toEqual(soundPath);
+        });
+
+        it('should get sound path to merged pull request notification', () => {
+            var soundPath = 'path/to/sound.ogg';
+            localStorageService.set(BitbucketNotifier.Sound.MERGED_PULLREQUEST, soundPath);
+            expect(config.getMergedPullRequestSound()).toEqual(soundPath);
+        });
+
+        it('should get sound path to reminder notification', () => {
+            var soundPath = 'path/to/sound.ogg';
+            localStorageService.set(BitbucketNotifier.Sound.REMINDER, soundPath);
+            expect(config.getReminderSound()).toEqual(soundPath);
         });
     });
 });
