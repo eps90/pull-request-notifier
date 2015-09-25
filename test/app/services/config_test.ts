@@ -1,6 +1,6 @@
 ///<reference path="../../../app/_typings.ts"/>
 
-fdescribe('Config', () => {
+describe('Config', () => {
     var config: BitbucketNotifier.Config,
         localStorageService: angular.local.storage.ILocalStorageService;
 
