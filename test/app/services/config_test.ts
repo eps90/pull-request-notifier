@@ -116,5 +116,22 @@ describe('Config', () => {
             localStorageService.set(soundKey, soundPath);
             expect(config[getterName]()).toEqual(soundPath);
         }
+
+        describe('with default values', () => {
+            it('should return default sound for new pull request', () => {
+                expect(config.getNewPullRequestSound()).toEqual('../../assets/sounds/notification2.ogg');
+            });
+            it('should return default sound for approved pull request', () => {
+                expect(config.getApprovedPullRequestSound()).toEqual('../../assets/sounds/notification.ogg');
+            });
+
+            it('should return default sound for merged pull request', () => {
+                expect(config.getMergedPullRequestSound()).toEqual('../../assets/sounds/notification.ogg');
+            });
+
+            it('should return default sound for reminder', () => {
+                expect(config.getReminderSound()).toEqual('../../assets/sounds/nuclear_alarm.ogg');
+            });
+        });
     });
 });
