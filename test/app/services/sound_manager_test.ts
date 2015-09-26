@@ -1,6 +1,6 @@
 ///<reference path="../../../app/_typings.ts"/>
 
-fdescribe('SoundManager', () => {
+describe('SoundManager', () => {
     var soundManager: BitbucketNotifier.SoundManager,
         config: BitbucketNotifier.Config;
 
