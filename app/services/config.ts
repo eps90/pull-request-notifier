@@ -6,7 +6,15 @@ module BitbucketNotifier {
     export class Config {
         static $inject: Array<string> = ['localStorageService'];
 
-        constructor(private localStorageService: angular.local.storage.ILocalStorageService) {}
+        private soundsDefaults: any = {};
+
+        constructor(private localStorageService: angular.local.storage.ILocalStorageService) {
+            var basePath = '../../assets/sounds/';
+            this.soundsDefaults[Sound.NEW_PULLREQUEST] = basePath + 'notification2.ogg';
+            this.soundsDefaults[Sound.APPROVED_PULLREQUEST] = basePath + 'notification.ogg';
+            this.soundsDefaults[Sound.MERGED_PULLREQUEST] = basePath + 'notification.ogg';
+            this.soundsDefaults[Sound.REMINDER] = basePath + 'nuclear_alarm.ogg';
+        }
 
         getUsername(): any {
             return this.localStorageService.get(ConfigObject.USER);
@@ -39,7 +47,8 @@ module BitbucketNotifier {
         }
 
         getNewPullRequestSound(): string {
-            return <string> this.localStorageService.get(Sound.NEW_PULLREQUEST);
+            return <string> this.localStorageService.get(Sound.NEW_PULLREQUEST)
+                || this.soundsDefaults[Sound.NEW_PULLREQUEST];
         }
 
         setApprovedPullRequestSound(soundPath: string): void {
@@ -47,7 +56,8 @@ module BitbucketNotifier {
         }
 
         getApprovedPullRequestSound(): string {
-            return <string> this.localStorageService.get(Sound.APPROVED_PULLREQUEST);
+            return <string> this.localStorageService.get(Sound.APPROVED_PULLREQUEST)
+                || this.soundsDefaults[Sound.APPROVED_PULLREQUEST];
         }
 
         setMergedPullRequestSound(soundPath: string): void {
@@ -55,7 +65,8 @@ module BitbucketNotifier {
         }
 
         getMergedPullRequestSound(): string {
-            return <string> this.localStorageService.get(Sound.MERGED_PULLREQUEST);
+            return <string> this.localStorageService.get(Sound.MERGED_PULLREQUEST)
+                || this.soundsDefaults[Sound.MERGED_PULLREQUEST];
         }
 
         setReminderSound(soundPath: string): void {
@@ -63,7 +74,8 @@ module BitbucketNotifier {
         }
 
         getReminderSound(): string {
-            return <string> this.localStorageService.get(Sound.REMINDER);
+            return <string> this.localStorageService.get(Sound.REMINDER)
+                || this.soundsDefaults[Sound.REMINDER];
         }
     }
 }
