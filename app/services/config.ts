@@ -47,8 +47,7 @@ module BitbucketNotifier {
         }
 
         getNewPullRequestSound(): string {
-            return <string> this.localStorageService.get(Sound.NEW_PULLREQUEST)
-                || this.soundsDefaults[Sound.NEW_PULLREQUEST];
+            return this.getSound(Sound.NEW_PULLREQUEST);
         }
 
         setApprovedPullRequestSound(soundPath: string): void {
@@ -56,8 +55,7 @@ module BitbucketNotifier {
         }
 
         getApprovedPullRequestSound(): string {
-            return <string> this.localStorageService.get(Sound.APPROVED_PULLREQUEST)
-                || this.soundsDefaults[Sound.APPROVED_PULLREQUEST];
+            return this.getSound(Sound.APPROVED_PULLREQUEST);
         }
 
         setMergedPullRequestSound(soundPath: string): void {
@@ -65,8 +63,7 @@ module BitbucketNotifier {
         }
 
         getMergedPullRequestSound(): string {
-            return <string> this.localStorageService.get(Sound.MERGED_PULLREQUEST)
-                || this.soundsDefaults[Sound.MERGED_PULLREQUEST];
+            return this.getSound(Sound.MERGED_PULLREQUEST);
         }
 
         setReminderSound(soundPath: string): void {
@@ -74,8 +71,11 @@ module BitbucketNotifier {
         }
 
         getReminderSound(): string {
-            return <string> this.localStorageService.get(Sound.REMINDER)
-                || this.soundsDefaults[Sound.REMINDER];
+            return this.getSound(Sound.REMINDER);
+        }
+
+        private getSound(soundId: string): string {
+            return <string> this.localStorageService.get(soundId) || this.soundsDefaults[soundId] || null;
         }
     }
 }
