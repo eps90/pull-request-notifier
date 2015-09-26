@@ -13,10 +13,10 @@ module BitbucketNotifier {
     }
 
     export class Notifier {
-        static $inject: Array<string> = ['NotificationRepository'];
+        static $inject: Array<string> = ['NotificationRepository', 'SoundManager'];
 
         private chrome: any;
-        constructor(private notificationRepository: NotificationRepository) {
+        constructor(private notificationRepository: NotificationRepository, private soundManager: SoundManager) {
             this.chrome = window['chrome'];
             this.chrome.notifications.onClicked.addListener((notificationId) => {
                 var notification = <PullRequestNotification> this.notificationRepository.find(notificationId);
@@ -50,6 +50,7 @@ module BitbucketNotifier {
             var notificationId = this.getNotificationId(pullRequest);
 
             this.notify(options, notificationId, pullRequest.links.html);
+            this.soundManager.playNewPullRequestSound();
         }
 
         notifyPullRequestMerged(pullRequest: PullRequest): void {
@@ -61,6 +62,7 @@ module BitbucketNotifier {
             var notificationId = this.getNotificationId(pullRequest);
 
             this.notify(options, notificationId, pullRequest.links.html);
+            this.soundManager.playMergedPullRequestSound();
         }
 
         notifyPullRequestApproved(pullRequest: PullRequest, actor: User): void {
@@ -73,6 +75,7 @@ module BitbucketNotifier {
             var notificationId = this.getNotificationId(pullRequest);
 
             this.notify(options, notificationId, pullRequest.links.html);
+            this.soundManager.playApprovedPullRequestSound();
         }
 
         notifyReminder(pullRequest: PullRequest): void {
@@ -84,6 +87,7 @@ module BitbucketNotifier {
             var notificationId = this.getNotificationId(pullRequest);
 
             this.notify(options, notificationId, pullRequest.links.html);
+            this.soundManager.playReminderSound();
         }
 
         private getNotificationId(pullRequest: PullRequest): string {
