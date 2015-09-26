@@ -14,4 +14,5 @@ module BitbucketNotifier {
     application.service('Notifier', Notifier);
     application.service('Config', Config);
     application.service('Indicator', Indicator);
+    application.service('SoundManager', SoundManager);
 }
