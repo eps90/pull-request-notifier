@@ -58,15 +58,6 @@ describe('OptionsComponent', () => {
         }
     ]));
 
-    it('should have a title', () => {
-        element = $compile('<options></options>')($scope);
-        $scope.$digest();
-
-        var title = element.find('h2.title');
-
-        expect(title.text()).toContain('Options');
-    });
-
     it('should show empty form when configuration is empty', () => {
         element = $compile('<options></options>')($scope);
         $scope.$digest();
