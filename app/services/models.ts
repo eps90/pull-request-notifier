@@ -120,5 +120,7 @@ module BitbucketNotifier {
         static APPROVED_PULLREQUEST: string = 'sounds.approved_pull_request';
         static MERGED_PULLREQUEST: string = 'sounds.merged_pull_request';
         static REMINDER: string = 'sounds.reminder';
+
+        constructor(public path: string, public label: string) {}
     }
 }
