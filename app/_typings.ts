@@ -8,6 +8,7 @@
 ///<reference path="services/config.ts"/>
 ///<reference path="services/indicator.ts"/>
 ///<reference path="services/factories.ts"/>
+///<reference path="services/sound_manager.ts"/>
 ///<reference path="components/background_component/background_component.ts"/>
 ///<reference path="components/pull_request_component/pull_request_component.ts" />
 ///<reference path="components/pull_requests_list_component/pull_requests_list_component.ts"/>
