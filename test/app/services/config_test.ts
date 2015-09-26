@@ -86,10 +86,10 @@ describe('Config', () => {
         });
 
         it('should set sound path to reminder notification', () => {
-            testSoundSetter('setReminderSound',BitbucketNotifier.Sound.REMINDER);
+            testSoundSetter('setReminderSound', BitbucketNotifier.Sound.REMINDER);
         });
 
-        function testSoundSetter(setterName, soundKey) {
+        function testSoundSetter(setterName, soundKey): void {
             var soundPath = 'path/to/sound_' + soundKey + '.ogg';
             config[setterName](soundPath);
             expect(localStorageService.get(soundKey)).toEqual(soundPath);
@@ -100,7 +100,7 @@ describe('Config', () => {
         });
 
         it('should get sound path to approved pull request notification', () => {
-            testSoundGetter('getApprovedPullRequestSound', BitbucketNotifier.Sound.APPROVED_PULLREQUEST)
+            testSoundGetter('getApprovedPullRequestSound', BitbucketNotifier.Sound.APPROVED_PULLREQUEST);
         });
 
         it('should get sound path to merged pull request notification', () => {
@@ -111,7 +111,7 @@ describe('Config', () => {
             testSoundGetter('getReminderSound', BitbucketNotifier.Sound.REMINDER);
         });
 
-        function testSoundGetter(getterName, soundKey) {
+        function testSoundGetter(getterName, soundKey): void {
             var soundPath = 'path/to/sound' + soundKey + '.ogg';
             localStorageService.set(soundKey, soundPath);
             expect(config[getterName]()).toEqual(soundPath);
