@@ -7,7 +7,12 @@ module BitbucketNotifier {
         restrict: string =  'E';
         templateUrl: string = '../components/options_component/options_component.html';
 
-        constructor(private config: Config, private growl: angular.growl.IGrowlService, private $interval: ng.IIntervalService) {}
+        constructor(
+            private config: Config,
+            private growl: angular.growl.IGrowlService,
+            private $interval: ng.IIntervalService,
+            private soundManager: SoundManager
+        ) {}
 
         link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
             scope['examples'] = {
@@ -59,13 +64,21 @@ module BitbucketNotifier {
             scope['options'] = {
                 appUser: this.config.getUsername(),
                 socketServerAddress: this.config.getSocketServerAddress(),
-                pullRequestProgress: this.config.getPullRequestProgress()
+                pullRequestProgress: this.config.getPullRequestProgress(),
+                newPullRequestSound: this.config.getNewPullRequestSound(),
+                approvedPullRequestSound: this.config.getApprovedPullRequestSound(),
+                mergedPullRequestSound: this.config.getApprovedPullRequestSound(),
+                reminderSound: this.config.getReminderSound()
             };
 
             scope['saveOptions'] = () => {
                 this.config.setUsername(scope['options'].appUser);
                 this.config.setSocketServerAddress(scope['options'].socketServerAddress);
                 this.config.setPullRequestProgress(scope['options'].pullRequestProgress);
+                this.config.setNewPullRequestSound(scope['options'].newPullRequestSound);
+                this.config.setApprovedPullRequestSound(scope['options'].approvedPullRequestSound);
+                this.config.setMergedPullRequestSound(scope['options'].mergedPullRequestSound);
+                this.config.setReminderSound(scope['options'].reminderSound);
 
                 this.growl.success('Settings applied!');
                 this.growl.warning(
@@ -78,11 +91,13 @@ module BitbucketNotifier {
                     }
                 );
             };
+
+            scope['sounds'] = this.soundManager.getAvailableSounds();
         };
 
         static factory(): ng.IDirectiveFactory {
-            var component = (config, growl, $interval) => new OptionsComponent(config, growl, $interval);
-            component.$inject = ['Config', 'growl', '$interval'];
+            var component = (config, growl, $interval, soundManager) => new OptionsComponent(config, growl, $interval, soundManager);
+            component.$inject = ['Config', 'growl', '$interval', 'SoundManager'];
             return component;
         }
     }
