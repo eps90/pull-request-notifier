@@ -13,8 +13,7 @@ describe('OptionsComponent', () => {
         $rootScope: ng.IRootScopeService,
         $scope: ng.IScope,
         $compile: ng.ICompileService,
-        growl: angular.growl.IGrowlService,
-        soundManager: BitbucketNotifier.SoundManager;
+        growl: angular.growl.IGrowlService;
 
     beforeEach(() => {
         window['createjs'] = {
@@ -83,14 +82,12 @@ describe('OptionsComponent', () => {
         '$rootScope',
         '$compile',
         'growl',
-        'SoundManager',
         (c, $r, $c, g, sm) => {
             config = c;
             $rootScope = $r;
             $scope = $rootScope;
             $compile = $c;
             growl = g;
-            soundManager = sm;
         }
     ]));
 
