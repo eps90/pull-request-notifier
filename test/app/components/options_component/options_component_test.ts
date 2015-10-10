@@ -19,7 +19,9 @@ describe('OptionsComponent', () => {
         window['createjs'] = {
             Sound: {
                 registerSound: jasmine.createSpy('createjs.Sound.registerSound'),
-                play: jasmine.createSpy('createjs.Sound.play')
+                play: jasmine.createSpy('createjs.Sound.play'),
+                removeSound: jasmine.createSpy('createjs.Sound.removeSound'),
+                addEventListener: jasmine.createSpy('createjs.Sound.addEventListener')
             }
         };
     });
@@ -204,5 +206,16 @@ describe('OptionsComponent', () => {
         saveButton.triggerHandler('click');
 
         expect(growl.warning).toHaveBeenCalled();
+    });
+
+    it('should play chosen sound', () => {
+        var chosenSoundPath = 'sample_sound_path';
+        $scope['temp_label'] = chosenSoundPath;
+        element = $compile('<options></options>')($scope);
+        $scope.$digest();
+
+        $scope['playSound'](chosenSoundPath);
+
+        expect(createjs.Sound.registerSound).toHaveBeenCalledWith(chosenSoundPath, 'temp_sound');
     });
 });

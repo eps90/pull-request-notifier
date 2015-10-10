@@ -93,6 +93,13 @@ module BitbucketNotifier {
             };
 
             scope['sounds'] = this.soundRepository.findAll();
+            scope['playSound'] = (soundProp: string) => {
+                createjs.Sound.addEventListener('fileload', (e) => {
+                    createjs.Sound.play('temp_sound');
+                });
+                createjs.Sound.registerSound(soundProp, 'temp_sound');
+                createjs.Sound.play('temp_sound');
+            }
         };
 
         static factory(): ng.IDirectiveFactory {
