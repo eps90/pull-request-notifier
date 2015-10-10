@@ -26,7 +26,7 @@ describe('SoundRepository', () => {
         expect(actual.label).toEqual('Ring');
 
         var nonExistantSoundLabel: string = 'Not found';
-        var actual: BitbucketNotifier.Sound = soundRepository.findByLabel(nonExistantSoundLabel);
+        actual = soundRepository.findByLabel(nonExistantSoundLabel);
         expect(actual).toBeNull();
     });
 });

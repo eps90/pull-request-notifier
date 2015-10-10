@@ -48,7 +48,7 @@ describe('Notifier', () => {
                 playNewPullRequestSound: jasmine.createSpy('SoundManager.playNewPullRequestSound'),
                 playApprovedPullRequestSound: jasmine.createSpy('SoundManager.playApprovedPullRequestSound'),
                 playMergedPullRequestSound: jasmine.createSpy('SoundManager.playMergedPullRequestSound'),
-                playReminderSound: jasmine.createSpy('SoundManager.playReminderSound'),
+                playReminderSound: jasmine.createSpy('SoundManager.playReminderSound')
             });
         }
     ]));
