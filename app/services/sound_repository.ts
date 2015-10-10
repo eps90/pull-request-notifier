@@ -11,7 +11,7 @@ module BitbucketNotifier {
             new Sound(`${this.defaultSoundsPath}nuclear_alarm.ogg`, 'Nuclear alarm')
         ];
 
-        findAll() {
+        findAll(): Sound[] {
             return this.defaultSounds;
         }
 

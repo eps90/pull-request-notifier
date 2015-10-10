@@ -19,9 +19,9 @@ describe('OptionsComponent', () => {
         window['createjs'] = {
             Sound: {
                 registerSound: jasmine.createSpy('createjs.Sound.registerSound'),
-                play: jasmine.createSpy('createjs.Sound.play'),
+                play: jasmine.createSpy('createjs.Sound.play')
             }
-        }
+        };
     });
 
     beforeEach(module('bitbucketNotifier.options'));
@@ -66,7 +66,7 @@ describe('OptionsComponent', () => {
                 setNewPullRequestSound: jasmine.createSpy('Config.setNewPullRequestSound'),
                 setApprovedPullRequestSound: jasmine.createSpy('Config.setApprovedPullRequestSound'),
                 setMergedPullRequestSound: jasmine.createSpy('Config.setMergedPullRequestSound'),
-                setReminderSound: jasmine.createSpy('Config.setReminderRequestSound'),
+                setReminderSound: jasmine.createSpy('Config.setReminderRequestSound')
             });
 
             $provide.value('growl', {
@@ -99,10 +99,10 @@ describe('OptionsComponent', () => {
         var socketServerElement = element.find('#socket-server-address');
         var prProgressElement = element.find('input[name="pull-request-progress"]:checked');
 
-        var newPullRequestSoundElement= element.find('select#new-pull-request-sound');
-        var approvedPullRequestSoundElement= element.find('select#approved-pull-request-sound');
-        var mergedPullRequestSoundElement= element.find('select#merged-pull-request-sound');
-        var reminderSoundElement= element.find('select#reminder-sound');
+        var newPullRequestSoundElement = element.find('select#new-pull-request-sound');
+        var approvedPullRequestSoundElement = element.find('select#approved-pull-request-sound');
+        var mergedPullRequestSoundElement = element.find('select#merged-pull-request-sound');
+        var reminderSoundElement = element.find('select#reminder-sound');
 
         expect(userElement.val()).toEqual('');
         expect(socketServerElement.val()).toEqual('');
@@ -129,10 +129,10 @@ describe('OptionsComponent', () => {
         var socketServerElement = element.find('#socket-server-address');
         var prProgressElement = element.find('input[name="pull-request-progress"]:checked');
 
-        var newPullRequestSoundElement= element.find('select#new-pull-request-sound');
-        var approvedPullRequestSoundElement= element.find('select#approved-pull-request-sound');
-        var mergedPullRequestSoundElement= element.find('select#merged-pull-request-sound');
-        var reminderSoundElement= element.find('select#reminder-sound');
+        var newPullRequestSoundElement = element.find('select#new-pull-request-sound');
+        var approvedPullRequestSoundElement = element.find('select#approved-pull-request-sound');
+        var mergedPullRequestSoundElement = element.find('select#merged-pull-request-sound');
+        var reminderSoundElement = element.find('select#reminder-sound');
 
         expect(userElement.val()).toEqual(appUser);
         expect(socketServerElement.val()).toEqual(socketServer);

@@ -15,7 +15,7 @@ module BitbucketNotifier {
             this.soundsDefaults[Sound.REMINDER] = soundRepository.findByLabel('Nuclear alarm').path;
         }
 
-        // Username
+        // setting up username
         getUsername(): any {
             return this.localStorageService.get(ConfigObject.USER);
         }
@@ -24,7 +24,7 @@ module BitbucketNotifier {
             this.localStorageService.set(ConfigObject.USER, username);
         }
 
-        // Socker server
+        // setting up socker server
         getSocketServerAddress(): string {
             var address: string = <string>this.localStorageService.get(ConfigObject.SOCKET_SERVER);
             var addressWithHttp = _.trimLeft(address, 'http://');
@@ -35,7 +35,7 @@ module BitbucketNotifier {
             this.localStorageService.set(ConfigObject.SOCKET_SERVER, socketServerAddress);
         }
 
-        // Pull request progress
+        // setting up pull request progress
         getPullRequestProgress(): string {
             return this.localStorageService.get<string>(ConfigObject.PULLREQUEST_PROGRESS) || 'proportions';
         }
@@ -44,7 +44,7 @@ module BitbucketNotifier {
             this.localStorageService.set(ConfigObject.PULLREQUEST_PROGRESS, option);
         }
 
-        // Sounds
+        // setting up sounds
         setNewPullRequestSound(soundPath: string): void {
             this.localStorageService.set(Sound.NEW_PULLREQUEST, soundPath);
         }
