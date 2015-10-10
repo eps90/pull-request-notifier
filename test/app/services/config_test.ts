@@ -2,15 +2,18 @@
 
 describe('Config', () => {
     var config: BitbucketNotifier.Config,
-        localStorageService: angular.local.storage.ILocalStorageService;
+        localStorageService: angular.local.storage.ILocalStorageService,
+        soundRepository: BitbucketNotifier.SoundRepository;
 
     beforeEach(module('bitbucketNotifier'));
     beforeEach(inject([
         'Config',
         'localStorageService',
-        (c, l) => {
+        'SoundRepository',
+        (c, l, sr) => {
             config = c;
             localStorageService = l;
+            soundRepository = sr;
         }
     ]));
 
@@ -119,18 +122,18 @@ describe('Config', () => {
 
         describe('with default values', () => {
             it('should return default sound for new pull request', () => {
-                expect(config.getNewPullRequestSound()).toEqual('../../assets/sounds/notification2.ogg');
+                expect(config.getNewPullRequestSound()).toEqual(soundRepository.findByLabel('Bell').path);
             });
             it('should return default sound for approved pull request', () => {
-                expect(config.getApprovedPullRequestSound()).toEqual('../../assets/sounds/notification.ogg');
+                expect(config.getApprovedPullRequestSound()).toEqual(soundRepository.findByLabel('Ring').path);
             });
 
             it('should return default sound for merged pull request', () => {
-                expect(config.getMergedPullRequestSound()).toEqual('../../assets/sounds/notification.ogg');
+                expect(config.getMergedPullRequestSound()).toEqual(soundRepository.findByLabel('Ring').path);
             });
 
             it('should return default sound for reminder', () => {
-                expect(config.getReminderSound()).toEqual('../../assets/sounds/nuclear_alarm.ogg');
+                expect(config.getReminderSound()).toEqual(soundRepository.findByLabel('Nuclear alarm').path);
             });
         });
     });

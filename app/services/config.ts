@@ -4,18 +4,18 @@ module BitbucketNotifier {
     'use strict';
 
     export class Config {
-        static $inject: Array<string> = ['localStorageService'];
+        static $inject: Array<string> = ['localStorageService', 'SoundRepository'];
 
         private soundsDefaults: any = {};
 
-        constructor(private localStorageService: angular.local.storage.ILocalStorageService) {
-            var basePath = '../../assets/sounds/';
-            this.soundsDefaults[Sound.NEW_PULLREQUEST] = basePath + 'notification2.ogg';
-            this.soundsDefaults[Sound.APPROVED_PULLREQUEST] = basePath + 'notification.ogg';
-            this.soundsDefaults[Sound.MERGED_PULLREQUEST] = basePath + 'notification.ogg';
-            this.soundsDefaults[Sound.REMINDER] = basePath + 'nuclear_alarm.ogg';
+        constructor(private localStorageService: angular.local.storage.ILocalStorageService, soundRepository: SoundRepository) {
+            this.soundsDefaults[Sound.NEW_PULLREQUEST] = soundRepository.findByLabel('Bell').path;
+            this.soundsDefaults[Sound.APPROVED_PULLREQUEST] = soundRepository.findByLabel('Ring').path;
+            this.soundsDefaults[Sound.MERGED_PULLREQUEST] = soundRepository.findByLabel('Ring').path;
+            this.soundsDefaults[Sound.REMINDER] = soundRepository.findByLabel('Nuclear alarm').path;
         }
 
+        // Username
         getUsername(): any {
             return this.localStorageService.get(ConfigObject.USER);
         }
@@ -24,6 +24,7 @@ module BitbucketNotifier {
             this.localStorageService.set(ConfigObject.USER, username);
         }
 
+        // Socker server
         getSocketServerAddress(): string {
             var address: string = <string>this.localStorageService.get(ConfigObject.SOCKET_SERVER);
             var addressWithHttp = _.trimLeft(address, 'http://');
@@ -34,6 +35,7 @@ module BitbucketNotifier {
             this.localStorageService.set(ConfigObject.SOCKET_SERVER, socketServerAddress);
         }
 
+        // Pull request progress
         getPullRequestProgress(): string {
             return this.localStorageService.get<string>(ConfigObject.PULLREQUEST_PROGRESS) || 'proportions';
         }
@@ -42,6 +44,7 @@ module BitbucketNotifier {
             this.localStorageService.set(ConfigObject.PULLREQUEST_PROGRESS, option);
         }
 
+        // Sounds
         setNewPullRequestSound(soundPath: string): void {
             this.localStorageService.set(Sound.NEW_PULLREQUEST, soundPath);
         }
