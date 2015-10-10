@@ -61,12 +61,6 @@ describe('SoundManager', () => {
         testSoundRegistration(BitbucketNotifier.Sound.REMINDER);
     });
 
-    it('should be able to play a sound', () => {
-        var soundName = 'some_sound_id';
-        soundManager.play(soundName);
-        expect(createjs.Sound.play).toHaveBeenCalledWith(soundName);
-    });
-
     it('should be able to play a new pull request sound', () => {
         soundManager.playNewPullRequestSound();
         expect(createjs.Sound.play).toHaveBeenCalledWith(BitbucketNotifier.Sound.NEW_PULLREQUEST);
@@ -85,12 +79,5 @@ describe('SoundManager', () => {
     it('should be able to play a reminder sound', () => {
         soundManager.playReminderSound();
         expect(createjs.Sound.play).toHaveBeenCalledWith(BitbucketNotifier.Sound.REMINDER);
-    });
-
-    it('should return list of all sounds available', () => {
-        var actualSounds: Array<BitbucketNotifier.Sound> = soundManager.getAvailableSounds();
-        expect(actualSounds[0]).toEqual(new BitbucketNotifier.Sound('../../assets/sounds/notification.ogg', 'Ring'));
-        expect(actualSounds[1]).toEqual(new BitbucketNotifier.Sound('../../assets/sounds/notification2.ogg', 'Bell'));
-        expect(actualSounds[2]).toEqual(new BitbucketNotifier.Sound('../../assets/sounds/nuclear_alarm.ogg', 'Nuclear alarm'));
     });
 });

@@ -14,10 +14,6 @@ module BitbucketNotifier {
             createjs.Sound.registerSound(config.getReminderSound(), Sound.REMINDER);
         }
 
-        play(soundId: string): void {
-            createjs.Sound.play(soundId);
-        }
-
         playNewPullRequestSound(): void {
             createjs.Sound.play(Sound.NEW_PULLREQUEST);
         }
@@ -32,15 +28,6 @@ module BitbucketNotifier {
 
         playReminderSound(): void {
             createjs.Sound.play(Sound.REMINDER);
-        }
-
-        // @todo Temporarily hardcoded - try to find a better way to store default sounds
-        getAvailableSounds(): Sound[] {
-            return [
-                new Sound('../../assets/sounds/notification.ogg', 'Ring'),
-                new Sound('../../assets/sounds/notification2.ogg', 'Bell'),
-                new Sound('../../assets/sounds/nuclear_alarm.ogg', 'Nuclear alarm')
-            ];
         }
     }
 }
