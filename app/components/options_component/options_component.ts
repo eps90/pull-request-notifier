@@ -11,7 +11,7 @@ module BitbucketNotifier {
             private config: Config,
             private growl: angular.growl.IGrowlService,
             private $interval: ng.IIntervalService,
-            private soundManager: SoundManager
+            private soundRepository: SoundRepository
         ) {}
 
         link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
@@ -92,12 +92,12 @@ module BitbucketNotifier {
                 );
             };
 
-            scope['sounds'] = this.soundManager.getAvailableSounds();
+            scope['sounds'] = this.soundRepository.findAll();
         };
 
         static factory(): ng.IDirectiveFactory {
-            var component = (config, growl, $interval, soundManager) => new OptionsComponent(config, growl, $interval, soundManager);
-            component.$inject = ['Config', 'growl', '$interval', 'SoundManager'];
+            var component = (config, growl, $interval, soundRepository) => new OptionsComponent(config, growl, $interval, soundRepository);
+            component.$inject = ['Config', 'growl', '$interval', 'SoundRepository'];
             return component;
         }
     }
