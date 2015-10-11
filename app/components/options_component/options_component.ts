@@ -99,7 +99,7 @@ module BitbucketNotifier {
                 });
                 createjs.Sound.registerSound(soundProp, 'temp_sound');
                 createjs.Sound.play('temp_sound');
-            }
+            };
         };
 
         static factory(): ng.IDirectiveFactory {
