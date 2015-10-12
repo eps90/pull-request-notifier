@@ -18,6 +18,7 @@ module BitbucketNotifier {
     application.filter('assigned', AssignedFilter);
 
     application.service('PullRequestRepository', PullRequestRepository);
+    application.service('SoundRepository', SoundRepository);
     application.service('Config', Config);
 
     application.value('bitbucketUrl', 'https://bitbucket.org');

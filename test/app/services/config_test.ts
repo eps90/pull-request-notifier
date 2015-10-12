@@ -2,15 +2,18 @@
 
 describe('Config', () => {
     var config: BitbucketNotifier.Config,
-        localStorageService: angular.local.storage.ILocalStorageService;
+        localStorageService: angular.local.storage.ILocalStorageService,
+        soundRepository: BitbucketNotifier.SoundRepository;
 
     beforeEach(module('bitbucketNotifier'));
     beforeEach(inject([
         'Config',
         'localStorageService',
-        (c, l) => {
+        'SoundRepository',
+        (c, l, sr) => {
             config = c;
             localStorageService = l;
+            soundRepository = sr;
         }
     ]));
 
@@ -69,6 +72,69 @@ describe('Config', () => {
             var option = BitbucketNotifier.PullRequestProgress.PERCENT;
             config.setPullRequestProgress(option);
             expect(localStorageService.get(BitbucketNotifier.ConfigObject.PULLREQUEST_PROGRESS)).toEqual(option);
+        });
+    });
+
+    describe('of sounds', () => {
+        it('should set sound path to new pull request notification', () => {
+            testSoundSetter('setNewPullRequestSound', BitbucketNotifier.Sound.NEW_PULLREQUEST);
+        });
+
+        it('should set sound path to approved pull request notification', () => {
+            testSoundSetter('setApprovedPullRequestSound', BitbucketNotifier.Sound.APPROVED_PULLREQUEST);
+        });
+
+        it('should set sound path to merged pull request notification', () => {
+            testSoundSetter('setMergedPullRequestSound', BitbucketNotifier.Sound.MERGED_PULLREQUEST);
+        });
+
+        it('should set sound path to reminder notification', () => {
+            testSoundSetter('setReminderSound', BitbucketNotifier.Sound.REMINDER);
+        });
+
+        function testSoundSetter(setterName, soundKey): void {
+            var soundPath = 'path/to/sound_' + soundKey + '.ogg';
+            config[setterName](soundPath);
+            expect(localStorageService.get(soundKey)).toEqual(soundPath);
+        }
+
+        it('should get sound path to new pull request notification', () => {
+            testSoundGetter('getNewPullRequestSound', BitbucketNotifier.Sound.NEW_PULLREQUEST);
+        });
+
+        it('should get sound path to approved pull request notification', () => {
+            testSoundGetter('getApprovedPullRequestSound', BitbucketNotifier.Sound.APPROVED_PULLREQUEST);
+        });
+
+        it('should get sound path to merged pull request notification', () => {
+            testSoundGetter('getMergedPullRequestSound', BitbucketNotifier.Sound.MERGED_PULLREQUEST);
+        });
+
+        it('should get sound path to reminder notification', () => {
+            testSoundGetter('getReminderSound', BitbucketNotifier.Sound.REMINDER);
+        });
+
+        function testSoundGetter(getterName, soundKey): void {
+            var soundPath = 'path/to/sound' + soundKey + '.ogg';
+            localStorageService.set(soundKey, soundPath);
+            expect(config[getterName]()).toEqual(soundPath);
+        }
+
+        describe('with default values', () => {
+            it('should return default sound for new pull request', () => {
+                expect(config.getNewPullRequestSound()).toEqual(soundRepository.findByLabel('Bell').path);
+            });
+            it('should return default sound for approved pull request', () => {
+                expect(config.getApprovedPullRequestSound()).toEqual(soundRepository.findByLabel('Ring').path);
+            });
+
+            it('should return default sound for merged pull request', () => {
+                expect(config.getMergedPullRequestSound()).toEqual(soundRepository.findByLabel('Ring').path);
+            });
+
+            it('should return default sound for reminder', () => {
+                expect(config.getReminderSound()).toEqual(soundRepository.findByLabel('Nuclear alarm').path);
+            });
         });
     });
 });

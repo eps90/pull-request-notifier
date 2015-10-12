@@ -3,6 +3,7 @@
 describe('Notifier', () => {
     var notifier: BitbucketNotifier.Notifier,
         expectedOptions,
+        soundManager: BitbucketNotifier.SoundManager,
         notificationRepostory: BitbucketNotifier.NotificationRepository,
         notificationStub: BitbucketNotifier.PullRequestNotification,
         onClickedStub;
@@ -42,14 +43,23 @@ describe('Notifier', () => {
                     return notificationStub;
                 })
             });
+
+            $provide.value('SoundManager', {
+                playNewPullRequestSound: jasmine.createSpy('SoundManager.playNewPullRequestSound'),
+                playApprovedPullRequestSound: jasmine.createSpy('SoundManager.playApprovedPullRequestSound'),
+                playMergedPullRequestSound: jasmine.createSpy('SoundManager.playMergedPullRequestSound'),
+                playReminderSound: jasmine.createSpy('SoundManager.playReminderSound')
+            });
         }
     ]));
     beforeEach(inject([
         'Notifier',
         'NotificationRepository',
-        (n, nr) => {
+        'SoundManager',
+        (n, nr, s) => {
             notifier = n;
             notificationRepostory = nr;
+            soundManager = s;
         }
     ]));
 
@@ -147,5 +157,31 @@ describe('Notifier', () => {
 
         notifier.notifyNewPullRequestAssigned(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
+    });
+
+    describe('with sounds', () => {
+        it('should play a notification sound for new pull request notification', () => {
+            var pullRequest = new BitbucketNotifier.PullRequest();
+            notifier.notifyNewPullRequestAssigned(pullRequest);
+            expect(soundManager.playNewPullRequestSound).toHaveBeenCalled();
+        });
+
+        it('should play a notification sound for approved pull request notification', () => {
+            var pullRequest = new BitbucketNotifier.PullRequest();
+            notifier.notifyPullRequestApproved(pullRequest, new BitbucketNotifier.User());
+            expect(soundManager.playApprovedPullRequestSound).toHaveBeenCalled();
+        });
+
+        it('should play a notification sound for merged pull request notification', () => {
+            var pullRequest = new BitbucketNotifier.PullRequest();
+            notifier.notifyPullRequestMerged(pullRequest);
+            expect(soundManager.playMergedPullRequestSound).toHaveBeenCalled();
+        });
+
+        it('should play a notification sound for reminder notification', () => {
+            var pullRequest = new BitbucketNotifier.PullRequest();
+            notifier.notifyReminder(pullRequest);
+            expect(soundManager.playReminderSound).toHaveBeenCalled();
+        });
     });
 });
