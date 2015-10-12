@@ -101,7 +101,7 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
-                        src: ['manifest.json', 'assets/img/*.png'],
+                        src: ['manifest.json', 'assets/img/*.png', 'assets/sounds/*.ogg'],
                         dest: '<%= project.distDir %>',
                         cwd: '.'
                     }

@@ -10,6 +10,8 @@ module BitbucketNotifier {
     application.directive('navigationBar', NavigationBarComponent.factory());
     application.directive('approvalProgress', ApprovalProgressComponent.factory());
     application.service('Config', Config);
+    application.service('SoundManager', SoundManager);
+    application.service('SoundRepository', SoundRepository);
 
     application.value('bitbucketUrl', 'https://bitbucket.org');
 

@@ -14,6 +14,7 @@
     "tests"
   ],
   "dependencies": {
+    "SoundJS": "createjs-soundjs#~0.6.1",
     "angular": "~1.4.4",
     "angular-bootstrap": "~0.13.3",
     "angular-emoji-filter": "~0.0.2",
