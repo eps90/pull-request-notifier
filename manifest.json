@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Bitbucket Notifier",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Bitbucket integration tool. Notifies updates about pull requests (so far)",
   "browser_action": {
     "default_icon": "assets/img/bitbucket_logo.png",
