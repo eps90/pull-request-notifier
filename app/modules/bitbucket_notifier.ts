@@ -18,6 +18,7 @@ module BitbucketNotifier {
 
     application.filter('authored' , AuthoredFilter);
     application.filter('assigned', AssignedFilter);
+    application.filter('unapprovedFirst', UnapprovedFirst);
 
     application.service('PullRequestRepository', PullRequestRepository);
     application.service('SoundRepository', SoundRepository);
