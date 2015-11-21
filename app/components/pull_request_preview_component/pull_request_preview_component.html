@@ -1,0 +1,40 @@
+<div class="pull-request-preview">
+    <div class="row">
+        <div class="col-sm-12">
+            <section-title icon="code">{{ pr.title }}</section-title>
+        </div>
+        <div class="col-sm-6">
+            <section class="branch-info">
+                <p class="section-label">
+                    Target branch:
+                </p>
+                <span class="target-branch"><i class="fa fa-code-fork"></i> {{ pr.targetBranch }}</span>
+            </section>
+
+            <section class="description">
+                <p class="section-label">
+                    Description:
+                </p>
+                <div class="content" ng-if="pr.description">
+                    {{ pr.description }}
+                </div>
+                <div class="no-content" ng-if="!pr.description">
+                    No description
+                </div>
+            </section>
+        </div>
+        <div class="col-sm-6">
+            <section class="reviewers">
+                <p class="section-label">
+                    Reviewers:
+                </p>
+                <div class="reviewers-list" ng-if="pr.reviewers.length">
+                    <reviewer r="reviewer" ng-repeat="reviewer in pr.reviewers | unapprovedFirst"></reviewer>
+                </div>
+                <div class="alert alert-warning" ng-if="!pr.reviewers.length">
+                    <i class="fa fa-exclamation-circle"></i> No reviewers assigned
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

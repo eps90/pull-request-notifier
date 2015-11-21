@@ -1,0 +1,56 @@
+@import '../../../assets/less/_variables';
+
+.pull-request-preview {
+    margin: 10px;
+
+    section-title {
+        h2.title {
+            margin-top: 0;
+        }
+    }
+
+    section {
+        p.section-label {
+            font-weight: bold;
+        }
+
+        &.branch-info {
+            p.section-label {
+                display: inline;
+            }
+
+            span.target-branch {
+                font-weight: normal;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                display: inline-block;
+                padding: 0 5px;
+                background-color: @lightGrey;
+                border: 1px solid @grey;
+                border-radius: 3px;
+                font-family: Consolas, Menlo, "Liberation Mono", Courier, monospace;
+                font-size: 12px;
+                color: @darkerGrey;
+                position: relative;
+                top: 6px;
+                margin-left: 10px;
+            }
+        }
+
+        &.description {
+            .no-content {
+                font-style: italic;
+            }
+        }
+
+        &.reviewers {
+            .reviewers-list {
+                reviewer {
+                    display: block;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}
