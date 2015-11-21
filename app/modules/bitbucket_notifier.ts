@@ -13,6 +13,7 @@ module BitbucketNotifier {
     application.directive('pullRequestLink', PullRequestLinkComponent.factory());
     application.directive('navigationBar', NavigationBarComponent.factory());
     application.directive('reminder', ReminderComponent.factory());
+    application.directive('pullRequestPreview', PullRequestPreviewComponent.factory());
 
     application.filter('authored' , AuthoredFilter);
     application.filter('assigned', AssignedFilter);

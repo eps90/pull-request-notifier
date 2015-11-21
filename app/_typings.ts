@@ -21,6 +21,7 @@
 ///<reference path="components/pull_request_link_component/pull_request_link_component.ts"/>
 ///<reference path="components/navigation_bar_component/navigation_bar_component.ts"/>
 ///<reference path="components/reminder_component/reminder_component.ts"/>
+///<reference path="components/pull_request_preview_component/pull_request_preview_component.ts"/>
 ///<reference path="filters/authored_filter.ts"/>
 ///<reference path="filters/assigned_filter.ts"/>
 
