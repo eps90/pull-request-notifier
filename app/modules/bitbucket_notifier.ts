@@ -25,4 +25,6 @@ module BitbucketNotifier {
     application.service('Config', Config);
 
     application.value('bitbucketUrl', 'https://bitbucket.org');
+
+    application.config(RoutingConfiguration);
 }
