@@ -6,7 +6,6 @@ module BitbucketNotifier {
         $stateProvider: angular.ui.IStateProvider,
         $urlRouterProvider: angular.ui.IUrlRouterProvider
     ) {
-        console.log('Configuration ready');
         $urlRouterProvider.otherwise('/');
         $stateProvider
             .state('home', {
