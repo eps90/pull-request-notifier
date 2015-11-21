@@ -52,4 +52,56 @@ describe('Models', () => {
             expect(pullRequest.getReviewersList()).toEqual(['john.smith', 'anna.kowalsky']);
         });
     });
+
+    describe('Project', () => {
+        describe('slugify', () => {
+            it('should slugify repository name', () => {
+                var projectProvider: [{repoName: string; expectedSlug: string}] = [
+                    {
+                        repoName: 'team/repo',
+                        expectedSlug: 'team__repo'
+                    },
+                    {
+                        repoName: 'team_name/repository',
+                        expectedSlug: 'team_name__repository'
+                    },
+                    {
+                        repoName: 'team_name/repo_name',
+                        expectedSlug: 'team_name__repo_name'
+                    }
+                ];
+
+                for (let testIdx = 0, len = projectProvider.length; testIdx < len; testIdx++) {
+                    let testData = projectProvider[testIdx];
+
+                    let project = new BitbucketNotifier.Project();
+                    project.fullName = testData.repoName;
+
+                    let actual = project.slugify();
+
+                    expect(actual).toEqual(testData.expectedSlug);
+                }
+            });
+
+            it('should deslugify slugified repository name', () => {
+                var slugsProvider: [{slug: string; expected: string}] = [
+                    {
+                        slug: 'team__repo',
+                        expected: 'team/repo'
+                    },
+                    {
+                        slug: 'team_repo__repo_name',
+                        expected: 'team_repo/repo_name'
+                    }
+                ];
+
+                for (let testIdx = 0, len = slugsProvider.length; testIdx < len; testIdx++) {
+                    let testData = slugsProvider[testIdx];
+
+                    var actual = BitbucketNotifier.Project.deslugify(testData.slug);
+                    expect(actual).toEqual(testData.expected);
+                }
+            });
+        });
+    });
 });

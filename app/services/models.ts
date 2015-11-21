@@ -8,6 +8,14 @@ module BitbucketNotifier {
     export class Project implements ModelInterface {
         name: string = '';
         fullName: string = '';
+
+        slugify(): string {
+            return this.fullName.replace(/\//g, '__');
+        }
+
+        static deslugify(slug: string): string {
+            return slug.replace(/__/g, '/');
+        }
     }
 
     export class User implements ModelInterface {
