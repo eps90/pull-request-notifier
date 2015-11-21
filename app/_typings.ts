@@ -26,4 +26,6 @@
 ///<reference path="filters/authored_filter.ts"/>
 ///<reference path="filters/assigned_filter.ts"/>
 ///<reference path="filters/unapproved_first_filter.ts"/>
+///<reference path="config/routing.ts"/>
+
 
