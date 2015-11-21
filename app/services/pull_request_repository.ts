@@ -61,5 +61,16 @@ module BitbucketNotifier {
 
             return false;
         }
+
+        find(repositoryName: string, pullRequestId: number): PullRequest {
+            for (let prIdx = 0, len = this.pullRequests.length; prIdx < len; prIdx++) {
+                var pullRequest = this.pullRequests[prIdx];
+                if (pullRequest.id === pullRequestId && pullRequest.targetRepository.fullName === repositoryName) {
+                    return pullRequest;
+                }
+            }
+
+            return null;
+        }
     }
 }
