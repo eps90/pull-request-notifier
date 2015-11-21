@@ -25,4 +25,5 @@
 ///<reference path="components/reviewer_component/reviewer_component.ts"/>
 ///<reference path="filters/authored_filter.ts"/>
 ///<reference path="filters/assigned_filter.ts"/>
+///<reference path="filters/unapproved_first_filter.ts"/>
 
