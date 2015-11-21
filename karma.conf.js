@@ -28,6 +28,7 @@ module.exports = function(config) {
         'bower_components/angular-emoji-filter/dist/emoji.min.js',
         'bower_components/angular-sanitize/angular-sanitize.js',
         'bower_components/SoundJS/lib/soundjs-0.6.1.min.js',
+        'bower_components/angular-ui-router/release/angular-ui-router.js',
         'build/**/!(bitbucket_notifier*).js',
         'build/app/modules/bitbucket_notifier.js',
         'build/app/modules/bitbucket_notifier_background.js',
