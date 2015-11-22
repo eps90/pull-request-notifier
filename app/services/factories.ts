@@ -118,6 +118,16 @@ module BitbucketNotifier {
 
             return pullRequest;
         }
+
+        static createFromArray(pullRequests: any[]) {
+            var result = [];
+            for (let i = 0, len = pullRequests.length; i < len; i++) {
+                var pullRequest = pullRequests[i];
+                result.push(this.create(pullRequest));
+            }
+
+            return result;
+        }
     }
 
     export class PullRequestEventFactory {

@@ -105,6 +105,31 @@ describe('Factories', () => {
             expect(pullRequest.links.self).toEqual('http://example.com/self');
             expect(pullRequest.links.html).toEqual('http://example.com/html');
         });
+
+        it('should create collection of PullRequest from raw array of objects', () => {
+            var pullRequests = [
+                {
+                    id: 1,
+                    title: 'This is a title',
+                    description: 'This is a description'
+                },
+                {
+                    id: 2,
+                    title: 'Another title',
+                    description: 'Another description'
+                }
+            ];
+
+            var actual = BitbucketNotifier.PullRequestFactory.createFromArray(pullRequests);
+
+            expect(actual.length).toEqual(2);
+            expect(actual[0].id).toEqual(1);
+            expect(actual[0].title).toEqual('This is a title');
+            expect(actual[0].description).toEqual('This is a description');
+            expect(actual[1].id).toEqual(2);
+            expect(actual[1].title).toEqual('Another title');
+            expect(actual[1].description).toEqual('Another description');
+        });
     });
 
     describe('PullRequestEventFactory', () => {
