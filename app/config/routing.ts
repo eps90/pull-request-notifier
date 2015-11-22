@@ -1,13 +1,11 @@
 /// <reference path="../_typings.ts" />
 
 module BitbucketNotifier {
+    'use strict';
 
-    export function RoutingConfiguration(
-        $stateProvider: angular.ui.IStateProvider,
-        $urlRouterProvider: angular.ui.IUrlRouterProvider
-    ) {
-        $urlRouterProvider.otherwise('/');
-        $stateProvider
+    export function RoutingConfiguration(stateProvider: angular.ui.IStateProvider, urlProvider: angular.ui.IUrlRouterProvider): void {
+        urlProvider.otherwise('/');
+        stateProvider
             .state('home', {
                 url: '/',
                 template: '<pull-requests-list></pull-requests-list>'
@@ -32,7 +30,7 @@ module BitbucketNotifier {
                         template: '<navigation-brand icon="chevron-left" content="Pull Request">'
                     }
                 }
-            })
+            });
     }
 
     RoutingConfiguration.$inject = ['$stateProvider', '$urlRouterProvider'];

@@ -9,12 +9,12 @@ module BitbucketNotifier {
         name: string = '';
         fullName: string = '';
 
-        slugify(): string {
-            return this.fullName.replace(/\//g, '__');
-        }
-
         static deslugify(slug: string): string {
             return slug.replace(/__/g, '/');
+        }
+
+        slugify(): string {
+            return this.fullName.replace(/\//g, '__');
         }
     }
 
