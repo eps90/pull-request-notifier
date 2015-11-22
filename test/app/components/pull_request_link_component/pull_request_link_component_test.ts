@@ -71,4 +71,39 @@ describe('PullRequestLinkComponent', () => {
         expect(window['chrome'].tabs.create).toHaveBeenCalled();
         expect(newTabObj.url).toEqual(pullRequestLink);
     });
+
+    describe('with large size', () => {
+        it('should be able to render large button', () => {
+            var pullRequestLink = 'http://example.com';
+            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            pullRequest.links.html = pullRequestLink;
+
+            $scope['pullRequest'] = pullRequest;
+
+            element = $compile('<pull-request-link  size="lg" pr="pullRequest"></pull-request-link>')($scope);
+            $scope.$digest();
+
+
+            expect(element.find('.pull-request-link-button').length).toEqual(1);
+            expect(element.find('.pull-request-link').length).toEqual(0);
+        });
+
+        it('should open new tab with given pull request', () => {
+            var pullRequestLink = 'http://example.com';
+            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            pullRequest.links.html = pullRequestLink;
+
+            $scope['pullRequest'] = pullRequest;
+
+            element = $compile('<pull-request-link size="lg" pr="pullRequest"></pull-request-link>')($scope);
+            $scope.$digest();
+
+            var linkElement = element.find('a');
+            var handler = <JQueryEventObject>{type: 'click', which: 1};
+            linkElement.triggerHandler(handler);
+
+            expect(window['chrome'].tabs.create).toHaveBeenCalled();
+            expect(newTabObj.url).toEqual(pullRequestLink);
+        });
+    });
 });
