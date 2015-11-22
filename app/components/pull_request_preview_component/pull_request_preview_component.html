@@ -3,7 +3,7 @@
         <div class="col-sm-12">
             <section-title icon="code">{{ pr.title }}</section-title>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-8">
             <section class="branch-info">
                 <p class="section-label">
                     Target branch:
@@ -15,15 +15,13 @@
                 <p class="section-label">
                     Description:
                 </p>
-                <div class="content" ng-if="pr.description">
-                    {{ pr.description }}
-                </div>
+                <div class="content" ng-if="pr.description" btf-markdown="pr.description"></div>
                 <div class="no-content" ng-if="!pr.description">
                     No description
                 </div>
             </section>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <section class="reviewers">
                 <p class="section-label">
                     Reviewers:

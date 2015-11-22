@@ -1,11 +1,11 @@
 @import '../../../assets/less/_variables';
 
 .pull-request-preview {
-    margin: 10px;
-
     section-title {
         h2.title {
-            margin-top: 0;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
     }
 
@@ -35,10 +35,15 @@
                 position: relative;
                 top: 6px;
                 margin-left: 10px;
+                max-width: 260px;
             }
         }
 
         &.description {
+            height: 200px;
+            overflow-y: scroll;
+            margin-top: 10px;
+
             .no-content {
                 font-style: italic;
             }
