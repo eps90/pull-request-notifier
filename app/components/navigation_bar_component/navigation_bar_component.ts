@@ -11,9 +11,7 @@ module BitbucketNotifier {
 
         link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
             scope['appVersion'] = 'v' + window['chrome'].runtime.getManifest().version;
-            scope['goToBitbucket'] = () => {
-                window['chrome'].tabs.create({url: this.bitbucketUrl});
-            };
+
         };
 
         static factory(): ng.IDirectiveFactory {
