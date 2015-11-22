@@ -51,6 +51,27 @@ describe('Models', () => {
 
             expect(pullRequest.getReviewersList()).toEqual(['john.smith', 'anna.kowalsky']);
         });
+
+        it('should be able to determine whether is is merge-ready', () => {
+            var approvedReviewer = new BitbucketNotifier.Reviewer();
+            approvedReviewer.approved = true;
+
+            var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+            unapprovedReviewer.approved = false;
+
+            var readyPr = new BitbucketNotifier.PullRequest();
+            readyPr.reviewers = [approvedReviewer];
+
+            var pendingPr = new BitbucketNotifier.PullRequest();
+            pendingPr.reviewers = [unapprovedReviewer];
+
+            var anotherPendningPr = new BitbucketNotifier.PullRequest();
+            anotherPendningPr.reviewers = [approvedReviewer, unapprovedReviewer];
+
+            expect(readyPr.isMergeReady()).toBeTruthy();
+            expect(pendingPr.isMergeReady()).toBeFalsy();
+            expect(anotherPendningPr.isMergeReady()).toBeFalsy();
+        });
     });
 
     describe('Project', () => {
