@@ -103,4 +103,67 @@ describe('PullRequestPreviewComponent', () => {
             expect(reviewersElement.text()).toContain(expectedMsg);
         });
     });
+
+    describe('action buttons', () => {
+        it('should contain reminder button', () => {
+            var approvedReviewer = new BitbucketNotifier.Reviewer();
+            approvedReviewer.user.displayName = "John Smith";
+            approvedReviewer.approved = true;
+
+            var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+            unapprovedReviewer.user.displayName = "Anna Kowalsky";
+            unapprovedReviewer.approved = false;
+
+            var pullRequest = new BitbucketNotifier.PullRequest();
+            pullRequest.reviewers = [approvedReviewer, unapprovedReviewer];
+
+            $scope['pullRequest'] = pullRequest;
+
+            element = $compile('<pull-request-preview pr="pullRequest"></pull-request-preview>')($scope);
+            $scope.$digest();
+
+            expect(element.find('reminder').length).toEqual(1);
+        });
+
+        it('should not contain reminder button if all reviewers has voted', () => {
+            var approvedReviewer = new BitbucketNotifier.Reviewer();
+            approvedReviewer.user.displayName = "John Smith";
+            approvedReviewer.approved = true;
+
+            var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+            unapprovedReviewer.user.displayName = "Anna Kowalsky";
+            unapprovedReviewer.approved = true;
+
+            var pullRequest = new BitbucketNotifier.PullRequest();
+            pullRequest.reviewers = [approvedReviewer, unapprovedReviewer];
+
+            $scope['pullRequest'] = pullRequest;
+
+            element = $compile('<pull-request-preview pr="pullRequest"></pull-request-preview>')($scope);
+            $scope.$digest();
+
+            expect(element.find('reminder').length).toEqual(0);
+        });
+
+        it('should not contain reminder button if there are no reviewers', () => {
+            var pullRequest = new BitbucketNotifier.PullRequest();
+            pullRequest.reviewers = [];
+
+            $scope['pullRequest'] = pullRequest;
+
+            element = $compile('<pull-request-preview pr="pullRequest"></pull-request-preview>')($scope);
+            $scope.$digest();
+
+            expect(element.find('reminder').length).toEqual(0);
+        });
+
+        it('should contain button with pull request link', () => {
+            $scope['pullRequest'] = new BitbucketNotifier.PullRequest();
+
+            element = $compile('<pull-request-preview pr="pullRequest"></pull-request-preview>')($scope);
+            $scope.$digest();
+
+            expect(element.find('pull-request-link').length).toEqual(1);
+        });
+    });
 });
