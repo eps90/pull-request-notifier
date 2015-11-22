@@ -20,6 +20,7 @@ module BitbucketNotifier {
     application.directive('sectionTitle', SectionTitleComponent.factory());
     application.directive('pullRequestLink', PullRequestLinkComponent.factory());
     application.directive('navigationBar', NavigationBarComponent.factory());
+    application.directive('navigationBrand', NavigationBrandComponent.factory());
     application.directive('reminder', ReminderComponent.factory());
     application.directive('pullRequestPreview', PullRequestPreviewComponent.factory());
     application.directive('reviewer', ReviewerComponent.factory());
