@@ -42,14 +42,4 @@ describe("NavigationBarComponent", () => {
         var expectedAppVersion = 'v' + appVersion;
         expect(versionField.text()).toEqual(expectedAppVersion);
     });
-
-    it('should have link following to Bitbucket page', () => {
-        element = $compile('<navigation-bar></navigation-bar>')($scope);
-        $scope.$digest();
-
-        var linkElement = element.find('a.bitbucket-logo');
-        linkElement.triggerHandler('click');
-
-        expect(window['chrome'].tabs.create).toHaveBeenCalledWith({url: bitbucketUrl});
-    });
 });
