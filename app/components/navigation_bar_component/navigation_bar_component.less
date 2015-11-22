@@ -27,18 +27,24 @@
         &.ng-leave.ng-leave-active {
             top: 50px;
         }
-    }
 
-    .navbar-brand {
-        color: @white;
-        font-weight: bold;
-        font-size: @navbarFontSize;
-
-        &:hover, &:focus {
-            background-color: @lightBlue;
+        .navbar-brand {
             color: @white;
+            font-weight: bold;
+            font-size: @navbarFontSize;
+        }
+
+        &:not(.ng-enter):not(.ng-leave) {
+            .navbar-brand {
+                &:hover, &:focus {
+                    background-color: @lightBlue;
+                    color: @white;
+                }
+            }
         }
     }
+
+
 
     .navbar-text {
         color: @white;
