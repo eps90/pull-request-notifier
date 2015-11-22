@@ -40,6 +40,19 @@ describe('PullRequestPreviewComponent', () => {
         expect(element.text()).toContain(targetBranch);
     });
 
+    it('should contain author name', () => {
+        var authorName = "John Smith";
+
+        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        pullRequest.author.displayName = authorName;
+        $scope['pullRequest'] = pullRequest;
+
+        element = $compile('<pull-request-preview pr="pullRequest"></pull-request-preview>')($scope);
+        $scope.$digest();
+
+        expect(element.text()).toContain(authorName);
+    });
+
     describe('description', () => {
         it('should contain pull request description', () => {
             var description = 'This is a description of a Pull Request';
