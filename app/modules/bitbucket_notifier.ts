@@ -9,7 +9,8 @@ module BitbucketNotifier {
         'emoji',
         'ngSanitize',
         'ui.router',
-        'btford.markdown'
+        'btford.markdown',
+        'ngAnimate'
     ]);
     application.directive('pullRequest', PullRequestComponent.factory());
     application.directive('pullRequestsList', PullRequestsListComponent.factory());

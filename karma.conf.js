@@ -31,6 +31,7 @@ module.exports = function(config) {
         'bower_components/angular-ui-router/release/angular-ui-router.js',
         'bower_components/showdown/src/showdown.js',
         'bower_components/angular-markdown-directive/markdown.js',
+        'bower_components/angular-animate/angular-animate.js',
         'build/**/!(bitbucket_notifier*).js',
         'build/app/modules/bitbucket_notifier.js',
         'build/app/modules/bitbucket_notifier_background.js',
