@@ -4,6 +4,31 @@
     background-color: @darkBlue;
     border-color: @darkerBlue;
 
+    .navbar-header {
+        transition: 0.5s cubic-bezier(0.785, 0.135, 0.150, 0.860) top;
+        -webkit-transition: 0.5s cubic-bezier(0.785, 0.135, 0.150, 0.860) top;
+
+        &.ng-enter, &.ng-leave {
+            position: absolute;
+            left: 15px;
+            display: block;
+            clear: both;
+        }
+
+        &.ng-enter {
+            top: -50px;
+        }
+        &.ng-enter.ng-enter-active {
+            top: 0;
+        }
+        &.ng-leave {
+            top: 0;
+        }
+        &.ng-leave.ng-leave-active {
+            top: 50px;
+        }
+    }
+
     .navbar-brand {
         color: @white;
         font-weight: bold;
