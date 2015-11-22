@@ -15,7 +15,7 @@ describe('PullRequestComponent', () => {
         ($provide: ng.auto.IProvideService) => {
             $provide.value('$state', {
                 go: jasmine.createSpy('$state.go')
-            })
+            });
         }
     ]));
 
