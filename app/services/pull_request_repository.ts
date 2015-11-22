@@ -17,14 +17,14 @@ module BitbucketNotifier {
             var port = window['chrome'].extension.connect({name: "Bitbucket Notifier"});
             port.onMessage.addListener((message: ChromeExtensionEvent) => {
                 this.$rootScope.$apply(() => {
-                    this.pullRequests = message.content;
+                    this.pullRequests = PullRequestFactory.createFromArray(message.content);
                 });
             });
 
             window['chrome'].extension.onMessage.addListener((message: ChromeExtensionEvent) => {
                 if (message.type === ChromeExtensionEvent.UPDATE_PULLREQUESTS && !ChromeExtensionEvent.isBackground()) {
                     $rootScope.$apply(() => {
-                        this.pullRequests = message.content;
+                        this.pullRequests = PullRequestFactory.createFromArray(message.content);
                     });
                 }
             });
