@@ -56,6 +56,12 @@ module BitbucketNotifier {
                 return reviewer.user.username;
             });
         }
+
+        isMergeReady(): boolean {
+            return _.filter(this.reviewers, (reviewer: Reviewer) => {
+                return !reviewer.approved;
+            }).length === 0;
+        }
     }
 
     export class PullRequestEvent implements ModelInterface {
