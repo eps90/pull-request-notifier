@@ -117,6 +117,35 @@ describe('PullRequestRepository', () => {
         expect(actual).toBeTruthy();
     });
 
+    describe('finding pull request', () => {
+        it('should find pull request by id and repository name', () => {
+            var repositoryName = 'team_name/repo_name';
+            var prId = 3;
+
+            var project = new BitbucketNotifier.Project();
+            project.fullName = repositoryName;
+
+            var pullRequest = new BitbucketNotifier.PullRequest();
+            pullRequest.targetRepository = project;
+            pullRequest.id = prId;
+
+            pullRequestRepositoryOne.pullRequests = [pullRequest];
+
+            var actual: BitbucketNotifier.PullRequest = pullRequestRepositoryOne.find(repositoryName, prId);
+            expect(actual).toEqual(pullRequest);
+        });
+
+        it('should return null if pull request has not been found', () => {
+            var repositoryName = 'team_name/repo_name';
+            var prId = 3;
+
+            pullRequestRepositoryOne.pullRequests = [];
+
+            var actual: BitbucketNotifier.PullRequest = pullRequestRepositoryOne.find(repositoryName, prId);
+            expect(actual).toBeNull();
+        });
+    });
+
     describe('with chrome events', () => {
         it('should emit chrome event on pull request collection change', () => {
             var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();

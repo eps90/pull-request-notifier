@@ -51,5 +51,78 @@ describe('Models', () => {
 
             expect(pullRequest.getReviewersList()).toEqual(['john.smith', 'anna.kowalsky']);
         });
+
+        it('should be able to determine whether is is merge-ready', () => {
+            var approvedReviewer = new BitbucketNotifier.Reviewer();
+            approvedReviewer.approved = true;
+
+            var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+            unapprovedReviewer.approved = false;
+
+            var readyPr = new BitbucketNotifier.PullRequest();
+            readyPr.reviewers = [approvedReviewer];
+
+            var pendingPr = new BitbucketNotifier.PullRequest();
+            pendingPr.reviewers = [unapprovedReviewer];
+
+            var anotherPendningPr = new BitbucketNotifier.PullRequest();
+            anotherPendningPr.reviewers = [approvedReviewer, unapprovedReviewer];
+
+            expect(readyPr.isMergeReady()).toBeTruthy();
+            expect(pendingPr.isMergeReady()).toBeFalsy();
+            expect(anotherPendningPr.isMergeReady()).toBeFalsy();
+        });
+    });
+
+    describe('Project', () => {
+        describe('slugify', () => {
+            it('should slugify repository name', () => {
+                var projectProvider: [{repoName: string; expectedSlug: string}] = [
+                    {
+                        repoName: 'team/repo',
+                        expectedSlug: 'team__repo'
+                    },
+                    {
+                        repoName: 'team_name/repository',
+                        expectedSlug: 'team_name__repository'
+                    },
+                    {
+                        repoName: 'team_name/repo_name',
+                        expectedSlug: 'team_name__repo_name'
+                    }
+                ];
+
+                for (let testIdx = 0, len = projectProvider.length; testIdx < len; testIdx++) {
+                    let testData = projectProvider[testIdx];
+
+                    let project = new BitbucketNotifier.Project();
+                    project.fullName = testData.repoName;
+
+                    let actual = project.slugify();
+
+                    expect(actual).toEqual(testData.expectedSlug);
+                }
+            });
+
+            it('should deslugify slugified repository name', () => {
+                var slugsProvider: [{slug: string; expected: string}] = [
+                    {
+                        slug: 'team__repo',
+                        expected: 'team/repo'
+                    },
+                    {
+                        slug: 'team_repo__repo_name',
+                        expected: 'team_repo/repo_name'
+                    }
+                ];
+
+                for (let testIdx = 0, len = slugsProvider.length; testIdx < len; testIdx++) {
+                    let testData = slugsProvider[testIdx];
+
+                    var actual = BitbucketNotifier.Project.deslugify(testData.slug);
+                    expect(actual).toEqual(testData.expected);
+                }
+            });
+        });
     });
 });

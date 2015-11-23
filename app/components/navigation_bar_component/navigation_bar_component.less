@@ -4,16 +4,47 @@
     background-color: @darkBlue;
     border-color: @darkerBlue;
 
-    .navbar-brand {
-        color: @white;
-        font-weight: bold;
-        font-size: @navbarFontSize;
+    .navbar-header {
+        transition: 0.5s cubic-bezier(0.785, 0.135, 0.150, 0.860) top;
+        -webkit-transition: 0.5s cubic-bezier(0.785, 0.135, 0.150, 0.860) top;
 
-        &:hover, &:focus {
-            background-color: @lightBlue;
+        &.ng-enter, &.ng-leave {
+            position: absolute;
+            left: 15px;
+            display: block;
+            clear: both;
+        }
+
+        &.ng-enter {
+            top: -50px;
+        }
+        &.ng-enter.ng-enter-active {
+            top: 0;
+        }
+        &.ng-leave {
+            top: 0;
+        }
+        &.ng-leave.ng-leave-active {
+            top: 50px;
+        }
+
+        .navbar-brand {
             color: @white;
+            font-weight: bold;
+            font-size: @navbarFontSize;
+        }
+
+        &:not(.ng-enter):not(.ng-leave) {
+            .navbar-brand {
+                &:hover, &:focus {
+                    background-color: @lightBlue;
+                    color: @white;
+                }
+            }
         }
     }
+
+
 
     .navbar-text {
         color: @white;

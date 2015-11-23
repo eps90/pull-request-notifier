@@ -1,9 +1,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand bitbucket-logo" href="#" ng-click="goToBitbucket()">
-                <i class="fa fa-bitbucket"></i> Bitbucket Notifier
-            </a>
+        <div class="navbar-header" ui-view="navbar">
+            <navigation-brand icon="bitbucket" content="Bitbucket Notifier">
         </div>
         <div class="collapse navbar-collapse">
             <p class="navbar-text navbar-right app-version">{{ appVersion }}</p>
