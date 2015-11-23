@@ -20,7 +20,13 @@
 ///<reference path="components/section_title_component/section_title_component.ts"/>
 ///<reference path="components/pull_request_link_component/pull_request_link_component.ts"/>
 ///<reference path="components/navigation_bar_component/navigation_bar_component.ts"/>
+///<reference path="components/navigation_brand_component/navigation_brand_component.ts"/>
 ///<reference path="components/reminder_component/reminder_component.ts"/>
+///<reference path="components/pull_request_preview_component/pull_request_preview_component.ts"/>
+///<reference path="components/reviewer_component/reviewer_component.ts"/>
 ///<reference path="filters/authored_filter.ts"/>
 ///<reference path="filters/assigned_filter.ts"/>
+///<reference path="filters/unapproved_first_filter.ts"/>
+///<reference path="config/routing.ts"/>
+
 

@@ -8,6 +8,14 @@ module BitbucketNotifier {
     export class Project implements ModelInterface {
         name: string = '';
         fullName: string = '';
+
+        static deslugify(slug: string): string {
+            return slug.replace(/__/g, '/');
+        }
+
+        slugify(): string {
+            return this.fullName.replace(/\//g, '__');
+        }
     }
 
     export class User implements ModelInterface {
@@ -47,6 +55,12 @@ module BitbucketNotifier {
             return _.map(this.reviewers, (reviewer: Reviewer) => {
                 return reviewer.user.username;
             });
+        }
+
+        isMergeReady(): boolean {
+            return _.filter(this.reviewers, (reviewer: Reviewer) => {
+                return !reviewer.approved;
+            }).length === 0;
         }
     }
 

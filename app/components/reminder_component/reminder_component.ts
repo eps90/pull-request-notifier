@@ -7,12 +7,16 @@ module BitbucketNotifier {
         restrict: string = 'E';
         templateUrl: string = '../components/reminder_component/reminder_component.html';
         scope: any = {
-            pullRequest: '='
+            pullRequest: '=',
+            size: '@'
         };
 
         link: ng.IDirectiveLinkFn = (scope: ng.IScope, element: ng.IAugmentedJQuery) => {
+            scope['size'] = scope['size'] || 'sm';
             scope['disabled'] = false;
-            scope['remind'] = () => {
+
+            scope['remind'] = ($event) => {
+                $event.stopPropagation();
                 scope['disabled'] = true;
                 window['chrome'].extension.sendMessage(
                     new ChromeExtensionEvent(
@@ -20,6 +24,10 @@ module BitbucketNotifier {
                         scope['pullRequest']
                     )
                 );
+            };
+
+            scope['isLarge'] = () => {
+                return (<string>scope['size']).toLowerCase() === 'lg';
             };
         };
 

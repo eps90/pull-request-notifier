@@ -1,0 +1,87 @@
+@import '../../../assets/less/_variables';
+
+.pull-request-preview {
+    section-title {
+        h2.title {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+
+    section {
+        p.section-label {
+            font-weight: bold;
+        }
+
+        &.branch-info {
+            p.section-label {
+                display: inline;
+            }
+
+            span.target-branch {
+                font-weight: normal;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                display: inline-block;
+                padding: 0 5px;
+                background-color: @lightGrey;
+                border: 1px solid @grey;
+                border-radius: 3px;
+                font-family: Consolas, Menlo, "Liberation Mono", Courier, monospace;
+                font-size: 12px;
+                color: @darkerGrey;
+                position: relative;
+                top: 6px;
+                margin-left: 10px;
+                max-width: 260px;
+            }
+        }
+
+        &.description {
+            margin: 10px 0;
+
+            .content {
+                overflow-y: scroll;
+                height: 200px;
+
+                img {
+                    width: 100%;
+                    padding: 10px;
+                }
+            }
+
+            .no-content {
+                font-style: italic;
+            }
+        }
+
+        &.reviewers {
+            .reviewers-list {
+                reviewer {
+                    display: block;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+
+        &.actions {
+            margin: 10px 0;
+            padding: 10px 0;
+            text-align: center;
+            border-top: @lightGrey 1px solid;
+        }
+
+        &.author {
+            margin: 10px 0;
+            p.section-label {
+                display: inline;
+            }
+
+            span.author-name {
+                margin-left: 5px;
+            }
+        }
+    }
+}

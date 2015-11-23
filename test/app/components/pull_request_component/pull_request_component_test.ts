@@ -4,18 +4,30 @@ describe('PullRequestComponent', () => {
     var element,
         $compile: ng.ICompileService,
         $scope: ng.IRootScopeService,
+        uiRouterState: angular.ui.IStateService,
         pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
 
     beforeEach(module('bitbucketNotifier'));
     beforeEach(module('bitbucketNotifier.templates'));
 
+    beforeEach(module([
+        '$provide',
+        ($provide: ng.auto.IProvideService) => {
+            $provide.value('$state', {
+                go: jasmine.createSpy('$state.go')
+            });
+        }
+    ]));
+
     beforeEach(
         inject([
             '$compile',
             '$rootScope',
-            ($c, $s) => {
+            '$state',
+            ($c, $s, $state) => {
                 $compile = $c;
                 $scope = $s;
+                uiRouterState = $state;
             }
         ])
     );
@@ -40,7 +52,7 @@ describe('PullRequestComponent', () => {
 
         var project: BitbucketNotifier.Project = new BitbucketNotifier.Project();
         project.name = 'CRM';
-        project.fullName = 'dacsoftware/crm';
+        project.fullName = 'dacsoftware/my_sweet_project';
 
         pullRequest.id = 1;
         pullRequest.title = 'This is a pull request';
@@ -84,5 +96,20 @@ describe('PullRequestComponent', () => {
             expect(element.find('user-vote').length).toEqual(1);
             expect(element.find('reminder').length).toEqual(1);
         });
+    });
+
+    it('should go to pull request on click', () => {
+        $scope['pullRequest'] = pullRequest;
+        element = $compile('<pull-request pr="pullRequest" mode="ASSIGNED"></pull-request>')($scope);
+        $scope.$digest();
+
+        element.click().triggerHandler('click');
+        expect(uiRouterState.go).toHaveBeenCalledWith(
+            'pull_request',
+            {
+                repositoryName: 'dacsoftware__my_sweet_project',
+                pullRequestId: 1
+            }
+        );
     });
 });
