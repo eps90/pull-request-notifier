@@ -17,7 +17,7 @@
                 <p class="section-label">
                     Description:
                 </p>
-                <div class="content" ng-if="pr.description" btf-markdown="pr.description"></div>
+                <div class="content" ng-if="pr.description" btf-markdown="pr.description | emoji"></div>
                 <div class="no-content" ng-if="!pr.description">
                     No description
                 </div>
