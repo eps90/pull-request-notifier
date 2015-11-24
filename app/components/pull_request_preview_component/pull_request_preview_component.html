@@ -1,7 +1,9 @@
 <div class="pull-request-preview">
     <div class="row">
         <div class="col-sm-12">
-            <section-title icon="code">{{ pr.title }}</section-title>
+            <section-title icon="code">
+                <span ng-bind-html="pr.title | emoji"></span>
+            </section-title>
         </div>
         <div class="col-sm-8">
             <section class="branch-info">
@@ -15,7 +17,7 @@
                 <p class="section-label">
                     Description:
                 </p>
-                <div class="content" ng-if="pr.description" btf-markdown="pr.description"></div>
+                <div class="content" ng-if="pr.description" btf-markdown="pr.description | emoji"></div>
                 <div class="no-content" ng-if="!pr.description">
                     No description
                 </div>
