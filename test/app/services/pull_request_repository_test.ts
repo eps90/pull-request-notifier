@@ -117,6 +117,26 @@ describe('PullRequestRepository', () => {
         expect(actual).toBeTruthy();
     });
 
+    it('should determine whether given pull request already exists', () => {
+        var existentPullRequest = new BitbucketNotifier.PullRequest();
+        existentPullRequest.id = 1;
+        existentPullRequest.targetRepository.fullName = 'team_name/repo_name';
+
+        var newPullRequest = new BitbucketNotifier.PullRequest();
+        newPullRequest.id = 2;
+        newPullRequest.targetRepository.fullName = 'team_name/repo_name';
+
+        var anotherNewPullRequest = new BitbucketNotifier.PullRequest();
+        anotherNewPullRequest.id = 1;
+        anotherNewPullRequest.targetRepository.fullName = 'another_team/another_repo';
+
+        pullRequestRepositoryOne.pullRequests = [existentPullRequest];
+
+        expect(pullRequestRepositoryOne.exists(existentPullRequest)).toBeTruthy();
+        expect(pullRequestRepositoryOne.exists(newPullRequest)).toBeFalsy();
+        expect(pullRequestRepositoryOne.exists(anotherNewPullRequest)).toBeFalsy();
+    });
+
     describe('finding pull request', () => {
         it('should find pull request by id and repository name', () => {
             var repositoryName = 'team_name/repo_name';
