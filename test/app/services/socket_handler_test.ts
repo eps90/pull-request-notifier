@@ -109,6 +109,7 @@ describe('SocketHandler', () => {
     describe('chrome notifications', () => {
         var pullRequestEvent: BitbucketNotifier.PullRequestEvent;
         var pullRequest: BitbucketNotifier.PullRequest;
+        var pullRequestsList = [];
         var johnSmith: BitbucketNotifier.User;
         var annaKowalsky: BitbucketNotifier.User;
 
@@ -117,8 +118,10 @@ describe('SocketHandler', () => {
             pullRequest.id = 1;
             pullRequest.targetRepository.fullName = 'team_name/repo_name';
 
+            pullRequestsList.push(pullRequest);
+
             pullRequestEvent = new BitbucketNotifier.PullRequestEvent();
-            pullRequestEvent.pullRequests = [pullRequest];
+            pullRequestEvent.pullRequests = pullRequestsList;
             pullRequestEvent.context = pullRequest;
 
             johnSmith = new BitbucketNotifier.User();
@@ -141,6 +144,30 @@ describe('SocketHandler', () => {
                 socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
                 var stub: jasmine.Spy = <jasmine.Spy> notifier.notifyNewPullRequestAssigned;
                 expect(stub.calls.count()).toEqual(1);
+            });
+
+            it('should not notify about assigned pull requests when author already approved a PullRequest', () => {
+                var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+                unapprovedReviewer.user = johnSmith;
+                unapprovedReviewer.approved = false;
+
+                var approvedReviewer = new BitbucketNotifier.Reviewer();
+                approvedReviewer.user = johnSmith;
+                approvedReviewer.approved = true;
+
+                pullRequest.reviewers.push(unapprovedReviewer);
+
+                var approvedPullRequest = new BitbucketNotifier.PullRequest();
+                approvedPullRequest.id = 2;
+                approvedPullRequest.targetRepository.fullName = 'team_name/repo_name';
+                approvedPullRequest.reviewers.push(approvedReviewer);
+
+                pullRequestsList.push(approvedPullRequest);
+
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
+
+                expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest);
+                expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalledWith(approvedPullRequest);
             });
         });
 
