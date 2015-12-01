@@ -8,6 +8,7 @@ describe('SocketHandler', () => {
         notifier: BitbucketNotifier.Notifier,
         indicator: BitbucketNotifier.Indicator,
         hasAssignmentChanged = false,
+        exists = true,
         extensionListener: Function;
 
     beforeEach(module('bitbucketNotifier.background'));
@@ -42,6 +43,10 @@ describe('SocketHandler', () => {
             hasAssignmentChanged: jasmine.createSpy('PullRequestRepository.hasAssignmentChanged')
                 .and.callFake(() => {
                     return hasAssignmentChanged;
+                }),
+            exists: jasmine.createSpy('PullRequestRepository.exists')
+                .and.callFake(() => {
+                    return exists;
                 })
         });
 
@@ -172,9 +177,10 @@ describe('SocketHandler', () => {
         });
 
         describe('on updated pull request', () => {
-            it('should notify about new assignment when assignment has changed', () => {
+            it('should notify about new assignment when assignment has changed and pull request has not been already indexed', () => {
                 pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_UPDATED;
                 hasAssignmentChanged = true;
+                exists = false;
 
                 var loggedInReviewer = new BitbucketNotifier.Reviewer();
                 loggedInReviewer.user = johnSmith;
