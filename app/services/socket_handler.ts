@@ -69,6 +69,7 @@ module BitbucketNotifier {
 
                 if (sourceEvent === WebhookEvent.PULLREQUEST_UPDATED
                     && this.pullRequestRepository.hasAssignmentChanged(contextPr)
+                    && !this.pullRequestRepository.exists(contextPr)
                 ) {
                     for (let reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
                         let reviewer = contextPr.reviewers[reviewerIdx];
