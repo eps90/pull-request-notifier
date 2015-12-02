@@ -52,7 +52,7 @@ module BitbucketNotifier {
                     var pr = userPrs.pullRequests[prIndex];
                     for (var reviewerIdx = 0, reviewersLen = pr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
                         var reviewer = pr.reviewers[reviewerIdx];
-                        if (reviewer.user.username === loggedInUser) {
+                        if (reviewer.user.username === loggedInUser && !reviewer.approved) {
                             this.notifier.notifyNewPullRequestAssigned(pr);
                         }
                     }
@@ -69,6 +69,7 @@ module BitbucketNotifier {
 
                 if (sourceEvent === WebhookEvent.PULLREQUEST_UPDATED
                     && this.pullRequestRepository.hasAssignmentChanged(contextPr)
+                    && !this.pullRequestRepository.exists(contextPr)
                 ) {
                     for (let reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
                         let reviewer = contextPr.reviewers[reviewerIdx];

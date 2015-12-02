@@ -72,5 +72,9 @@ module BitbucketNotifier {
 
             return null;
         }
+
+        exists(pullRequest: PullRequest): boolean {
+            return this.find(pullRequest.targetRepository.fullName, pullRequest.id) !== null;
+        }
     }
 }
