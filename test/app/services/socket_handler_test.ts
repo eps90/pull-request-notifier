@@ -8,6 +8,7 @@ describe('SocketHandler', () => {
         notifier: BitbucketNotifier.Notifier,
         indicator: BitbucketNotifier.Indicator,
         hasAssignmentChanged = false,
+        exists = true,
         extensionListener: Function;
 
     beforeEach(module('bitbucketNotifier.background'));
@@ -42,6 +43,10 @@ describe('SocketHandler', () => {
             hasAssignmentChanged: jasmine.createSpy('PullRequestRepository.hasAssignmentChanged')
                 .and.callFake(() => {
                     return hasAssignmentChanged;
+                }),
+            exists: jasmine.createSpy('PullRequestRepository.exists')
+                .and.callFake(() => {
+                    return exists;
                 })
         });
 
@@ -109,6 +114,7 @@ describe('SocketHandler', () => {
     describe('chrome notifications', () => {
         var pullRequestEvent: BitbucketNotifier.PullRequestEvent;
         var pullRequest: BitbucketNotifier.PullRequest;
+        var pullRequestsList = [];
         var johnSmith: BitbucketNotifier.User;
         var annaKowalsky: BitbucketNotifier.User;
 
@@ -117,8 +123,10 @@ describe('SocketHandler', () => {
             pullRequest.id = 1;
             pullRequest.targetRepository.fullName = 'team_name/repo_name';
 
+            pullRequestsList.push(pullRequest);
+
             pullRequestEvent = new BitbucketNotifier.PullRequestEvent();
-            pullRequestEvent.pullRequests = [pullRequest];
+            pullRequestEvent.pullRequests = pullRequestsList;
             pullRequestEvent.context = pullRequest;
 
             johnSmith = new BitbucketNotifier.User();
@@ -142,12 +150,37 @@ describe('SocketHandler', () => {
                 var stub: jasmine.Spy = <jasmine.Spy> notifier.notifyNewPullRequestAssigned;
                 expect(stub.calls.count()).toEqual(1);
             });
+
+            it('should not notify about assigned pull requests when author already approved a PullRequest', () => {
+                var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+                unapprovedReviewer.user = johnSmith;
+                unapprovedReviewer.approved = false;
+
+                var approvedReviewer = new BitbucketNotifier.Reviewer();
+                approvedReviewer.user = johnSmith;
+                approvedReviewer.approved = true;
+
+                pullRequest.reviewers.push(unapprovedReviewer);
+
+                var approvedPullRequest = new BitbucketNotifier.PullRequest();
+                approvedPullRequest.id = 2;
+                approvedPullRequest.targetRepository.fullName = 'team_name/repo_name';
+                approvedPullRequest.reviewers.push(approvedReviewer);
+
+                pullRequestsList.push(approvedPullRequest);
+
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
+
+                expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest);
+                expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalledWith(approvedPullRequest);
+            });
         });
 
         describe('on updated pull request', () => {
-            it('should notify about new assignment when assignment has changed', () => {
+            it('should notify about new assignment when assignment has changed and pull request has not been already indexed', () => {
                 pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_UPDATED;
                 hasAssignmentChanged = true;
+                exists = false;
 
                 var loggedInReviewer = new BitbucketNotifier.Reviewer();
                 loggedInReviewer.user = johnSmith;
