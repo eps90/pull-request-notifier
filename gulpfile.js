@@ -4,6 +4,14 @@ var typescript = require('gulp-typescript');
 var karmaServer = require('karma').Server;
 var merge = require('merge-stream');
 var flatten = require('gulp-flatten');
+var gutil = require('gulp-util');
+var debug = require('gulp-debug');
+
+var minifyCss = require('gulp-minify-css');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var rev = require('gulp-rev');
+var less = require('gulp-less');
 
 var ngTemplates = require('gulp-ng-templates');
 
@@ -74,6 +82,26 @@ gulp.task('ngTemplates', ['compile:dist', 'copy:dist'], function () {
         .pipe(gulp.dest('build/modules'));
 
     return merge(popup, options);
+});
+
+gulp.task('assets', ['clean:dist', 'copy:dist', 'ngTemplates'], function () {
+    var scripts = gulp.src(['build/**/*.js', '!build/modules/bitbucket_notifier*.js'])
+        .pipe(concat('scripts.js'))
+        .pipe(uglify())
+        .pipe(rev())
+        .pipe(gulp.dest('build/assets'));
+
+    var styles = gulp.src(['app/**/*.less', 'assets/less/styles.less'])
+        .pipe(less())
+        .pipe(concat('styles.css'))
+        .pipe(minifyCss())
+        .pipe(rev())
+        .pipe(gulp.dest('build/assets'));
+
+    return merge(scripts, styles)
+        .pipe(debug())
+        .pipe(rev.manifest({base: '.'}))
+        .pipe(gulp.dest('build'));
 });
 
 gulp.task('build:test', ['compile:test', 'copy:test']);
