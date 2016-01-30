@@ -5,6 +5,8 @@ var karmaServer = require('karma').Server;
 var merge = require('merge-stream');
 var flatten = require('gulp-flatten');
 
+var ngTemplates = require('gulp-ng-templates');
+
 gulp.task('clean:test', function () {
     return del(['build/*', 'build']);
 });
@@ -48,6 +50,30 @@ gulp.task('copy:dist', ['clean:dist'], function () {
         .pipe(gulp.dest('build/fonts'));
 
     return merge(templates, fonts);
+});
+
+gulp.task('ngTemplates', ['compile:dist', 'copy:dist'], function () {
+    var popup = gulp.src(['app/components/**/*.html'])
+        .pipe(ngTemplates({
+            filename: 'templates.js',
+            module: 'bitbucketNotifier',
+            path: function (path, base) {
+                return base.replace(/^app/, '..');
+            }
+        }))
+        .pipe(gulp.dest('build/modules'));
+
+    var options = gulp.src(['app/components/**/*.html'])
+        .pipe(ngTemplates({
+            filename: 'templates_options_module.js',
+            module: 'bitbucketNotifer.options',
+            path: function (path, base) {
+                return base.replace(/^app/, '..');
+            }
+        }))
+        .pipe(gulp.dest('build/modules'));
+
+    return merge(popup, options);
 });
 
 gulp.task('build:test', ['compile:test', 'copy:test']);
