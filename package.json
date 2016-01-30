@@ -18,6 +18,7 @@
     "typescript": "^1.5.3"
   },
   "devDependencies": {
+    "del": "^2.2.0",
     "grunt": "^0.4.5",
     "grunt-angular-templates": "^0.5.7",
     "grunt-bump": "^0.5.0",
@@ -36,6 +37,7 @@
     "grunt-typescript": "^0.7.0",
     "grunt-usemin": "^3.0.0",
     "gulp": "^3.9.0",
+    "gulp-typescript": "^2.10.0",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.8",
     "karma-chrome-launcher": "^0.2.0",
