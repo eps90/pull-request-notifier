@@ -38,6 +38,7 @@
     "grunt-usemin": "^3.0.0",
     "gulp": "^3.9.0",
     "gulp-flatten": "^0.2.0",
+    "gulp-ng-templates": "0.0.6",
     "gulp-typescript": "^2.10.0",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.8",
