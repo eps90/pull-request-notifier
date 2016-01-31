@@ -8,11 +8,12 @@ var gutil = require('gulp-util');
 var debug = require('gulp-debug');
 var order = require('gulp-order');
 var gulpIf = require('gulp-if');
-
+var sourcemaps = require('gulp-sourcemaps');
 var minifyCss = require('gulp-minify-css');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rev = require('gulp-rev');
+var revCollector = require('gulp-rev-collector');
 var less = require('gulp-less');
 
 var ngTemplates = require('gulp-ng-templates');
@@ -53,7 +54,7 @@ gulp.task('copy:test', ['clean:test'], function () {
 });
 
 gulp.task('copy:dist', ['clean:dist'], function () {
-    var templates = gulp.src(['app/views/*.html', 'app/components/**/*.html'], {base: 'app'})
+    var templates = gulp.src(['app/views/*.html'], {base: 'app'})
         .pipe(gulp.dest('build'));
     var fonts = gulp.src(['bower_components/bootstrap/fonts/*.*', 'bower_components/fontawesome/fonts/*.*'], {base: '.'})
         .pipe(flatten())
@@ -88,7 +89,7 @@ gulp.task('ngTemplates', ['copy:dist'], function () {
     return merge(popup, options);
 });
 
-gulp.task('assets', ['clean:dist', 'copy:dist', 'ngTemplates'], function () {
+gulp.task('assets', ['clean:dist', 'ngTemplates'], function () {
     var tsOptions = {
         target: 'es5',
         module: 'commonjs',
@@ -97,23 +98,38 @@ gulp.task('assets', ['clean:dist', 'copy:dist', 'ngTemplates'], function () {
     };
 
     var scripts = gulp.src(['build/modules/*.js', 'app/**/*.ts'])
+        .pipe(sourcemaps.init())
         .pipe(gulpIf(/\.ts$/, typescript(tsOptions)))
         .pipe(concat('scripts.js'))
         .pipe(uglify())
         .pipe(rev())
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('build/assets'));
 
     var styles = gulp.src(['assets/less/styles.less', 'app/**/*.less'])
+        .pipe(sourcemaps.init())
         .pipe(less())
         .pipe(concat('styles.css'))
         .pipe(minifyCss())
         .pipe(rev())
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('build/assets'));
 
     return merge(scripts, styles)
-        .pipe(debug())
-        .pipe(rev.manifest({base: '.'}))
+        .pipe(rev.manifest())
         .pipe(gulp.dest('build'));
+});
+
+gulp.task('replace', ['assets'], function () {
+    return gulp.src(['build/*.json', 'build/views/*.html'])
+        .pipe(revCollector({
+            dirReplacements: {
+                assets: function (path) {
+                    return '../assets/' + path;
+                }
+            }
+        }))
+        .pipe(gulp.dest('build/views'));
 });
 
 gulp.task('build:test', ['compile:test', 'copy:test']);
