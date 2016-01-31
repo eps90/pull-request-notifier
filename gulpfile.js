@@ -6,6 +6,8 @@ var merge = require('merge-stream');
 var flatten = require('gulp-flatten');
 var gutil = require('gulp-util');
 var debug = require('gulp-debug');
+var order = require('gulp-order');
+var gulpIf = require('gulp-if');
 
 var minifyCss = require('gulp-minify-css');
 var concat = require('gulp-concat');
@@ -87,13 +89,23 @@ gulp.task('ngTemplates', ['copy:dist'], function () {
 });
 
 gulp.task('assets', ['clean:dist', 'copy:dist', 'ngTemplates'], function () {
-    var scripts = gulp.src(['build/**/*.js', '!build/modules/bitbucket_notifier*.js'])
+    var tsOptions = {
+        target: 'es5',
+        module: 'commonjs'
+    };
+
+    var scripts = gulp.src(['app/**/*.ts', 'build/modules/*.js'])
+        .pipe(gulpIf(/\.ts$/, typescript(tsOptions)))
+        .pipe(order([
+            'app/**/*',
+            'build/**/*'
+        ]))
         .pipe(concat('scripts.js'))
         .pipe(uglify())
         .pipe(rev())
         .pipe(gulp.dest('build/assets'));
 
-    var styles = gulp.src(['app/**/*.less', 'assets/less/styles.less'])
+    var styles = gulp.src(['assets/less/styles.less', 'app/**/*.less'])
         .pipe(less())
         .pipe(concat('styles.css'))
         .pipe(minifyCss())
