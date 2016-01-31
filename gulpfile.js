@@ -96,10 +96,6 @@ gulp.task('assets', ['clean:dist', 'copy:dist', 'ngTemplates'], function () {
 
     var scripts = gulp.src(['app/**/*.ts', 'build/modules/*.js'])
         .pipe(gulpIf(/\.ts$/, typescript(tsOptions)))
-        .pipe(order([
-            'app/**/*',
-            'build/**/*'
-        ]))
         .pipe(concat('scripts.js'))
         .pipe(uglify())
         .pipe(rev())
