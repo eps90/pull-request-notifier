@@ -60,13 +60,14 @@ gulp.task('copy:dist', ['clean:dist'], function () {
     return merge(templates, fonts);
 });
 
-gulp.task('ngTemplates', ['compile:dist', 'copy:dist'], function () {
+gulp.task('ngTemplates', ['copy:dist'], function () {
     var popup = gulp.src(['app/components/**/*.html'])
         .pipe(ngTemplates({
             filename: 'templates.js',
             module: 'bitbucketNotifier',
-            path: function (path, base) {
-                return base.replace(/^app/, '..');
+            standalone: false,
+            path: function (path) {
+                return path.replace(/(.+)\/app/, '..');
             }
         }))
         .pipe(gulp.dest('build/modules'));
@@ -75,8 +76,9 @@ gulp.task('ngTemplates', ['compile:dist', 'copy:dist'], function () {
         .pipe(ngTemplates({
             filename: 'templates_options_module.js',
             module: 'bitbucketNotifer.options',
-            path: function (path, base) {
-                return base.replace(/^app/, '..');
+            standalone: false,
+            path: function (path) {
+                return path.replace(/(.+)\/app/, '..');
             }
         }))
         .pipe(gulp.dest('build/modules'));
