@@ -91,10 +91,12 @@ gulp.task('ngTemplates', ['copy:dist'], function () {
 gulp.task('assets', ['clean:dist', 'copy:dist', 'ngTemplates'], function () {
     var tsOptions = {
         target: 'es5',
-        module: 'commonjs'
+        module: 'commonjs',
+        typescript: require('typescript'),
+        sortOutput: true
     };
 
-    var scripts = gulp.src(['app/**/*.ts', 'build/modules/*.js'])
+    var scripts = gulp.src(['build/modules/*.js', 'app/**/*.ts'])
         .pipe(gulpIf(/\.ts$/, typescript(tsOptions)))
         .pipe(concat('scripts.js'))
         .pipe(uglify())
