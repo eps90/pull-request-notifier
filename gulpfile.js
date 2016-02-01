@@ -13,45 +13,20 @@ var uglify = require('gulp-uglify');
 var rev = require('gulp-rev');
 var revCollector = require('gulp-rev-collector');
 var less = require('gulp-less');
-
 var ngTemplates = require('gulp-ng-templates');
 
-gulp.task('clean:test', function () {
-    return del(['build/*', 'build']);
-});
+var typeScriptOptions = {
+    target: 'es5',
+    module: 'commonjs',
+    typescript: require('typescript'),
+    sortOutput: true
+};
 
-gulp.task('clean:dist', function () {
+gulp.task('clean', function () {
     return del(['build/*', 'build', 'dist/*', 'dist']);
 });
 
-gulp.task('compile:test', ['clean:test'], function () {
-    var options = {
-        target: 'es5',
-        module: 'commonjs'
-    };
-
-    return gulp.src(['app/**/*.ts', 'test/**/*.ts'], {base: '.'})
-        .pipe(typescript(options))
-        .pipe(gulp.dest('build'));
-});
-
-gulp.task('compile:dist', ['clean:dist'], function () {
-    var options = {
-        target: 'es5',
-        module: 'commonjs'
-    };
-
-    return gulp.src(['app/**/*.ts'], {base: 'app'})
-        .pipe(typescript(options))
-        .pipe(gulp.dest('build'));
-});
-
-gulp.task('copy:test', ['clean:test'], function () {
-    return gulp.src(['app/views/*.html', 'app/components/**/*.html'], {base: ''})
-        .pipe(gulp.dest('build'));
-});
-
-gulp.task('copy:dist', ['clean:dist'], function () {
+gulp.task('copy', ['clean'], function () {
     var templates = gulp.src(['app/views/*.html'], {base: 'app'})
         .pipe(gulp.dest('build'));
     var fonts = gulp.src(['bower_components/bootstrap/fonts/*.*', 'bower_components/fontawesome/fonts/*.*'], {base: '.'})
@@ -61,7 +36,7 @@ gulp.task('copy:dist', ['clean:dist'], function () {
     return merge(templates, fonts);
 });
 
-gulp.task('ngTemplates', ['copy:dist'], function () {
+gulp.task('ngTemplates', ['clean'], function () {
     var popup = gulp.src(['app/components/**/*.html'])
         .pipe(ngTemplates({
             filename: 'templates.js',
@@ -87,14 +62,8 @@ gulp.task('ngTemplates', ['copy:dist'], function () {
     return merge(popup, options);
 });
 
-gulp.task('assets', ['clean:dist', 'ngTemplates'], function () {
-    var tsOptions = {
-        target: 'es5',
-        module: 'commonjs',
-        typescript: require('typescript'),
-        sortOutput: true
-    };
-
+// @TODO: Move file list into some config file
+gulp.task('assets', ['clean', 'ngTemplates'], function () {
     var vendorScripts = gulp.src([
             'bower_components/jquery/dist/jquery.js',
             'bower_components/angular/angular.min.js',
@@ -143,7 +112,7 @@ gulp.task('assets', ['clean:dist', 'ngTemplates'], function () {
 
     var scripts = gulp.src(['app/**/*.ts', 'app/modules/*.ts'])
         .pipe(sourcemaps.init())
-        .pipe(typescript(tsOptions))
+        .pipe(typescript(typeScriptOptions))
         .pipe(concat('scripts.js'))
         .pipe(uglify())
         .pipe(rev())
@@ -164,7 +133,7 @@ gulp.task('assets', ['clean:dist', 'ngTemplates'], function () {
         .pipe(gulp.dest('build'));
 });
 
-gulp.task('replace', ['assets'], function () {
+gulp.task('replace', ['assets', 'copy'], function () {
     return gulp.src(['build/*.json', 'build/views/*.html'])
         .pipe(revCollector({
             dirReplacements: {
@@ -176,10 +145,17 @@ gulp.task('replace', ['assets'], function () {
         .pipe(gulp.dest('build/views'));
 });
 
-gulp.task('build:test', ['compile:test', 'copy:test']);
-gulp.task('build:dist', ['compile:dist', 'copy:dist']);
+gulp.task('test:prepare', ['clean'], function () {
+    var compileSources = gulp.src(['app/**/*.ts', 'test/**/*.ts'], {base: '.'})
+        .pipe(typescript(typeScriptOptions))
+        .pipe(gulp.dest('build'));
+    var copyResources = gulp.src(['app/views/*.html', 'app/components/**/*.html'], {base: '.'})
+        .pipe(gulp.dest('build'));
 
-gulp.task('test', ['build:test'], function (done) {
+    return merge(compileSources, copyResources);
+});
+
+gulp.task('test', ['test:prepare'], function (done) {
     new karmaServer({
         configFile: __dirname + '/karma.conf.js'
     }, done).start();
