@@ -78,7 +78,7 @@ gulp.task('ngTemplates', ['copy:dist'], function () {
     var options = gulp.src(['app/components/**/*.html'])
         .pipe(ngTemplates({
             filename: 'templates_options_module.js',
-            module: 'bitbucketNotifer.options',
+            module: 'bitbucketNotifier.options',
             standalone: false,
             path: function (path) {
                 return path.replace(/(.+)\/app/, '..');
