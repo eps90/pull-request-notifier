@@ -15,6 +15,7 @@ var revCollector = require('gulp-rev-collector');
 var less = require('gulp-less');
 var ngTemplates = require('gulp-ng-templates');
 var change = require('gulp-change');
+var crx = require('gulp-crx-pack');
 
 var typeScriptOptions = {
     target: 'es5',
@@ -164,6 +165,20 @@ gulp.task('manifest', ['clean'], function () {
     return gulp.src('manifest.json')
         .pipe(change(replacePaths))
         .pipe(gulp.dest('build'));
+});
+
+gulp.task('crx', ['manifest', 'replace'], function () {
+    var fs = require('fs');
+    var manifest = require('./manifest.json');
+
+    return gulp.src('build')
+        .pipe(crx({
+            privateKey: fs.readFileSync(process.env.CRX_PEM_PATH || '../bbnotifier.pem'),
+            filename: 'bitbucket-notifier-chrome.crx',
+            codebase: manifest.update_url,
+            updateXmlFilename: 'update.xml'
+        }))
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('test:prepare', ['clean'], function () {
