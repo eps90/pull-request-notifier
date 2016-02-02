@@ -43,7 +43,7 @@ gulp.task('ngTemplates', ['clean'], function () {
             module: 'bitbucketNotifier',
             standalone: false,
             path: function (path) {
-                return path.replace(/(.+)\/app/, '..');
+                return path.replace(/(.+)\/app\//, '../');
             }
         }))
         .pipe(gulp.dest('build/modules'));
@@ -54,7 +54,7 @@ gulp.task('ngTemplates', ['clean'], function () {
             module: 'bitbucketNotifier.options',
             standalone: false,
             path: function (path) {
-                return path.replace(/(.+)\/app/, '..');
+                return path.replace(/(.+)\/app\//, '../');
             }
         }))
         .pipe(gulp.dest('build/modules'));
