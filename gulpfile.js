@@ -27,13 +27,17 @@ gulp.task('clean', function () {
 });
 
 gulp.task('copy', ['clean'], function () {
+    var resources = gulp.src(['assets/img/*.png', 'assets/sounds/*.ogg'], {base: '.'})
+        .pipe(gulp.dest('build'));
+
     var templates = gulp.src(['app/views/*.html'], {base: 'app'})
         .pipe(gulp.dest('build'));
+
     var fonts = gulp.src(['bower_components/bootstrap/fonts/*.*', 'bower_components/fontawesome/fonts/*.*'], {base: '.'})
         .pipe(flatten())
         .pipe(gulp.dest('build/fonts'));
 
-    return merge(templates, fonts);
+    return merge(resources, templates, fonts);
 });
 
 gulp.task('ngTemplates', ['clean'], function () {
