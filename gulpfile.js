@@ -14,6 +14,7 @@ var rev = require('gulp-rev');
 var revCollector = require('gulp-rev-collector');
 var less = require('gulp-less');
 var ngTemplates = require('gulp-ng-templates');
+var change = require('gulp-change');
 
 var typeScriptOptions = {
     target: 'es5',
@@ -147,6 +148,22 @@ gulp.task('replace', ['assets', 'copy'], function () {
             }
         }))
         .pipe(gulp.dest('build/views'));
+});
+
+gulp.task('manifest', ['clean'], function () {
+    var replacePaths = function (content) {
+        var manifest = JSON.parse(content);
+        var regex = /^build\//;
+        manifest.background.page = manifest.background.page.replace(regex, '');
+        manifest.options_page = manifest.options_page.replace(regex, '');
+        manifest.browser_action.default_popup = manifest.browser_action.default_popup.replace(regex, '');
+
+        return JSON.stringify(manifest, null, 2);
+    };
+
+    return gulp.src('manifest.json')
+        .pipe(change(replacePaths))
+        .pipe(gulp.dest('build'));
 });
 
 gulp.task('test:prepare', ['clean'], function () {

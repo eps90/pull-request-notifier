@@ -37,6 +37,7 @@
     "grunt-typescript": "^0.7.0",
     "grunt-usemin": "^3.0.0",
     "gulp": "^3.9.0",
+    "gulp-change": "^1.0.0",
     "gulp-concat": "^2.6.0",
     "gulp-debug": "^2.1.2",
     "gulp-flatten": "^0.2.0",
