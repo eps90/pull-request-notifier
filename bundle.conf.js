@@ -24,16 +24,6 @@ var bundleOptions = {
             destPath: ''
         }
     },
-    result: {
-        type: {
-            scripts: function (path) {
-                return path;
-            },
-            styles: function (path) {
-                return path;
-            }
-        }
-    },
     transforms: {
         scripts: scriptsPipeLine,
         styles: stylesPipeline
