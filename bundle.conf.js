@@ -174,5 +174,19 @@ module.exports = {
             ],
             options: bundleOptions
         }
-    }
+    },
+    copy: [
+        {
+            src: 'bower_components/bootstrap/fonts/*.*',
+            base: 'bower_components/bootstrap'
+        },
+        {
+            src: 'bower_components/fontawesome/fonts/*.*',
+            base: 'bower_components/fontawesome'
+        },
+        {
+            src: ['assets/img/*.png', 'assets/sounds/*.ogg'],
+            base: '.'
+        }
+    ]
 };
