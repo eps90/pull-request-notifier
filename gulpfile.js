@@ -84,14 +84,12 @@ gulp.task('assets', ['clean', 'ngTemplates'], function () {
         .pipe(gulp.dest('build'));
 });
 
-gulp.task('replace', ['assets', 'copy'], function () {
-    return gulp.src(['build/*.json', 'build/views/*.html'])
-        .pipe(revCollector({
-            dirReplacements: {
-                assets: function (path) {
-                    return '../assets/' + path;
-                }
-            }
+gulp.task('views', ['assets'], function () {
+    var hb = require('gulp-hb');
+
+    return gulp.src('app/views/*.html')
+        .pipe(hb({
+            helpers: 'app/views/helpers/*.js'
         }))
         .pipe(gulp.dest('build/views'));
 });
@@ -112,7 +110,7 @@ gulp.task('manifest', ['clean'], function () {
         .pipe(gulp.dest('build'));
 });
 
-gulp.task('crx', ['manifest', 'replace'], function () {
+gulp.task('crx', ['manifest', 'views'], function () {
     var fs = require('fs');
     var manifest = require('./manifest.json');
 
