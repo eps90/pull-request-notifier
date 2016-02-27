@@ -103,7 +103,7 @@ module.exports = {
                 "app/filters/unapproved_first_filter.ts",
                 "app/config/routing.ts",
                 "app/modules/bitbucket_notifier.ts",
-                "app/modules/templates.js"
+                "build/modules/templates.js"
             ],
             options: bundleOptions
         },
@@ -170,7 +170,7 @@ module.exports = {
                 "app/services/sound_manager.ts",
                 "app/services/sound_repository.ts",
                 "app/modules/bitbucket_notifier_options.ts",
-                "app/modules/templates_options_module.js"
+                "build/modules/templates_options_module.js"
             ],
             options: bundleOptions
         }
