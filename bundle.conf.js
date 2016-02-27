@@ -92,7 +92,12 @@ module.exports = {
                 "app/filters/authored_filter.ts",
                 "app/filters/unapproved_first_filter.ts",
                 "app/config/routing.ts",
-                "app/modules/bitbucket_notifier.ts",
+                "app/modules/bitbucket_notifier.ts"
+            ],
+            options: bundleOptions
+        },
+        'assets/popup_templates': {
+            scripts: [
                 "build/modules/templates.js"
             ],
             options: bundleOptions
@@ -159,7 +164,12 @@ module.exports = {
                 "app/services/models.ts",
                 "app/services/sound_manager.ts",
                 "app/services/sound_repository.ts",
-                "app/modules/bitbucket_notifier_options.ts",
+                "app/modules/bitbucket_notifier_options.ts"
+            ],
+            options: bundleOptions
+        },
+        'assets/options_templates': {
+            scripts: [
                 "build/modules/templates_options_module.js"
             ],
             options: bundleOptions
