@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+require('gulp-stats')(gulp);
 
 gulp.task('clean', function () {
     var del = require('del');
