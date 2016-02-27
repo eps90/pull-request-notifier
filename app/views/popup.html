@@ -2,27 +2,8 @@
 <html ng-app="bitbucketNotifier">
     <head>
         <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,700,900,600,300,200&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-        <!-- build:css ../styles/vendor.css -->
-        <link rel="stylesheet" type="text/css" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="../../bower_components/angular-growl-v2/build/angular-growl.css">
-        <link rel="stylesheet" type="text/css" href="../../bower_components/fontawesome/css/font-awesome.css">
-        <link rel="stylesheet" type="text/css" href="../../bower_components/angular-emoji-filter/dist/emoji.min.css">
-        <!-- endbuild -->
-
-        <!-- build:less ../styles/styles.css -->
-        <link rel="stylesheet/less" href="../../assets/less/styles.less">
-        <link rel="stylesheet/less" href="../components/pull_requests_list_component/pull_requests_list_component.less">
-        <link rel="stylesheet/less" href="../components/pull_requests_header_component/pull_requests_header_component.less">
-        <link rel="stylesheet/less" href="../components/pull_request_component/pull_request_component.less">
-        <link rel="stylesheet/less" href="../components/user_vote_component/user_vote_component.less">
-        <link rel="stylesheet/less" href="../components/section_title_component/section_title_component.less">
-        <link rel="stylesheet/less" href="../components/pull_request_link_component/pull_request_link_component.less">
-        <link rel="stylesheet/less" href="../components/navigation_bar_component/navigation_bar_component.less">
-        <link rel="stylesheet/less" href="../components/reminder_component/reminder_component.less">
-        <link rel="stylesheet/less" href="../components/approval_progress_component/approval_progress_component.less">
-        <link rel="stylesheet/less" href="../components/pull_request_preview_component/pull_request_preview_component.less">
-        <link rel="stylesheet/less" href="../components/reviewer_component/reviewer_component.less">
-        <!-- endbuild-->
+        {{css 'popup_vendor'}}
+        {{css 'popup'}}
     </head>
     <body>
         <navigation-bar></navigation-bar>
@@ -33,44 +14,8 @@
             </div>
         </div>
 
-        <!-- build:js ../scripts/popup.js -->
-        <script src="../../bower_components/jquery/dist/jquery.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular/angular.min.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular-bootstrap/ui-bootstrap.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular-sanitize/angular-sanitize.js"></script>
-        <script type="text/javascript" src="../../bower_components/lodash/lodash.min.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular-emoji-filter/dist/emoji.min.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-        <script type="text/javascript" src="../../bower_components/showdown/src/showdown.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular-markdown-directive/markdown.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular-animate/angular-animate.js"></script>
-
-        <script type="text/javascript" src="../../build/components/pull_requests_list_component/pull_requests_list_component.js"></script>
-        <script type="text/javascript" src="../../build/components/user_vote_component/user_vote_component.js"></script>
-        <script type="text/javascript" src="../../build/components/pull_request_component/pull_request_component.js"></script>
-        <script type="text/javascript" src="../../build/components/pull_requests_header_component/pull_requests_header_component.js"></script>
-        <script type="text/javascript" src="../../build/components/approval_progress_component/approval_progress_component.js"></script>
-        <script type="text/javascript" src="../../build/components/section_title_component/section_title_component.js"></script>
-        <script type="text/javascript" src="../../build/components/pull_request_link_component/pull_request_link_component.js"></script>
-        <script type="text/javascript" src="../../build/components/navigation_bar_component/navigation_bar_component.js"></script>
-        <script type="text/javascript" src="../../build/components/navigation_brand_component/navigation_brand_component.js"></script>
-        <script type="text/javascript" src="../../build/components/reminder_component/reminder_component.js"></script>
-        <script type="text/javascript" src="../../build/components/pull_request_preview_component/pull_request_preview_component.js"></script>
-        <script type="text/javascript" src="../../build/components/reviewer_component/reviewer_component.js"></script>
-        <script type="text/javascript" src="../../build/services/models.js"></script>
-        <script type="text/javascript" src="../../build/services/pull_request_repository.js"></script>
-        <script type="text/javascript" src="../../build/services/config.js"></script>
-        <script type="text/javascript" src="../../build/services/sound_repository.js"></script>
-        <script type="text/javascript" src="../../build/services/factories.js"></script>
-        <script type="text/javascript" src="../../build/filters/assigned_filter.js"></script>
-        <script type="text/javascript" src="../../build/filters/authored_filter.js"></script>
-        <script type="text/javascript" src="../../build/filters/unapproved_first_filter.js"></script>
-        <script type="text/javascript" src="../../build/config/routing.js"></script>
-
-        <script type="text/javascript" src="../../build/modules/bitbucket_notifier.js"></script>
-        <script type="text/javascript" src="../../build/modules/templates.js"></script>
-        <!-- endbuild -->
+        {{js 'popup_vendor'}}
+        {{js 'popup'}}
+        {{js 'popup_templates'}}
     </body>
 </html>
