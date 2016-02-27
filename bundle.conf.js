@@ -42,7 +42,7 @@ var bundleOptions = {
 
 module.exports = {
     bundle: {
-        popup_vendor: {
+        'assets/popup_vendor': {
             styles: [
                 "bower_components/bootstrap/dist/css/bootstrap.css",
                 "bower_components/angular-growl-v2/build/angular-growl.css",
@@ -65,7 +65,7 @@ module.exports = {
             ],
             options: bundleOptions
         },
-        popup: {
+        'assets/popup': {
             styles: [
                 "assets/less/styles.less",
                 "app/components/pull_requests_list_component/pull_requests_list_component.less",
@@ -107,7 +107,7 @@ module.exports = {
             ],
             options: bundleOptions
         },
-        background_vendor: {
+        'assets/background_vendor': {
             scripts: [
                 "bower_components/socket.io-client/socket.io.js",
                 "bower_components/angular/angular.min.js",
@@ -118,7 +118,7 @@ module.exports = {
             ],
             options: bundleOptions
         },
-        background: {
+        'assets/background': {
             scripts: [
                 "app/components/background_component/background_component.ts",
                 "app/services/socket_manager.ts",
@@ -136,7 +136,7 @@ module.exports = {
             ],
             options: bundleOptions
         },
-        options_vendor: {
+        'assets/options_vendor': {
             styles: [
                 "bower_components/bootstrap/dist/css/bootstrap.css",
                 "bower_components/angular-growl-v2/build/angular-growl.css",
@@ -153,7 +153,7 @@ module.exports = {
             ],
             options: bundleOptions
         },
-        options: {
+        'assets/options': {
             styles: [
                 "assets/less/styles.less",
                 "app/components/section_title_component/section_title_component.less",
