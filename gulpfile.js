@@ -1,49 +1,15 @@
 var gulp = require('gulp');
-var del = require('del');
-var typescript = require('gulp-typescript');
-var karmaServer = require('karma').Server;
-var merge = require('merge-stream');
-var flatten = require('gulp-flatten');
-var gutil = require('gulp-util');
-var debug = require('gulp-debug');
-var sourcemaps = require('gulp-sourcemaps');
-var minifyCss = require('gulp-minify-css');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var rev = require('gulp-rev');
-var revCollector = require('gulp-rev-collector');
-var less = require('gulp-less');
-var ngTemplates = require('gulp-ng-templates');
-var change = require('gulp-change');
-var crx = require('gulp-crx-pack');
-
-var typeScriptOptions = {
-    target: 'es5',
-    module: 'commonjs',
-    typescript: require('typescript'),
-    sortOutput: true
-};
 
 gulp.task('clean', function () {
+    var del = require('del');
     return del(['build/*', 'build', 'dist/*', 'dist']);
 });
 
-gulp.task('copy', ['clean'], function () {
-    var resources = gulp.src(['assets/img/*.png', 'assets/sounds/*.ogg'], {base: '.'})
-        .pipe(gulp.dest('build'));
-
-    var templates = gulp.src(['app/views/*.html'], {base: 'app'})
-        .pipe(gulp.dest('build'));
-
-    var fonts = gulp.src(['bower_components/bootstrap/fonts/*.*', 'bower_components/fontawesome/fonts/*.*'], {base: '.'})
-        .pipe(flatten())
-        .pipe(gulp.dest('build/fonts'));
-
-    return merge(resources, templates, fonts);
-});
-
 gulp.task('ngTemplates', ['clean'], function () {
-    var htmlmin = require('gulp-htmlmin');
+    var htmlmin = require('gulp-htmlmin'),
+        ngTemplates = require('gulp-ng-templates'),
+        merge = require('merge-stream');
+
     var popup = gulp.src(['app/components/**/*.html'])
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(ngTemplates({
@@ -95,6 +61,7 @@ gulp.task('views', ['assets'], function () {
 });
 
 gulp.task('manifest', ['clean'], function () {
+    var change = require('gulp-change');
     var replacePaths = function (content) {
         var manifest = JSON.parse(content);
         var regex = /^build\//;
@@ -111,8 +78,9 @@ gulp.task('manifest', ['clean'], function () {
 });
 
 gulp.task('crx', ['manifest', 'views'], function () {
-    var fs = require('fs');
-    var manifest = require('./manifest.json');
+    var crx = require('gulp-crx-pack'),
+        fs = require('fs'),
+        manifest = require('./manifest.json');
 
     return gulp.src('build')
         .pipe(crx({
@@ -125,6 +93,15 @@ gulp.task('crx', ['manifest', 'views'], function () {
 });
 
 gulp.task('test:prepare', ['clean'], function () {
+    var typescript = require('gulp-typescript'),
+        merge = require('merge-stream'),
+        typeScriptOptions = {
+            target: 'es5',
+            module: 'commonjs',
+            typescript: require('typescript'),
+            sortOutput: true
+        };
+
     var compileSources = gulp.src(['app/**/*.ts', 'test/**/*.ts'], {base: '.'})
         .pipe(typescript(typeScriptOptions))
         .pipe(gulp.dest('build'));
@@ -135,7 +112,9 @@ gulp.task('test:prepare', ['clean'], function () {
 });
 
 gulp.task('test', ['test:prepare'], function (done) {
-    new karmaServer({
+    var karmaServer = require('karma').Server;
+
+    return new karmaServer({
         configFile: __dirname + '/karma.conf.js'
     }, done).start();
 });
