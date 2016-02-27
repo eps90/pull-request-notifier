@@ -71,74 +71,16 @@ gulp.task('ngTemplates', ['clean'], function () {
     return merge(popup, options);
 });
 
-// @TODO: Move file list into some config file
 gulp.task('assets', ['clean', 'ngTemplates'], function () {
-    var vendorScripts = gulp.src([
-            'bower_components/jquery/dist/jquery.js',
-            'bower_components/angular/angular.min.js',
-            'bower_components/socket.io-client/socket.io.js',
-            'bower_components/angular-local-storage/dist/angular-local-storage.min.js',
-            'bower_components/angular-bootstrap/ui-bootstrap.js',
-            'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-            'bower_components/angular-sanitize/angular-sanitize.js',
-            'bower_components/lodash/lodash.min.js',
-            'bower_components/angular-emoji-filter/dist/emoji.min.js',
-            'bower_components/angular-ui-router/release/angular-ui-router.js',
-            'bower_components/showdown/src/showdown.js',
-            'bower_components/angular-markdown-directive/markdown.js',
-            'bower_components/angular-animate/angular-animate.js',
-            'bower_components/SoundJS/lib/soundjs-0.6.1.min.js',
-            'bower_components/angular-socket-io/socket.min.js',
-            'bower_components/angular-growl-v2/build/angular-growl.js'
-        ])
-        .pipe(sourcemaps.init())
-        .pipe(concat('vendor_scripts.js'))
-        .pipe(uglify())
-        .pipe(rev())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('build/assets'));
+    var bundle = require('gulp-bundle-assets');
 
-    var vendorStyles = gulp.src([
-            'bower_components/bootstrap/dist/css/bootstrap.css',
-            'bower_components/angular-growl-v2/build/angular-growl.css',
-            'bower_components/fontawesome/css/font-awesome.css',
-            'bower_components/angular-emoji-filter/dist/emoji.min.css'
-        ])
-        .pipe(sourcemaps.init())
-        .pipe(concat('vendor_styles.css'))
-        .pipe(minifyCss())
-        .pipe(rev())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('build/assets'));
-
-    var templates = gulp.src(['build/modules/*.js'], {base: 'build'})
-        .pipe(sourcemaps.init())
-        .pipe(concat('templates.js'))
-        .pipe(uglify())
-        .pipe(rev())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('build/assets'));
-
-    var scripts = gulp.src(['app/**/*.ts', 'app/modules/*.ts'])
-        .pipe(sourcemaps.init())
-        .pipe(typescript(typeScriptOptions))
-        .pipe(concat('scripts.js'))
-        .pipe(uglify())
-        .pipe(rev())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('build/assets'));
-
-    var styles = gulp.src(['assets/less/styles.less', 'app/**/*.less'])
-        .pipe(sourcemaps.init())
-        .pipe(less())
-        .pipe(concat('styles.css'))
-        .pipe(minifyCss())
-        .pipe(rev())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('build/assets'));
-
-    return merge(vendorScripts, vendorStyles, templates, scripts, styles)
-        .pipe(rev.manifest())
+    return gulp.src('./bundle.conf.js')
+        .pipe(bundle({base: '.'}))
+        .pipe(bundle.results({
+            fileName: 'assets-manifest',
+            dest: 'build',
+            pathPrefix: '/'
+        }))
         .pipe(gulp.dest('build'));
 });
 
