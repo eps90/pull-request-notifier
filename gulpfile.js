@@ -43,7 +43,9 @@ gulp.task('copy', ['clean'], function () {
 });
 
 gulp.task('ngTemplates', ['clean'], function () {
+    var htmlmin = require('gulp-htmlmin');
     var popup = gulp.src(['app/components/**/*.html'])
+        .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(ngTemplates({
             filename: 'templates.js',
             module: 'bitbucketNotifier',
@@ -55,6 +57,7 @@ gulp.task('ngTemplates', ['clean'], function () {
         .pipe(gulp.dest('build/modules'));
 
     var options = gulp.src(['app/components/**/*.html'])
+        .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(ngTemplates({
             filename: 'templates_options_module.js',
             module: 'bitbucketNotifier.options',
