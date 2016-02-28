@@ -40,7 +40,9 @@ var bundleOptions = {
     transforms: {
         scripts: scriptsPipeLine,
         styles: stylesPipeline
-    }
+    },
+    uglify: ['production'],
+    minCss: ['production']
 };
 
 module.exports = {
