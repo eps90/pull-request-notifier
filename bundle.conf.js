@@ -1,4 +1,5 @@
 var typescript = require('gulp-typescript');
+var tslint = require('gulp-tslint');
 var lazypipe = require('lazypipe');
 var less = require('gulp-less');
 var tsOptions = {
@@ -7,12 +8,24 @@ var tsOptions = {
         typescript: require('typescript'),
         sortOutput: true,
         removeComments: true
+    },
+    tsLintOptions = {
+        tslint: require('tslint'),
+        emitError: false
     };
+
 var gulpIf = require('gulp-if');
+
+var typeScriptPipeLine = lazypipe()
+    .pipe(tslint)
+    .pipe(tslint.report, 'prose', tsLintOptions)
+    .pipe(typescript, tsOptions);
+
 var scriptsPipeLine = lazypipe()
     .pipe(function () {
-        return gulpIf(/\.ts$/, typescript(tsOptions));
+        return gulpIf(/\.ts$/, typeScriptPipeLine());
     });
+
 var stylesPipeline = lazypipe()
     .pipe(function () {
         return gulpIf(/\.less$/, less());
