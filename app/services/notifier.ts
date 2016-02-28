@@ -21,6 +21,7 @@ module BitbucketNotifier {
             this.chrome.notifications.onClicked.addListener((notificationId) => {
                 var notification = <PullRequestNotification> this.notificationRepository.find(notificationId);
                 this.chrome.tabs.create({url: notification.pullRequestHtmlLink});
+                this.chrome.notifications.clear(notificationId);
             });
         }
 
