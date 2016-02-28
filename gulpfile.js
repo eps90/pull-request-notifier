@@ -78,7 +78,9 @@ gulp.task('manifest', ['clean'], function () {
         .pipe(gulp.dest('build'));
 });
 
-gulp.task('crx', ['manifest', 'views'], function () {
+gulp.task('build', ['views', 'manifest']);
+
+gulp.task('crx', ['build'], function () {
     var crx = require('gulp-crx-pack'),
         fs = require('fs'),
         manifest = require('./manifest.json');
