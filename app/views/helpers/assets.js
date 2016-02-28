@@ -11,7 +11,7 @@ module.exports.register = function (Handlebars) {
             return new Handlebars.SafeString(manifestFile[assetName][type]);
         }
 
-        throw new Error('Asset ' + assetName + ' not found!');
+        throw new Error('Asset ' + type + '::' + assetName + ' not found!');
     }
 
     Handlebars.registerHelper('js', function (assetName) {
