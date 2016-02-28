@@ -121,3 +121,14 @@ gulp.task('test', ['test:prepare'], function (done) {
         configFile: __dirname + '/karma.conf.js'
     }, done).start();
 });
+
+gulp.task('deploy', function (cb) {
+    var shipitfile = require('./shipitfile.js');
+    var config = shipitfile.config;
+    var options = shipitfile.options;
+
+    var shipItCaptain = require('shipit-captain');
+    shipItCaptain(config, options, cb);
+});
+
+gulp.task('default', ['build']);
