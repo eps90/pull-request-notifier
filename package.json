@@ -55,6 +55,7 @@
     "karma-ng-html2js-preprocessor": "^0.1.2",
     "karma-phantomjs-launcher": "^0.2.1",
     "lazypipe": "^1.0.1",
+    "lodash": "^4.5.1",
     "merge-stream": "^1.0.0",
     "node-rsa": "^0.2.25",
     "phantomjs": "^1.9.17",
