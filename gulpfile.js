@@ -132,11 +132,17 @@ gulp.task('deploy', function (cb) {
 });
 
 gulp.task('release', function () {
-    var bump = require('gulp-bump');
+    var bump = require('gulp-bump'),
+        git = require('gulp-git'),
+        filter = require('gulp-filter'),
+        tagVersion = require('gulp-tag-version');
 
     return gulp.src(['./bower.json', './package.json', './manifest.json'])
         .pipe(bump())
-        .pipe(gulp.dest('./'));
+        .pipe(gulp.dest('./'))
+        .pipe(git.commit("RELEASE"))
+        .pipe(filter('package.json'))
+        .pipe(tagVersion());
 });
 
 gulp.task('default', ['build']);
