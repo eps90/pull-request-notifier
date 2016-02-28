@@ -135,10 +135,11 @@ gulp.task('release', function () {
     var bump = require('gulp-bump'),
         git = require('gulp-git'),
         filter = require('gulp-filter'),
-        tagVersion = require('gulp-tag-version');
+        tagVersion = require('gulp-tag-version'),
+        argv = require('yargs').argv;
 
     return gulp.src(['./bower.json', './package.json', './manifest.json'])
-        .pipe(bump())
+        .pipe(bump({type: argv.type || 'patch'}))
         .pipe(gulp.dest('./'))
         .pipe(git.commit("RELEASE"))
         .pipe(filter('package.json'))
