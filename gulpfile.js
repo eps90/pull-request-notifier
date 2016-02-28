@@ -131,4 +131,12 @@ gulp.task('deploy', function (cb) {
     shipItCaptain(config, options, cb);
 });
 
+gulp.task('release', function () {
+    var bump = require('gulp-bump');
+
+    return gulp.src(['./bower.json', './package.json', './manifest.json'])
+        .pipe(bump())
+        .pipe(gulp.dest('./'));
+});
+
 gulp.task('default', ['build']);
