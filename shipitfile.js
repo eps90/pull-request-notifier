@@ -24,6 +24,7 @@ var config = _.merge({
 module.exports = {
     config: config,
     options: {
+        run: 'deploy',
         init: function (shipIt) {
             require('shipit-deploy')(shipIt);
             shipIt.blTask('deploy:install', function () {
