@@ -66,6 +66,7 @@
     "shipit-captain": "^0.4.3",
     "shipit-deploy": "^2.0.0",
     "tslint": "~2.4.3",
-    "xmlbuilder": "^2.6.4"
+    "xmlbuilder": "^2.6.4",
+    "yargs": "^4.2.0"
   }
 }
