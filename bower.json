@@ -14,7 +14,7 @@
     "tests"
   ],
   "dependencies": {
-    "SoundJS": "createjs-soundjs#~0.6.1",
+    "SoundJS": "createjs-soundjs#0.6.1",
     "angular": "~1.4.4",
     "angular-animate": "~1.4.8",
     "angular-bootstrap": "~0.13.3",
