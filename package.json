@@ -58,6 +58,7 @@
     "merge-stream": "^1.0.0",
     "node-rsa": "^0.2.25",
     "phantomjs": "^1.9.17",
+    "shipit-captain": "^0.4.3",
     "shipit-deploy": "^2.0.0",
     "tslint": "~2.4.3",
     "xmlbuilder": "^2.6.4"
