@@ -5,18 +5,7 @@
         <title>Bitbucket Notifier || Options</title>
 
         <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,700,900,600,300,200&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-        <!-- build:css ../styles/vendor.css -->
-        <link rel="stylesheet" type="text/css" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="../../bower_components/angular-growl-v2/build/angular-growl.css">
-        <link rel="stylesheet" type="text/css" href="../../bower_components/fontawesome/css/font-awesome.css">
-        <link rel="stylesheet" type="text/css" href="../../bower_components/angular-emoji-filter/dist/emoji.min.css">
-        <!-- endbuild -->
-        <!-- build:less ../styles/options.css -->
-        <link rel="stylesheet/less" href="../../assets/less/styles.less">
-        <link rel="stylesheet/less" href="../components/section_title_component/section_title_component.less">
-        <link rel="stylesheet/less" href="../components/navigation_bar_component/navigation_bar_component.less">
-        <link rel="stylesheet/less" href="../components/approval_progress_component/approval_progress_component.less">
-        <!-- endbuild -->
+        {{css 'common'}}
     </head>
     <body>
         <navigation-bar></navigation-bar>
@@ -29,26 +18,9 @@
             </div>
         </div>
 
-
-        <!-- build:js ../scripts/options.js -->
-        <script src="../../bower_components/jquery/dist/jquery.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular/angular.min.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
-        <script type="text/javascript" src="../../bower_components/angular-growl-v2/build/angular-growl.js"></script>
-        <script type="text/javascript" src="../../bower_components/lodash/lodash.min.js"></script>
-        <script type="text/javascript" src="../../bower_components/SoundJS/lib/soundjs-0.6.1.min.js"></script>
-
-        <script type="text/javascript" src="../../build/components/options_component/options_component.js"></script>
-        <script type="text/javascript" src="../../build/components/section_title_component/section_title_component.js"></script>
-        <script type="text/javascript" src="../../build/components/navigation_bar_component/navigation_bar_component.js"></script>
-        <script type="text/javascript" src="../../build/components/approval_progress_component/approval_progress_component.js"></script>
-        <script type="text/javascript" src="../../build/services/config.js"></script>
-        <script type="text/javascript" src="../../build/services/models.js"></script>
-        <script type="text/javascript" src="../../build/services/sound_manager.js"></script>
-        <script type="text/javascript" src="../../build/services/sound_repository.js"></script>
-
-        <script type="text/javascript" src="../../build/modules/bitbucket_notifier_options.js"></script>
-        <script type="text/javascript" src="../../build/modules/templates_options_module.js"></script>
-        <!-- endbuild -->
+        {{js 'common'}}
+        {{js 'options_vendor'}}
+        {{js 'options'}}
+        {{js 'options_templates'}}
     </body>
 </html>

@@ -2,29 +2,9 @@
 <html ng-app="bitbucketNotifier.background">
 <head>
     <meta charset="UTF-8">
-    <!-- build:js ../scripts/backend.js -->
-    <script src="../../bower_components/socket.io-client/socket.io.js"></script>
-    <script type="text/javascript" src="../../bower_components/angular/angular.min.js"></script>
-    <script type="text/javascript" src="../../bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
-    <script type="text/javascript" src="../../bower_components/angular-socket-io/socket.min.js"></script>
-    <script type="text/javascript" src="../../bower_components/lodash/lodash.min.js"></script>
-    <script type="text/javascript" src="../../bower_components/SoundJS/lib/soundjs-0.6.1.min.js"></script>
-
-    <script type="text/javascript" src="../../build/components/background_component/background_component.js"></script>
-    <script type="text/javascript" src="../../build/services/socket_manager.js"></script>
-    <script type="text/javascript" src="../../build/services/socket_handler.js"></script>
-    <script type="text/javascript" src="../../build/services/notifier.js"></script>
-    <script type="text/javascript" src="../../build/services/models.js"></script>
-    <script type="text/javascript" src="../../build/services/pull_request_repository.js"></script>
-    <script type="text/javascript" src="../../build/services/notification_repository.js"></script>
-    <script type="text/javascript" src="../../build/services/config.js"></script>
-    <script type="text/javascript" src="../../build/services/indicator.js"></script>
-    <script type="text/javascript" src="../../build/services/factories.js"></script>
-    <script type="text/javascript" src="../../build/services/sound_manager.js"></script>
-    <script type="text/javascript" src="../../build/services/sound_repository.js"></script>
-
-    <script type="text/javascript" src="../../build/modules/bitbucket_notifier_background.js"></script>
-    <!-- endbuild -->
+    {{js 'common'}}
+    {{js 'background_vendor'}}
+    {{js 'background'}}
 </head>
 <body background>
 

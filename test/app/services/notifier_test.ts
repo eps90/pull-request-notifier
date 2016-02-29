@@ -23,6 +23,7 @@ describe('Notifier', () => {
         window['chrome'] = {
             notifications: {
                 create: jasmine.createSpy('chrome.notifications.create'),
+                clear: jasmine.createSpy('chrome.notifications.clear'),
                 onClicked: {
                     addListener: jasmine.createSpy('chrome.notifications.onClicked.addListener').and.callFake((fn) => {
                         onClickedStub = fn;
@@ -72,7 +73,7 @@ describe('Notifier', () => {
         expect(notificationRepostory.add).toHaveBeenCalledWith(notificationId, notificationLink);
     });
 
-    it('should open new tab with pull request on click', () => {
+    it('should open new tab with pull request on click and close the notification', () => {
         var notification = new BitbucketNotifier.PullRequestNotification();
         var notificationId = 'abcd123';
         var pullRequestHtmlLink = 'http://example.com';
@@ -80,8 +81,10 @@ describe('Notifier', () => {
         notification.pullRequestHtmlLink = pullRequestHtmlLink;
 
         notificationStub = notification;
-        onClickedStub();
+        onClickedStub(notificationId);
+
         expect(window['chrome'].tabs.create).toHaveBeenCalledWith({url: pullRequestHtmlLink});
+        expect(window['chrome'].notifications.clear).toHaveBeenCalledWith(notificationId);
     });
 
     it('should notify about new pull request', () => {
