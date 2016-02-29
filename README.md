@@ -6,15 +6,15 @@ The Google Chrome extension for Bitbucket Notifier.
 
 * node.js >= 0.12.x
 * npm >= 2.11
-* grunt-cli >= 0.1.13
+* gulp - tested with 3.9.0
 
 ## Installation
 
-### Grunt-cli
-If you don't already have **grunt-cli** installed, you can install it with **npm**:
+### Gulp
+If you don't already have **gulp** installed, you can install it with **npm**:
 
 ```bash
-[sudo] npm install -g grunt-cli
+[sudo] npm install -g gulp
 ```
 
 ### Project

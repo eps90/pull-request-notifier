@@ -8,6 +8,7 @@ module BitbucketNotifier {
     application.directive('options', OptionsComponent.factory());
     application.directive('sectionTitle', SectionTitleComponent.factory());
     application.directive('navigationBar', NavigationBarComponent.factory());
+    application.directive('navigationBrand', NavigationBrandComponent.factory());
     application.directive('approvalProgress', ApprovalProgressComponent.factory());
     application.service('Config', Config);
     application.service('SoundManager', SoundManager);

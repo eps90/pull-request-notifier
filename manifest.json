@@ -21,5 +21,13 @@
     "persistent": true
   },
   "options_page": "build/views/options.html",
-  "update_url": "http://bitbucket-notifier.kubaturek.pl/update.xml"
+  "update_url": "http://bitbucket-notifier.kubaturek.pl/update.xml",
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Alt+B"
+      },
+      "global": true
+    }
+  }
 }
