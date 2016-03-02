@@ -1,6 +1,6 @@
 {
   "name": "bitbucket-notifier-chrome",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Bitbucket integration tool. Notifies updates bout pull requests (so far)",
   "main": "index.js",
   "author": "Jakub Turek <jakub.turek.edpauto.com>",
