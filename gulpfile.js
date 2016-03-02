@@ -83,13 +83,24 @@ gulp.task('build', ['views', 'manifest']);
 gulp.task('crx', ['build'], function () {
     var crx = require('gulp-crx-pack'),
         fs = require('fs'),
-        manifest = require('./manifest.json');
+        url = require('url'),
+        manifest = require('./manifest.json'),
+        targetFileName = 'bitbucket-notifier-chrome.crx';
+
+    var updateUrlParts = url.parse(manifest.update_url);
+    var codeBase = url.resolve(
+        url.format({
+            protocol: updateUrlParts.protocol,
+            host: updateUrlParts.host
+        }),
+        '/' + targetFileName
+    );
 
     return gulp.src('build')
         .pipe(crx({
             privateKey: fs.readFileSync(process.env.CRX_PEM_PATH || '../bbnotifier.pem'),
             filename: 'bitbucket-notifier-chrome.crx',
-            codebase: manifest.update_url,
+            codebase: codeBase,
             updateXmlFilename: 'update.xml'
         }))
         .pipe(gulp.dest('dist'));
