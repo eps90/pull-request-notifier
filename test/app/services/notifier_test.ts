@@ -15,7 +15,8 @@ describe('Notifier', () => {
             title: '',
             message: '',
             contextMessage: '',
-            priority: 2
+            priority: 2,
+            requireInteraction: true
         };
     });
     beforeEach(module('bitbucketNotifier.background'));

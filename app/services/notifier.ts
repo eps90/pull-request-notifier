@@ -10,6 +10,7 @@ module BitbucketNotifier {
         message?: string;
         contextMessage?: string;
         priority?: number;
+        requireInteraction?: boolean;
     }
 
     export class Notifier {
@@ -32,7 +33,8 @@ module BitbucketNotifier {
                 title: '',
                 message: '',
                 contextMessage: '',
-                priority: 2
+                priority: 2,
+                requireInteraction: true
             };
             var targetOpts: NotificationOptions = _.extend(defaultOptions, opts);
             targetOpts.message = _.trim(targetOpts.message.replace(/:[^\s:]+:/g, ''));
