@@ -41,6 +41,10 @@ module BitbucketNotifier {
                 this.notifier.notifyReminder(pullRequest);
             });
 
+            this.socketManager.socket.on(SocketServerEvent.PULLREQUEST_UPDATED, (pullRequest: PullRequest) => {
+                this.notifier.notifyPullRequestUpdated(pullRequest);
+            });
+
             this.socketManager.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
                 userPrs = PullRequestEventFactory.create(userPrs);
 
