@@ -25,3 +25,10 @@ npm install
 ```
 
 After successful installation there will be installed **typescript definitions** (see below). 
+
+
+## ToDo
+
+* Consider a migration to webpack
+* Migrate to Yarn
+* Move all bower dependencies to npm
