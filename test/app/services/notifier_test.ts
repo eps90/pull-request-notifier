@@ -163,6 +163,20 @@ describe('Notifier', () => {
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
+    it('should notify about pull request update', () => {
+        const pullRequest = new BitbucketNotifier.PullRequest();
+        pullRequest.title = 'This is some title';
+        pullRequest.author.displayName = 'John Kowalsky';
+
+        expectedOptions.title = 'Pull request has been updated';
+        expectedOptions.message = 'This is some title';
+        expectedOptions.contextMessage = 'by John Kowalsky';
+        expectedOptions.iconUrl = '../../assets/img/bitbucket_updated.png';
+
+        notifier.notifyPullRequestUpdated(pullRequest);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
+    });
+
     describe('with sounds', () => {
         it('should play a notification sound for new pull request notification', () => {
             var pullRequest = new BitbucketNotifier.PullRequest();

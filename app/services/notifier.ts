@@ -93,6 +93,18 @@ module BitbucketNotifier {
             this.soundManager.playReminderSound();
         }
 
+        notifyPullRequestUpdated(pullRequest: PullRequest): void {
+            const options = {
+                title: 'Pull request has been updated',
+                message: pullRequest.title,
+                contextMessage: 'by ' + pullRequest.author.displayName,
+                iconUrl: '../../assets/img/bitbucket_updated.png'
+            };
+            const notificationId = this.getNotificationId(pullRequest);
+
+            this.notify(options, notificationId, pullRequest.links.html);
+        }
+
         private getNotificationId(pullRequest: PullRequest): string {
             return _.uniqueId('pull_request_' + pullRequest.id);
         }
