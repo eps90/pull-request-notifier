@@ -47,7 +47,7 @@
     "socket.io-client": "^1.7.3",
     "tsd": "^0.6.3",
     "tslint": "~2.4.3",
-    "typescript": "^1.5.3"
+    "typescript": "^2.2.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.53",
