@@ -193,6 +193,22 @@ describe('Notifier', () => {
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
+    it('should notify about new reply for a comment', () => {
+        const pullRequest = new BitbucketNotifier.PullRequest();
+        pullRequest.title = 'This is some title';
+
+        const replyingUser = new BitbucketNotifier.User();
+        replyingUser.displayName = 'John Smith';
+
+        expectedOptions.title = 'New reply for your comment';
+        expectedOptions.message = 'This is some title';
+        expectedOptions.contextMessage = 'by John Smith';
+        expectedOptions.iconUrl = '../../assets/img/bitbucket_new_reply.png';
+
+        notifier.notifyNewReplyOnComment(pullRequest, replyingUser);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
+    });
+
     describe('with sounds', () => {
         it('should play a notification sound for new pull request notification', () => {
             var pullRequest = new BitbucketNotifier.PullRequest();
