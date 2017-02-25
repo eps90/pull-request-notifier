@@ -90,6 +90,8 @@ module BitbucketNotifier {
         static PULLREQUEST_UPDATED: string = 'server:pullrequest:updated';
         static INTRODUCED: string = 'server:introduced';
         static REMIND: string = 'server:remind';
+        static NEW_COMMENT: string = 'server:comments:new';
+        static NEW_REPLY_FOR_COMMENT: 'server:comments:reply';
     }
 
     export class ChromeExtensionEvent {
