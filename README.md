@@ -30,5 +30,6 @@ After successful installation there will be installed **typescript definitions**
 ## ToDo
 
 * Consider a migration to webpack
-* Migrate to Yarn
 * Move all bower dependencies to npm
+* Remove TSD and migrate to `@types` packages
+
