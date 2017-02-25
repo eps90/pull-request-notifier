@@ -18,7 +18,9 @@ describe('SocketHandler', () => {
             notifyPullRequestMerged: jasmine.createSpy('notifyPullRequestMerged'),
             notifyPullRequestApproved: jasmine.createSpy('notifyPullRequestApproved'),
             notifyReminder: jasmine.createSpy('notifyReminder'),
-            notifyPullRequestUpdated: jasmine.createSpy('notifyPullRequestUpdated')
+            notifyPullRequestUpdated: jasmine.createSpy('notifyPullRequestUpdated'),
+            notifyNewCommentAdded: jasmine.createSpy('notifyNewCommentAdded'),
+            notifyNewReplyOnComment: jasmine.createSpy('notifyNewReplyOnComment')
         });
 
         $p.value('Config', {
@@ -115,7 +117,7 @@ describe('SocketHandler', () => {
     describe('chrome notifications', () => {
         var pullRequestEvent: BitbucketNotifier.PullRequestEvent;
         var pullRequest: BitbucketNotifier.PullRequest;
-        var pullRequestsList = [];
+        var pullRequestsList;
         var johnSmith: BitbucketNotifier.User;
         var annaKowalsky: BitbucketNotifier.User;
 
@@ -124,7 +126,7 @@ describe('SocketHandler', () => {
             pullRequest.id = 1;
             pullRequest.targetRepository.fullName = 'team_name/repo_name';
 
-            pullRequestsList.push(pullRequest);
+            pullRequestsList = [pullRequest];
 
             pullRequestEvent = new BitbucketNotifier.PullRequestEvent();
             pullRequestEvent.pullRequests = pullRequestsList;
@@ -286,6 +288,24 @@ describe('SocketHandler', () => {
                 expect(notifier.notifyReminder).toHaveBeenCalledWith(pullRequest);
             });
         });
+
+        describe('on comments', () => {
+            it('should notify assignee about new comment under his pull request', () => {
+                pullRequest.author = annaKowalsky;
+                pullRequestEvent.actor = johnSmith;
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_COMMENT, pullRequestEvent);
+
+                expect(notifier.notifyNewCommentAdded).toHaveBeenCalledWith(pullRequest, johnSmith);
+            });
+
+            it('should notify user about new comment reply', () => {
+                pullRequest.author = annaKowalsky;
+                pullRequestEvent.actor = johnSmith;
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_REPLY_FOR_COMMENT, pullRequestEvent);
+
+                expect(notifier.notifyNewReplyOnComment).toHaveBeenCalledWith(pullRequest, johnSmith);
+            });
+        })
     });
 
     describe('indicator state', () => {
