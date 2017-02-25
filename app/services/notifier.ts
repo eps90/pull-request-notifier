@@ -105,6 +105,18 @@ module BitbucketNotifier {
             this.notify(options, notificationId, pullRequest.links.html);
         }
 
+        notifyNewCommentAdded(pullRequest: PullRequest, commentingUser: User) {
+            const options = {
+                title: 'New comment on your pull request!',
+                message: pullRequest.title,
+                contextMessage: `by ${commentingUser.displayName}`,
+                iconUrl: '../../assets/img/bitbucket_new_comment.png'
+            };
+            const notificationId = this.getNotificationId(pullRequest);
+
+            this.notify(options, notificationId, pullRequest.links.html);
+        }
+
         private getNotificationId(pullRequest: PullRequest): string {
             return _.uniqueId('pull_request_' + pullRequest.id);
         }
