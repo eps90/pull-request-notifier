@@ -56,6 +56,7 @@
     "@types/angular-local-storage": "^0.1.33",
     "@types/angular-mocks": "^1.5.9",
     "@types/angular-ui-router": "^1.1.36",
+    "@types/jasmine": "^2.5.43",
     "@types/jquery": "^2.0.40",
     "@types/lodash": "^4.14.53",
     "@types/socket.io-client": "^1.4.29",

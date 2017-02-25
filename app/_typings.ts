@@ -8,6 +8,7 @@
 ///<reference path="../node_modules/@types/socket.io-client/index.d.ts"/>
 ///<reference path="../node_modules/@types/angular-growl-v2/index.d.ts"/>
 ///<reference path="../node_modules/@types/createjs-lib/index.d.ts" />
+///<reference path="../node_modules/@types/jasmine/index.d.ts" />
 ///<reference path="services/models.ts"/>
 ///<reference path="services/pull_request_repository.ts"/>
 ///<reference path="services/notification_repository.ts"/>
