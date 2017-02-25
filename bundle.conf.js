@@ -163,6 +163,8 @@ module.exports = {
                 "app/components/approval_progress_component/approval_progress_component.ts",
                 "app/components/navigation_brand_component/navigation_brand_component.ts",
                 "app/services/sound_manager.ts",
+                'app/services/notifier.ts',
+                'app/services/notification_repository.ts',
                 "app/modules/bitbucket_notifier_options.ts"
             ],
             options: bundleOptions
