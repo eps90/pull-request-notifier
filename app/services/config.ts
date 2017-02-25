@@ -27,7 +27,7 @@ module BitbucketNotifier {
         // setting up socker server
         getSocketServerAddress(): string {
             var address: string = <string>this.localStorageService.get(ConfigObject.SOCKET_SERVER);
-            var addressWithHttp = _.trimLeft(address, 'http://');
+            var addressWithHttp = _.trimStart(address, 'http://');
             return 'http://' + addressWithHttp;
         }
 
