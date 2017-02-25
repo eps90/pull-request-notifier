@@ -6,10 +6,10 @@ var tsOptions = {
         target: 'es5',
         module: 'commonjs',
         typescript: require('typescript'),
-        sortOutput: true,
         removeComments: true
     },
     tsLintOptions = {
+        formatter: 'prose',
         tslint: require('tslint'),
         emitError: false
     };
@@ -17,8 +17,7 @@ var tsOptions = {
 var gulpIf = require('gulp-if');
 
 var typeScriptPipeLine = lazypipe()
-    .pipe(tslint)
-    .pipe(tslint.report, 'prose', tsLintOptions)
+    .pipe(tslint, tsLintOptions)
     .pipe(typescript, tsOptions);
 
 var scriptsPipeLine = lazypipe()

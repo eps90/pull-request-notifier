@@ -112,8 +112,7 @@ gulp.task('test:prepare', ['clean'], function () {
         typeScriptOptions = {
             target: 'es5',
             module: 'commonjs',
-            typescript: require('typescript'),
-            sortOutput: true
+            typescript: require('typescript')
         };
 
     var compileSources = gulp.src(['app/**/*.ts', 'test/**/*.ts'], {base: '.'})
