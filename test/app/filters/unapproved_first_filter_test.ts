@@ -3,7 +3,7 @@
 describe('UnapprovedFirstFilter', () => {
     var $filter;
 
-    beforeEach(module('bitbucketNotifier'));
+    beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(inject([
         '$filter',
         ($f) => {

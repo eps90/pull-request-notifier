@@ -7,10 +7,10 @@ describe('PullRequestComponent', () => {
         uiRouterState: angular.ui.IStateService,
         pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
 
-    beforeEach(module('bitbucketNotifier'));
-    beforeEach(module('bitbucketNotifier.templates'));
+    beforeEach(angular.mock.module('bitbucketNotifier'));
+    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
 
-    beforeEach(module([
+    beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
             $provide.value('$state', {
