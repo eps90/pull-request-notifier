@@ -2,9 +2,71 @@
 # yarn lockfile v1
 
 
+"@types/angular-animate@^1.5.6":
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/@types/angular-animate/-/angular-animate-1.5.6.tgz#43b095185b19e37339bb9d61b1b970461266730e"
+  dependencies:
+    "@types/angular" "*"
+    "@types/jquery" "*"
+
+"@types/angular-growl-v2@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@types/angular-growl-v2/-/angular-growl-v2-0.7.0.tgz#e0c423652f5860f85ece0c1c93080ce2fd02bb0d"
+  dependencies:
+    "@types/angular" "*"
+
+"@types/angular-local-storage@^0.1.33":
+  version "0.1.33"
+  resolved "https://registry.yarnpkg.com/@types/angular-local-storage/-/angular-local-storage-0.1.33.tgz#61421dde98734a5727e6c749153c0a304f45bd2c"
+  dependencies:
+    "@types/angular" "*"
+
+"@types/angular-mocks@^1.5.9":
+  version "1.5.9"
+  resolved "https://registry.yarnpkg.com/@types/angular-mocks/-/angular-mocks-1.5.9.tgz#4d91bb71a5cfb000d02b02133bc98c20f57101fd"
+  dependencies:
+    "@types/angular" "*"
+
+"@types/angular-ui-router@^1.1.36":
+  version "1.1.36"
+  resolved "https://registry.yarnpkg.com/@types/angular-ui-router/-/angular-ui-router-1.1.36.tgz#24479af00ab6926d04ada3a633bee41a3dd72806"
+  dependencies:
+    "@types/angular" "*"
+
+"@types/angular@*", "@types/angular@^1.6.7":
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/@types/angular/-/angular-1.6.7.tgz#8935a2b4a796fe7ca4f59f533f467804722fb0c4"
+  dependencies:
+    "@types/jquery" "*"
+
+"@types/createjs-lib@*":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@types/createjs-lib/-/createjs-lib-0.0.29.tgz#fae82e3ba8606663b190e789cec7d9c728fc41d7"
+
+"@types/jquery@*", "@types/jquery@^2.0.40":
+  version "2.0.40"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.40.tgz#acdd69e29b74cdec15dc3c074bcb064bc1b87213"
+
 "@types/lodash@^4.14.53":
   version "4.14.53"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.53.tgz#c81ee7f2a551f92fb8692a2f6766d0430ccce9eb"
+
+"@types/preloadjs@*":
+  version "0.6.32"
+  resolved "https://registry.yarnpkg.com/@types/preloadjs/-/preloadjs-0.6.32.tgz#12cff7c7f92e3838a780d438ce49c8cec981830d"
+  dependencies:
+    "@types/createjs-lib" "*"
+
+"@types/socket.io-client@^1.4.29":
+  version "1.4.29"
+  resolved "https://registry.yarnpkg.com/@types/socket.io-client/-/socket.io-client-1.4.29.tgz#f8743070cee93175e36e0b6a77a8af73e58ccb32"
+
+"@types/soundjs@^0.6.27":
+  version "0.6.27"
+  resolved "https://registry.yarnpkg.com/@types/soundjs/-/soundjs-0.6.27.tgz#dd2370350eaf7277de5ed55940e3e7d2a016b124"
+  dependencies:
+    "@types/createjs-lib" "*"
+    "@types/preloadjs" "*"
 
 abbrev@1:
   version "1.1.0"
@@ -385,10 +447,10 @@ bl@^0.9.3:
     readable-stream "~1.0.26"
 
 bl@^1.0.0:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/bl/-/bl-1.0.3.tgz#fc5421a28fd4226036c3b3891a66a25bc64d226e"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/bl/-/bl-1.2.0.tgz#1397e7ec42c5f5dc387470c500e34a9f6be9ea98"
   dependencies:
-    readable-stream "~2.0.5"
+    readable-stream "^2.0.5"
 
 blob@0.0.4:
   version "0.0.4"
@@ -3059,7 +3121,7 @@ lodash@3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.3.0.tgz#011ce52d01b14e60eaeea76acb9b8ba42c70581b"
 
-lodash@3.9.3:
+lodash@3.9.3, lodash@^3.7.0, lodash@^3.8.0:
   version "3.9.3"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.9.3.tgz#0159e86832feffc6d61d852b12a953b99496bd32"
 
@@ -3067,11 +3129,11 @@ lodash@4.11.2:
   version "4.11.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.11.2.tgz#d6b4338b110a58e21dae5cebcfdbbfd2bc4cdb3b"
 
-lodash@^3.10.0, lodash@^3.3.1, lodash@^3.5.0, lodash@^3.7.0, lodash@^3.8.0, lodash@~3.10.1:
+lodash@^3.10.0, lodash@^3.3.1, lodash@^3.5.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.1, lodash@^4.14.0, lodash@^4.5.0, lodash@^4.6.1, lodash@^4.8.0:
+lodash@^4.0.1, lodash@^4.14.0, lodash@^4.17.4, lodash@^4.5.0, lodash@^4.6.1, lodash@^4.8.0:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -3874,17 +3936,6 @@ readable-stream@^2.0.0, "readable-stream@^2.0.0 || ^1.1.13", readable-stream@^2.
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.3.tgz#9cf49463985df016c8ae8813097a9293a9b33729"
   dependencies:
     buffer-shims "^1.0.0"
-    core-util-is "~1.0.0"
-    inherits "~2.0.1"
-    isarray "~1.0.0"
-    process-nextick-args "~1.0.6"
-    string_decoder "~0.10.x"
-    util-deprecate "~1.0.1"
-
-readable-stream@~2.0.5:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.0.6.tgz#8f90341e68a53ccc928788dacfcd11b36eb9b78e"
-  dependencies:
     core-util-is "~1.0.0"
     inherits "~2.0.1"
     isarray "~1.0.0"
