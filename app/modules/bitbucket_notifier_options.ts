@@ -13,6 +13,8 @@ module BitbucketNotifier {
     application.service('Config', Config);
     application.service('SoundManager', SoundManager);
     application.service('SoundRepository', SoundRepository);
+    application.service('Notifier', Notifier);
+    application.service('NotificationRepository', NotificationRepository);
 
     application.value('bitbucketUrl', 'https://bitbucket.org');
 
