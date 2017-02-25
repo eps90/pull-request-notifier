@@ -25,7 +25,7 @@ module.exports = function(config) {
         'node_modules/angular-mocks/angular-mocks.js',
         'node_modules/angular-local-storage/dist/angular-local-storage.min.js',
         'node_modules/socket.io-client/dist/socket.io.js',
-        'node_modules/lodash/index.js',
+        'node_modules/lodash/lodash.js',
         'node_modules/angular-socket.io-mock/angular-socket.io-mock.js',
         'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
         'node_modules/angular-growl-v2/build/angular-growl.js',
