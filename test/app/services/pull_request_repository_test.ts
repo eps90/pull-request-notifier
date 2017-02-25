@@ -30,7 +30,7 @@ describe('PullRequestRepository', () => {
             }
         };
     });
-    beforeEach(module('bitbucketNotifier'));
+    beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(inject([
         'PullRequestRepository',
         'PullRequestRepository',

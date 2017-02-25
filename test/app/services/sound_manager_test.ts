@@ -12,8 +12,8 @@ describe('SoundManager', () => {
             }
         };
     });
-    beforeEach(module('bitbucketNotifier.background'));
-    beforeEach(module([
+    beforeEach(angular.mock.module('bitbucketNotifier.background'));
+    beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
             function getFakeSoundPath(soundKey): string {

@@ -19,7 +19,7 @@ describe('Notifier', () => {
             requireInteraction: true
         };
     });
-    beforeEach(module('bitbucketNotifier.background'));
+    beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(() => {
         window['chrome'] = {
             notifications: {
@@ -36,7 +36,7 @@ describe('Notifier', () => {
             }
         };
     });
-    beforeEach(module([
+    beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
             $provide.value('NotificationRepository', {

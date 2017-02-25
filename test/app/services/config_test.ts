@@ -5,7 +5,7 @@ describe('Config', () => {
         localStorageService: angular.local.storage.ILocalStorageService,
         soundRepository: BitbucketNotifier.SoundRepository;
 
-    beforeEach(module('bitbucketNotifier'));
+    beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(inject([
         'Config',
         'localStorageService',

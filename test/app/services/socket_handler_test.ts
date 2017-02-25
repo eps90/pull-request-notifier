@@ -11,8 +11,8 @@ describe('SocketHandler', () => {
         exists = true,
         extensionListener: Function;
 
-    beforeEach(module('bitbucketNotifier.background'));
-    beforeEach(module(['$provide', ($p: ng.auto.IProvideService) => {
+    beforeEach(angular.mock.module('bitbucketNotifier.background'));
+    beforeEach(angular.mock.module(['$provide', ($p: ng.auto.IProvideService) => {
         $p.value('Notifier', {
             notifyNewPullRequestAssigned: jasmine.createSpy('notifyNewPullRequestAssigned'),
             notifyPullRequestMerged: jasmine.createSpy('notifyPullRequestMerged'),

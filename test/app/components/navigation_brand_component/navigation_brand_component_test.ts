@@ -5,8 +5,8 @@ describe('NavigationBrandComponent', () => {
         $scope: ng.IScope,
         $compile: ng.ICompileService;
 
-    beforeEach(module('bitbucketNotifier'));
-    beforeEach(module('bitbucketNotifier.templates'));
+    beforeEach(angular.mock.module('bitbucketNotifier'));
+    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
 
     beforeEach(inject([
         '$rootScope',

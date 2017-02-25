@@ -27,10 +27,10 @@ describe('OptionsComponent', () => {
         };
     });
 
-    beforeEach(module('bitbucketNotifier.options'));
-    beforeEach(module('bitbucketNotifier.templates'));
+    beforeEach(angular.mock.module('bitbucketNotifier.options'));
+    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
 
-    beforeEach(module([
+    beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
             appUser = null;

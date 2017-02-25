@@ -7,8 +7,8 @@ describe('AssignedFilter', () => {
         assignedFilter,
         loggedInUser: string;
 
-    beforeEach(module('bitbucketNotifier'));
-    beforeEach(module([
+    beforeEach(angular.mock.module('bitbucketNotifier'));
+    beforeEach(angular.mock.module([
         '$provide', ($provide: ng.auto.IProvideService) => {
             $provide.value('Config', {
                 getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
