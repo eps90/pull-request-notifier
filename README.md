@@ -35,5 +35,3 @@ After successful installation there will be installed **typescript definitions**
 * Upgrade lodash
 * Find some up-to-date directive or filter for markdown
 * Find some alternative to angular-emoji-filter
-* Upgrade angular-bootstrap
-* **Upgrade TypeScript**
