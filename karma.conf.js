@@ -12,6 +12,11 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
+    jasmineDiffReporter: {
+        pretty: true,
+        multiline: true,
+    },
+
 
     // list of files / patterns to load in the browser
     files: [
@@ -60,7 +65,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['dots'],
+    reporters: ['jasmine-diff', 'dots'],
 
 
     // web server port
