@@ -60,7 +60,7 @@ module.exports = {
             scripts: [
                 "node_modules/angular/angular.min.js",
                 "node_modules/angular-local-storage/dist/angular-local-storage.min.js",
-                "node_modules/lodash/index.js",
+                "node_modules/lodash/lodash.js",
                 "app/components/section_title_component/section_title_component.ts",
                 "app/components/navigation_bar_component/navigation_bar_component.ts",
                 "app/components/approval_progress_component/approval_progress_component.ts",
