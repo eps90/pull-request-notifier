@@ -14,11 +14,6 @@
     "tests"
   ],
   "dependencies": {
-    "angular-bootstrap": "~0.13.3",
     "angular-emoji-filter": "~0.0.2"
-  },
-  "devDependencies": {},
-  "resolutions": {
-    "angular": "~1.4.4"
   }
 }
