@@ -9,8 +9,7 @@
     "url": "git@bitbucket.org:dacsoftware/bitbucket-notifier-chrome-extension.git"
   },
   "scripts": {
-    "test": "gulp test",
-    "postinstall": "tsd --version && bower -v && tsd install && bower install"
+    "test": "gulp test"
   },
   "license": "Apache-2.0",
   "dependencies": {
@@ -45,7 +44,6 @@
     "merge-stream": "^1.0.0",
     "showdown": "0.3.4",
     "socket.io-client": "^1.7.3",
-    "tsd": "^0.6.3",
     "tslint": "^4.4.2",
     "typescript": "^2.2.1"
   },
