@@ -117,6 +117,18 @@ module BitbucketNotifier {
             this.notify(options, notificationId, pullRequest.links.html);
         }
 
+        notifyNewReplyOnComment(pullRequest: PullRequest, replyingUser: User) {
+            const options = {
+                title: 'New reply for your comment',
+                message: pullRequest.title,
+                contextMessage: `by ${replyingUser.displayName}`,
+                iconUrl: '../../assets/img/bitbucket_new_reply.png'
+            };
+            const notificationId = this.getNotificationId(pullRequest);
+
+            this.notify(options, notificationId, pullRequest.links.html);
+        }
+
         private getNotificationId(pullRequest: PullRequest): string {
             return _.uniqueId('pull_request_' + pullRequest.id);
         }
