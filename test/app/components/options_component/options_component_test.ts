@@ -13,7 +13,8 @@ describe('OptionsComponent', () => {
         $rootScope: ng.IRootScopeService,
         $scope: ng.IScope,
         $compile: ng.ICompileService,
-        growl: angular.growl.IGrowlService;
+        growl: angular.growl.IGrowlService,
+        notifier: BitbucketNotifier.Notifier;
 
     beforeEach(() => {
         window['createjs'] = {
@@ -77,6 +78,14 @@ describe('OptionsComponent', () => {
                 inlineMessages: jasmine.createSpy('growl.inlineMessages'),
                 position: jasmine.createSpy('growl.position')
             });
+
+            $provide.value('Notifier', {
+                notifyPullRequestUpdated: jasmine.createSpy('Notifier.notifyPullRequestUpdated'),
+                notifyReminder: jasmine.createSpy('Notifier.notifyReminder'),
+                notifyPullRequestMerged: jasmine.createSpy('Notifier.notifyPullRequestMerged'),
+                notifyNewPullRequestAssigned: jasmine.createSpy('Notifier.notifyPullRequestAssigned'),
+                notifyPullRequestApproved: jasmine.createSpy('Notifier.notifyPullRequestApproved')
+            });
         }
     ]));
     beforeEach(inject([
@@ -84,12 +93,14 @@ describe('OptionsComponent', () => {
         '$rootScope',
         '$compile',
         'growl',
-        (c, $r, $c, g, sm) => {
+        'Notifier',
+        (c, $r, $c, g, n) => {
             config = c;
             $rootScope = $r;
             $scope = $rootScope;
             $compile = $c;
             growl = g;
+            notifier = n;
         }
     ]));
 
@@ -217,5 +228,36 @@ describe('OptionsComponent', () => {
         $scope['playSound'](chosenSoundPath);
 
         expect(createjs.Sound.registerSound).toHaveBeenCalledWith(chosenSoundPath, 'temp_sound');
+    });
+
+    describe('Notifications', () => {
+        it('should show a new pull request notification', () => {
+            expectNotificationShown('#assigned', notifier.notifyNewPullRequestAssigned);
+        });
+
+        it('should show an approval notification', () => {
+            expectNotificationShown('#approved', notifier.notifyPullRequestApproved);
+        });
+
+        it('should show a merge notification', () => {
+            expectNotificationShown('#merged', notifier.notifyPullRequestMerged);
+        });
+
+        it('should show a reminder notification', () => {
+            expectNotificationShown('#remind', notifier.notifyReminder);
+        });
+
+        it('should show a pull request updated notification', () => {
+            expectNotificationShown('#updated', notifier.notifyPullRequestUpdated);
+        });
+
+        function expectNotificationShown(elementSelector: string, notifierFunc) {
+            element = $compile('<options></options>')($scope);
+            $scope.$digest();
+
+            element.find(elementSelector).click().triggerHandler('click');
+
+            expect(notifierFunc).toHaveBeenCalled();
+        }
     });
 });

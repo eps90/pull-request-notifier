@@ -11,7 +11,8 @@ module BitbucketNotifier {
             private config: Config,
             private growl: angular.growl.IGrowlService,
             private $interval: ng.IIntervalService,
-            private soundRepository: SoundRepository
+            private soundRepository: SoundRepository,
+            private notifier: Notifier
         ) {}
 
         link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
@@ -100,11 +101,38 @@ module BitbucketNotifier {
                 createjs.Sound.registerSound(soundProp, 'temp_sound');
                 createjs.Sound.play('temp_sound');
             };
+
+            scope['showNotification'] = (type: string) => {
+                const pullRequest = new PullRequest();
+                pullRequest.title = 'This is some title';
+                pullRequest.author.displayName = 'John smith';
+
+                const user = new User();
+                user.displayName = 'Anna Kowalsky';
+
+                switch (type) {
+                    case 'assigned':
+                        this.notifier.notifyNewPullRequestAssigned(pullRequest);
+                        break;
+                    case 'approved':
+                        this.notifier.notifyPullRequestApproved(pullRequest, user);
+                        break;
+                    case 'merged':
+                        this.notifier.notifyPullRequestMerged(pullRequest);
+                        break;
+                    case 'remind':
+                        this.notifier.notifyReminder(pullRequest);
+                        break;
+                    case 'updated':
+                        this.notifier.notifyPullRequestUpdated(pullRequest);
+                        break;
+                }
+            };
         };
 
         static factory(): ng.IDirectiveFactory {
-            var component = (config, growl, $interval, soundRepository) => new OptionsComponent(config, growl, $interval, soundRepository);
-            component.$inject = ['Config', 'growl', '$interval', 'SoundRepository'];
+            const component = (config, growl, $interval, soundRepository, notifier) => new OptionsComponent(config, growl, $interval, soundRepository, notifier);
+            component.$inject = ['Config', 'growl', '$interval', 'SoundRepository', 'Notifier'];
             return component;
         }
     }
