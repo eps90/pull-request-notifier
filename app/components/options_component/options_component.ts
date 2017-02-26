@@ -126,6 +126,12 @@ module BitbucketNotifier {
                     case 'updated':
                         this.notifier.notifyPullRequestUpdated(pullRequest);
                         break;
+                    case 'commented':
+                        this.notifier.notifyNewCommentAdded(pullRequest, user);
+                        break;
+                    case 'replied':
+                        this.notifier.notifyNewReplyOnComment(pullRequest, user);
+                        break;
                 }
             };
         };
