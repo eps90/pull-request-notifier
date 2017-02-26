@@ -105,7 +105,7 @@ module BitbucketNotifier {
             this.notify(options, notificationId, pullRequest.links.html);
         }
 
-        notifyNewCommentAdded(pullRequest: PullRequest, commentingUser: User) {
+        notifyNewCommentAdded(pullRequest: PullRequest, commentingUser: User, commentLink: string) {
             const options = {
                 title: 'New comment on your pull request!',
                 message: pullRequest.title,
@@ -114,10 +114,10 @@ module BitbucketNotifier {
             };
             const notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options, notificationId, pullRequest.links.html);
+            this.notify(options, notificationId, commentLink);
         }
 
-        notifyNewReplyOnComment(pullRequest: PullRequest, replyingUser: User) {
+        notifyNewReplyOnComment(pullRequest: PullRequest, replyingUser: User, commentLink: string) {
             const options = {
                 title: 'New reply for your comment',
                 message: pullRequest.title,
@@ -126,7 +126,7 @@ module BitbucketNotifier {
             };
             const notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options, notificationId, pullRequest.links.html);
+            this.notify(options, notificationId, commentLink);
         }
 
         private getNotificationId(pullRequest: PullRequest): string {
