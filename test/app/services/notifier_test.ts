@@ -184,12 +184,14 @@ describe('Notifier', () => {
         const commentingUser = new BitbucketNotifier.User();
         commentingUser.displayName = 'John Smith';
 
+        const commentLink = 'http://example.com';
+
         expectedOptions.title = 'New comment on your pull request!';
         expectedOptions.message = 'This is some title';
         expectedOptions.contextMessage = 'by John Smith';
         expectedOptions.iconUrl = '../../assets/img/bitbucket_new_comment.png';
 
-        notifier.notifyNewCommentAdded(pullRequest, commentingUser);
+        notifier.notifyNewCommentAdded(pullRequest, commentingUser, commentLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
@@ -200,12 +202,14 @@ describe('Notifier', () => {
         const replyingUser = new BitbucketNotifier.User();
         replyingUser.displayName = 'John Smith';
 
+        const commentLink = 'http://example.com';
+
         expectedOptions.title = 'New reply for your comment';
         expectedOptions.message = 'This is some title';
         expectedOptions.contextMessage = 'by John Smith';
         expectedOptions.iconUrl = '../../assets/img/bitbucket_new_reply.png';
 
-        notifier.notifyNewReplyOnComment(pullRequest, replyingUser);
+        notifier.notifyNewReplyOnComment(pullRequest, replyingUser, commentLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
