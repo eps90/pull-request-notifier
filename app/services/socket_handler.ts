@@ -47,12 +47,14 @@ module BitbucketNotifier {
 
             this.socketManager.socket.on(SocketServerEvent.NEW_COMMENT, (prEvent: PullRequestCommentEvent) => {
                 if (prEvent.pullRequest.author.username !== prEvent.actor.username) {
-                    this.notifier.notifyNewCommentAdded(prEvent.pullRequest, prEvent.actor);
+                    const commentLink = prEvent.comment.links.html.href;
+                    this.notifier.notifyNewCommentAdded(prEvent.pullRequest, prEvent.actor, commentLink);
                 }
             });
 
             this.socketManager.socket.on(SocketServerEvent.NEW_REPLY_FOR_COMMENT, (prEvent: PullRequestCommentEvent) => {
-                this.notifier.notifyNewReplyOnComment(prEvent.pullRequest, prEvent.actor);
+                const commentLink = prEvent.comment.links.html.href;
+                this.notifier.notifyNewReplyOnComment(prEvent.pullRequest, prEvent.actor, commentLink);
             });
 
             this.socketManager.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
