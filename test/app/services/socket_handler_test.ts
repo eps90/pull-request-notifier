@@ -1,5 +1,6 @@
 ///<reference path="../../../app/_typings.ts"/>
 
+import PullRequestCommentEvent = BitbucketNotifier.PullRequestCommentEvent;
 describe('SocketHandler', () => {
     var socketHandler,
         socketManager: BitbucketNotifier.SocketManager,
@@ -291,17 +292,21 @@ describe('SocketHandler', () => {
 
         describe('on comments', () => {
             it('should notify assignee about new comment under his pull request', () => {
-                pullRequest.author = annaKowalsky;
-                pullRequestEvent.actor = johnSmith;
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_COMMENT, pullRequestEvent);
+                const pullRequestWithComment = new PullRequestCommentEvent();
+                pullRequestWithComment.actor = johnSmith;
+                pullRequestWithComment.pullRequest = pullRequest;
+
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_COMMENT, pullRequestWithComment);
 
                 expect(notifier.notifyNewCommentAdded).toHaveBeenCalledWith(pullRequest, johnSmith);
             });
 
             it('should notify user about new comment reply', () => {
-                pullRequest.author = annaKowalsky;
-                pullRequestEvent.actor = johnSmith;
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_REPLY_FOR_COMMENT, pullRequestEvent);
+                const pullRequestWithComment = new PullRequestCommentEvent();
+                pullRequestWithComment.actor = johnSmith;
+                pullRequestWithComment.pullRequest = pullRequest;
+
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_REPLY_FOR_COMMENT, pullRequestWithComment);
 
                 expect(notifier.notifyNewReplyOnComment).toHaveBeenCalledWith(pullRequest, johnSmith);
             });

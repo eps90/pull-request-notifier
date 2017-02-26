@@ -64,11 +64,38 @@ module BitbucketNotifier {
         }
     }
 
+    export interface ICommentConent {
+        raw?: string;
+        html?: string;
+        markup?: string;
+    }
+
+    export interface ILink {
+        href: string;
+    }
+
+    export interface ICommentLinks {
+        self?: ILink;
+        html?: ILink;
+    }
+
+    export class Comment implements ModelInterface {
+        id: number;
+        content: ICommentConent;
+        links: ICommentLinks;
+    }
+
     export class PullRequestEvent implements ModelInterface {
         actor: User = new User();
         sourceEvent: string = '';
         pullRequests: Array<PullRequest> = [];
         context: PullRequest = new PullRequest();
+    }
+
+    export class PullRequestCommentEvent implements ModelInterface {
+        actor: User = new User();
+        pullRequest: PullRequest = new PullRequest();
+        comment: Comment = new Comment();
     }
 
     export class WebhookEvent {
