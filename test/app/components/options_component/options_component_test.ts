@@ -84,7 +84,9 @@ describe('OptionsComponent', () => {
                 notifyReminder: jasmine.createSpy('Notifier.notifyReminder'),
                 notifyPullRequestMerged: jasmine.createSpy('Notifier.notifyPullRequestMerged'),
                 notifyNewPullRequestAssigned: jasmine.createSpy('Notifier.notifyPullRequestAssigned'),
-                notifyPullRequestApproved: jasmine.createSpy('Notifier.notifyPullRequestApproved')
+                notifyPullRequestApproved: jasmine.createSpy('Notifier.notifyPullRequestApproved'),
+                notifyNewCommentAdded: jasmine.createSpy('Notifier.notifyNewCommentAdded'),
+                notifyNewReplyOnComment: jasmine.createSpy('Notifier.notifyNewReplyOnComment')
             });
         }
     ]));
@@ -249,6 +251,14 @@ describe('OptionsComponent', () => {
 
         it('should show a pull request updated notification', () => {
             expectNotificationShown('#updated', notifier.notifyPullRequestUpdated);
+        });
+
+        it('should show a new comment notification', () => {
+            expectNotificationShown('#commented', notifier.notifyNewCommentAdded);
+        });
+
+        it('should show a new reply for a comment notification', () => {
+            expectNotificationShown('#replied', notifier.notifyNewReplyOnComment);
         });
 
         function expectNotificationShown(elementSelector: string, notifierFunc) {
