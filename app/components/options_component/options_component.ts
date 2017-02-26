@@ -110,6 +110,8 @@ module BitbucketNotifier {
                 const user = new User();
                 user.displayName = 'Anna Kowalsky';
 
+                const targetLink = 'http://bitbucket.com';
+
                 switch (type) {
                     case 'assigned':
                         this.notifier.notifyNewPullRequestAssigned(pullRequest);
@@ -127,10 +129,10 @@ module BitbucketNotifier {
                         this.notifier.notifyPullRequestUpdated(pullRequest);
                         break;
                     case 'commented':
-                        this.notifier.notifyNewCommentAdded(pullRequest, user);
+                        this.notifier.notifyNewCommentAdded(pullRequest, user, targetLink);
                         break;
                     case 'replied':
-                        this.notifier.notifyNewReplyOnComment(pullRequest, user);
+                        this.notifier.notifyNewReplyOnComment(pullRequest, user, targetLink);
                         break;
                 }
             };
