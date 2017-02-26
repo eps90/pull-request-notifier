@@ -292,13 +292,19 @@ describe('SocketHandler', () => {
 
         describe('on comments', () => {
             it('should notify author about new comment under his pull request', () => {
+                const commentLink = 'http://example.com';
                 const pullRequestWithComment = new PullRequestCommentEvent();
                 pullRequestWithComment.actor = johnSmith;
                 pullRequestWithComment.pullRequest = pullRequest;
+                pullRequestWithComment.comment.links = {
+                    html: {
+                        href: commentLink
+                    }
+                };
 
                 socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_COMMENT, pullRequestWithComment);
 
-                expect(notifier.notifyNewCommentAdded).toHaveBeenCalledWith(pullRequest, johnSmith);
+                expect(notifier.notifyNewCommentAdded).toHaveBeenCalledWith(pullRequest, johnSmith, commentLink);
             });
 
             it('should not notify author about new comment if he is an actor', () => {
@@ -314,13 +320,20 @@ describe('SocketHandler', () => {
             });
 
             it('should notify user about new comment reply', () => {
+                const commentLink = 'http://example.com';
+
                 const pullRequestWithComment = new PullRequestCommentEvent();
                 pullRequestWithComment.actor = johnSmith;
                 pullRequestWithComment.pullRequest = pullRequest;
+                pullRequestWithComment.comment.links = {
+                    html: {
+                        href: commentLink
+                    }
+                };
 
                 socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_REPLY_FOR_COMMENT, pullRequestWithComment);
 
-                expect(notifier.notifyNewReplyOnComment).toHaveBeenCalledWith(pullRequest, johnSmith);
+                expect(notifier.notifyNewReplyOnComment).toHaveBeenCalledWith(pullRequest, johnSmith, commentLink);
             });
         })
     });
