@@ -49,7 +49,9 @@ module BitbucketNotifier {
              * @todo Create an event with single pull request instead of list
              */
             this.socketManager.socket.on(SocketServerEvent.NEW_COMMENT, (prEvent: PullRequestCommentEvent) => {
-                this.notifier.notifyNewCommentAdded(prEvent.pullRequest, prEvent.actor);
+                if (prEvent.pullRequest.author.username !== prEvent.actor.username) {
+                    this.notifier.notifyNewCommentAdded(prEvent.pullRequest, prEvent.actor);
+                }
             });
 
             this.socketManager.socket.on(SocketServerEvent.NEW_REPLY_FOR_COMMENT, (prEvent: PullRequestCommentEvent) => {

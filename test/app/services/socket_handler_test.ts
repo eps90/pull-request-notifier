@@ -291,7 +291,7 @@ describe('SocketHandler', () => {
         });
 
         describe('on comments', () => {
-            it('should notify assignee about new comment under his pull request', () => {
+            it('should notify author about new comment under his pull request', () => {
                 const pullRequestWithComment = new PullRequestCommentEvent();
                 pullRequestWithComment.actor = johnSmith;
                 pullRequestWithComment.pullRequest = pullRequest;
@@ -299,6 +299,18 @@ describe('SocketHandler', () => {
                 socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_COMMENT, pullRequestWithComment);
 
                 expect(notifier.notifyNewCommentAdded).toHaveBeenCalledWith(pullRequest, johnSmith);
+            });
+
+            it('should not notify author about new comment if he is an actor', () => {
+                pullRequest.author = johnSmith;
+
+                const pullRequestWithComment = new PullRequestCommentEvent();
+                pullRequestWithComment.actor = johnSmith;
+                pullRequestWithComment.pullRequest = pullRequest;
+
+                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_COMMENT, pullRequestWithComment);
+
+                expect(notifier.notifyNewCommentAdded).not.toHaveBeenCalled();
             });
 
             it('should notify user about new comment reply', () => {
