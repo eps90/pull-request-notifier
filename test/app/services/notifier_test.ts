@@ -19,7 +19,7 @@ describe('Notifier', () => {
             requireInteraction: true
         };
     });
-    beforeEach(module('bitbucketNotifier.background'));
+    beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(() => {
         window['chrome'] = {
             notifications: {
@@ -36,7 +36,7 @@ describe('Notifier', () => {
             }
         };
     });
-    beforeEach(module([
+    beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
             $provide.value('NotificationRepository', {
@@ -160,6 +160,56 @@ describe('Notifier', () => {
         expectedOptions.iconUrl = '../../assets/img/bitbucket_new.png';
 
         notifier.notifyNewPullRequestAssigned(pullRequest);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
+    });
+
+    it('should notify about pull request update', () => {
+        const pullRequest = new BitbucketNotifier.PullRequest();
+        pullRequest.title = 'This is some title';
+        pullRequest.author.displayName = 'John Kowalsky';
+
+        expectedOptions.title = 'Pull request has been updated';
+        expectedOptions.message = 'This is some title';
+        expectedOptions.contextMessage = 'by John Kowalsky';
+        expectedOptions.iconUrl = '../../assets/img/bitbucket_updated.png';
+
+        notifier.notifyPullRequestUpdated(pullRequest);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
+    });
+
+    it('should notify about new comment', () => {
+        const pullRequest = new BitbucketNotifier.PullRequest();
+        pullRequest.title = 'This is some title';
+
+        const commentingUser = new BitbucketNotifier.User();
+        commentingUser.displayName = 'John Smith';
+
+        const commentLink = 'http://example.com';
+
+        expectedOptions.title = 'New comment on your pull request!';
+        expectedOptions.message = 'This is some title';
+        expectedOptions.contextMessage = 'by John Smith';
+        expectedOptions.iconUrl = '../../assets/img/bitbucket_new_comment.png';
+
+        notifier.notifyNewCommentAdded(pullRequest, commentingUser, commentLink);
+        expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
+    });
+
+    it('should notify about new reply for a comment', () => {
+        const pullRequest = new BitbucketNotifier.PullRequest();
+        pullRequest.title = 'This is some title';
+
+        const replyingUser = new BitbucketNotifier.User();
+        replyingUser.displayName = 'John Smith';
+
+        const commentLink = 'http://example.com';
+
+        expectedOptions.title = 'New reply for your comment';
+        expectedOptions.message = 'This is some title';
+        expectedOptions.contextMessage = 'by John Smith';
+        expectedOptions.iconUrl = '../../assets/img/bitbucket_new_reply.png';
+
+        notifier.notifyNewReplyOnComment(pullRequest, replyingUser, commentLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 

@@ -1,11 +1,11 @@
 <div class="row pull-requests">
     <div class="col-sm-12">
         <section-title icon="code-fork">Active pull requests</section-title>
-        <tabset justified="true" type="pills">
-            <tab>
-                <tab-heading>
-                    <i class="fa fa-thumb-tack"></i> Assigned
-                </tab-heading>
+        <uib-tabset justified="true" type="pills">
+            <uib-tab>
+                <uib-tab-heading>
+                    <i class="fa fa-thumb-tack tab-icon"></i> Assigned
+                </uib-tab-heading>
                 <div class="col-sm-12 pull-requests-list assigned">
                     <div class="row">
                         <div class="alert alert-info" ng-if="(pullRequests | assigned).length === 0">
@@ -15,11 +15,11 @@
                         <pull-request ng-repeat="pr in pullRequests | assigned" pr="pr" mode="ASSIGNED"></pull-request>
                     </div>
                 </div>
-            </tab>
-            <tab>
-                <tab-heading>
-                    <i class="fa fa-user"></i> Authored
-                </tab-heading>
+            </uib-tab>
+            <uib-tab>
+                <uib-tab-heading>
+                    <i class="fa fa-user tab-icon"></i> Authored
+                </uib-tab-heading>
                 <div class="col-sm-12 pull-requests-list authored">
                     <div class="row">
                         <div class="alert alert-info" ng-if="(pullRequests | authored).length === 0">
@@ -29,10 +29,10 @@
                         <pull-request ng-repeat="pr in pullRequests | authored" pr="pr" mode="AUTHORED"></pull-request>
                     </div>
                 </div>
-            </tab>
-            <tab disable="true">
-                <tab-heading><i class="fa fa-eye"></i> Subscribed</tab-heading>
-            </tab>
-        </tabset>
+            </uib-tab>
+            <uib-tab disable="true">
+                <uib-tab-heading><i class="fa fa-eye tab-icon"></i> Subscribed</uib-tab-heading>
+            </uib-tab>
+        </uib-tabset>
     </div>
 </div>

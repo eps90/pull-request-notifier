@@ -10,7 +10,7 @@ describe('Indicator', () => {
             }
         };
     });
-    beforeEach(module('bitbucketNotifier.background'));
+    beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(inject([
         'Indicator',
         (i) => {

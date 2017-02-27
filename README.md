@@ -25,3 +25,11 @@ npm install
 ```
 
 After successful installation there will be installed **typescript definitions** (see below). 
+
+
+## ToDo
+
+* Consider a migration to webpack2
+* Move ~~all~~ rest of bower dependencies to npm
+* Find some up-to-date directive or filter for markdown or create one
+* Find some alternative to angular-emoji-filter

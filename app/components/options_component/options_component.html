@@ -125,6 +125,37 @@
                         </div>
                     </form>
                 </div>
+                <div class="row">
+                    <section-title icon="terminal">Developer options</section-title>
+                    <div class="col-sm-12">
+                        <h3>Notifications</h3>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="btn-group">
+                            <button id="assigned" ng-click="showNotification('assigned')" class="btn btn-primary">
+                                Assigned
+                            </button>
+                            <button id="approved" ng-click="showNotification('approved')" class="btn btn-primary">
+                                Approved
+                            </button>
+                            <button id="merged" ng-click="showNotification('merged')" class="btn btn-primary">
+                                Merged
+                            </button>
+                            <button id="remind" class="btn btn-primary" ng-click="showNotification('remind')">
+                                Remind
+                            </button>
+                            <button id="updated" ng-click="showNotification('updated')" class="btn btn-primary">
+                                Update
+                            </button>
+                            <button id="commented" ng-click="showNotification('commented')" class="btn btn-primary">
+                                Commented
+                            </button>
+                            <button id="replied" class="btn btn-primary" ng-click="showNotification('replied')">
+                                Replied
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -19,6 +19,16 @@
             font-weight: bold;
         }
 
+        &.title {
+            p.section-label {
+                display: inline;
+            }
+
+            span.full-title {
+                margin-left: 10px;
+            }
+        }
+
         &.branch-info {
             p.section-label {
                 display: inline;
@@ -76,6 +86,10 @@
             padding: 10px 0;
             text-align: center;
             border-top: @lightGrey 1px solid;
+
+            pull-request-link {
+                margin-right: 7px;
+            }
         }
 
         &.author {

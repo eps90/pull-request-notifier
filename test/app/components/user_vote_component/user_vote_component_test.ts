@@ -5,10 +5,10 @@ describe('UserVoteComponent', () => {
         $compile: ng.ICompileService,
         config: BitbucketNotifier.Config;
 
-    beforeEach(module('bitbucketNotifier'));
-    beforeEach(module('bitbucketNotifier.templates'));
+    beforeEach(angular.mock.module('bitbucketNotifier'));
+    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
 
-    beforeEach(module([
+    beforeEach(angular.mock.module([
         '$provide', ($provide: ng.auto.IProvideService) => {
             $provide.value('Config', {
                 getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
