@@ -88,7 +88,7 @@ gulp.task('pack', ['build'], function () {
         url = require('url'),
         manifest = require('./manifest.json'),
         targetCrxFilename = 'bitbucket-notifier-chrome.crx',
-        targetZipFileName = 'btibucket-notifier-chrome.zip';
+        targetZipFileName = 'bitbucket-notifier-chrome.zip';
 
     var updateUrlParts = url.parse(manifest.update_url);
     var codeBase = url.resolve(
