@@ -1,4 +1,14 @@
-///<reference path="../typings/tsd.d.ts"/>
+///<reference path="../node_modules/@types/jquery/index.d.ts"/>
+///<reference path="../node_modules/@types/angular/index.d.ts"/>
+///<reference path="../node_modules/@types/angular-mocks/index.d.ts"/>
+///<reference path="../node_modules/@types/angular-animate/index.d.ts"/>
+///<reference path="../node_modules/@types/angular-ui-router/index.d.ts"/>
+///<reference path="../node_modules/@types/angular-local-storage/index.d.ts"/>
+///<reference path="../node_modules/@types/lodash/index.d.ts"/>
+///<reference path="../node_modules/@types/socket.io-client/index.d.ts"/>
+///<reference path="../node_modules/@types/angular-growl-v2/index.d.ts"/>
+///<reference path="../node_modules/@types/createjs-lib/index.d.ts" />
+///<reference path="../node_modules/@types/jasmine/index.d.ts" />
 ///<reference path="services/models.ts"/>
 ///<reference path="services/pull_request_repository.ts"/>
 ///<reference path="services/notification_repository.ts"/>

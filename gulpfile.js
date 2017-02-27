@@ -80,12 +80,15 @@ gulp.task('manifest', ['clean'], function () {
 
 gulp.task('build', ['views', 'manifest']);
 
-gulp.task('crx', ['build'], function () {
+gulp.task('pack', ['build'], function () {
     var crx = require('gulp-crx-pack'),
+        merge = require('merge-stream'),
+        zip = require('gulp-zip'),
         fs = require('fs'),
         url = require('url'),
         manifest = require('./manifest.json'),
-        targetFileName = 'bitbucket-notifier-chrome.crx';
+        targetCrxFilename = 'bitbucket-notifier-chrome.crx',
+        targetZipFileName = 'btibucket-notifier-chrome.zip';
 
     var updateUrlParts = url.parse(manifest.update_url);
     var codeBase = url.resolve(
@@ -93,10 +96,10 @@ gulp.task('crx', ['build'], function () {
             protocol: updateUrlParts.protocol,
             host: updateUrlParts.host
         }),
-        '/' + targetFileName
+        '/' + targetCrxFilename
     );
 
-    return gulp.src('build')
+    var crxPipeline = gulp.src('build')
         .pipe(crx({
             privateKey: fs.readFileSync(process.env.CRX_PEM_PATH || '../bbnotifier.pem'),
             filename: 'bitbucket-notifier-chrome.crx',
@@ -104,6 +107,12 @@ gulp.task('crx', ['build'], function () {
             updateXmlFilename: 'update.xml'
         }))
         .pipe(gulp.dest('dist'));
+
+    var zipPipeline = gulp.src('build/**/*')
+        .pipe(zip(targetZipFileName))
+        .pipe(gulp.dest('dist'));
+
+    return merge(crxPipeline, zipPipeline);
 });
 
 gulp.task('test:prepare', ['clean'], function () {
@@ -112,8 +121,7 @@ gulp.task('test:prepare', ['clean'], function () {
         typeScriptOptions = {
             target: 'es5',
             module: 'commonjs',
-            typescript: require('typescript'),
-            sortOutput: true
+            typescript: require('typescript')
         };
 
     var compileSources = gulp.src(['app/**/*.ts', 'test/**/*.ts'], {base: '.'})

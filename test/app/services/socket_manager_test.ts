@@ -1,7 +1,7 @@
 ///<reference path="../../../app/_typings.ts"/>
 
 describe('SocketManager', () => {
-    beforeEach(module('bitbucketNotifier.background'));
+    beforeEach(angular.mock.module('bitbucketNotifier.background'));
     var socketManager: BitbucketNotifier.SocketManager,
         secondSocketManager: BitbucketNotifier.SocketClientEvent;
 

@@ -1,7 +1,7 @@
 ///<reference path="../../../../app/_typings.ts"/>
 
 describe('PullRequestsListComponent', () => {
-    beforeEach(module('bitbucketNotifier'));
+    beforeEach(angular.mock.module('bitbucketNotifier'));
     var element,
         $compile: ng.ICompileService,
         $scope: ng.IRootScopeService,
@@ -29,8 +29,8 @@ describe('PullRequestsListComponent', () => {
         };
     });
 
-    beforeEach(module('bitbucketNotifier'));
-    beforeEach(module('bitbucketNotifier.templates'));
+    beforeEach(angular.mock.module('bitbucketNotifier'));
+    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
 
     beforeEach(
         inject([

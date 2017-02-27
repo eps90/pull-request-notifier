@@ -28,11 +28,11 @@ module.exports = {
         init: function (shipIt) {
             require('shipit-deploy')(shipIt);
             shipIt.blTask('deploy:install', function () {
-                return shipIt.local('npm install', {cwd: this.config.workspace});
+                return shipIt.local('yarn install', {cwd: this.config.workspace});
             });
 
             shipIt.blTask('deploy:compile', function () {
-                return shipIt.local('gulp crx', {cwd: this.config.workspace});
+                return shipIt.local('gulp pack', {cwd: this.config.workspace});
             });
 
             shipIt.on('fetched', function () {

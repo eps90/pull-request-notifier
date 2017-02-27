@@ -7,8 +7,8 @@ describe("NavigationBarComponent", () => {
         appVersion = '1.0.0',
         bitbucketUrl = 'http://example.com';
 
-    beforeEach(module('bitbucketNotifier'));
-    beforeEach(module('bitbucketNotifier.templates'));
+    beforeEach(angular.mock.module('bitbucketNotifier'));
+    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
     beforeEach(() => [
         window['chrome'] = {
             runtime: {
@@ -19,7 +19,7 @@ describe("NavigationBarComponent", () => {
             }
         }
     ]);
-    beforeEach(module([
+    beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
             $provide.value('bitbucketUrl', bitbucketUrl);

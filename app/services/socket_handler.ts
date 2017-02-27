@@ -41,6 +41,22 @@ module BitbucketNotifier {
                 this.notifier.notifyReminder(pullRequest);
             });
 
+            this.socketManager.socket.on(SocketServerEvent.PULLREQUEST_UPDATED, (pullRequest: PullRequest) => {
+                this.notifier.notifyPullRequestUpdated(pullRequest);
+            });
+
+            this.socketManager.socket.on(SocketServerEvent.NEW_COMMENT, (prEvent: PullRequestCommentEvent) => {
+                if (prEvent.pullRequest.author.username !== prEvent.actor.username) {
+                    const commentLink = prEvent.comment.links.html.href;
+                    this.notifier.notifyNewCommentAdded(prEvent.pullRequest, prEvent.actor, commentLink);
+                }
+            });
+
+            this.socketManager.socket.on(SocketServerEvent.NEW_REPLY_FOR_COMMENT, (prEvent: PullRequestCommentEvent) => {
+                const commentLink = prEvent.comment.links.html.href;
+                this.notifier.notifyNewReplyOnComment(prEvent.pullRequest, prEvent.actor, commentLink);
+            });
+
             this.socketManager.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
                 userPrs = PullRequestEventFactory.create(userPrs);
 

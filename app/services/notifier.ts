@@ -93,6 +93,42 @@ module BitbucketNotifier {
             this.soundManager.playReminderSound();
         }
 
+        notifyPullRequestUpdated(pullRequest: PullRequest): void {
+            const options = {
+                title: 'Pull request has been updated',
+                message: pullRequest.title,
+                contextMessage: 'by ' + pullRequest.author.displayName,
+                iconUrl: '../../assets/img/bitbucket_updated.png'
+            };
+            const notificationId = this.getNotificationId(pullRequest);
+
+            this.notify(options, notificationId, pullRequest.links.html);
+        }
+
+        notifyNewCommentAdded(pullRequest: PullRequest, commentingUser: User, commentLink: string) {
+            const options = {
+                title: 'New comment on your pull request!',
+                message: pullRequest.title,
+                contextMessage: `by ${commentingUser.displayName}`,
+                iconUrl: '../../assets/img/bitbucket_new_comment.png'
+            };
+            const notificationId = this.getNotificationId(pullRequest);
+
+            this.notify(options, notificationId, commentLink);
+        }
+
+        notifyNewReplyOnComment(pullRequest: PullRequest, replyingUser: User, commentLink: string) {
+            const options = {
+                title: 'New reply for your comment',
+                message: pullRequest.title,
+                contextMessage: `by ${replyingUser.displayName}`,
+                iconUrl: '../../assets/img/bitbucket_new_reply.png'
+            };
+            const notificationId = this.getNotificationId(pullRequest);
+
+            this.notify(options, notificationId, commentLink);
+        }
+
         private getNotificationId(pullRequest: PullRequest): string {
             return _.uniqueId('pull_request_' + pullRequest.id);
         }

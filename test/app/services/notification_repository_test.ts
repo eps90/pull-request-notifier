@@ -3,7 +3,7 @@
 describe('NotificationRepository', () => {
     var notificationRepository: BitbucketNotifier.NotificationRepository;
 
-    beforeEach(module('bitbucketNotifier.background'));
+    beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(inject([
         'NotificationRepository',
         (n) => {

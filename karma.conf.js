@@ -12,25 +12,30 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
+    jasmineDiffReporter: {
+        pretty: true,
+        multiline: true
+    },
+
 
     // list of files / patterns to load in the browser
     files: [
-        'bower_components/jquery/dist/jquery.min.js',
-        'bower_components/angular/angular.min.js',
-        'bower_components/angular-mocks/angular-mocks.js',
-        'bower_components/angular-local-storage/dist/angular-local-storage.min.js',
-        'bower_components/socket.io-client/socket.io.js',
-        'bower_components/lodash/lodash.js',
-        'bower_components/angular-socket.io-mock/angular-socket.io-mock.js',
-        'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-        'bower_components/angular-growl-v2/build/angular-growl.js',
+        'node_modules/jquery/dist/jquery.min.js',
+        'node_modules/angular/angular.min.js',
+        'node_modules/angular-mocks/angular-mocks.js',
+        'node_modules/angular-local-storage/dist/angular-local-storage.min.js',
+        'node_modules/socket.io-client/dist/socket.io.js',
+        'node_modules/lodash/lodash.js',
+        'node_modules/angular-socket.io-mock/angular-socket.io-mock.js',
+        'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+        'node_modules/angular-growl-v2/build/angular-growl.js',
         'bower_components/angular-emoji-filter/dist/emoji.min.js',
-        'bower_components/angular-sanitize/angular-sanitize.js',
-        'bower_components/SoundJS/lib/soundjs-0.6.1.min.js',
-        'bower_components/angular-ui-router/release/angular-ui-router.js',
-        'bower_components/showdown/src/showdown.js',
-        'bower_components/angular-markdown-directive/markdown.js',
-        'bower_components/angular-animate/angular-animate.js',
+        'node_modules/angular-sanitize/angular-sanitize.js',
+        'node_modules/createjs-soundjs/lib/soundjs-0.6.2.min.js',
+        'node_modules/angular-ui-router/release/angular-ui-router.js',
+        'node_modules/showdown/src/showdown.js',
+        'node_modules/angular-markdown-directive/markdown.js',
+        'node_modules/angular-animate/angular-animate.js',
         'build/**/!(bitbucket_notifier*).js',
         'build/app/modules/bitbucket_notifier.js',
         'build/app/modules/bitbucket_notifier_background.js',
@@ -60,7 +65,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['dots'],
+    reporters: ['jasmine-diff', 'dots'],
 
 
     // web server port

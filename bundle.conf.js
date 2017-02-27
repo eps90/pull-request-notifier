@@ -6,10 +6,10 @@ var tsOptions = {
         target: 'es5',
         module: 'commonjs',
         typescript: require('typescript'),
-        sortOutput: true,
         removeComments: true
     },
     tsLintOptions = {
+        formatter: 'prose',
         tslint: require('tslint'),
         emitError: false
     };
@@ -17,8 +17,7 @@ var tsOptions = {
 var gulpIf = require('gulp-if');
 
 var typeScriptPipeLine = lazypipe()
-    .pipe(tslint)
-    .pipe(tslint.report, 'prose', tsLintOptions)
+    .pipe(tslint, tsLintOptions)
     .pipe(typescript, tsOptions);
 
 var scriptsPipeLine = lazypipe()
@@ -49,9 +48,9 @@ module.exports = {
     bundle: {
         'assets/common': {
             styles: [
-                "bower_components/bootstrap/dist/css/bootstrap.css",
-                "bower_components/angular-growl-v2/build/angular-growl.css",
-                "bower_components/fontawesome/css/font-awesome.css",
+                "node_modules/bootstrap/dist/css/bootstrap.css",
+                "node_modules/angular-growl-v2/build/angular-growl.css",
+                "node_modules/font-awesome/css/font-awesome.css",
                 "bower_components/angular-emoji-filter/dist/emoji.min.css",
                 "assets/less/styles.less",
                 "app/components/section_title_component/section_title_component.less",
@@ -59,9 +58,9 @@ module.exports = {
                 "app/components/approval_progress_component/approval_progress_component.less"
             ],
             scripts: [
-                "bower_components/angular/angular.min.js",
-                "bower_components/angular-local-storage/dist/angular-local-storage.min.js",
-                "bower_components/lodash/lodash.min.js",
+                "node_modules/angular/angular.min.js",
+                "node_modules/angular-local-storage/dist/angular-local-storage.min.js",
+                "node_modules/lodash/lodash.js",
                 "app/components/section_title_component/section_title_component.ts",
                 "app/components/navigation_bar_component/navigation_bar_component.ts",
                 "app/components/approval_progress_component/approval_progress_component.ts",
@@ -74,14 +73,14 @@ module.exports = {
         },
         'assets/popup_vendor': {
             scripts: [
-                "bower_components/jquery/dist/jquery.js",
-                "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
-                "bower_components/angular-sanitize/angular-sanitize.js",
+                "node_modules/jquery/dist/jquery.js",
+                "node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js",
+                "node_modules/angular-sanitize/angular-sanitize.js",
                 "bower_components/angular-emoji-filter/dist/emoji.min.js",
-                "bower_components/angular-ui-router/release/angular-ui-router.js",
-                "bower_components/showdown/src/showdown.js",
-                "bower_components/angular-markdown-directive/markdown.js",
-                "bower_components/angular-animate/angular-animate.js"
+                "node_modules/angular-ui-router/release/angular-ui-router.js",
+                "node_modules/showdown/src/showdown.js",
+                "node_modules/angular-markdown-directive/markdown.js",
+                "node_modules/angular-animate/angular-animate.js"
             ],
             options: bundleOptions
         },
@@ -124,10 +123,10 @@ module.exports = {
         },
         'assets/background_vendor': {
             scripts: [
-                "bower_components/socket.io-client/socket.io.js",
-                "bower_components/angular-local-storage/dist/angular-local-storage.min.js",
-                "bower_components/angular-socket-io/socket.min.js",
-                "bower_components/SoundJS/lib/soundjs-0.6.1.min.js"
+                "node_modules/socket.io-client/dist/socket.io.js",
+                "node_modules/angular-local-storage/dist/angular-local-storage.min.js",
+                "node_modules/angular-socket-io/socket.min.js",
+                "node_modules/createjs-soundjs/lib/soundjs-0.6.2.min.js"
             ],
             options: bundleOptions
         },
@@ -148,10 +147,10 @@ module.exports = {
         },
         'assets/options_vendor': {
             scripts: [
-                "bower_components/jquery/dist/jquery.js",
-                "bower_components/angular/angular.min.js",
-                "bower_components/angular-growl-v2/build/angular-growl.js",
-                "bower_components/SoundJS/lib/soundjs-0.6.1.min.js"
+                "node_modules/jquery/dist/jquery.js",
+                "node_modules/angular/angular.min.js",
+                "node_modules/angular-growl-v2/build/angular-growl.js",
+                "node_modules/createjs-soundjs/lib/soundjs-0.6.2.min.js"
             ],
             options: bundleOptions
         },
@@ -163,6 +162,8 @@ module.exports = {
                 "app/components/approval_progress_component/approval_progress_component.ts",
                 "app/components/navigation_brand_component/navigation_brand_component.ts",
                 "app/services/sound_manager.ts",
+                'app/services/notifier.ts',
+                'app/services/notification_repository.ts',
                 "app/modules/bitbucket_notifier_options.ts"
             ],
             options: bundleOptions
@@ -176,12 +177,12 @@ module.exports = {
     },
     copy: [
         {
-            src: 'bower_components/bootstrap/fonts/*.*',
-            base: 'bower_components/bootstrap'
+            src: 'node_modules/bootstrap/fonts/*.*',
+            base: 'node_modules/bootstrap'
         },
         {
-            src: 'bower_components/fontawesome/fonts/*.*',
-            base: 'bower_components/fontawesome'
+            src: 'node_modules/font-awesome/fonts/*.*',
+            base: 'node_modules/font-awesome'
         },
         {
             src: ['assets/img/*.png', 'assets/sounds/*.ogg'],
