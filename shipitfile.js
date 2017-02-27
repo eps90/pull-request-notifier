@@ -28,7 +28,7 @@ module.exports = {
         init: function (shipIt) {
             require('shipit-deploy')(shipIt);
             shipIt.blTask('deploy:install', function () {
-                return shipIt.local('yarn install', {cwd: this.config.workspace});
+                return shipIt.local('TMPDIR=/tmp yarn install', {cwd: this.config.workspace});
             });
 
             shipIt.blTask('deploy:compile', function () {
