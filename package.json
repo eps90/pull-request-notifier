@@ -79,6 +79,7 @@
     "phantomjs-prebuilt": "^2.1.14",
     "shipit-captain": "^0.4.3",
     "shipit-deploy": "^2.0.0",
+    "webpack": "^3.4.1",
     "yargs": "^6.6.0"
   }
 }
