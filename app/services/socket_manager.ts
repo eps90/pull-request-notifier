@@ -1,19 +1,13 @@
-///<reference path="../_typings.ts"/>
+export class SocketManager {
+    static $inject: string[] = ['socketFactory', 'Config'];
+    public socket: any;
 
-module BitbucketNotifier {
-    'use strict';
+    private connection: SocketIOClient.Socket;
 
-    export class SocketManager {
-        static $inject: string[] = ['socketFactory', 'Config'];
-        public socket: any;
-
-        private connection: SocketIOClient.Socket;
-
-        constructor(private socketFactory, config: Config) {
-            this.connection = io.connect(config.getSocketServerAddress());
-            this.socket = socketFactory({
-                ioSocket: this.connection
-            });
-        }
+    constructor(private socketFactory, config: Config) {
+        this.connection = io.connect(config.getSocketServerAddress());
+        this.socket = socketFactory({
+            ioSocket: this.connection
+        });
     }
 }

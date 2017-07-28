@@ -1,23 +1,17 @@
-///<reference path="../../_typings.ts"/>
+export class NavigationBarComponent implements ng.IDirective {
+    restrict: string = 'E';
+    templateUrl: string = '../components/navigation_bar_component/navigation_bar_component.html';
 
-module BitbucketNotifier {
-    'use strict';
+    constructor(private bitbucketUrl: string) {}
 
-    export class NavigationBarComponent implements ng.IDirective {
-        restrict: string = 'E';
-        templateUrl: string = '../components/navigation_bar_component/navigation_bar_component.html';
+    link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
+        scope['appVersion'] = 'v' + window['chrome'].runtime.getManifest().version;
 
-        constructor(private bitbucketUrl: string) {}
+    };
 
-        link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
-            scope['appVersion'] = 'v' + window['chrome'].runtime.getManifest().version;
-
-        };
-
-        static factory(): ng.IDirectiveFactory {
-            var component = (bitbucketUrl) => new NavigationBarComponent(bitbucketUrl);
-            component.$inject = ['bitbucketUrl'];
-            return component;
-        }
+    static factory(): ng.IDirectiveFactory {
+        var component = (bitbucketUrl) => new NavigationBarComponent(bitbucketUrl);
+        component.$inject = ['bitbucketUrl'];
+        return component;
     }
 }

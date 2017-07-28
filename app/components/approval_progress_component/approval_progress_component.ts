@@ -1,54 +1,48 @@
-///<reference path="../../_typings.ts"/>
+export class ApprovalProgressComponent implements ng.IDirective {
+    restrict: string = 'E';
+    scope: any = {
+        reviewers: '=',
+        mode: '@'
+    };
+    templateUrl: string = '../components/approval_progress_component/approval_progress_component.html';
 
-module BitbucketNotifier {
-    'use strict';
+    constructor(private config: Config) {}
 
-    export class ApprovalProgressComponent implements ng.IDirective {
-        restrict: string = 'E';
-        scope: any = {
-            reviewers: '=',
-            mode: '@'
-        };
-        templateUrl: string = '../components/approval_progress_component/approval_progress_component.html';
+    link: ng.IDirectiveLinkFn = (scope: any) => {
+        var reviewers: Array<Reviewer> = scope['reviewers'] || [];
+        scope.pullRequestProgress = scope.mode || this.config.getPullRequestProgress();
 
-        constructor(private config: Config) {}
+        scope.$watch(
+            () => {
+                return reviewers;
+            },
+            (newValue, oldValue) => {
+                return newValue !== oldValue && updateReviewers();
+            },
+            true
+        );
 
-        link: ng.IDirectiveLinkFn = (scope: any) => {
-            var reviewers: Array<Reviewer> = scope['reviewers'] || [];
-            scope.pullRequestProgress = scope.mode || this.config.getPullRequestProgress();
-
-            scope.$watch(
-                () => {
-                    return reviewers;
+        function updateReviewers(): void {
+            scope.reviewersCount = reviewers.length;
+            scope.approvalsCount = reviewers.reduce(
+                (amount: number, reviewer: Reviewer) => {
+                    return amount + (reviewer.approved ? 1 : 0);
                 },
-                (newValue, oldValue) => {
-                    return newValue !== oldValue && updateReviewers();
-                },
-                true
+                0
             );
 
-            function updateReviewers(): void {
-                scope.reviewersCount = reviewers.length;
-                scope.approvalsCount = reviewers.reduce(
-                    (amount: number, reviewer: Reviewer) => {
-                        return amount + (reviewer.approved ? 1 : 0);
-                    },
-                    0
-                );
+            scope.progress = {
+                proportions: scope.approvalsCount + '/' + scope.reviewersCount,
+                percentage: Math.floor(scope.approvalsCount / scope.reviewersCount * 100) + '%'
+            };
+        }
 
-                scope.progress = {
-                    proportions: scope.approvalsCount + '/' + scope.reviewersCount,
-                    percentage: Math.floor(scope.approvalsCount / scope.reviewersCount * 100) + '%'
-                };
-            }
-
-            updateReviewers();
+        updateReviewers();
         };
 
-        static factory(): ng.IDirectiveFactory {
-            var directive = (config) => new ApprovalProgressComponent(config);
-            directive.$inject = ['Config'];
-            return directive;
-        }
+    static factory(): ng.IDirectiveFactory {
+        var directive = (config) => new ApprovalProgressComponent(config);
+        directive.$inject = ['Config'];
+        return directive;
     }
 }

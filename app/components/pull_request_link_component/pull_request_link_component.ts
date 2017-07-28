@@ -1,36 +1,30 @@
-///<reference path="../../_typings.ts"/>
+export class PullRequestLinkComponent implements ng.IDirective {
+    restrict: string = 'E';
+    templateUrl: string = '../components/pull_request_link_component/pull_request_link_component.html';
+    scope: any = {
+        pr: '=',
+        size: '@'
+    };
 
-module BitbucketNotifier {
-    'use strict';
+    link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
+        var prLink = scope['pr'].links.html;
+        scope['size'] = scope['size'] || 'sm';
 
-    export class PullRequestLinkComponent implements ng.IDirective {
-        restrict: string = 'E';
-        templateUrl: string = '../components/pull_request_link_component/pull_request_link_component.html';
-        scope: any = {
-            pr: '=',
-            size: '@'
+        scope['isLarge'] = () => {
+            return (<string>scope['size']).toLowerCase() === 'lg';
         };
 
-        link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
-            var prLink = scope['pr'].links.html;
-            scope['size'] = scope['size'] || 'sm';
-
-            scope['isLarge'] = () => {
-                return (<string>scope['size']).toLowerCase() === 'lg';
-            };
-
-            scope['goToPullRequest'] = ($event) => {
-                $event.stopPropagation();
-                if ($event.which === 1) {
-                    window['chrome'].tabs.create({
-                        url: prLink
-                    });
-                }
-            };
+        scope['goToPullRequest'] = ($event) => {
+            $event.stopPropagation();
+            if ($event.which === 1) {
+                window['chrome'].tabs.create({
+                    url: prLink
+                });
+            }
         };
+    };
 
-        static factory(): ng.IDirectiveFactory {
-            return () => new PullRequestLinkComponent();
-        }
+    static factory(): ng.IDirectiveFactory {
+        return () => new PullRequestLinkComponent();
     }
 }

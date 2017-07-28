@@ -1,32 +1,26 @@
-///<reference path="../_typings.ts"/>
+export class NotificationRepository {
+    private notifications: Array<Notification> = [];
 
-module BitbucketNotifier {
-    'use strict';
+    add(notificationId: string, pullRequestLink: string): void {
+        var prNotification = new PullRequestNotification();
+        prNotification.notificationId = notificationId;
+        prNotification.pullRequestHtmlLink = pullRequestLink;
 
-    export class NotificationRepository {
-        private notifications: Array<Notification> = [];
+        this.notifications.push(prNotification);
+    }
 
-        add(notificationId: string, pullRequestLink: string): void {
-            var prNotification = new PullRequestNotification();
-            prNotification.notificationId = notificationId;
-            prNotification.pullRequestHtmlLink = pullRequestLink;
+    getAll(): Array<Notification> {
+        return this.notifications;
+    }
 
-            this.notifications.push(prNotification);
-        }
-
-        getAll(): Array<Notification> {
-            return this.notifications;
-        }
-
-        find(notificationId: string): Notification {
-            for (var notifIdx = 0, notifLen = this.notifications.length; notifIdx < notifLen; notifIdx++) {
-                var notification = this.notifications[notifIdx];
-                if (notification.notificationId === notificationId) {
-                    return notification;
-                }
+    find(notificationId: string): Notification {
+        for (var notifIdx = 0, notifLen = this.notifications.length; notifIdx < notifLen; notifIdx++) {
+            var notification = this.notifications[notifIdx];
+            if (notification.notificationId === notificationId) {
+                return notification;
             }
-
-            return new PullRequestNotification();
         }
+
+        return new PullRequestNotification();
     }
 }

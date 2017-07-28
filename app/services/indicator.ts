@@ -1,21 +1,15 @@
-///<reference path="../_typings.ts"/>
+export class Indicator {
+    DEFAULT_BADGE: string = '?';
 
-module BitbucketNotifier {
-    'use strict';
+    constructor() {
+        this.reset();
+    }
 
-    export class Indicator {
-        DEFAULT_BADGE: string = '?';
+    setText(badgeContent: string): void {
+        window['chrome'].browserAction.setBadgeText({text: badgeContent});
+    }
 
-        constructor() {
-            this.reset();
-        }
-
-        setText(badgeContent: string): void {
-            window['chrome'].browserAction.setBadgeText({text: badgeContent});
-        }
-
-        reset(): void {
-            window['chrome'].browserAction.setBadgeText({text: this.DEFAULT_BADGE});
-        }
+    reset(): void {
+        window['chrome'].browserAction.setBadgeText({text: this.DEFAULT_BADGE});
     }
 }

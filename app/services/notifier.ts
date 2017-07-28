@@ -1,136 +1,130 @@
-///<reference path="../_typings.ts"/>
+interface NotificationOptions {
+    type?: string;
+    iconUrl?: string;
+    title?: string;
+    message?: string;
+    contextMessage?: string;
+    priority?: number;
+    requireInteraction?: boolean;
+}
 
-module BitbucketNotifier {
-    'use strict';
+export class Notifier {
+    static $inject: Array<string> = ['NotificationRepository', 'SoundManager'];
 
-    interface NotificationOptions {
-        type?: string;
-        iconUrl?: string;
-        title?: string;
-        message?: string;
-        contextMessage?: string;
-        priority?: number;
-        requireInteraction?: boolean;
+    private chrome: any;
+    constructor(private notificationRepository: NotificationRepository, private soundManager: SoundManager) {
+        this.chrome = window['chrome'];
+        this.chrome.notifications.onClicked.addListener((notificationId) => {
+            var notification = <PullRequestNotification> this.notificationRepository.find(notificationId);
+            this.chrome.tabs.create({url: notification.pullRequestHtmlLink});
+            this.chrome.notifications.clear(notificationId);
+        });
     }
 
-    export class Notifier {
-        static $inject: Array<string> = ['NotificationRepository', 'SoundManager'];
+    notify(opts: NotificationOptions, notificationId: string, pullRequestLink: string): void {
+        var defaultOptions: NotificationOptions = {
+            type: 'basic',
+            iconUrl: '../../assets/img/bitbucket_logo_raw.png',
+            title: '',
+            message: '',
+            contextMessage: '',
+            priority: 2,
+            requireInteraction: true
+        };
+        var targetOpts: NotificationOptions = _.extend(defaultOptions, opts);
+        targetOpts.message = _.trim(targetOpts.message.replace(/:[^\s:]+:/g, ''));
 
-        private chrome: any;
-        constructor(private notificationRepository: NotificationRepository, private soundManager: SoundManager) {
-            this.chrome = window['chrome'];
-            this.chrome.notifications.onClicked.addListener((notificationId) => {
-                var notification = <PullRequestNotification> this.notificationRepository.find(notificationId);
-                this.chrome.tabs.create({url: notification.pullRequestHtmlLink});
-                this.chrome.notifications.clear(notificationId);
-            });
-        }
+        this.chrome.notifications.create(notificationId, targetOpts);
+        this.notificationRepository.add(notificationId, pullRequestLink);
+    }
 
-        notify(opts: NotificationOptions, notificationId: string, pullRequestLink: string): void {
-            var defaultOptions: NotificationOptions = {
-                type: 'basic',
-                iconUrl: '../../assets/img/bitbucket_logo_raw.png',
-                title: '',
-                message: '',
-                contextMessage: '',
-                priority: 2,
-                requireInteraction: true
-            };
-            var targetOpts: NotificationOptions = _.extend(defaultOptions, opts);
-            targetOpts.message = _.trim(targetOpts.message.replace(/:[^\s:]+:/g, ''));
+    notifyNewPullRequestAssigned(pullRequest: PullRequest): void {
+        var options = {
+            title: 'New pull request assigned to you!',
+            message: pullRequest.title,
+            contextMessage: 'by ' + pullRequest.author.displayName,
+            iconUrl: '../../assets/img/bitbucket_new.png'
+        };
+        var notificationId = this.getNotificationId(pullRequest);
 
-            this.chrome.notifications.create(notificationId, targetOpts);
-            this.notificationRepository.add(notificationId, pullRequestLink);
-        }
+        this.notify(options, notificationId, pullRequest.links.html);
+        this.soundManager.playNewPullRequestSound();
+    }
 
-        notifyNewPullRequestAssigned(pullRequest: PullRequest): void {
-            var options = {
-                title: 'New pull request assigned to you!',
-                message: pullRequest.title,
-                contextMessage: 'by ' + pullRequest.author.displayName,
-                iconUrl: '../../assets/img/bitbucket_new.png'
-            };
-            var notificationId = this.getNotificationId(pullRequest);
+    notifyPullRequestMerged(pullRequest: PullRequest): void {
+        var options = {
+            title: 'Your pull request has been merged',
+            message: pullRequest.title,
+            iconUrl: '../../assets/img/bitbucket_merged.png'
+        };
+        var notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options, notificationId, pullRequest.links.html);
-            this.soundManager.playNewPullRequestSound();
-        }
+        this.notify(options, notificationId, pullRequest.links.html);
+        this.soundManager.playMergedPullRequestSound();
+    }
 
-        notifyPullRequestMerged(pullRequest: PullRequest): void {
-            var options = {
-                title: 'Your pull request has been merged',
-                message: pullRequest.title,
-                iconUrl: '../../assets/img/bitbucket_merged.png'
-            };
-            var notificationId = this.getNotificationId(pullRequest);
+    notifyPullRequestApproved(pullRequest: PullRequest, actor: User): void {
+        var options = {
+            title: 'Your pull request has been approved',
+            message: pullRequest.title,
+            contextMessage: 'by ' + actor.displayName,
+            iconUrl: '../../assets/img/bitbucket_approved.png'
+        };
+        var notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options, notificationId, pullRequest.links.html);
-            this.soundManager.playMergedPullRequestSound();
-        }
+        this.notify(options, notificationId, pullRequest.links.html);
+        this.soundManager.playApprovedPullRequestSound();
+    }
 
-        notifyPullRequestApproved(pullRequest: PullRequest, actor: User): void {
-            var options = {
-                title: 'Your pull request has been approved',
-                message: pullRequest.title,
-                contextMessage: 'by ' + actor.displayName,
-                iconUrl: '../../assets/img/bitbucket_approved.png'
-            };
-            var notificationId = this.getNotificationId(pullRequest);
+    notifyReminder(pullRequest: PullRequest): void {
+        var options = {
+            title: 'Someone reminds you to review a pull request',
+            message: pullRequest.title,
+            iconUrl: '../../assets/img/bitbucket_reminder.png'
+        };
+        var notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options, notificationId, pullRequest.links.html);
-            this.soundManager.playApprovedPullRequestSound();
-        }
+        this.notify(options, notificationId, pullRequest.links.html);
+        this.soundManager.playReminderSound();
+    }
 
-        notifyReminder(pullRequest: PullRequest): void {
-            var options = {
-                title: 'Someone reminds you to review a pull request',
-                message: pullRequest.title,
-                iconUrl: '../../assets/img/bitbucket_reminder.png'
-            };
-            var notificationId = this.getNotificationId(pullRequest);
+    notifyPullRequestUpdated(pullRequest: PullRequest): void {
+        const options = {
+            title: 'Pull request has been updated',
+            message: pullRequest.title,
+            contextMessage: 'by ' + pullRequest.author.displayName,
+            iconUrl: '../../assets/img/bitbucket_updated.png'
+        };
+        const notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options, notificationId, pullRequest.links.html);
-            this.soundManager.playReminderSound();
-        }
+        this.notify(options, notificationId, pullRequest.links.html);
+    }
 
-        notifyPullRequestUpdated(pullRequest: PullRequest): void {
-            const options = {
-                title: 'Pull request has been updated',
-                message: pullRequest.title,
-                contextMessage: 'by ' + pullRequest.author.displayName,
-                iconUrl: '../../assets/img/bitbucket_updated.png'
-            };
-            const notificationId = this.getNotificationId(pullRequest);
+    notifyNewCommentAdded(pullRequest: PullRequest, commentingUser: User, commentLink: string) {
+        const options = {
+            title: 'New comment on your pull request!',
+            message: pullRequest.title,
+            contextMessage: `by ${commentingUser.displayName}`,
+            iconUrl: '../../assets/img/bitbucket_new_comment.png'
+        };
+        const notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options, notificationId, pullRequest.links.html);
-        }
+        this.notify(options, notificationId, commentLink);
+    }
 
-        notifyNewCommentAdded(pullRequest: PullRequest, commentingUser: User, commentLink: string) {
-            const options = {
-                title: 'New comment on your pull request!',
-                message: pullRequest.title,
-                contextMessage: `by ${commentingUser.displayName}`,
-                iconUrl: '../../assets/img/bitbucket_new_comment.png'
-            };
-            const notificationId = this.getNotificationId(pullRequest);
+    notifyNewReplyOnComment(pullRequest: PullRequest, replyingUser: User, commentLink: string) {
+        const options = {
+            title: 'New reply for your comment',
+            message: pullRequest.title,
+            contextMessage: `by ${replyingUser.displayName}`,
+            iconUrl: '../../assets/img/bitbucket_new_reply.png'
+        };
+        const notificationId = this.getNotificationId(pullRequest);
 
-            this.notify(options, notificationId, commentLink);
-        }
+        this.notify(options, notificationId, commentLink);
+    }
 
-        notifyNewReplyOnComment(pullRequest: PullRequest, replyingUser: User, commentLink: string) {
-            const options = {
-                title: 'New reply for your comment',
-                message: pullRequest.title,
-                contextMessage: `by ${replyingUser.displayName}`,
-                iconUrl: '../../assets/img/bitbucket_new_reply.png'
-            };
-            const notificationId = this.getNotificationId(pullRequest);
-
-            this.notify(options, notificationId, commentLink);
-        }
-
-        private getNotificationId(pullRequest: PullRequest): string {
-            return _.uniqueId('pull_request_' + pullRequest.id);
-        }
+    private getNotificationId(pullRequest: PullRequest): string {
+        return _.uniqueId('pull_request_' + pullRequest.id);
     }
 }
