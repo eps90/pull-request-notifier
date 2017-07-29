@@ -1,4 +1,5 @@
-///<reference path="../../../../app/_typings.ts"/>
+import {PullRequest} from "../../../../app/services/models";
+import * as angular from 'angular';
 
 describe('PullRequestLinkComponent', () => {
     var $scope: ng.IScope,
@@ -28,7 +29,7 @@ describe('PullRequestLinkComponent', () => {
     ]));
 
     it('should display external link icon', () => {
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequest: PullRequest = new PullRequest();
         pullRequest.links.html = 'http://example.com';
 
         $scope['pullRequest'] = pullRequest;
@@ -42,7 +43,7 @@ describe('PullRequestLinkComponent', () => {
 
     it('should open new tab with given pull request', () => {
         var pullRequestLink = 'http://example.com';
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequest: PullRequest = new PullRequest();
         pullRequest.links.html = pullRequestLink;
 
         $scope['pullRequest'] = pullRequest;
@@ -61,7 +62,7 @@ describe('PullRequestLinkComponent', () => {
     describe('with large size', () => {
         it('should be able to render large button', () => {
             var pullRequestLink = 'http://example.com';
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest: PullRequest = new PullRequest();
             pullRequest.links.html = pullRequestLink;
 
             $scope['pullRequest'] = pullRequest;
@@ -76,7 +77,7 @@ describe('PullRequestLinkComponent', () => {
 
         it('should open new tab with given pull request', () => {
             var pullRequestLink = 'http://example.com';
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest: PullRequest = new PullRequest();
             pullRequest.links.html = pullRequestLink;
 
             $scope['pullRequest'] = pullRequest;

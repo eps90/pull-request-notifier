@@ -1,9 +1,11 @@
-///<reference path="../../../../app/_typings.ts"/>
+import {Config} from "../../../../app/services/config";
+import {PullRequestProgress, Reviewer, User} from "../../../../app/services/models";
+import * as angular from 'angular';
 
 describe('ApprovalProgressComponent', () => {
     var $scope: ng.IScope,
         $compile: ng.ICompileService,
-        config: BitbucketNotifier.Config,
+        config: Config,
         element,
         prProgress = null;
 
@@ -12,7 +14,7 @@ describe('ApprovalProgressComponent', () => {
     beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
-            prProgress = BitbucketNotifier.PullRequestProgress.PROPORTIONS;
+            prProgress = PullRequestProgress.PROPORTIONS;
 
             $provide.value('Config', {
                 getPullRequestProgress: jasmine.createSpy('Config.getPullRequestProgress').and.callFake(() => {
@@ -33,12 +35,12 @@ describe('ApprovalProgressComponent', () => {
     ]));
 
     it('should display number of approvals per assigned users count', () => {
-        var approvingReviewer = new BitbucketNotifier.Reviewer();
-        approvingReviewer.user = new BitbucketNotifier.User();
+        var approvingReviewer = new Reviewer();
+        approvingReviewer.user = new User();
         approvingReviewer.approved = true;
 
-        var disapprovingReviewer = new BitbucketNotifier.Reviewer();
-        disapprovingReviewer.user = new BitbucketNotifier.User();
+        var disapprovingReviewer = new Reviewer();
+        disapprovingReviewer.user = new User();
         disapprovingReviewer.approved = false;
 
         $scope['reviewers'] = [approvingReviewer, disapprovingReviewer];
@@ -58,11 +60,11 @@ describe('ApprovalProgressComponent', () => {
 
     describe('Appearance variants', () => {
         beforeEach(() => {
-            var approvedReviewer = new BitbucketNotifier.Reviewer();
+            var approvedReviewer = new Reviewer();
             approvedReviewer.approved = true;
-            var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+            var unapprovedReviewer = new Reviewer();
             unapprovedReviewer.approved = false;
-            var anotherUnapprovedReviewer = new BitbucketNotifier.Reviewer();
+            var anotherUnapprovedReviewer = new Reviewer();
             anotherUnapprovedReviewer.approved = false;
 
             $scope['reviewers'] = [approvedReviewer, unapprovedReviewer, anotherUnapprovedReviewer];
@@ -76,7 +78,7 @@ describe('ApprovalProgressComponent', () => {
         });
 
         it("should display proportions value if 'proportions' is set as progress option", () => {
-            prProgress = BitbucketNotifier.PullRequestProgress.PROPORTIONS;
+            prProgress = PullRequestProgress.PROPORTIONS;
             element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
             $scope.$digest();
 
@@ -84,7 +86,7 @@ describe('ApprovalProgressComponent', () => {
         });
 
         it("should display percentage value if 'percentage' is set as progress option", () => {
-            prProgress = BitbucketNotifier.PullRequestProgress.PERCENT;
+            prProgress = PullRequestProgress.PERCENT;
             element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
             $scope.$digest();
 
@@ -92,7 +94,7 @@ describe('ApprovalProgressComponent', () => {
         });
 
         it("should display progress bar of 'progress_bar' is set as progress option", () => {
-            prProgress = BitbucketNotifier.PullRequestProgress.PROGRESS_BAR;
+            prProgress = PullRequestProgress.PROGRESS_BAR;
             element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
             $scope.$digest();
 
@@ -101,7 +103,7 @@ describe('ApprovalProgressComponent', () => {
         });
 
         it('should allow to override progress type by passing it to attribute', () => {
-            prProgress = BitbucketNotifier.PullRequestProgress.PERCENT;
+            prProgress = PullRequestProgress.PERCENT;
             element = $compile('<approval-progress reviewers="reviewers" mode="progress_bar"></approval-progress>')($scope);
             $scope.$digest();
 

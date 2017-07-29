@@ -1,4 +1,4 @@
-///<reference path="../../../app/_typings.ts"/>
+import {Project, PullRequest, Reviewer, User} from "../../../app/services/models";
 
 describe('Models', () => {
     describe('PullRequest', () => {
@@ -6,24 +6,24 @@ describe('Models', () => {
             var commonId = 1;
             var differentId = 2;
 
-            var commonProject = new BitbucketNotifier.Project();
+            var commonProject = new Project();
             commonProject.fullName = 'team_name/repo_name';
-            var otherProject = new BitbucketNotifier.Project();
+            var otherProject = new Project();
             otherProject.fullName = 'aaa/bbb';
 
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest = new PullRequest();
             pullRequest.id = commonId;
             pullRequest.targetRepository = commonProject;
 
-            var samePullRequest = new BitbucketNotifier.PullRequest();
+            var samePullRequest = new PullRequest();
             samePullRequest.id = commonId;
             samePullRequest.targetRepository = commonProject;
 
-            var differentPullRequest = new BitbucketNotifier.PullRequest();
+            var differentPullRequest = new PullRequest();
             differentPullRequest.id = commonId;
             differentPullRequest.targetRepository = otherProject;
 
-            var anotherDifferentPr = new BitbucketNotifier.PullRequest();
+            var anotherDifferentPr = new PullRequest();
             anotherDifferentPr.id = differentId;
             anotherDifferentPr.targetRepository = commonProject;
 
@@ -35,37 +35,37 @@ describe('Models', () => {
         });
 
         it('should be able to return reviewers as an array of usernames', () => {
-            var userOne = new BitbucketNotifier.User();
+            var userOne = new User();
             userOne.username = 'john.smith';
-            var userTwo = new BitbucketNotifier.User();
+            var userTwo = new User();
             userTwo.username = 'anna.kowalsky';
 
-            var reviewerOne = new BitbucketNotifier.Reviewer();
+            var reviewerOne = new Reviewer();
             reviewerOne.user = userOne;
 
-            var reviewerTwo = new BitbucketNotifier.Reviewer();
+            var reviewerTwo = new Reviewer();
             reviewerTwo.user = userTwo;
 
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest = new PullRequest();
             pullRequest.reviewers = [reviewerOne, reviewerTwo];
 
             expect(pullRequest.getReviewersList()).toEqual(['john.smith', 'anna.kowalsky']);
         });
 
         it('should be able to determine whether is is merge-ready', () => {
-            var approvedReviewer = new BitbucketNotifier.Reviewer();
+            var approvedReviewer = new Reviewer();
             approvedReviewer.approved = true;
 
-            var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+            var unapprovedReviewer = new Reviewer();
             unapprovedReviewer.approved = false;
 
-            var readyPr = new BitbucketNotifier.PullRequest();
+            var readyPr = new PullRequest();
             readyPr.reviewers = [approvedReviewer];
 
-            var pendingPr = new BitbucketNotifier.PullRequest();
+            var pendingPr = new PullRequest();
             pendingPr.reviewers = [unapprovedReviewer];
 
-            var anotherPendningPr = new BitbucketNotifier.PullRequest();
+            var anotherPendningPr = new PullRequest();
             anotherPendningPr.reviewers = [approvedReviewer, unapprovedReviewer];
 
             expect(readyPr.isMergeReady()).toBeTruthy();
@@ -95,7 +95,7 @@ describe('Models', () => {
                 for (let testIdx = 0, len = projectProvider.length; testIdx < len; testIdx++) {
                     let testData = projectProvider[testIdx];
 
-                    let project = new BitbucketNotifier.Project();
+                    let project = new Project();
                     project.fullName = testData.repoName;
 
                     let actual = project.slugify();
@@ -119,7 +119,7 @@ describe('Models', () => {
                 for (let testIdx = 0, len = slugsProvider.length; testIdx < len; testIdx++) {
                     let testData = slugsProvider[testIdx];
 
-                    var actual = BitbucketNotifier.Project.deslugify(testData.slug);
+                    var actual = Project.deslugify(testData.slug);
                     expect(actual).toEqual(testData.expected);
                 }
             });

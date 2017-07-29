@@ -1,4 +1,5 @@
-///<reference path="../../../../app/_typings.ts"/>
+import {PullRequest, Reviewer} from "../../../../app/services/models";
+import * as angular from 'angular';
 
 describe('PullRequestPreviewComponent', () => {
     var $scope: ng.IScope,
@@ -18,7 +19,7 @@ describe('PullRequestPreviewComponent', () => {
 
     it('should show pull request title', () => {
         var prTitle = 'Some title';
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequest: PullRequest = new PullRequest();
         pullRequest.title = prTitle;
         $scope['pullRequest'] = pullRequest;
 
@@ -30,7 +31,7 @@ describe('PullRequestPreviewComponent', () => {
 
     it('should contain branch info', () => {
         var targetBranch = 'target_branch';
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequest: PullRequest = new PullRequest();
         pullRequest.targetBranch = targetBranch;
         $scope['pullRequest'] = pullRequest;
 
@@ -43,7 +44,7 @@ describe('PullRequestPreviewComponent', () => {
     it('should contain author name', () => {
         var authorName = "John Smith";
 
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequest: PullRequest = new PullRequest();
         pullRequest.author.displayName = authorName;
         $scope['pullRequest'] = pullRequest;
 
@@ -56,7 +57,7 @@ describe('PullRequestPreviewComponent', () => {
     describe('description', () => {
         it('should contain pull request description', () => {
             var description = 'This is a description of a Pull Request';
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest: PullRequest = new PullRequest();
             pullRequest.description = description;
             $scope['pullRequest'] = pullRequest;
 
@@ -67,7 +68,7 @@ describe('PullRequestPreviewComponent', () => {
         });
 
         it('should contain proper text when there is no description', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest: PullRequest = new PullRequest();
             pullRequest.description = "";
             $scope['pullRequest'] = pullRequest;
 
@@ -82,15 +83,15 @@ describe('PullRequestPreviewComponent', () => {
 
     describe('reviewers', () => {
         it('should contain reviewers stats', () => {
-            var approvedReviewer = new BitbucketNotifier.Reviewer();
+            var approvedReviewer = new Reviewer();
             approvedReviewer.user.displayName = "John Smith";
             approvedReviewer.approved = true;
 
-            var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+            var unapprovedReviewer = new Reviewer();
             unapprovedReviewer.user.displayName = "Anna Kowalsky";
             unapprovedReviewer.approved = false;
 
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest = new PullRequest();
             pullRequest.reviewers = [approvedReviewer, unapprovedReviewer];
 
             $scope['pullRequest'] = pullRequest;
@@ -103,7 +104,7 @@ describe('PullRequestPreviewComponent', () => {
         });
 
         it('should contain alert message when there are no reviewers', () => {
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest = new PullRequest();
             pullRequest.reviewers = [];
 
             $scope['pullRequest'] = pullRequest;
@@ -119,15 +120,15 @@ describe('PullRequestPreviewComponent', () => {
 
     describe('action buttons', () => {
         it('should contain reminder button', () => {
-            var approvedReviewer = new BitbucketNotifier.Reviewer();
+            var approvedReviewer = new Reviewer();
             approvedReviewer.user.displayName = "John Smith";
             approvedReviewer.approved = true;
 
-            var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+            var unapprovedReviewer = new Reviewer();
             unapprovedReviewer.user.displayName = "Anna Kowalsky";
             unapprovedReviewer.approved = false;
 
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest = new PullRequest();
             pullRequest.reviewers = [approvedReviewer, unapprovedReviewer];
 
             $scope['pullRequest'] = pullRequest;
@@ -139,15 +140,15 @@ describe('PullRequestPreviewComponent', () => {
         });
 
         it('should not contain reminder button if all reviewers has voted', () => {
-            var approvedReviewer = new BitbucketNotifier.Reviewer();
+            var approvedReviewer = new Reviewer();
             approvedReviewer.user.displayName = "John Smith";
             approvedReviewer.approved = true;
 
-            var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+            var unapprovedReviewer = new Reviewer();
             unapprovedReviewer.user.displayName = "Anna Kowalsky";
             unapprovedReviewer.approved = true;
 
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest = new PullRequest();
             pullRequest.reviewers = [approvedReviewer, unapprovedReviewer];
 
             $scope['pullRequest'] = pullRequest;
@@ -159,7 +160,7 @@ describe('PullRequestPreviewComponent', () => {
         });
 
         it('should not contain reminder button if there are no reviewers', () => {
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest = new PullRequest();
             pullRequest.reviewers = [];
 
             $scope['pullRequest'] = pullRequest;
@@ -171,7 +172,7 @@ describe('PullRequestPreviewComponent', () => {
         });
 
         it('should contain button with pull request link', () => {
-            $scope['pullRequest'] = new BitbucketNotifier.PullRequest();
+            $scope['pullRequest'] = new PullRequest();
 
             element = $compile('<pull-request-preview pr="pullRequest"></pull-request-preview>')($scope);
             $scope.$digest();

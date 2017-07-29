@@ -1,11 +1,15 @@
-///<reference path="../../../app/_typings.ts"/>
+import {Notifier} from "../../../app/services/notifier";
+import {SoundManager} from "../../../app/services/sound_manager";
+import {NotificationRepository} from "../../../app/services/notification_repository";
+import {PullRequest, PullRequestNotification, User} from "../../../app/services/models";
+import * as angular from 'angular';
 
 describe('Notifier', () => {
-    var notifier: BitbucketNotifier.Notifier,
+    var notifier: Notifier,
         expectedOptions,
-        soundManager: BitbucketNotifier.SoundManager,
-        notificationRepostory: BitbucketNotifier.NotificationRepository,
-        notificationStub: BitbucketNotifier.PullRequestNotification,
+        soundManager: SoundManager,
+        notificationRepostory: NotificationRepository,
+        notificationStub: PullRequestNotification,
         onClickedStub;
 
     beforeEach(() => {
@@ -75,7 +79,7 @@ describe('Notifier', () => {
     });
 
     it('should open new tab with pull request on click and close the notification', () => {
-        var notification = new BitbucketNotifier.PullRequestNotification();
+        var notification = new PullRequestNotification();
         var notificationId = 'abcd123';
         var pullRequestHtmlLink = 'http://example.com';
         notification.notificationId = notificationId;
@@ -89,10 +93,10 @@ describe('Notifier', () => {
     });
 
     it('should notify about new pull request', () => {
-        var author = new BitbucketNotifier.User();
+        var author = new User();
         author.displayName = 'John Smith';
 
-        var pullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
         pullRequest.author = author;
 
@@ -106,10 +110,10 @@ describe('Notifier', () => {
     });
 
     it('should notify about merged pull request', () => {
-        var author = new BitbucketNotifier.User();
+        var author = new User();
         author.displayName = 'John Smith';
 
-        var pullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
         pullRequest.author = author;
 
@@ -122,10 +126,10 @@ describe('Notifier', () => {
     });
 
     it('should notify about approvals', () => {
-        var mergingUser = new BitbucketNotifier.User();
+        var mergingUser = new User();
         mergingUser.displayName = 'John Smith';
 
-        var pullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
         expectedOptions.title = 'Your pull request has been approved';
@@ -138,7 +142,7 @@ describe('Notifier', () => {
     });
 
     it('should notify on reminders', () => {
-        var pullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
         expectedOptions.title = 'Someone reminds you to review a pull request';
@@ -150,7 +154,7 @@ describe('Notifier', () => {
     });
 
     it('should filter out emojis from title', () => {
-        var pullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequest = new PullRequest();
         pullRequest.title = ':name_badge: This is some title';
         pullRequest.author.displayName = 'John Smith';
 
@@ -164,7 +168,7 @@ describe('Notifier', () => {
     });
 
     it('should notify about pull request update', () => {
-        const pullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
         pullRequest.author.displayName = 'John Kowalsky';
 
@@ -178,10 +182,10 @@ describe('Notifier', () => {
     });
 
     it('should notify about new comment', () => {
-        const pullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
-        const commentingUser = new BitbucketNotifier.User();
+        const commentingUser = new User();
         commentingUser.displayName = 'John Smith';
 
         const commentLink = 'http://example.com';
@@ -196,10 +200,10 @@ describe('Notifier', () => {
     });
 
     it('should notify about new reply for a comment', () => {
-        const pullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
-        const replyingUser = new BitbucketNotifier.User();
+        const replyingUser = new User();
         replyingUser.displayName = 'John Smith';
 
         const commentLink = 'http://example.com';
@@ -215,25 +219,25 @@ describe('Notifier', () => {
 
     describe('with sounds', () => {
         it('should play a notification sound for new pull request notification', () => {
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest = new PullRequest();
             notifier.notifyNewPullRequestAssigned(pullRequest);
             expect(soundManager.playNewPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for approved pull request notification', () => {
-            var pullRequest = new BitbucketNotifier.PullRequest();
-            notifier.notifyPullRequestApproved(pullRequest, new BitbucketNotifier.User());
+            var pullRequest = new PullRequest();
+            notifier.notifyPullRequestApproved(pullRequest, new User());
             expect(soundManager.playApprovedPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for merged pull request notification', () => {
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest = new PullRequest();
             notifier.notifyPullRequestMerged(pullRequest);
             expect(soundManager.playMergedPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for reminder notification', () => {
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest = new PullRequest();
             notifier.notifyReminder(pullRequest);
             expect(soundManager.playReminderSound).toHaveBeenCalled();
         });

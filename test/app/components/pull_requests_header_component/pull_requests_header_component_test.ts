@@ -1,5 +1,3 @@
-///<reference path="../../../../app/_typings.ts"/>
-
 describe('PullRequestsHeaderComponent', () => {
     var $scope: ng.IScope,
         $compile: ng.ICompileService,

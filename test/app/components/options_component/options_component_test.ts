@@ -1,7 +1,10 @@
-///<reference path="../../../../app/_typings.ts"/>
+import {Config} from "../../../../app/services/config";
+import {Notifier} from "../../../../app/services/notifier";
+import {PullRequestProgress} from "../../../../app/services/models";
+import * as angular from 'angular';
 
 describe('OptionsComponent', () => {
-    var config: BitbucketNotifier.Config,
+    var config: Config,
         appUser,
         socketServer,
         pullRequestProgress,
@@ -14,7 +17,7 @@ describe('OptionsComponent', () => {
         $scope: ng.IScope,
         $compile: ng.ICompileService,
         growl: angular.growl.IGrowlService,
-        notifier: BitbucketNotifier.Notifier;
+        notifier: Notifier;
 
     beforeEach(() => {
         window['createjs'] = {
@@ -35,7 +38,7 @@ describe('OptionsComponent', () => {
         ($provide: ng.auto.IProvideService) => {
             appUser = null;
             socketServer = null;
-            pullRequestProgress = BitbucketNotifier.PullRequestProgress.PROPORTIONS;
+            pullRequestProgress = PullRequestProgress.PROPORTIONS;
             newPullRequestSound = '../../assets/sounds/notification2.ogg';
             approvedPullRequestSound = '../../assets/sounds/notification.ogg';
             mergedPullRequestSound = '../../assets/sounds/notification.ogg';
@@ -121,7 +124,7 @@ describe('OptionsComponent', () => {
 
         expect(userElement.val()).toEqual('');
         expect(socketServerElement.val()).toEqual('');
-        expect(prProgressElement.val()).toEqual(BitbucketNotifier.PullRequestProgress.PROPORTIONS);
+        expect(prProgressElement.val()).toEqual(PullRequestProgress.PROPORTIONS);
         expect(newPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/notification2.ogg');
         expect(approvedPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/notification.ogg');
         expect(mergedPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/notification.ogg');
@@ -131,7 +134,7 @@ describe('OptionsComponent', () => {
     it('should show completed form if config is set', () => {
         appUser = 'john.smith';
         socketServer = 'http://localhost:1234';
-        pullRequestProgress = BitbucketNotifier.PullRequestProgress.PERCENT;
+        pullRequestProgress = PullRequestProgress.PERCENT;
         newPullRequestSound = '../../assets/sounds/nuclear_alarm.ogg';
         approvedPullRequestSound = '../../assets/sounds/nuclear_alarm.ogg';
         mergedPullRequestSound = '../../assets/sounds/nuclear_alarm.ogg';
@@ -182,7 +185,7 @@ describe('OptionsComponent', () => {
 
         expect(config.setUsername).toHaveBeenCalledWith(username);
         expect(config.setSocketServerAddress).toHaveBeenCalledWith(address);
-        expect(config.setPullRequestProgress).toHaveBeenCalledWith(BitbucketNotifier.PullRequestProgress.PERCENT);
+        expect(config.setPullRequestProgress).toHaveBeenCalledWith(PullRequestProgress.PERCENT);
         expect(config.setNewPullRequestSound).toHaveBeenCalledWith(newPrSound);
         expect(config.setApprovedPullRequestSound).toHaveBeenCalledWith(approvedPrSound);
         expect(config.setMergedPullRequestSound).toHaveBeenCalledWith(mergedPrSound);

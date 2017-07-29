@@ -1,5 +1,3 @@
-///<reference path="../../../../app/_typings.ts"/>
-
 describe('Section title component', () => {
     var $scope: ng.IScope,
         $compile: ng.ICompileService,

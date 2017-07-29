@@ -1,9 +1,11 @@
-///<reference path="../../../../app/_typings.ts"/>
+import {Config} from "../../../../app/services/config";
+import {Reviewer, User} from "../../../../app/services/models";
+import * as angular from 'angular';
 
 describe('UserVoteComponent', () => {
     var $scope: ng.IScope,
         $compile: ng.ICompileService,
-        config: BitbucketNotifier.Config;
+        config: Config;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(angular.mock.module('bitbucketNotifier.templates'));
@@ -30,10 +32,10 @@ describe('UserVoteComponent', () => {
     ]));
 
     it('should set awaiting icon if user has not voted yet', () => {
-        var loggedInUser: BitbucketNotifier.User = new BitbucketNotifier.User();
+        var loggedInUser: User = new User();
         loggedInUser.username = 'john.smith';
 
-        var loggedInReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        var loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = false;
 
@@ -48,10 +50,10 @@ describe('UserVoteComponent', () => {
     });
 
     it('should set approved icon if user has approved a pull request', () => {
-        var loggedInUser: BitbucketNotifier.User = new BitbucketNotifier.User();
+        var loggedInUser: User = new User();
         loggedInUser.username = 'john.smith';
 
-        var loggedInReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        var loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = true;
 

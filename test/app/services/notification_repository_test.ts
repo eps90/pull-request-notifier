@@ -1,7 +1,9 @@
-///<reference path="../../../app/_typings.ts"/>
+import {NotificationRepository} from "../../../app/services/notification_repository";
+import {PullRequestNotification} from "../../../app/services/models";
+import * as angular from 'angular';
 
 describe('NotificationRepository', () => {
-    var notificationRepository: BitbucketNotifier.NotificationRepository;
+    var notificationRepository: NotificationRepository;
 
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(inject([
@@ -24,7 +26,7 @@ describe('NotificationRepository', () => {
         var prLink = 'http://example.com';
 
         notificationRepository.add(notificationId, prLink);
-        var actualNotification = <BitbucketNotifier.PullRequestNotification> notificationRepository.find(notificationId);
+        var actualNotification = <PullRequestNotification> notificationRepository.find(notificationId);
 
         expect(actualNotification.pullRequestHtmlLink).toEqual('http://example.com');
     });

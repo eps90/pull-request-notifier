@@ -1,7 +1,8 @@
-///<reference path="../../../app/_typings.ts"/>
+import {Indicator} from "../../../app/services/indicator";
+import * as angular from 'angular';
 
 describe('Indicator', () => {
-    var indicator: BitbucketNotifier.Indicator;
+    var indicator: Indicator;
 
     beforeEach(() => {
         window['chrome'] = {

@@ -1,4 +1,8 @@
-///<reference path="../../../app/_typings.ts"/>
+import {PullRequestState, User} from "../../../app/services/models";
+import {
+    ProjectFactory, PullRequestEventFactory, PullRequestFactory, PullRequestLinksFactory, ReviewerFactory,
+    UserFactory
+} from "../../../app/services/factories";
 
 describe('Factories', () => {
     describe('UserFactory', () => {
@@ -8,7 +12,7 @@ describe('Factories', () => {
                 username: 'john.kowalsky'
             };
 
-            var user: BitbucketNotifier.User = BitbucketNotifier.UserFactory.create(rawObject);
+            var user: User = UserFactory.create(rawObject);
             expect(user.displayName).toEqual('John Kowalsky');
             expect(user.username).toEqual('john.kowalsky');
         });
@@ -21,7 +25,7 @@ describe('Factories', () => {
                 fullName: 'team_name/repo_name'
             };
 
-            var project = BitbucketNotifier.ProjectFactory.create(rawObject);
+            var project = ProjectFactory.create(rawObject);
             expect(project.fullName).toEqual('team_name/repo_name');
             expect(project.name).toEqual('Awesome project');
         });
@@ -37,7 +41,7 @@ describe('Factories', () => {
                 approved: true
             };
 
-            var reviewer = BitbucketNotifier.ReviewerFactory.create(rawObject);
+            var reviewer = ReviewerFactory.create(rawObject);
             expect(reviewer.user.username).toEqual('john.kowalsky');
             expect(reviewer.user.displayName).toEqual('John Kowalsky');
             expect(reviewer.approved).toEqual(true);
@@ -51,7 +55,7 @@ describe('Factories', () => {
                 html: 'http://example.com/html'
             };
 
-            var links = BitbucketNotifier.PullRequestLinksFactory.create(rawObject);
+            var links = PullRequestLinksFactory.create(rawObject);
             expect(links.self).toEqual('http://example.com/self');
             expect(links.html).toEqual('http://example.com/html');
         });
@@ -88,7 +92,7 @@ describe('Factories', () => {
                 }
             };
 
-            var pullRequest = BitbucketNotifier.PullRequestFactory.create(rawObject);
+            var pullRequest = PullRequestFactory.create(rawObject);
             expect(pullRequest.id).toEqual(1);
             expect(pullRequest.title).toEqual('This is a title');
             expect(pullRequest.description).toEqual('This is a description');
@@ -101,7 +105,7 @@ describe('Factories', () => {
             expect(pullRequest.reviewers[0].user.username).toEqual('anna.smith');
             expect(pullRequest.reviewers[0].user.displayName).toEqual('Anna Smith');
             expect(pullRequest.reviewers[0].approved).toEqual(true);
-            expect(pullRequest.state).toBe(BitbucketNotifier.PullRequestState.Open);
+            expect(pullRequest.state).toBe(PullRequestState.Open);
             expect(pullRequest.links.self).toEqual('http://example.com/self');
             expect(pullRequest.links.html).toEqual('http://example.com/html');
         });
@@ -120,7 +124,7 @@ describe('Factories', () => {
                 }
             ];
 
-            var actual = BitbucketNotifier.PullRequestFactory.createFromArray(pullRequests);
+            var actual = PullRequestFactory.createFromArray(pullRequests);
 
             expect(actual.length).toEqual(2);
             expect(actual[0].id).toEqual(1);
@@ -152,7 +156,7 @@ describe('Factories', () => {
                 }
             };
 
-            var event = BitbucketNotifier.PullRequestEventFactory.create(rawObject);
+            var event = PullRequestEventFactory.create(rawObject);
             expect(event.actor.username).toEqual('john.kowalsky');
             expect(event.actor.displayName).toEqual('John Kowalsky');
             expect(event.sourceEvent).toEqual('webhook:pullrequest:updated');

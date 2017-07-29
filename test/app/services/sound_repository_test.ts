@@ -1,7 +1,9 @@
-///<reference path="../../../app/_typings.ts"/>
+import {SoundRepository} from "../../../app/services/sound_repository";
+import {Sound} from "../../../app/services/models";
+import * as angular from 'angular';
 
 describe('SoundRepository', () => {
-    var soundRepository: BitbucketNotifier.SoundRepository;
+    var soundRepository: SoundRepository;
 
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(inject([
@@ -16,13 +18,13 @@ describe('SoundRepository', () => {
         expect(actual.length).toBeGreaterThan(0);
 
         for (let i = 0, len = actual.length; i < len; i++) {
-            expect(actual[i] instanceof BitbucketNotifier.Sound).toBeTruthy();
+            expect(actual[i] instanceof Sound).toBeTruthy();
         }
     });
 
     it('should return a sound by its label', () => {
         var labelToFindBy: string = 'Ring';
-        var actual: BitbucketNotifier.Sound = soundRepository.findByLabel(labelToFindBy);
+        var actual: Sound = soundRepository.findByLabel(labelToFindBy);
         expect(actual.label).toEqual('Ring');
 
         var nonExistantSoundLabel: string = 'Not found';

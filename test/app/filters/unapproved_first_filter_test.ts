@@ -1,4 +1,5 @@
-/// <reference path="../../../app/_typings.ts" />
+import {Reviewer} from "../../../app/services/models";
+import * as angular from 'angular';
 
 describe('UnapprovedFirstFilter', () => {
     var $filter;
@@ -12,16 +13,16 @@ describe('UnapprovedFirstFilter', () => {
     ]));
 
     it('should sort reviewers with unapproved first', () => {
-        var approvedReviewer = new BitbucketNotifier.Reviewer();
+        var approvedReviewer = new Reviewer();
         approvedReviewer.approved = true;
 
-        var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+        var unapprovedReviewer = new Reviewer();
         unapprovedReviewer.approved = false;
 
-        var otherApproved = new BitbucketNotifier.Reviewer();
+        var otherApproved = new Reviewer();
         otherApproved.approved = true;
 
-        var otherUnapproved = new BitbucketNotifier.Reviewer();
+        var otherUnapproved = new Reviewer();
         otherUnapproved.approved = false;
 
         var reviewers = [approvedReviewer, unapprovedReviewer, otherApproved, otherUnapproved];

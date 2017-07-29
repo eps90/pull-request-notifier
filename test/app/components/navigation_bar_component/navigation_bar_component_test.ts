@@ -1,4 +1,4 @@
-///<reference path="../../../../app/_typings.ts"/>
+import * as angular from 'angular';
 
 describe("NavigationBarComponent", () => {
     var $scope: ng.IScope,

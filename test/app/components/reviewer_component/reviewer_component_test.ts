@@ -1,4 +1,5 @@
-/// <reference path="../../../../app/_typings.ts" />
+import {Reviewer} from "../../../../app/services/models";
+import * as angular from 'angular';
 
 describe('ReviewerComponent', () => {
     var element: ng.IAugmentedJQuery,
@@ -20,7 +21,7 @@ describe('ReviewerComponent', () => {
     );
 
     it('should display user name', () => {
-        var reviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        var reviewer: Reviewer = new Reviewer();
         reviewer.user.displayName = "John Smith";
         $scope['reviewer'] = reviewer;
 
@@ -32,7 +33,7 @@ describe('ReviewerComponent', () => {
 
     describe('approval status', () => {
         it('should display approval status for up-vote', () => {
-            var approvedReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+            var approvedReviewer: Reviewer = new Reviewer();
             approvedReviewer.user.displayName = "John Smith";
             approvedReviewer.approved = true;
 
@@ -45,7 +46,7 @@ describe('ReviewerComponent', () => {
         });
 
         it('should display approval status for up-vote', () => {
-            var unapprovedReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+            var unapprovedReviewer: Reviewer = new Reviewer();
             unapprovedReviewer.user.displayName = "John Smith";
             unapprovedReviewer.approved = false;
 

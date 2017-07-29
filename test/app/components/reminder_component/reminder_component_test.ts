@@ -1,4 +1,5 @@
-///<reference path="../../../../app/_typings.ts"/>
+import {ChromeExtensionEvent, PullRequest} from "../../../../app/services/models";
+import * as angular from 'angular';
 
 describe('ReminderComponent', () => {
     var $scope: ng.IScope,
@@ -35,7 +36,7 @@ describe('ReminderComponent', () => {
     });
 
     it('should call chrome.extension.sendMessage on click', () => {
-        var pullRequest = new BitbucketNotifier.PullRequest();
+        var pullRequest = new PullRequest();
         $scope['myPr'] = pullRequest;
 
         element = $compile('<reminder pull-request="myPr"></reminder>')($scope);
@@ -45,8 +46,8 @@ describe('ReminderComponent', () => {
         linkElement.triggerHandler('click');
 
         expect(window['chrome'].extension.sendMessage).toHaveBeenCalledWith(
-            new BitbucketNotifier.ChromeExtensionEvent(
-                BitbucketNotifier.ChromeExtensionEvent.REMIND,
+            new ChromeExtensionEvent(
+                ChromeExtensionEvent.REMIND,
                 pullRequest
             )
         );
@@ -89,7 +90,7 @@ describe('ReminderComponent', () => {
         });
 
         it('should call chrome.extension.sendMessage on click', () => {
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            var pullRequest = new PullRequest();
             $scope['myPr'] = pullRequest;
 
             element = $compile('<reminder pull-request="myPr" size="lg"></reminder>')($scope);
@@ -99,8 +100,8 @@ describe('ReminderComponent', () => {
             linkElement.triggerHandler('click');
 
             expect(window['chrome'].extension.sendMessage).toHaveBeenCalledWith(
-                new BitbucketNotifier.ChromeExtensionEvent(
-                    BitbucketNotifier.ChromeExtensionEvent.REMIND,
+                new ChromeExtensionEvent(
+                    ChromeExtensionEvent.REMIND,
                     pullRequest
                 )
             );

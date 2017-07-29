@@ -1,5 +1,3 @@
-/// <reference path="../../../../app/_typings.ts" />
-
 describe('NavigationBrandComponent', () => {
     var element: ng.IAugmentedJQuery,
         $scope: ng.IScope,

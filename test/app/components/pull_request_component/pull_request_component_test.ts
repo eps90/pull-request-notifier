@@ -1,11 +1,12 @@
-///<reference path="../../../../app/_typings.ts"/>
+import {Project, PullRequest, Reviewer, User} from "../../../../app/services/models";
+import * as angular from 'angular';
 
 describe('PullRequestComponent', () => {
     var element,
         $compile: ng.ICompileService,
         $scope: ng.IRootScopeService,
         uiRouterState: angular.ui.IStateService,
-        pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        pullRequest: PullRequest = new PullRequest();
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(angular.mock.module('bitbucketNotifier.templates'));
@@ -33,24 +34,24 @@ describe('PullRequestComponent', () => {
     );
 
     beforeEach(() => {
-        var author: BitbucketNotifier.User = new BitbucketNotifier.User();
+        var author: User = new User();
         author.displayName = 'John Smith';
 
-        var userAsReviewer: BitbucketNotifier.User = new BitbucketNotifier.User();
+        var userAsReviewer: User = new User();
         userAsReviewer.displayName = 'Anna Kowalsky';
 
-        var secondUserAsReviewer: BitbucketNotifier.User = new BitbucketNotifier.User();
+        var secondUserAsReviewer: User = new User();
         secondUserAsReviewer.displayName = 'Jack Sparrow';
 
-        var reviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        var reviewer: Reviewer = new Reviewer();
         reviewer.user = userAsReviewer;
         reviewer.approved = true;
 
-        var secondReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        var secondReviewer: Reviewer = new Reviewer();
         secondReviewer.user = secondUserAsReviewer;
         secondReviewer.approved = false;
 
-        var project: BitbucketNotifier.Project = new BitbucketNotifier.Project();
+        var project: Project = new Project();
         project.name = 'CRM';
         project.fullName = 'dacsoftware/my_sweet_project';
 

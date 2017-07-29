@@ -1,9 +1,12 @@
-///<reference path="../../../app/_typings.ts"/>
+import {Config} from "../../../app/services/config";
+import {SoundRepository} from "../../../app/services/sound_repository";
+import {ConfigObject, PullRequestProgress, Sound} from "../../../app/services/models";
+import * as angular from 'angular';
 
 describe('Config', () => {
-    var config: BitbucketNotifier.Config,
+    var config: Config,
         localStorageService: angular.local.storage.ILocalStorageService,
-        soundRepository: BitbucketNotifier.SoundRepository;
+        soundRepository: SoundRepository;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(inject([
@@ -24,21 +27,21 @@ describe('Config', () => {
     describe('of app user', () => {
         it('should fetch currently logged in user', () => {
             var username = 'some_user';
-            localStorageService.set(BitbucketNotifier.ConfigObject.USER, username);
+            localStorageService.set(ConfigObject.USER, username);
             expect(config.getUsername()).toEqual(username);
         });
 
         it('should save logged in user', () => {
             var username = 'some_user';
             config.setUsername(username);
-            expect(localStorageService.get(BitbucketNotifier.ConfigObject.USER)).toEqual(username);
+            expect(localStorageService.get(ConfigObject.USER)).toEqual(username);
         });
     });
 
     describe('of socket server', () => {
         it('should fetch an HTTP address to socket server', () => {
             var address = 'http://localhost:1234';
-            localStorageService.set(BitbucketNotifier.ConfigObject.SOCKET_SERVER, address);
+            localStorageService.set(ConfigObject.SOCKET_SERVER, address);
             expect(config.getSocketServerAddress()).toEqual(address);
         });
 
@@ -46,50 +49,50 @@ describe('Config', () => {
             var address = 'localhost:1234';
             var expectedAddress = 'http://localhost:1234';
 
-            localStorageService.set(BitbucketNotifier.ConfigObject.SOCKET_SERVER, address);
+            localStorageService.set(ConfigObject.SOCKET_SERVER, address);
             expect(config.getSocketServerAddress()).toEqual(expectedAddress);
         });
 
         it('should set socket server address', () => {
             var address = 'localhost:1234';
             config.setSocketServerAddress(address);
-            expect(localStorageService.get(BitbucketNotifier.ConfigObject.SOCKET_SERVER)).toEqual(address);
+            expect(localStorageService.get(ConfigObject.SOCKET_SERVER)).toEqual(address);
         });
     });
 
     describe('of pull request progress', () => {
         it('should get a pull request progress option', () => {
-            var option = BitbucketNotifier.PullRequestProgress.PROPORTIONS;
-            localStorageService.set(BitbucketNotifier.ConfigObject.PULLREQUEST_PROGRESS, option);
+            var option = PullRequestProgress.PROPORTIONS;
+            localStorageService.set(ConfigObject.PULLREQUEST_PROGRESS, option);
             expect(config.getPullRequestProgress()).toEqual(option);
         });
 
         it("should get 'proportions' options as default", () => {
-            expect(config.getPullRequestProgress()).toEqual(BitbucketNotifier.PullRequestProgress.PROPORTIONS);
+            expect(config.getPullRequestProgress()).toEqual(PullRequestProgress.PROPORTIONS);
         });
 
         it('should set pull request progress option', () => {
-            var option = BitbucketNotifier.PullRequestProgress.PERCENT;
+            var option = PullRequestProgress.PERCENT;
             config.setPullRequestProgress(option);
-            expect(localStorageService.get(BitbucketNotifier.ConfigObject.PULLREQUEST_PROGRESS)).toEqual(option);
+            expect(localStorageService.get(ConfigObject.PULLREQUEST_PROGRESS)).toEqual(option);
         });
     });
 
     describe('of sounds', () => {
         it('should set sound path to new pull request notification', () => {
-            testSoundSetter('setNewPullRequestSound', BitbucketNotifier.Sound.NEW_PULLREQUEST);
+            testSoundSetter('setNewPullRequestSound', Sound.NEW_PULLREQUEST);
         });
 
         it('should set sound path to approved pull request notification', () => {
-            testSoundSetter('setApprovedPullRequestSound', BitbucketNotifier.Sound.APPROVED_PULLREQUEST);
+            testSoundSetter('setApprovedPullRequestSound', Sound.APPROVED_PULLREQUEST);
         });
 
         it('should set sound path to merged pull request notification', () => {
-            testSoundSetter('setMergedPullRequestSound', BitbucketNotifier.Sound.MERGED_PULLREQUEST);
+            testSoundSetter('setMergedPullRequestSound', Sound.MERGED_PULLREQUEST);
         });
 
         it('should set sound path to reminder notification', () => {
-            testSoundSetter('setReminderSound', BitbucketNotifier.Sound.REMINDER);
+            testSoundSetter('setReminderSound', Sound.REMINDER);
         });
 
         function testSoundSetter(setterName, soundKey): void {
@@ -99,19 +102,19 @@ describe('Config', () => {
         }
 
         it('should get sound path to new pull request notification', () => {
-            testSoundGetter('getNewPullRequestSound', BitbucketNotifier.Sound.NEW_PULLREQUEST);
+            testSoundGetter('getNewPullRequestSound', Sound.NEW_PULLREQUEST);
         });
 
         it('should get sound path to approved pull request notification', () => {
-            testSoundGetter('getApprovedPullRequestSound', BitbucketNotifier.Sound.APPROVED_PULLREQUEST);
+            testSoundGetter('getApprovedPullRequestSound', Sound.APPROVED_PULLREQUEST);
         });
 
         it('should get sound path to merged pull request notification', () => {
-            testSoundGetter('getMergedPullRequestSound', BitbucketNotifier.Sound.MERGED_PULLREQUEST);
+            testSoundGetter('getMergedPullRequestSound', Sound.MERGED_PULLREQUEST);
         });
 
         it('should get sound path to reminder notification', () => {
-            testSoundGetter('getReminderSound', BitbucketNotifier.Sound.REMINDER);
+            testSoundGetter('getReminderSound', Sound.REMINDER);
         });
 
         function testSoundGetter(getterName, soundKey): void {
