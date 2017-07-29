@@ -1,4 +1,8 @@
 // @todo Move event handling to some "Chrome events handler/emitter"
+import {ChromeExtensionEvent, PullRequest} from "./models";
+import {PullRequestFactory} from "./factories";
+import * as _ from 'lodash';
+
 export class PullRequestRepository {
     static $inject: Array<string> = ['$rootScope'];
 

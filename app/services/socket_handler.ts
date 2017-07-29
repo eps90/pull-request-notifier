@@ -1,9 +1,20 @@
 // @todo TO REFACTOR!!!
 // @todo Move socket handling into another service?
+import {SocketManager} from "./socket_manager";
+import {Config} from "./config";
+import {Notifier} from "./notifier";
+import {Indicator} from "./indicator";
+import {PullRequestRepository} from "./pull_request_repository";
+import {
+    ChromeExtensionEvent, PullRequest, PullRequestCommentEvent, PullRequestEvent, SocketClientEvent, SocketServerEvent,
+    WebhookEvent
+} from "./models";
+import {PullRequestEventFactory} from "./factories";
+
 export class SocketHandler {
     static $inject: Array<string> = ['SocketManager', 'Config', 'PullRequestRepository', 'Notifier', 'Indicator'];
     constructor(
-        private socketManager: BitbucketNotifier.SocketManager,
+        private socketManager: SocketManager,
         private config: Config,
         private pullRequestRepository: PullRequestRepository,
         private notifier: Notifier,

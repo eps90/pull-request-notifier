@@ -1,3 +1,8 @@
+import {Config} from "../../services/config";
+import {SoundRepository} from "../../services/sound_repository";
+import {Notifier} from "../../services/notifier";
+import {PullRequest, User} from "../../services/models";
+
 export class OptionsComponent implements ng.IDirective {
     restrict: string =  'E';
     templateUrl: string = '../components/options_component/options_component.html';

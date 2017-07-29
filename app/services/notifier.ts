@@ -1,3 +1,8 @@
+import {NotificationRepository} from "./notification_repository";
+import {SoundManager} from "./sound_manager";
+import {PullRequest, PullRequestNotification, User} from "./models";
+import * as _ from 'lodash';
+
 interface NotificationOptions {
     type?: string;
     iconUrl?: string;
@@ -100,7 +105,7 @@ export class Notifier {
         this.notify(options, notificationId, pullRequest.links.html);
     }
 
-    notifyNewCommentAdded(pullRequest: PullRequest, commentingUser: User, commentLink: string) {
+    notifyNewCommentAdded(pullRequest: PullRequest, commentingUser: User, commentLink: string): void {
         const options = {
             title: 'New comment on your pull request!',
             message: pullRequest.title,
@@ -112,7 +117,7 @@ export class Notifier {
         this.notify(options, notificationId, commentLink);
     }
 
-    notifyNewReplyOnComment(pullRequest: PullRequest, replyingUser: User, commentLink: string) {
+    notifyNewReplyOnComment(pullRequest: PullRequest, replyingUser: User, commentLink: string): void {
         const options = {
             title: 'New reply for your comment',
             message: pullRequest.title,

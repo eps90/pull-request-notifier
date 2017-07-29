@@ -1,3 +1,7 @@
+import {ConfigObject, Sound} from "./models";
+import {SoundRepository} from "./sound_repository";
+import * as _ from 'lodash';
+
 export class Config {
     static $inject: Array<string> = ['localStorageService', 'SoundRepository'];
 

@@ -1,3 +1,6 @@
+import {Project} from "../services/models";
+import {PullRequestRepository} from "../services/pull_request_repository";
+
 export function RoutingConfiguration(stateProvider: angular.ui.IStateProvider, urlProvider: angular.ui.IUrlRouterProvider): void {
     urlProvider.otherwise('/');
     stateProvider

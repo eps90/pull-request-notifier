@@ -1,3 +1,5 @@
+import {Project, PullRequest, PullRequestEvent, PullRequestLinks, PullRequestState, Reviewer, User} from "./models";
+
 export class UserFactory {
     static create(rawObject: any): User {
         var user = new User();

@@ -1,3 +1,5 @@
+import {PullRequestNotification, Notification} from "./models";
+
 export class NotificationRepository {
     private notifications: Array<Notification> = [];
 

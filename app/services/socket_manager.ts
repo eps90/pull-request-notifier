@@ -1,3 +1,5 @@
+import {Config} from "./config";
+
 export class SocketManager {
     static $inject: string[] = ['socketFactory', 'Config'];
     public socket: any;

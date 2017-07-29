@@ -1,3 +1,6 @@
+import {Reviewer} from "../../services/models";
+import {Config} from "../../services/config";
+
 export class UserVoteComponent implements ng.IDirective {
     constructor(private config: Config) {}
 

@@ -1,3 +1,6 @@
+import {Config} from "../services/config";
+import {PullRequest} from "../services/models";
+
 export function AssignedFilter(config: Config): Function {
     return (pullRequests: Array<PullRequest>) => {
         var loggedInUser = config.getUsername();

@@ -1,3 +1,5 @@
+import {Reviewer} from "../services/models";
+
 export function UnapprovedFirst(): Function {
     return function (reviewers: Reviewer[]): Reviewer[] {
         return reviewers.sort((previousElement, currentElement) => {

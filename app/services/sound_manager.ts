@@ -1,3 +1,6 @@
+import {Config} from "./config";
+import {Sound} from "./models";
+
 export class SoundManager {
 
     static $inject: string[] = ['Config'];

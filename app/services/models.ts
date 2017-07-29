@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 export interface ModelInterface {}
 
 export class Project implements ModelInterface {
@@ -25,7 +27,7 @@ export class Reviewer implements ModelInterface {
 
 export enum PullRequestState {Open, Merged, Declined}
 
-export class PullRequestLinks implements ModelInterface{
+export class PullRequestLinks implements ModelInterface {
     self: string = '';
     html: string = '';
 }

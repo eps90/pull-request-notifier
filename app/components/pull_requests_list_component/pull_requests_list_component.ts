@@ -1,3 +1,5 @@
+import {PullRequestRepository} from "../../services/pull_request_repository";
+
 export class PullRequestsListComponent implements ng.IDirective {
     restrict: string = 'E';
     templateUrl: string = '../components/pull_requests_list_component/pull_requests_list_component.html';

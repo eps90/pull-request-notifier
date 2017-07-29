@@ -1,3 +1,6 @@
+import {Config} from "../../services/config";
+import {Reviewer} from "../../services/models";
+
 export class ApprovalProgressComponent implements ng.IDirective {
     restrict: string = 'E';
     scope: any = {

@@ -1,3 +1,5 @@
+import {Sound} from "./models";
+
 export class SoundRepository {
     private defaultSoundsPath: string = '../../assets/sounds/';
     private defaultSounds: Sound[] = [

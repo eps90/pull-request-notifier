@@ -1,4 +1,5 @@
 import {SocketHandler} from "../../services/socket_handler";
+import {Indicator} from "../../services/indicator";
 
 export class BackgroundComponent implements ng.IDirective {
     restrict: string = 'A';
