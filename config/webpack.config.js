@@ -1,8 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     entry: {
-        main: './src/main'
+        popup: path.resolve(__dirname, '../app/modules/bitbucket_notifier.ts'),
+        background: path.resolve(__dirname, '../app/modules/bitbucket_notifier_background.ts'),
+        options: path.resolve(__dirname, '../app/modules/bitbucket_notifier_options.ts')
     },
 
     output: {
@@ -17,12 +20,29 @@ module.exports = {
             {
                 test: /\.ts$/,
                 use: 'ts-loader',
-                exclude: /node_modules/
+                include: [
+                    path.resolve(__dirname, '../app')
+                ]
+            },
+            {
+                test: /\.html$/,
+                use: {
+                    loader: 'html-loader',
+                    options: {
+                        exportAsEs6Default: true
+                    }
+                }
             }
         ]
     },
 
     resolve: {
         extensions: ['.ts', '.js']
-    }
+    },
+
+    plugins: [
+        new webpack.ProvidePlugin({
+            'window.jQuery': 'jquery'
+        })
+    ]
 };
