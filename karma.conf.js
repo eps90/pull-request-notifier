@@ -1,83 +1,82 @@
 // Karma configuration
 // Generated on Sun Aug 09 2015 21:31:51 GMT+0200 (CEST)
 
-module.exports = function(config) {
-  config.set({
+module.exports = function (config) {
+    config.set({
 
-    // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
-
-
-    // frameworks to use
-    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
-
-    jasmineDiffReporter: {
-        pretty: true,
-        multiline: true
-    },
+        // base path that will be used to resolve all patterns (eg. files, exclude)
+        basePath: '',
 
 
-    // list of files / patterns to load in the browser
-    files: [
-        'test/bootstrap.js'
-    ],
+        // frameworks to use
+        // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+        frameworks: ['jasmine'],
+
+        jasmineDiffReporter: {
+            pretty: true,
+            multiline: true
+        },
 
 
-    // list of files to exclude
-    exclude: [
-    ],
+        // list of files / patterns to load in the browser
+        files: [
+            'test/bootstrap.js'
+        ],
 
 
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-        'test/bootstrap.js': ['webpack', 'sourcemap']
-    },
-
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['jasmine-diff', 'dots'],
+        // list of files to exclude
+        exclude: [],
 
 
-    // web server port
-    port: 9876,
+        // preprocess matching files before serving them to the browser
+        // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+        preprocessors: {
+            'test/bootstrap.js': ['webpack', 'sourcemap']
+        },
+
+        // test results reporter to use
+        // possible values: 'dots', 'progress'
+        // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+        reporters: ['jasmine-diff', 'dots'],
 
 
-    // enable / disable colors in the output (reporters and logs)
-    colors: true,
+        // web server port
+        port: 9876,
 
 
-    // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_LOG,
+        // enable / disable colors in the output (reporters and logs)
+        colors: true,
 
 
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+        // level of logging
+        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+        logLevel: config.LOG_LOG,
 
 
-    // start these browsers
-    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'PhantomJS'],
+        // enable / disable watching file and executing tests whenever any file changes
+        autoWatch: false,
 
 
-    // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true,
+        // start these browsers
+        // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+        browsers: ['Chrome', 'PhantomJS'],
 
-    webpack: require('./config/webpack.config'),
 
-    client: {
-      captureConsole: true
-    },
-    browserConsoleLogOptions: {
-      level: 'log',
-      terminal: true
-    },
-    webpackMiddleware: {
-      noInfo: 'errors-only'
-    }
-  })
+        // Continuous Integration mode
+        // if true, Karma captures browsers, runs the tests and exits
+        singleRun: true,
+
+        webpack: require('./config/webpack.config'),
+
+        client: {
+            captureConsole: true
+        },
+        browserConsoleLogOptions: {
+            level: 'log',
+            terminal: true
+        },
+        webpackMiddleware: {
+            noInfo: 'errors-only'
+        }
+    })
 };
