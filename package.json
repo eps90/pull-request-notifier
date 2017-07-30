@@ -17,6 +17,7 @@
   "dependencies": {
     "angular": "^1.6.2",
     "angular-animate": "^1.6.2",
+    "angular-emoji-filter-hd": "^0.0.9",
     "angular-growl-v2": "^0.7.5",
     "angular-local-storage": "^0.5.2",
     "angular-markdown-directive": "^0.3.1",
