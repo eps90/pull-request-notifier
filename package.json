@@ -79,6 +79,8 @@
     "karma-mocha-reporter": "^2.2.2",
     "karma-ng-html2js-preprocessor": "^1.0.0",
     "karma-phantomjs-launcher": "^1.0.2",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.4",
     "phantomjs-prebuilt": "^2.1.14",
     "rimraf": "^2.6.1",
     "shipit-captain": "^0.4.3",
