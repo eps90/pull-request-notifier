@@ -10,7 +10,8 @@
   },
   "scripts": {
     "test": "karma start",
-    "build": "rimraf dist && webpack --config config/webpack.config.js"
+    "build:dev": "rimraf dist && webpack --config config/webpack.config.js --watch",
+    "build:prod": "rimraf dist && webpack --config config/webpack.config.js -p"
   },
   "license": "Apache-2.0",
   "dependencies": {
