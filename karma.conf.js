@@ -75,6 +75,9 @@ module.exports = function(config) {
     browserConsoleLogOptions: {
       level: 'log',
       terminal: true
+    },
+    webpackMiddleware: {
+      noInfo: 'errors-only'
     }
   })
 };
