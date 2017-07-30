@@ -1,8 +1,9 @@
 import {ChromeExtensionEvent} from "../../services/models";
+import componentTemplate from './reminder_component.html';
 
 export class ReminderComponent implements ng.IDirective {
     restrict: string = 'E';
-    templateUrl: string = '../components/reminder_component/reminder_component.html';
+    template: string = componentTemplate;
     scope: any = {
         pullRequest: '=',
         size: '@'

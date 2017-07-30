@@ -1,8 +1,9 @@
 import {PullRequest} from "../../services/models";
+import componentTemplate from './pull_request_component.html';
 
 export class PullRequestComponent implements ng.IDirective {
     restrict: string = 'E';
-    templateUrl: string = '../components/pull_request_component/pull_request_component.html';
+    template: string = componentTemplate;
     scope: any = {
         pullRequest: '=pr',
         mode: '@'

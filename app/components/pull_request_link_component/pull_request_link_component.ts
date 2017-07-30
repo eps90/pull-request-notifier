@@ -1,6 +1,8 @@
+import componentTemplate from './pull_request_link_component.html';
+
 export class PullRequestLinkComponent implements ng.IDirective {
     restrict: string = 'E';
-    templateUrl: string = '../components/pull_request_link_component/pull_request_link_component.html';
+    template: string = componentTemplate;
     scope: any = {
         pr: '=',
         size: '@'

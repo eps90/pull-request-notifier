@@ -1,5 +1,6 @@
 import {Reviewer} from "../../services/models";
 import {Config} from "../../services/config";
+import componentTemplate from './user_vote_component.html';
 
 export class UserVoteComponent implements ng.IDirective {
     constructor(private config: Config) {}
@@ -8,7 +9,7 @@ export class UserVoteComponent implements ng.IDirective {
     scope: any = {
         reviewers: '='
     };
-    templateUrl: string = '../components/user_vote_component/user_vote_component.html';
+    template: string = componentTemplate;
 
     link: ng.IDirectiveLinkFn = (scope: any) => {
         var classes = ['fa'];

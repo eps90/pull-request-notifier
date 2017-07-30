@@ -1,6 +1,8 @@
+import componentTemplate from './pull_request_preview_component.html';
+
 export class PullRequestPreviewComponent implements ng.IDirective {
     restrict: string = 'E';
-    templateUrl: string = '../components/pull_request_preview_component/pull_request_preview_component.html';
+    template: string = componentTemplate;
     scope: any = {
         pr: '='
     };

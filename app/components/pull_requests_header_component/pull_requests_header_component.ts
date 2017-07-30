@@ -1,6 +1,8 @@
+import componentTemplate from './pull_requests_header_component.html';
+
 export class PullRequestsHeaderComponent implements ng.IDirective {
     restrict: string =  'E';
-    templateUrl: string = '../components/pull_requests_header_component/pull_requests_header_component.html';
+    template: string = componentTemplate;
     scope: any = {
         mode: '@'
     };

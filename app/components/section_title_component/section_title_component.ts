@@ -1,6 +1,8 @@
+import componentTemplate from './section_title_component.html';
+
 export class SectionTitleComponent implements ng.IDirective {
     restrict: string = 'E';
-    templateUrl: string = '../components/section_title_component/section_title_component.html';
+    template: string = componentTemplate;
     scope: any = {
         icon: '@'
     };

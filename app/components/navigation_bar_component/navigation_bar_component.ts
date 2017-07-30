@@ -1,6 +1,8 @@
+import componentTemplate from './navigation_bar_component.html';
+
 export class NavigationBarComponent implements ng.IDirective {
     restrict: string = 'E';
-    templateUrl: string = '../components/navigation_bar_component/navigation_bar_component.html';
+    template: string = componentTemplate;
 
     constructor(private bitbucketUrl: string) {}
 

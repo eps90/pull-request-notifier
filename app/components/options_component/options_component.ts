@@ -2,10 +2,11 @@ import {Config} from "../../services/config";
 import {SoundRepository} from "../../services/sound_repository";
 import {Notifier} from "../../services/notifier";
 import {PullRequest, User} from "../../services/models";
+import componentTemplate from './options_component.html';
 
 export class OptionsComponent implements ng.IDirective {
     restrict: string =  'E';
-    templateUrl: string = '../components/options_component/options_component.html';
+    template: string = componentTemplate;
 
     constructor(
         private config: Config,

@@ -1,6 +1,8 @@
+import componentTemplate from './navigation_brand_component.html';
+
 export class NavigationBrandComponent {
     restrict: string = 'E';
-    templateUrl: string = '../components/navigation_brand_component/navigation_brand_component.html';
+    template: string = componentTemplate;
     scope: any = {
         content: '@',
         icon: '@'

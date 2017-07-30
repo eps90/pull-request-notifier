@@ -1,5 +1,6 @@
 import {Config} from "../../services/config";
 import {Reviewer} from "../../services/models";
+import componentTemplate from './approval_progress_component.html';
 
 export class ApprovalProgressComponent implements ng.IDirective {
     restrict: string = 'E';
@@ -7,7 +8,7 @@ export class ApprovalProgressComponent implements ng.IDirective {
         reviewers: '=',
         mode: '@'
     };
-    templateUrl: string = '../components/approval_progress_component/approval_progress_component.html';
+    template: string = componentTemplate;
 
     constructor(private config: Config) {}
 
