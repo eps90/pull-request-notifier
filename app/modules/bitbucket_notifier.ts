@@ -19,11 +19,20 @@ import {Config} from "../services/config";
 import {RoutingConfiguration} from "../config/routing";
 
 import * as angular from 'angular';
+import 'angular-local-storage';
+import 'angular-ui-bootstrap';
+import 'angular-emoji-filter-hd';
+import 'angular-sanitize';
+import 'angular-ui-router';
+import 'angular-markdown-directive';
+import 'angular-animate';
 
-var application = angular.module('bitbucketNotifier', [
+export const MODULE_NAME = 'bitbucketNotifier';
+
+const application = angular.module(MODULE_NAME, [
     'LocalStorageModule',
     'ui.bootstrap',
-    'emoji',
+    'dbaq.emoji',
     'ngSanitize',
     'ui.router',
     'btford.markdown',
