@@ -18,13 +18,13 @@ import {SoundRepository} from "../services/sound_repository";
 import {Config} from "../services/config";
 import {RoutingConfiguration} from "../config/routing";
 
+import 'ng-showdown';
 import * as angular from 'angular';
 import 'angular-local-storage';
 import 'angular-ui-bootstrap';
 import 'angular-emoji-filter-hd';
 import 'angular-sanitize';
 import 'angular-ui-router';
-import 'angular-markdown-directive';
 import 'angular-animate';
 
 export const MODULE_NAME = 'bitbucketNotifier';
@@ -35,7 +35,7 @@ const application = angular.module(MODULE_NAME, [
     'dbaq.emoji',
     'ngSanitize',
     'ui.router',
-    'btford.markdown',
+    'ng-showdown',
     'ngAnimate'
 ]);
 application.directive('pullRequest', PullRequestComponent.factory());
