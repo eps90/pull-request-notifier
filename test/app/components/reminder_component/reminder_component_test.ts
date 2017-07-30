@@ -7,8 +7,6 @@ describe('ReminderComponent', () => {
         element: ng.IAugmentedJQuery;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
-
     beforeEach(() => {
         window['chrome'] = {
             extension: {

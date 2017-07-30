@@ -4,7 +4,6 @@ describe('PullRequestsHeaderComponent', () => {
         element;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
     beforeEach(inject([
         '$rootScope',
         '$compile',

@@ -8,7 +8,6 @@ describe('PullRequestLinkComponent', () => {
         newTabObj;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
     beforeEach(() => {
         window['chrome'] = {
             tabs: {

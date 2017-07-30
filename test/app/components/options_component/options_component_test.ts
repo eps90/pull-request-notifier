@@ -31,8 +31,6 @@ describe('OptionsComponent', () => {
     });
 
     beforeEach(angular.mock.module('bitbucketNotifier.options'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
-
     beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {

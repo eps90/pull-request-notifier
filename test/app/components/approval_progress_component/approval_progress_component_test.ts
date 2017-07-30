@@ -1,6 +1,7 @@
 import {Config} from "../../../../app/services/config";
 import {PullRequestProgress, Reviewer, User} from "../../../../app/services/models";
 import * as angular from 'angular';
+import {MODULE_NAME} from '../../../../app/modules/bitbucket_notifier';
 
 describe('ApprovalProgressComponent', () => {
     var $scope: ng.IScope,
@@ -9,8 +10,7 @@ describe('ApprovalProgressComponent', () => {
         element,
         prProgress = null;
 
-    beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
+    beforeEach(angular.mock.module(MODULE_NAME));
     beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {

@@ -7,7 +7,6 @@ describe('PullRequestPreviewComponent', () => {
         element: ng.IAugmentedJQuery;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
     beforeEach(inject([
         '$compile',
         '$rootScope',

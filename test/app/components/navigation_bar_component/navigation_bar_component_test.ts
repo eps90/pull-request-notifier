@@ -8,7 +8,6 @@ describe("NavigationBarComponent", () => {
         bitbucketUrl = 'http://example.com';
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
     beforeEach(() => [
         window['chrome'] = {
             runtime: {

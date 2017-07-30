@@ -7,8 +7,6 @@ describe('ReviewerComponent', () => {
         $compile: ng.ICompileService;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
-
     beforeEach(
         inject([
             '$rootScope',

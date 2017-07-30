@@ -9,8 +9,6 @@ describe('PullRequestComponent', () => {
         pullRequest: PullRequest = new PullRequest();
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
-
     beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
