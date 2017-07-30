@@ -1,4 +1,5 @@
 import {Config} from "./config";
+import * as io from 'socket.io-client';
 
 export class SocketManager {
     static $inject: string[] = ['socketFactory', 'Config'];

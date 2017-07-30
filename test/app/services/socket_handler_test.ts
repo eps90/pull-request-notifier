@@ -8,6 +8,7 @@ import {
     SocketServerEvent, User, WebhookEvent
 } from "../../../app/services/models";
 import * as angular from 'angular';
+require('./../../angular-socket.io-mock');
 
 describe('SocketHandler', () => {
     var socketHandler,
