@@ -10,8 +10,10 @@ import {SoundManager} from "../services/sound_manager";
 import {SoundRepository} from "../services/sound_repository";
 
 import * as angular from 'angular';
+import 'angular-socket-io';
 
-var application = angular.module('bitbucketNotifier.background', ['LocalStorageModule', 'btford.socket-io']);
+export const MODULE_NAME = 'bitbucketNotifier.background';
+const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'btford.socket-io']);
 
 application.directive('background', BackgroundComponent.factory());
 
