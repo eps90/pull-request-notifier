@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     devtool: 'inline-source-map',
@@ -24,5 +25,11 @@ module.exports = {
 
     resolve: {
         extensions: ['.ts', '.js']
-    }
+    },
+
+    plugins: [
+        new webpack.ProvidePlugin({
+            'window.jQuery': 'jquery'
+        })
+    ]
 };
