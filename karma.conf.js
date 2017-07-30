@@ -67,7 +67,7 @@ module.exports = function(config) {
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true,
 
-    webpack: require('./config/webpack.test.config'),
+    webpack: require('./config/webpack.config'),
 
     client: {
       captureConsole: true
