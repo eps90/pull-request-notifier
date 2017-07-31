@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = (function webpackConfig() {
     const isProd = process.env.npm_lifecycle_event === 'build:prod';
@@ -33,6 +34,12 @@ module.exports = (function webpackConfig() {
                             exportAsEs6Default: true
                         }
                     }
+                },
+                {
+                    test: /\.less$/,
+                    use: ExtractTextPlugin.extract({
+                        use: ['css-loader', 'less-loader']
+                    })
                 }
             ]
         },
@@ -67,6 +74,12 @@ module.exports = (function webpackConfig() {
                 sourceMap: true
             })
         );
+    }
+
+    if (!isTest) {
+        config.plugins.push(
+            new ExtractTextPlugin('css/[name].css')
+        )
     }
 
     return config;
