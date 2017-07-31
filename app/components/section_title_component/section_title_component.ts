@@ -1,4 +1,5 @@
 import componentTemplate from './section_title_component.html';
+import './section_title_component.less';
 
 export class SectionTitleComponent implements ng.IDirective {
     restrict: string = 'E';

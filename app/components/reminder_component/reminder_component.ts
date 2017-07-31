@@ -1,5 +1,6 @@
 import {ChromeExtensionEvent} from "../../services/models";
 import componentTemplate from './reminder_component.html';
+import './reminder_component.less';
 
 export class ReminderComponent implements ng.IDirective {
     restrict: string = 'E';

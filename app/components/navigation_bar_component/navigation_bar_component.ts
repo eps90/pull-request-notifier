@@ -1,4 +1,5 @@
 import componentTemplate from './navigation_bar_component.html';
+import './navigation_bar_component.less';
 
 export class NavigationBarComponent implements ng.IDirective {
     restrict: string = 'E';

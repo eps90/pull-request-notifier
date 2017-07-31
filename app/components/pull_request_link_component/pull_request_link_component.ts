@@ -1,4 +1,5 @@
 import componentTemplate from './pull_request_link_component.html';
+import './pull_request_link_component.less';
 
 export class PullRequestLinkComponent implements ng.IDirective {
     restrict: string = 'E';

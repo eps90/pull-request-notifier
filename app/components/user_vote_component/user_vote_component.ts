@@ -1,6 +1,7 @@
 import {Reviewer} from "../../services/models";
 import {Config} from "../../services/config";
 import componentTemplate from './user_vote_component.html';
+import './user_vote_component.less';
 
 export class UserVoteComponent implements ng.IDirective {
     constructor(private config: Config) {}

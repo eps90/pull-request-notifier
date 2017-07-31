@@ -1,5 +1,6 @@
 import {PullRequest} from "../../services/models";
 import componentTemplate from './pull_request_component.html';
+import './pull_request_component.less';
 
 export class PullRequestComponent implements ng.IDirective {
     restrict: string = 'E';

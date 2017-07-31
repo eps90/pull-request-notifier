@@ -1,6 +1,7 @@
 import {Config} from "../../services/config";
 import {Reviewer} from "../../services/models";
 import componentTemplate from './approval_progress_component.html';
+import './approval_progress_component.less';
 
 export class ApprovalProgressComponent implements ng.IDirective {
     restrict: string = 'E';
