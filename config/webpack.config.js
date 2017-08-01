@@ -11,7 +11,8 @@ module.exports = (function webpackConfig() {
             popup: path.resolve(__dirname, '../app/modules/bitbucket_notifier.ts'),
             background: path.resolve(__dirname, '../app/modules/bitbucket_notifier_background.ts'),
             options: path.resolve(__dirname, '../app/modules/bitbucket_notifier_options.ts'),
-            vendor: path.resolve(__dirname, '../app/vendor.ts')
+            vendor: path.resolve(__dirname, '../app/vendor.ts'),
+            vendor_styles: path.resolve(__dirname, '../app/vendor_styles.ts')
         },
 
         output: isTest ? {} : {
@@ -37,10 +38,25 @@ module.exports = (function webpackConfig() {
                     }
                 },
                 {
+                    test: /\.css$/,
+                    use: isTest ? 'null-loader' : ExtractTextPlugin.extract({
+                        use: ['css-loader']
+                    })
+                },
+                {
                     test: /\.less$/,
                     use: isTest ? 'null-loader' : ExtractTextPlugin.extract({
                         use: ['css-loader', 'less-loader']
                     })
+                },
+                {
+                    test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+                    use: {
+                        loader: 'file-loader',
+                        options: {
+                            outputPath: 'fonts/'
+                        }
+                    }
                 }
             ]
         },
