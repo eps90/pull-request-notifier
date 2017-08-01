@@ -1,4 +1,4 @@
-import * as angular from 'angular';
+import './../app/vendor';
 import 'angular-mocks';
 
 import './../app/modules/bitbucket_notifier';
