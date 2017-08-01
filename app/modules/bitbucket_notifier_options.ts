@@ -1,3 +1,5 @@
+import * as angular from 'angular';
+
 import {OptionsComponent} from "../components/options_component/options_component";
 import {SectionTitleComponent} from "../components/section_title_component/section_title_component";
 import {NavigationBarComponent} from "../components/navigation_bar_component/navigation_bar_component";
@@ -8,11 +10,6 @@ import {SoundManager} from "../services/sound_manager";
 import {SoundRepository} from "../services/sound_repository";
 import {Notifier} from "../services/notifier";
 import {NotificationRepository} from "../services/notification_repository";
-
-import 'jquery';
-import * as angular from 'angular';
-import 'angular-local-storage';
-import 'angular-growl-v2';
 
 export const MODULE_NAME = 'bitbucketNotifier.options';
 const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'angular-growl']);

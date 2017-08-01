@@ -1,3 +1,5 @@
+import * as angular from 'angular';
+
 import {PullRequestComponent} from "../components/pull_request_component/pull_request_component";
 import {PullRequestsListComponent} from "../components/pull_requests_list_component/pull_requests_list_component";
 import {PullRequestsHeaderComponent} from "../components/pull_requests_header_component/pull_requests_header_component";
@@ -17,15 +19,6 @@ import {PullRequestRepository} from "../services/pull_request_repository";
 import {SoundRepository} from "../services/sound_repository";
 import {Config} from "../services/config";
 import {RoutingConfiguration} from "../config/routing";
-
-import 'ng-showdown';
-import * as angular from 'angular';
-import 'angular-local-storage';
-import 'angular-ui-bootstrap';
-import 'angular-emoji-filter-hd';
-import 'angular-sanitize';
-import 'angular-ui-router';
-import 'angular-animate';
 
 export const MODULE_NAME = 'bitbucketNotifier';
 

@@ -1,3 +1,5 @@
+import * as angular from 'angular';
+
 import {BackgroundComponent} from "../components/background_component/background_component";
 import {PullRequestRepository} from "../services/pull_request_repository";
 import {NotificationRepository} from "../services/notification_repository";
@@ -8,9 +10,6 @@ import {Config} from "../services/config";
 import {Indicator} from "../services/indicator";
 import {SoundManager} from "../services/sound_manager";
 import {SoundRepository} from "../services/sound_repository";
-
-import * as angular from 'angular';
-import 'angular-socket-io';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
 const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'btford.socket-io']);
