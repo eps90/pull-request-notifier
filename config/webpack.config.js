@@ -38,7 +38,7 @@ module.exports = (function webpackConfig() {
                 },
                 {
                     test: /\.less$/,
-                    use: ExtractTextPlugin.extract({
+                    use: isTest ? 'null-loader' : ExtractTextPlugin.extract({
                         use: ['css-loader', 'less-loader']
                     })
                 }
