@@ -10,7 +10,8 @@ module.exports = (function webpackConfig() {
         entry: isTest ? void 0 : {
             popup: path.resolve(__dirname, '../app/modules/bitbucket_notifier.ts'),
             background: path.resolve(__dirname, '../app/modules/bitbucket_notifier_background.ts'),
-            options: path.resolve(__dirname, '../app/modules/bitbucket_notifier_options.ts')
+            options: path.resolve(__dirname, '../app/modules/bitbucket_notifier_options.ts'),
+            vendor: path.resolve(__dirname, '../app/vendor.ts')
         },
 
         output: isTest ? {} : {
