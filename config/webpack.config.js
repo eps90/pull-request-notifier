@@ -17,9 +17,9 @@ module.exports = (function webpackConfig() {
 
         output: isTest ? {} : {
             path: path.resolve(__dirname, '../dist'),
-            filename: '[name].[hash].js',
+            filename: '[name].[chunkhash].js',
             publicPath: '/',
-            chunkFilename: '[name].[hash].js'
+            chunkFilename: '[name].[chunkhash].js'
         },
 
         module: {
@@ -95,7 +95,7 @@ module.exports = (function webpackConfig() {
 
     if (!isTest) {
         config.plugins.push(
-            new ExtractTextPlugin('css/[name].css')
+            new ExtractTextPlugin('css/[name].[contenthash].css')
         )
     }
 
