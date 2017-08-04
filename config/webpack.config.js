@@ -26,7 +26,12 @@ module.exports = (function webpackConfig() {
             rules: [
                 {
                     test: /\.ts$/,
-                    use: 'ts-loader'
+                    use: {
+                        loader: 'ts-loader',
+                        options: {
+                            silent: true
+                        }
+                    }
                 },
                 {
                     test: /\.html$/,
