@@ -4,7 +4,7 @@ import {ConfigObject, PullRequestProgress, NotificationSound} from "../../../app
 import * as angular from 'angular';
 
 describe('Config', () => {
-    var config: Config,
+    let config: Config,
         localStorageService: angular.local.storage.ILocalStorageService,
         soundRepository: SoundRepository;
 
@@ -79,29 +79,29 @@ describe('Config', () => {
     });
 
     describe('of sounds', () => {
-        it('should set sound path to new pull request notification', () => {
+        it('should set a sound for new pull request notification', () => {
             testSoundSetter('setNewPullRequestSound', NotificationSound.NEW_PULLREQUEST);
         });
 
-        it('should set sound path to approved pull request notification', () => {
+        it('should set a sound for approved pull request notification', () => {
             testSoundSetter('setApprovedPullRequestSound', NotificationSound.APPROVED_PULLREQUEST);
         });
 
-        it('should set sound path to merged pull request notification', () => {
+        it('should set a sound for merged pull request notification', () => {
             testSoundSetter('setMergedPullRequestSound', NotificationSound.MERGED_PULLREQUEST);
         });
 
-        it('should set sound path to reminder notification', () => {
+        it('should set a sound for reminder notification', () => {
             testSoundSetter('setReminderSound', NotificationSound.REMINDER);
         });
 
         function testSoundSetter(setterName, soundKey): void {
-            var soundPath = 'path/to/sound_' + soundKey + '.ogg';
-            config[setterName](soundPath);
-            expect(localStorageService.get(soundKey)).toEqual(soundPath);
+            const soundId = 'path/to/sound_' + soundKey + '.ogg';
+            config[setterName](soundId);
+            expect(localStorageService.get(soundKey)).toEqual(soundId);
         }
 
-        it('should get sound path to new pull request notification', () => {
+        it('should get sound id for new pull request notification', () => {
             testSoundGetter('getNewPullRequestSound', NotificationSound.NEW_PULLREQUEST);
         });
 
@@ -118,25 +118,25 @@ describe('Config', () => {
         });
 
         function testSoundGetter(getterName, soundKey): void {
-            var soundPath = 'path/to/sound' + soundKey + '.ogg';
-            localStorageService.set(soundKey, soundPath);
-            expect(config[getterName]()).toEqual(soundPath);
+            const soundId = 'path/to/sound' + soundKey + '.ogg';
+            localStorageService.set(soundKey, soundId);
+            expect(config[getterName]()).toEqual(soundId);
         }
 
         describe('with default values', () => {
             it('should return default sound for new pull request', () => {
-                expect(config.getNewPullRequestSound()).toEqual(soundRepository.findById('bell').soundPath);
+                expect(config.getNewPullRequestSound()).toEqual(soundRepository.findById('bell').id);
             });
             it('should return default sound for approved pull request', () => {
-                expect(config.getApprovedPullRequestSound()).toEqual(soundRepository.findById('ring').soundPath);
+                expect(config.getApprovedPullRequestSound()).toEqual(soundRepository.findById('ring').id);
             });
 
             it('should return default sound for merged pull request', () => {
-                expect(config.getMergedPullRequestSound()).toEqual(soundRepository.findById('ring').soundPath);
+                expect(config.getMergedPullRequestSound()).toEqual(soundRepository.findById('ring').id);
             });
 
             it('should return default sound for reminder', () => {
-                expect(config.getReminderSound()).toEqual(soundRepository.findById('alarm').soundPath);
+                expect(config.getReminderSound()).toEqual(soundRepository.findById('alarm').id);
             });
         });
     });
