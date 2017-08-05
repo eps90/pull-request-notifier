@@ -125,18 +125,18 @@ describe('Config', () => {
 
         describe('with default values', () => {
             it('should return default sound for new pull request', () => {
-                expect(config.getNewPullRequestSound()).toEqual(soundRepository.findByLabel('Bell').path);
+                expect(config.getNewPullRequestSound()).toEqual(soundRepository.findById('Bell').soundPath);
             });
             it('should return default sound for approved pull request', () => {
-                expect(config.getApprovedPullRequestSound()).toEqual(soundRepository.findByLabel('Ring').path);
+                expect(config.getApprovedPullRequestSound()).toEqual(soundRepository.findById('Ring').soundPath);
             });
 
             it('should return default sound for merged pull request', () => {
-                expect(config.getMergedPullRequestSound()).toEqual(soundRepository.findByLabel('Ring').path);
+                expect(config.getMergedPullRequestSound()).toEqual(soundRepository.findById('Ring').soundPath);
             });
 
             it('should return default sound for reminder', () => {
-                expect(config.getReminderSound()).toEqual(soundRepository.findByLabel('Nuclear alarm').path);
+                expect(config.getReminderSound()).toEqual(soundRepository.findById('Nuclear alarm').soundPath);
             });
         });
     });

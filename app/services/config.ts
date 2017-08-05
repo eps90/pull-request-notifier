@@ -8,10 +8,10 @@ export class Config {
     private soundsDefaults: any = {};
 
     constructor(private localStorageService: angular.local.storage.ILocalStorageService, soundRepository: SoundRepository) {
-        this.soundsDefaults[Sound.NEW_PULLREQUEST] = soundRepository.findByLabel('Bell').path;
-        this.soundsDefaults[Sound.APPROVED_PULLREQUEST] = soundRepository.findByLabel('Ring').path;
-        this.soundsDefaults[Sound.MERGED_PULLREQUEST] = soundRepository.findByLabel('Ring').path;
-        this.soundsDefaults[Sound.REMINDER] = soundRepository.findByLabel('Nuclear alarm').path;
+        this.soundsDefaults[Sound.NEW_PULLREQUEST] = soundRepository.findById('bell').soundPath;
+        this.soundsDefaults[Sound.APPROVED_PULLREQUEST] = soundRepository.findById('ring').soundPath;
+        this.soundsDefaults[Sound.MERGED_PULLREQUEST] = soundRepository.findById('ring').soundPath;
+        this.soundsDefaults[Sound.REMINDER] = soundRepository.findById('alarm').soundPath;
     }
 
     // setting up username

@@ -1,22 +1,21 @@
 import {Sound} from "./models";
 
 export class SoundRepository {
-    private defaultSoundsPath: string = '../../assets/sounds/';
-    private defaultSounds: Sound[] = [
-        new Sound(`${this.defaultSoundsPath}notification.ogg`, 'Ring'),
-        new Sound(`${this.defaultSoundsPath}notification2.ogg`, 'Bell'),
-        new Sound(`${this.defaultSoundsPath}nuclear_alarm.ogg`, 'Nuclear alarm')
+    private sounds: Sound[] = [
+        new Sound('ring', require('./../../assets/sounds/notification.ogg'), 'Ring'),
+        new Sound('bell', require('./../../assets/sounds/notification2.ogg'), 'Bell'),
+        new Sound('alarm', require('./../../assets/sounds/nuclear_alarm.ogg'), 'Nuclear alarm'),
+        new Sound('empty', null, 'None')
     ];
 
     findAll(): Sound[] {
-        return this.defaultSounds;
+        return this.sounds;
     }
 
-    findByLabel(soundLabel: string): Sound {
-        var allSounds = this.findAll();
-        for (let i = 0, len = allSounds.length; i < len; i++) {
-            var sound = allSounds[i];
-            if (sound.label === soundLabel) {
+    findById(soundId: string): Sound {
+        const allSounds = this.findAll();
+        for (let sound of allSounds) {
+            if (sound.id === soundId) {
                 return sound;
             }
         }
