@@ -1,6 +1,6 @@
 import {SoundManager} from "../../../app/services/sound_manager";
 import {Config} from "../../../app/services/config";
-import {Sound} from "../../../app/services/models";
+import {NotificationSound} from "../../../app/services/models";
 import * as angular from 'angular';
 
 describe('SoundManager', () => {
@@ -25,16 +25,16 @@ describe('SoundManager', () => {
 
             $provide.value('Config', {
                 'getNewPullRequestSound': jasmine.createSpy('Config.getNewPullRequest').and.callFake(() => {
-                    return getFakeSoundPath(Sound.NEW_PULLREQUEST);
+                    return getFakeSoundPath(NotificationSound.NEW_PULLREQUEST);
                 }),
                 'getApprovedPullRequestSound': jasmine.createSpy('Config.getApprovedPullRequest').and.callFake(() => {
-                    return getFakeSoundPath(Sound.APPROVED_PULLREQUEST);
+                    return getFakeSoundPath(NotificationSound.APPROVED_PULLREQUEST);
                 }),
                 'getMergedPullRequestSound': jasmine.createSpy('Config.getMergedPullRequest').and.callFake(() => {
-                    return getFakeSoundPath(Sound.MERGED_PULLREQUEST);
+                    return getFakeSoundPath(NotificationSound.MERGED_PULLREQUEST);
                 }),
                 'getReminderSound': jasmine.createSpy('Config.getReminder').and.callFake(() => {
-                    return getFakeSoundPath(Sound.REMINDER);
+                    return getFakeSoundPath(NotificationSound.REMINDER);
                 })
             });
         }
@@ -58,29 +58,29 @@ describe('SoundManager', () => {
         /* tslint:disable */
         var soundManagerInstance = new SoundManager(config);
         /* tslint:enable */
-        testSoundRegistration(Sound.NEW_PULLREQUEST);
-        testSoundRegistration(Sound.APPROVED_PULLREQUEST);
-        testSoundRegistration(Sound.MERGED_PULLREQUEST);
-        testSoundRegistration(Sound.REMINDER);
+        testSoundRegistration(NotificationSound.NEW_PULLREQUEST);
+        testSoundRegistration(NotificationSound.APPROVED_PULLREQUEST);
+        testSoundRegistration(NotificationSound.MERGED_PULLREQUEST);
+        testSoundRegistration(NotificationSound.REMINDER);
     });
 
     it('should be able to play a new pull request sound', () => {
         soundManager.playNewPullRequestSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(Sound.NEW_PULLREQUEST);
+        expect(createjs.Sound.play).toHaveBeenCalledWith(NotificationSound.NEW_PULLREQUEST);
     });
 
     it('should be able to play an approved pull request sound', () => {
         soundManager.playApprovedPullRequestSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(Sound.APPROVED_PULLREQUEST);
+        expect(createjs.Sound.play).toHaveBeenCalledWith(NotificationSound.APPROVED_PULLREQUEST);
     });
 
     it('should be able to play a merged pull request sound', () => {
         soundManager.playMergedPullRequestSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(Sound.MERGED_PULLREQUEST);
+        expect(createjs.Sound.play).toHaveBeenCalledWith(NotificationSound.MERGED_PULLREQUEST);
     });
 
     it('should be able to play a reminder sound', () => {
         soundManager.playReminderSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(Sound.REMINDER);
+        expect(createjs.Sound.play).toHaveBeenCalledWith(NotificationSound.REMINDER);
     });
 });

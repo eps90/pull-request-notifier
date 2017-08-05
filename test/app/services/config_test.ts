@@ -1,6 +1,6 @@
 import {Config} from "../../../app/services/config";
 import {SoundRepository} from "../../../app/services/sound_repository";
-import {ConfigObject, PullRequestProgress, Sound} from "../../../app/services/models";
+import {ConfigObject, PullRequestProgress, NotificationSound} from "../../../app/services/models";
 import * as angular from 'angular';
 
 describe('Config', () => {
@@ -80,19 +80,19 @@ describe('Config', () => {
 
     describe('of sounds', () => {
         it('should set sound path to new pull request notification', () => {
-            testSoundSetter('setNewPullRequestSound', Sound.NEW_PULLREQUEST);
+            testSoundSetter('setNewPullRequestSound', NotificationSound.NEW_PULLREQUEST);
         });
 
         it('should set sound path to approved pull request notification', () => {
-            testSoundSetter('setApprovedPullRequestSound', Sound.APPROVED_PULLREQUEST);
+            testSoundSetter('setApprovedPullRequestSound', NotificationSound.APPROVED_PULLREQUEST);
         });
 
         it('should set sound path to merged pull request notification', () => {
-            testSoundSetter('setMergedPullRequestSound', Sound.MERGED_PULLREQUEST);
+            testSoundSetter('setMergedPullRequestSound', NotificationSound.MERGED_PULLREQUEST);
         });
 
         it('should set sound path to reminder notification', () => {
-            testSoundSetter('setReminderSound', Sound.REMINDER);
+            testSoundSetter('setReminderSound', NotificationSound.REMINDER);
         });
 
         function testSoundSetter(setterName, soundKey): void {
@@ -102,19 +102,19 @@ describe('Config', () => {
         }
 
         it('should get sound path to new pull request notification', () => {
-            testSoundGetter('getNewPullRequestSound', Sound.NEW_PULLREQUEST);
+            testSoundGetter('getNewPullRequestSound', NotificationSound.NEW_PULLREQUEST);
         });
 
         it('should get sound path to approved pull request notification', () => {
-            testSoundGetter('getApprovedPullRequestSound', Sound.APPROVED_PULLREQUEST);
+            testSoundGetter('getApprovedPullRequestSound', NotificationSound.APPROVED_PULLREQUEST);
         });
 
         it('should get sound path to merged pull request notification', () => {
-            testSoundGetter('getMergedPullRequestSound', Sound.MERGED_PULLREQUEST);
+            testSoundGetter('getMergedPullRequestSound', NotificationSound.MERGED_PULLREQUEST);
         });
 
         it('should get sound path to reminder notification', () => {
-            testSoundGetter('getReminderSound', Sound.REMINDER);
+            testSoundGetter('getReminderSound', NotificationSound.REMINDER);
         });
 
         function testSoundGetter(getterName, soundKey): void {
@@ -125,18 +125,18 @@ describe('Config', () => {
 
         describe('with default values', () => {
             it('should return default sound for new pull request', () => {
-                expect(config.getNewPullRequestSound()).toEqual(soundRepository.findById('Bell').soundPath);
+                expect(config.getNewPullRequestSound()).toEqual(soundRepository.findById('bell').soundPath);
             });
             it('should return default sound for approved pull request', () => {
-                expect(config.getApprovedPullRequestSound()).toEqual(soundRepository.findById('Ring').soundPath);
+                expect(config.getApprovedPullRequestSound()).toEqual(soundRepository.findById('ring').soundPath);
             });
 
             it('should return default sound for merged pull request', () => {
-                expect(config.getMergedPullRequestSound()).toEqual(soundRepository.findById('Ring').soundPath);
+                expect(config.getMergedPullRequestSound()).toEqual(soundRepository.findById('ring').soundPath);
             });
 
             it('should return default sound for reminder', () => {
-                expect(config.getReminderSound()).toEqual(soundRepository.findById('Nuclear alarm').soundPath);
+                expect(config.getReminderSound()).toEqual(soundRepository.findById('alarm').soundPath);
             });
         });
     });

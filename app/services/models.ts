@@ -156,12 +156,14 @@ export class PullRequestProgress {
     static PROGRESS_BAR: string = 'progress_bar';
 }
 
-export class Sound {
+export class NotificationSound {
     static NEW_PULLREQUEST: string = 'sounds.new_pull_request';
     static APPROVED_PULLREQUEST: string = 'sounds.approved_pull_request';
     static MERGED_PULLREQUEST: string = 'sounds.merged_pull_request';
     static REMINDER: string = 'sounds.reminder';
+}
 
+export class Sound {
     constructor(private _id: string, private _soundPath: string, private _label: string) {}
 
     get id(): string {
