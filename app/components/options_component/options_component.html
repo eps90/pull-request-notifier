@@ -68,7 +68,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <select name="new-pull-request-sound" id="new-pull-request-sound" class="form-control"
-                                        ng-model="options.newPullRequestSound" ng-options="sound.path as sound.label for sound in sounds"></select>
+                                        ng-model="options.newPullRequestSound" ng-options="sound.id as sound.label for sound in sounds"></select>
                             </div>
                             <div class="col-sm-1">
                                 <a href="#" ng-click="playSound(options.newPullRequestSound)" class="btn btn-primary">
@@ -82,7 +82,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <select name="approved-pull-request-sound" id="approved-pull-request-sound" class="form-control"
-                                        ng-model="options.approvedPullRequestSound" ng-options="sound.path as sound.label for sound in sounds"></select>
+                                        ng-model="options.approvedPullRequestSound" ng-options="sound.id as sound.label for sound in sounds"></select>
                             </div>
                             <div class="col-sm-1">
                                 <a href="#" ng-click="playSound(options.approvedPullRequestSound)" class="btn btn-primary">
@@ -96,7 +96,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <select name="merged-pull-request-sound" id="merged-pull-request-sound" class="form-control"
-                                        ng-model="options.mergedPullRequestSound" ng-options="sound.path as sound.label for sound in sounds"></select>
+                                        ng-model="options.mergedPullRequestSound" ng-options="sound.id as sound.label for sound in sounds"></select>
                             </div>
                             <div class="col-sm-1">
                                 <a href="#" ng-click="playSound(options.mergedPullRequestSound)" class="btn btn-primary">
@@ -110,7 +110,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <select name="reminder-sound" id="reminder-sound" class="form-control"
-                                        ng-model="options.reminderSound" ng-options="sound.path as sound.label for sound in sounds"></select>
+                                        ng-model="options.reminderSound" ng-options="sound.id as sound.label for sound in sounds"></select>
                             </div>
                             <div class="col-sm-1">
                                 <a href="#" ng-click="playSound(options.reminderSound)" class="btn btn-primary">

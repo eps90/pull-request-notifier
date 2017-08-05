@@ -37,10 +37,10 @@ describe('OptionsComponent', () => {
             appUser = null;
             socketServer = null;
             pullRequestProgress = PullRequestProgress.PROPORTIONS;
-            newPullRequestSound = '../../assets/sounds/notification2.ogg';
-            approvedPullRequestSound = '../../assets/sounds/notification.ogg';
-            mergedPullRequestSound = '../../assets/sounds/notification.ogg';
-            reminderSound = '../../assets/sounds/nuclear_alarm.ogg';
+            newPullRequestSound = 'ring';
+            approvedPullRequestSound = 'bell';
+            mergedPullRequestSound = 'bell';
+            reminderSound = 'alarm';
 
             $provide.value('Config', {
                 getUsername: jasmine.createSpy('Config.getUsername').and.callFake(() => {
@@ -123,20 +123,20 @@ describe('OptionsComponent', () => {
         expect(userElement.val()).toEqual('');
         expect(socketServerElement.val()).toEqual('');
         expect(prProgressElement.val()).toEqual(PullRequestProgress.PROPORTIONS);
-        expect(newPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/notification2.ogg');
-        expect(approvedPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/notification.ogg');
-        expect(mergedPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/notification.ogg');
-        expect(reminderSoundElement.val()).toEqual('string:../../assets/sounds/nuclear_alarm.ogg');
+        expect(newPullRequestSoundElement.val()).toEqual('string:ring');
+        expect(approvedPullRequestSoundElement.val()).toEqual('string:bell');
+        expect(mergedPullRequestSoundElement.val()).toEqual('string:bell');
+        expect(reminderSoundElement.val()).toEqual('string:alarm');
     });
 
     it('should show completed form if config is set', () => {
         appUser = 'john.smith';
         socketServer = 'http://localhost:1234';
         pullRequestProgress = PullRequestProgress.PERCENT;
-        newPullRequestSound = '../../assets/sounds/nuclear_alarm.ogg';
-        approvedPullRequestSound = '../../assets/sounds/nuclear_alarm.ogg';
-        mergedPullRequestSound = '../../assets/sounds/nuclear_alarm.ogg';
-        reminderSound = '../../assets/sounds/nuclear_alarm.ogg';
+        newPullRequestSound = 'ring';
+        approvedPullRequestSound = 'bell';
+        mergedPullRequestSound = 'bell';
+        reminderSound = 'alarm';
 
         element = $compile('<options></options>')($scope);
         $scope.$digest();
@@ -153,10 +153,10 @@ describe('OptionsComponent', () => {
         expect(userElement.val()).toEqual(appUser);
         expect(socketServerElement.val()).toEqual(socketServer);
         expect(prProgressElement.val()).toEqual(pullRequestProgress);
-        expect(newPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/nuclear_alarm.ogg');
-        expect(approvedPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/nuclear_alarm.ogg');
-        expect(mergedPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/nuclear_alarm.ogg');
-        expect(reminderSoundElement.val()).toEqual('string:../../assets/sounds/nuclear_alarm.ogg');
+        expect(newPullRequestSoundElement.val()).toEqual('string:ring');
+        expect(approvedPullRequestSoundElement.val()).toEqual('string:bell');
+        expect(mergedPullRequestSoundElement.val()).toEqual('string:bell');
+        expect(reminderSoundElement.val()).toEqual('string:alarm');
     });
 
     it('should save config', () => {
@@ -165,10 +165,10 @@ describe('OptionsComponent', () => {
 
         var username = 'aaaaa';
         var address = 'bbbbb';
-        var newPrSound = '../../assets/sounds/nuclear_alarm.ogg';
-        var approvedPrSound = '../../assets/sounds/nuclear_alarm.ogg';
-        var mergedPrSound = '../../assets/sounds/nuclear_alarm.ogg';
-        var remindSound = '../../assets/sounds/notification2.ogg';
+        var newPrSound = 'alarm';
+        var approvedPrSound = 'alarm';
+        var mergedPrSound = 'alarm';
+        var remindSound = 'bell';
 
         element.find('#app-user').val(username).trigger('input');
         element.find('#socket-server-address').val(address).trigger('input');
