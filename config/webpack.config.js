@@ -62,6 +62,15 @@ module.exports = (function webpackConfig() {
                             outputPath: 'fonts/'
                         }
                     }
+                },
+                {
+                    test: /\.ogg$/,
+                    use: {
+                        loader: 'file-loader',
+                        options: {
+                            outputPath: 'sounds/'
+                        }
+                    }
                 }
             ]
         },
