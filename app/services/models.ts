@@ -162,5 +162,17 @@ export class Sound {
     static MERGED_PULLREQUEST: string = 'sounds.merged_pull_request';
     static REMINDER: string = 'sounds.reminder';
 
-    constructor(public path: string, public label: string) {}
+    constructor(private _id: string, private _soundPath: string, private _label: string) {}
+
+    get id(): string {
+        return this._id;
+    }
+
+    get soundPath(): string {
+        return this._soundPath;
+    }
+
+    get label(): string {
+        return this._label;
+    }
 }
