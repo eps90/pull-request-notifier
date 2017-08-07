@@ -1,40 +1,46 @@
 import {SoundManager} from "../../../app/services/sound_manager";
 import {Config} from "../../../app/services/config";
-import {NotificationSound} from "../../../app/services/models";
+import {NotificationSound, Sound} from "../../../app/services/models";
+import {SoundRepository} from "../../../app/services/sound_repository";
 import * as angular from 'angular';
+import {HowlSoundFactory} from "../../../app/services/factories";
 
 describe('SoundManager', () => {
-    var soundManager: SoundManager,
-        config: Config;
+    let soundManager: SoundManager,
+        soundRepository: SoundRepository,
+        config: Config,
+        sounds;
 
-    beforeEach(() => {
-        window['createjs'] = {
-            Sound: {
-                registerSound: jasmine.createSpy('createjs.Sound.registerSound'),
-                play: jasmine.createSpy('createjs.Sound.play')
-            }
-        };
+    beforeEach(function collectSounds(): void {
+        sounds = {};
+        let counter = 0;
+        spyOn(HowlSoundFactory, 'createSound').and.callFake((soundPath) => {
+            sounds[soundPath] = jasmine.createSpyObj(`Howl#${counter}`, ['play']);
+            return sounds[soundPath];
+        });
     });
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
-            function getFakeSoundPath(soundKey): string {
-                return 'sound__' + soundKey + '.ogg';
-            }
-
             $provide.value('Config', {
                 'getNewPullRequestSound': jasmine.createSpy('Config.getNewPullRequest').and.callFake(() => {
-                    return getFakeSoundPath(NotificationSound.NEW_PULLREQUEST);
+                    return getFakeSoundId(NotificationSound.NEW_PULLREQUEST);
                 }),
                 'getApprovedPullRequestSound': jasmine.createSpy('Config.getApprovedPullRequest').and.callFake(() => {
-                    return getFakeSoundPath(NotificationSound.APPROVED_PULLREQUEST);
+                    return getFakeSoundId(NotificationSound.APPROVED_PULLREQUEST);
                 }),
                 'getMergedPullRequestSound': jasmine.createSpy('Config.getMergedPullRequest').and.callFake(() => {
-                    return getFakeSoundPath(NotificationSound.MERGED_PULLREQUEST);
+                    return getFakeSoundId(NotificationSound.MERGED_PULLREQUEST);
                 }),
                 'getReminderSound': jasmine.createSpy('Config.getReminder').and.callFake(() => {
-                    return getFakeSoundPath(NotificationSound.REMINDER);
+                    return getFakeSoundId(NotificationSound.REMINDER);
+                })
+            });
+
+            $provide.value('SoundRepository', {
+                'findById': jasmine.createSpy('SoundRepository.findById').and.callFake((soundId: string) => {
+                    return new Sound(soundId, getFakeSoundPath(soundId), 'Fake label');
                 })
             });
         }
@@ -42,45 +48,64 @@ describe('SoundManager', () => {
     beforeEach(inject([
         'SoundManager',
         'Config',
-        (sm, c) => {
+        'SoundRepository',
+        (sm, c, sr) => {
             soundManager = sm;
             config = c;
+            soundRepository = sr;
         }
     ]));
 
     it('it should register sounds from config on startup', () => {
-        var calls = 0;
+        let calls = 0;
         function testSoundRegistration(soundKey): void {
-            var spy = <jasmine.Spy> createjs.Sound.registerSound;
-            expect(spy.calls.argsFor(calls++)).toEqual(['sound__' + soundKey + '.ogg', soundKey]);
+            expect((HowlSoundFactory.createSound as jasmine.Spy).calls.argsFor(calls++))
+                .toEqual(['sound__' + soundKey + '.mp3']);
         }
 
-        /* tslint:disable */
-        var soundManagerInstance = new SoundManager(config);
-        /* tslint:enable */
+        new SoundManager(config, soundRepository);
+
         testSoundRegistration(NotificationSound.NEW_PULLREQUEST);
         testSoundRegistration(NotificationSound.APPROVED_PULLREQUEST);
         testSoundRegistration(NotificationSound.MERGED_PULLREQUEST);
         testSoundRegistration(NotificationSound.REMINDER);
     });
 
-    it('should be able to play a new pull request sound', () => {
-        soundManager.playNewPullRequestSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(NotificationSound.NEW_PULLREQUEST);
+    describe('Sound playing', () => {
+        it('should be able to play a new pull request sound', () => {
+            soundManager.playNewPullRequestSound();
+
+            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.NEW_PULLREQUEST));
+            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+        });
+
+        it('should be able to play an approved pull request sound', () => {
+            soundManager.playApprovedPullRequestSound();
+
+            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.APPROVED_PULLREQUEST));
+            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+        });
+
+        it('should be able to play a merged pull request sound', () => {
+            soundManager.playMergedPullRequestSound();
+
+            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.MERGED_PULLREQUEST));
+            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+        });
+
+        it('should be able to play a reminder sound', () => {
+            soundManager.playReminderSound();
+
+            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.REMINDER));
+            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+        });
     });
 
-    it('should be able to play an approved pull request sound', () => {
-        soundManager.playApprovedPullRequestSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(NotificationSound.APPROVED_PULLREQUEST);
-    });
+    function getFakeSoundId(soundKey): string {
+        return `sound__${soundKey}`;
+    }
 
-    it('should be able to play a merged pull request sound', () => {
-        soundManager.playMergedPullRequestSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(NotificationSound.MERGED_PULLREQUEST);
-    });
-
-    it('should be able to play a reminder sound', () => {
-        soundManager.playReminderSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(NotificationSound.REMINDER);
-    });
+    function getFakeSoundPath(soundKey): string {
+        return `${soundKey}.mp3`;
+    }
 });
