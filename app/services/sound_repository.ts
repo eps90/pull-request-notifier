@@ -1,6 +1,8 @@
 import {Sound} from "./models";
 
 export class SoundRepository {
+    /** @todo Add sounds from json or yaml */
+    /** @todo Allow to add custom sounds, get them from config */
     private sounds: Sound[] = [
         new Sound('ring', require('./../../assets/sounds/notification.ogg'), 'Ring'),
         new Sound('bell', require('./../../assets/sounds/notification2.ogg'), 'Bell'),
