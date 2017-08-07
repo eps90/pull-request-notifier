@@ -1,18 +1,20 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (function webpackConfig() {
     const isProd = process.env.npm_lifecycle_event === 'build:prod';
     const isTest = process.env.npm_lifecycle_event === 'test';
+    const isDev = !isTest && !isProd;
 
     const config = {
         entry: isTest ? void 0 : {
+            vendor_styles: path.resolve(__dirname, '../app/vendor_styles.ts'),
+            vendor: path.resolve(__dirname, '../app/vendor.ts'),
             popup: path.resolve(__dirname, '../app/modules/bitbucket_notifier.ts'),
             background: path.resolve(__dirname, '../app/modules/bitbucket_notifier_background.ts'),
-            options: path.resolve(__dirname, '../app/modules/bitbucket_notifier_options.ts'),
-            vendor: path.resolve(__dirname, '../app/vendor.ts'),
-            vendor_styles: path.resolve(__dirname, '../app/vendor_styles.ts')
+            options: path.resolve(__dirname, '../app/modules/bitbucket_notifier_options.ts')
         },
 
         output: isTest ? {} : {
@@ -81,7 +83,8 @@ module.exports = (function webpackConfig() {
 
         plugins: [
             new webpack.ProvidePlugin({
-                'window.jQuery': 'jquery'
+                'window.jQuery': 'jquery',
+                'window.createjs': 'createjs-soundjs'
             })
         ]
     };
@@ -91,7 +94,7 @@ module.exports = (function webpackConfig() {
     } else if (isProd) {
         config.devtool = 'source-map';
     } else {
-        config.devtool = 'eval-source-map';
+        config.devtool = 'source-map';
     }
 
     if (isProd) {
@@ -105,6 +108,29 @@ module.exports = (function webpackConfig() {
                 sourceMap: true
             })
         );
+    }
+
+    if (isProd || isDev) {
+        config.plugins.push(
+            new HtmlWebpackPlugin({
+                filename: 'background.html',
+                template: path.resolve(__dirname, '../app/views/background.html'),
+                chunksSortMode: 'manual',
+                chunks: ['vendor', 'common', 'background']
+            }),
+            new HtmlWebpackPlugin({
+                filename: 'popup.html',
+                template: path.resolve(__dirname, '../app/views/popup.html'),
+                chunksSortMode: 'manual',
+                chunks: ['vendor_styles', 'vendor', 'common', 'popup']
+            }),
+            new HtmlWebpackPlugin({
+                filename: 'options.html',
+                template: path.resolve(__dirname, '../app/views/options.html'),
+                chunksSortMode: 'manual',
+                chunks: ['vendor_styles', 'vendor', 'common', 'options']
+            })
+        )
     }
 
     if (!isTest) {
