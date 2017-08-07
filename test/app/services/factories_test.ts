@@ -1,8 +1,10 @@
 import {PullRequestState, User} from "../../../app/services/models";
 import {
+    HowlSoundFactory,
     ProjectFactory, PullRequestEventFactory, PullRequestFactory, PullRequestLinksFactory, ReviewerFactory,
     UserFactory
 } from "../../../app/services/factories";
+import {Howl} from 'howler';
 
 describe('Factories', () => {
     describe('UserFactory', () => {
@@ -165,6 +167,15 @@ describe('Factories', () => {
             expect(event.pullRequests[0].title).toEqual('This is some title');
             expect(event.context.id).toEqual(2);
             expect(event.context.title).toEqual('This is another title');
+        });
+    });
+
+    describe('Sound factory', () => {
+        it('should create Howl object with given sound path', () => {
+            const soundPath = '/some/sound/path.mp3';
+            const createdObject = HowlSoundFactory.createSound(soundPath);
+
+            expect(createdObject as any instanceof Howl).toBeTruthy();
         });
     });
 });

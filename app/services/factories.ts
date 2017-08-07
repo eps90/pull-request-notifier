@@ -1,4 +1,5 @@
 import {Project, PullRequest, PullRequestEvent, PullRequestLinks, PullRequestState, Reviewer, User} from "./models";
+import {Howl} from 'howler';
 
 export class UserFactory {
     static create(rawObject: any): User {
@@ -151,5 +152,13 @@ export class PullRequestEventFactory {
         }
 
         return event;
+    }
+}
+
+export class HowlSoundFactory {
+    static createSound(soundPath: string): Howl {
+        return new Howl({
+            src: [soundPath]
+        });
     }
 }
