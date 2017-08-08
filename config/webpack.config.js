@@ -139,5 +139,11 @@ module.exports = (function webpackConfig() {
         )
     }
 
+    if (isDev) {
+        config.devServer = {
+            contentBase: path.resolve(__dirname, '../dist')
+        };
+    }
+
     return config;
 })();
