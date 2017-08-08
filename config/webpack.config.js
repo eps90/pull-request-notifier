@@ -57,7 +57,16 @@ module.exports = (function webpackConfig() {
                     })
                 },
                 {
-                    test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+                    test: /\.(png|jpg|jpeg|gif|svg)$/,
+                    use: {
+                        loader: 'file-loader',
+                        options: {
+                            outputPath: 'img/'
+                        }
+                    }
+                },
+                {
+                    test: /\.(woff|woff2|ttf|eot)$/,
                     use: {
                         loader: 'file-loader',
                         options: {
