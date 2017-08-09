@@ -98,8 +98,7 @@ module.exports = (function webpackConfig() {
 
         plugins: [
             new webpack.ProvidePlugin({
-                'window.jQuery': 'jquery',
-                'window.createjs': 'createjs-soundjs'
+                'window.jQuery': 'jquery'
             })
         ]
     };

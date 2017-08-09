@@ -1360,10 +1360,6 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-createjs-soundjs@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/createjs-soundjs/-/createjs-soundjs-0.6.2.tgz#4c93d49d0f0be03490363c7e548aa8095ff5335a"
-
 cross-spawn@^0.2.3:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-0.2.9.tgz#bd67f96c07efb6303b7fe94c1e979f88478e0a39"
