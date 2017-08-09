@@ -10,11 +10,17 @@ module.exports = (function webpackConfig() {
 
     const config = {
         entry: isTest ? void 0 : {
-            vendor_styles: path.resolve(__dirname, '../app/vendor_styles.ts'),
-            vendor: path.resolve(__dirname, '../app/vendor.ts'),
-            popup: path.resolve(__dirname, '../app/modules/bitbucket_notifier.ts'),
+            popup: [
+                path.resolve(__dirname, '../assets/less/styles.less'),
+                path.resolve(__dirname, '../app/modules/bitbucket_notifier.ts')
+            ],
             background: path.resolve(__dirname, '../app/modules/bitbucket_notifier_background.ts'),
-            options: path.resolve(__dirname, '../app/modules/bitbucket_notifier_options.ts')
+            options: [
+                path.resolve(__dirname, '../assets/less/styles.less'),
+                path.resolve(__dirname, '../app/modules/bitbucket_notifier_options.ts')
+            ],
+            vendor_styles: path.resolve(__dirname, '../app/vendor_styles.ts'),
+            vendor: path.resolve(__dirname, '../app/vendor.ts')
         },
 
         output: isTest ? {} : {
@@ -106,40 +112,38 @@ module.exports = (function webpackConfig() {
         config.devtool = 'source-map';
     }
 
-    if (isProd) {
+    if (isProd || isDev) {
         config.plugins.push(
             new webpack.optimize.CommonsChunkPlugin({
                 name: 'common'
-            })
-        );
-        config.plugins.push(
-            new webpack.optimize.UglifyJsPlugin({
-                sourceMap: true
-            })
-        );
-    }
-
-    if (isProd || isDev) {
-        config.plugins.push(
+            }),
             new HtmlWebpackPlugin({
                 filename: 'background.html',
                 template: path.resolve(__dirname, '../app/views/background.html'),
                 chunksSortMode: 'manual',
-                chunks: ['vendor', 'common', 'background']
+                chunks: ['common', 'vendor', 'background']
             }),
             new HtmlWebpackPlugin({
                 filename: 'popup.html',
                 template: path.resolve(__dirname, '../app/views/popup.html'),
                 chunksSortMode: 'manual',
-                chunks: ['vendor_styles', 'vendor', 'common', 'popup']
+                chunks: ['common', 'vendor_styles', 'vendor', 'popup']
             }),
             new HtmlWebpackPlugin({
                 filename: 'options.html',
                 template: path.resolve(__dirname, '../app/views/options.html'),
                 chunksSortMode: 'manual',
-                chunks: ['vendor_styles', 'vendor', 'common', 'options']
+                chunks: ['common', 'vendor_styles', 'vendor', 'options']
             })
         )
+    }
+
+    if (isProd) {
+        config.plugins.push(
+            new webpack.optimize.UglifyJsPlugin({
+                sourceMap: true
+            })
+        );
     }
 
     if (!isTest) {
