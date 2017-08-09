@@ -32,3 +32,11 @@ application.config(['growlProvider', (growlProvider: angular.growl.IGrowlProvide
     growlProvider.globalTimeToLive(5000);
     growlProvider.globalDisableCountDown(true);
 }]);
+
+if (PRODUCTION) {
+    application.config(['$compileProvider', ($compileProvider: ng.ICompileProvider) =>  {
+        $compileProvider.debugInfoEnabled(false);
+        $compileProvider.cssClassDirectivesEnabled(false);
+        $compileProvider.commentDirectivesEnabled(false);
+    }]);
+}

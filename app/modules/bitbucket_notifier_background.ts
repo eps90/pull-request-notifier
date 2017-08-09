@@ -25,3 +25,11 @@ application.service('Config', Config);
 application.service('Indicator', Indicator);
 application.service('SoundManager', SoundManager);
 application.service('SoundRepository', SoundRepository);
+
+if (PRODUCTION) {
+    application.config(['$compileProvider', ($compileProvider: ng.ICompileProvider) =>  {
+        $compileProvider.debugInfoEnabled(false);
+        $compileProvider.cssClassDirectivesEnabled(false);
+        $compileProvider.commentDirectivesEnabled(false);
+    }]);
+}

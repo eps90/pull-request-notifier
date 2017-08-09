@@ -55,3 +55,11 @@ application.service('Config', Config);
 application.value('bitbucketUrl', 'https://bitbucket.org');
 
 application.config(RoutingConfiguration);
+
+if (PRODUCTION) {
+    application.config(['$compileProvider', ($compileProvider: ng.ICompileProvider) =>  {
+        $compileProvider.debugInfoEnabled(false);
+        $compileProvider.cssClassDirectivesEnabled(false);
+        $compileProvider.commentDirectivesEnabled(false);
+    }]);
+}
