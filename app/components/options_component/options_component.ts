@@ -3,6 +3,7 @@ import {SoundRepository} from "../../services/sound_repository";
 import {Notifier} from "../../services/notifier";
 import {PullRequest, User} from "../../services/models";
 import componentTemplate from './options_component.html';
+import {Howl} from 'howler';
 
 export class OptionsComponent implements ng.IDirective {
     restrict: string =  'E';
@@ -95,12 +96,12 @@ export class OptionsComponent implements ng.IDirective {
         };
 
         scope['sounds'] = this.soundRepository.findAll();
-        scope['playSound'] = (soundProp: string) => {
-            createjs.Sound.addEventListener('fileload', (e) => {
-                createjs.Sound.play('temp_sound');
+        scope['playSound'] = (soundId: string) => {
+            const sound = this.soundRepository.findById(soundId);
+            const tempSound = new Howl({
+                src: [sound.soundPath]
             });
-            createjs.Sound.registerSound(soundProp, 'temp_sound');
-            createjs.Sound.play('temp_sound');
+            tempSound.play();
         };
 
         scope['showNotification'] = (type: string) => {

@@ -2,9 +2,10 @@ import {Config} from "../../../../app/services/config";
 import {Notifier} from "../../../../app/services/notifier";
 import {PullRequestProgress} from "../../../../app/services/models";
 import * as angular from 'angular';
+import {Howl} from 'howler';
 
 describe('OptionsComponent', () => {
-    var config: Config,
+    let config: Config,
         appUser,
         socketServer,
         pullRequestProgress,
@@ -18,17 +19,6 @@ describe('OptionsComponent', () => {
         $compile: ng.ICompileService,
         growl: angular.growl.IGrowlService,
         notifier: Notifier;
-
-    beforeEach(() => {
-        window['createjs'] = {
-            Sound: {
-                registerSound: jasmine.createSpy('createjs.Sound.registerSound'),
-                play: jasmine.createSpy('createjs.Sound.play'),
-                removeSound: jasmine.createSpy('createjs.Sound.removeSound'),
-                addEventListener: jasmine.createSpy('createjs.Sound.addEventListener')
-            }
-        };
-    });
 
     beforeEach(angular.mock.module('bitbucketNotifier.options'));
     beforeEach(angular.mock.module([
@@ -223,14 +213,14 @@ describe('OptionsComponent', () => {
     });
 
     it('should play chosen sound', () => {
-        var chosenSoundPath = 'sample_sound_path';
-        $scope['temp_label'] = chosenSoundPath;
+        spyOn(Howl.prototype, 'play').and.stub();
+        const chosenSoundId = 'bell';
         element = $compile('<options></options>')($scope);
         $scope.$digest();
 
-        $scope['playSound'](chosenSoundPath);
+        $scope['playSound'](chosenSoundId);
 
-        expect(createjs.Sound.registerSound).toHaveBeenCalledWith(chosenSoundPath, 'temp_sound');
+        expect(Howl.prototype.play).toHaveBeenCalled();
     });
 
     describe('Notifications', () => {
