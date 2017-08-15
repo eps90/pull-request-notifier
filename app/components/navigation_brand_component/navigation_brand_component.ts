@@ -1,14 +1,9 @@
 import componentTemplate from './navigation_brand_component.html';
 
-export class NavigationBrandComponent {
-    restrict: string = 'E';
+export class NavigationBrandComponent implements ng.IComponentOptions{
     template: string = componentTemplate;
-    scope: any = {
+    bindings: any = {
         content: '@',
         icon: '@'
     };
-
-    static factory(): ng.IDirectiveFactory {
-        return () => new NavigationBrandComponent();
-    }
 }
