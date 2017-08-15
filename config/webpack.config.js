@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const StyleLinkWebpackPlugin = require('stylelint-webpack-plugin');
 
 module.exports = (function webpackConfig() {
     const isProd = process.env.npm_lifecycle_event === 'build:prod';
@@ -119,6 +120,12 @@ module.exports = (function webpackConfig() {
                     failOnHint: true
                 }
             }
+        );
+        config.plugins.push(
+            new StyleLinkWebpackPlugin({
+                context: 'app',
+                failOnError: true
+            })
         )
     }
 
