@@ -1,103 +1,30 @@
 {
-  "rules": {
-    "align": [
-      true,
-      "parameters",
-      "arguments",
-      "statements"
-    ],
-    "ban": false,
-    "class-name": true,
-    "comment-format": [
-      true,
-      "check-space",
-      "check-lowercase"
-    ],
-    "curly": true,
-    "eofline": true,
-    "forin": true,
-    "indent": [
-      true,
-      4
-    ],
-    "interface-name": false,
-    "jsdoc-format": true,
-    "label-position": true,
-    "max-line-length": [
-      true,
-      140
-    ],
-    "member-ordering": [
-      true,
-      "public-before-private",
-      "static-before-instance",
-      "variables-before-functions"
-    ],
-    "no-any": false,
-    "no-arg": true,
-    "no-bitwise": true,
-    "no-console": [
-      true,
-      "debug",
-      "info",
-      "time",
-      "timeEnd",
-      "trace"
-    ],
-    "no-construct": true,
-    "no-debugger": true,
-    "no-shadowed-variable": true,
-    "no-duplicate-variable": true,
-    "no-empty": true,
-    "no-eval": true,
-    "no-require-imports": false,
-    "no-string-literal": false,
-    "no-switch-case-fall-through": true,
-    "no-trailing-whitespace": true,
-    "no-unused-expression": true,
-    "no-unused-variable": true,
-    "no-use-before-declare": true,
-    "no-var-keyword": false,
-    "no-var-requires": true,
-    "one-line": [
-      true,
-      "check-open-brace",
-      "check-catch",
-      "check-else",
-      "check-whitespace"
-    ],
-    "quotemark": false,
-    "radix": true,
-    "semicolon": true,
-    "switch-default": true,
-    "triple-equals": [
-      true,
-      "allow-null-check"
-    ],
-    "typedef": [
-      true,
-      "call-signature",
-      "property-declaration",
-      "member-variable-declaration"
-    ],
-    "typedef-whitespace": [
-      true,
-      {
-        "call-signature": "nospace",
-        "index-signature": "nospace",
-        "parameter": "nospace",
-        "property-declaration": "nospace",
-        "variable-declaration": "nospace"
-      }
-    ],
-    "variable-name": false,
-    "whitespace": [
-      true,
-      "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-separator",
-      "check-type"
-    ]
-  }
+    "extends": "tslint:recommended",
+    "rules": {
+        "ordered-imports": false,
+        "quotemark": [true, "single", "avoid-escape"],
+        "trailing-comma": [false],
+        "prefer-const": true,
+        "interface-name": [true, "never-prefix"],
+        "object-literal-sort-keys": false,
+        "no-string-literal": false,
+        "max-classes-per-file": [false],
+        "member-ordering": [
+            true,
+            {
+                "order": [
+                    "public-instance-field",
+                    "public-static-field",
+                    "private-instance-field",
+                    "public-constructor",
+                    "private-constructor",
+                    "public-static-method",
+                    "public-instance-method",
+                    "private-static-method"
+                ]
+            }
+        ],
+        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
+    }
+
 }
