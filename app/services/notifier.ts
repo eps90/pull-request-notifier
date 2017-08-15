@@ -29,7 +29,7 @@ export class Notifier {
     public notify(opts: NotificationOptions, notificationId: string, pullRequestLink: string): void {
         const defaultOptions: NotificationOptions = {
             type: 'basic',
-            iconUrl: '../../assets/img/bitbucket_logo_raw.png',
+            iconUrl: require('./../../assets/img/bitbucket_logo_raw.png'),
             title: '',
             message: '',
             contextMessage: '',
@@ -48,7 +48,7 @@ export class Notifier {
             title: 'New pull request assigned to you!',
             message: pullRequest.title,
             contextMessage: 'by ' + pullRequest.author.displayName,
-            iconUrl: '../../assets/img/bitbucket_new.png'
+            iconUrl: require('./../../assets/img/bitbucket_new.png')
         };
         const notificationId = this.getNotificationId(pullRequest);
 
@@ -60,7 +60,7 @@ export class Notifier {
         const options = {
             title: 'Your pull request has been merged',
             message: pullRequest.title,
-            iconUrl: '../../assets/img/bitbucket_merged.png'
+            iconUrl: require('./../../assets/img/bitbucket_merged.png')
         };
         const notificationId = this.getNotificationId(pullRequest);
 
@@ -73,7 +73,7 @@ export class Notifier {
             title: 'Your pull request has been approved',
             message: pullRequest.title,
             contextMessage: 'by ' + actor.displayName,
-            iconUrl: '../../assets/img/bitbucket_approved.png'
+            iconUrl: require('./../../assets/img/bitbucket_approved.png')
         };
         const notificationId = this.getNotificationId(pullRequest);
 
@@ -85,7 +85,7 @@ export class Notifier {
         const options = {
             title: 'Someone reminds you to review a pull request',
             message: pullRequest.title,
-            iconUrl: '../../assets/img/bitbucket_reminder.png'
+            iconUrl: require('./../../assets/img/bitbucket_reminder.png')
         };
         const notificationId = this.getNotificationId(pullRequest);
 
@@ -98,7 +98,7 @@ export class Notifier {
             title: 'Pull request has been updated',
             message: pullRequest.title,
             contextMessage: 'by ' + pullRequest.author.displayName,
-            iconUrl: '../../assets/img/bitbucket_updated.png'
+            iconUrl: require('./../../assets/img/bitbucket_updated.png')
         };
         const notificationId = this.getNotificationId(pullRequest);
 
@@ -110,7 +110,7 @@ export class Notifier {
             title: 'New comment on your pull request!',
             message: pullRequest.title,
             contextMessage: `by ${commentingUser.displayName}`,
-            iconUrl: '../../assets/img/bitbucket_new_comment.png'
+            iconUrl: require('./../../assets/img/bitbucket_new_comment.png')
         };
         const notificationId = this.getNotificationId(pullRequest);
 
@@ -122,7 +122,7 @@ export class Notifier {
             title: 'New reply for your comment',
             message: pullRequest.title,
             contextMessage: `by ${replyingUser.displayName}`,
-            iconUrl: '../../assets/img/bitbucket_new_reply.png'
+            iconUrl: require('./../../assets/img/bitbucket_new_reply.png')
         };
         const notificationId = this.getNotificationId(pullRequest);
 
