@@ -31,7 +31,7 @@ const application = angular.module(MODULE_NAME, [
     'ng-showdown',
     'ngAnimate'
 ]);
-application.directive('pullRequest', PullRequestComponent.factory());
+application.component('pullRequest', new PullRequestComponent());
 application.directive('pullRequestsList', PullRequestsListComponent.factory());
 application.directive('pullRequestsHeader', PullRequestsHeaderComponent.factory());
 application.component('approvalProgress', new ApprovalProgressComponent());

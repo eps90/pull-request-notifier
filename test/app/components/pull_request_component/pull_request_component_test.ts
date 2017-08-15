@@ -2,7 +2,7 @@ import {Project, PullRequest, Reviewer, User} from "../../../../app/services/mod
 import * as angular from 'angular';
 
 describe('PullRequestComponent', () => {
-    var element,
+    let element,
         $compile: ng.ICompileService,
         $scope: ng.IRootScopeService,
         uiRouterState: angular.ui.IStateService,
@@ -32,26 +32,26 @@ describe('PullRequestComponent', () => {
     );
 
     beforeEach(() => {
-        var author: User = new User();
+        const author: User = new User();
         author.displayName = 'John Smith';
 
-        var userAsReviewer: User = new User();
+        const userAsReviewer: User = new User();
         userAsReviewer.displayName = 'Anna Kowalsky';
 
-        var secondUserAsReviewer: User = new User();
+        const secondUserAsReviewer: User = new User();
         secondUserAsReviewer.displayName = 'Jack Sparrow';
 
-        var reviewer: Reviewer = new Reviewer();
+        const reviewer: Reviewer = new Reviewer();
         reviewer.user = userAsReviewer;
         reviewer.approved = true;
 
-        var secondReviewer: Reviewer = new Reviewer();
+        const secondReviewer: Reviewer = new Reviewer();
         secondReviewer.user = secondUserAsReviewer;
         secondReviewer.approved = false;
 
-        var project: Project = new Project();
+        const project: Project = new Project();
         project.name = 'CRM';
-        project.fullName = 'dacsoftware/my_sweet_project';
+        project.fullName = 'company_name/my_sweet_project';
 
         pullRequest.id = 1;
         pullRequest.title = 'This is a pull request';
@@ -106,7 +106,7 @@ describe('PullRequestComponent', () => {
         expect(uiRouterState.go).toHaveBeenCalledWith(
             'pull_request',
             {
-                repositoryName: 'dacsoftware__my_sweet_project',
+                repositoryName: 'company_name__my_sweet_project',
                 pullRequestId: 1
             }
         );

@@ -1,28 +1,28 @@
 <div class="col-sm-12 pull-request">
-    <div class="row" ng-if="mode == 'AUTHORED'">
-        <div class="col-sm-1">{{ pullRequest.id }}</div>
-        <div class="col-sm-4 collapsable" ng-bind-html="pullRequest.title | emoji"></div>
-        <div class="col-sm-2">{{ pullRequest.targetRepository.name }}</div>
-        <div class="col-sm-2">{{ pullRequest.author.displayName }}</div>
+    <div class="row" ng-if="$ctrl.mode == 'AUTHORED'">
+        <div class="col-sm-1">{{ $ctrl.pullRequest.id }}</div>
+        <div class="col-sm-4 collapsable" ng-bind-html="$ctrl.pullRequest.title | emoji"></div>
+        <div class="col-sm-2">{{ $ctrl.pullRequest.targetRepository.name }}</div>
+        <div class="col-sm-2">{{ $ctrl.pullRequest.author.displayName }}</div>
         <div class="col-sm-1">
-            <approval-progress reviewers="pullRequest.reviewers"></approval-progress>
+            <approval-progress reviewers="$ctrl.pullRequest.reviewers"></approval-progress>
         </div>
         <div class="col-sm-2">
-            <pull-request-link pr="pullRequest"></pull-request-link>
-            <reminder pull-request="pullRequest"></reminder>
+            <pull-request-link pr="$ctrl.pullRequest"></pull-request-link>
+            <reminder pull-request="$ctrl.pullRequest"></reminder>
         </div>
     </div>
-    <div class="row" ng-if="mode == 'ASSIGNED'">
-        <div class="col-sm-1">{{ pullRequest.id }}</div>
-        <div class="col-sm-4 collapsable" ng-bind-html="pullRequest.title | emoji"></div>
-        <div class="col-sm-2">{{ pullRequest.targetRepository.name }}</div>
-        <div class="col-sm-2">{{ pullRequest.author.displayName }}</div>
+    <div class="row" ng-if="$ctrl.mode == 'ASSIGNED'">
+        <div class="col-sm-1">{{ $ctrl.pullRequest.id }}</div>
+        <div class="col-sm-4 collapsable" ng-bind-html="$ctrl.pullRequest.title | emoji"></div>
+        <div class="col-sm-2">{{ $ctrl.pullRequest.targetRepository.name }}</div>
+        <div class="col-sm-2">{{ $ctrl.pullRequest.author.displayName }}</div>
         <div class="col-sm-1">
-            <user-vote reviewers="pullRequest.reviewers"></user-vote>
+            <user-vote reviewers="$ctrl.pullRequest.reviewers"></user-vote>
         </div>
         <div class="col-sm-2">
-            <pull-request-link pr="pullRequest"></pull-request-link>
-            <reminder pull-request="pullRequest"></reminder>
+            <pull-request-link pr="$ctrl.pullRequest"></pull-request-link>
+            <reminder pull-request="$ctrl.pullRequest"></reminder>
         </div>
     </div>
 </div>
