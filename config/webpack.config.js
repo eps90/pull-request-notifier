@@ -103,7 +103,9 @@ module.exports = (function webpackConfig() {
             new webpack.DefinePlugin({
                 PRODUCTION: JSON.stringify(isProd)
             })
-        ]
+        ],
+
+        "stats": "minimal"
     };
 
     if (isDev) {
