@@ -16,7 +16,7 @@ const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'angular-
 
 application.directive('options', OptionsComponent.factory());
 application.directive('sectionTitle', SectionTitleComponent.factory());
-application.directive('navigationBar', NavigationBarComponent.factory());
+application.component('navigationBar', new NavigationBarComponent());
 application.directive('navigationBrand', NavigationBrandComponent.factory());
 application.component('approvalProgress', new ApprovalProgressComponent());
 application.service('Config', Config);
