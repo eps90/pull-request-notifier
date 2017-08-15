@@ -1,5 +1,4 @@
 import 'jquery';
-import 'angular';
 import 'ng-showdown';
 import 'angular-local-storage';
 import 'angular-ui-bootstrap';
