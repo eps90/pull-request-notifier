@@ -37,7 +37,7 @@ application.directive('pullRequestsHeader', PullRequestsHeaderComponent.factory(
 application.component('approvalProgress', new ApprovalProgressComponent());
 application.directive('userVote', UserVoteComponent.factory());
 application.directive('sectionTitle', SectionTitleComponent.factory());
-application.directive('pullRequestLink', PullRequestLinkComponent.factory());
+application.component('pullRequestLink', new PullRequestLinkComponent());
 application.component('navigationBar', new NavigationBarComponent());
 application.component('navigationBrand', new NavigationBrandComponent());
 application.directive('reminder', ReminderComponent.factory());
