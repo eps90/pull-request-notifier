@@ -1,7 +1,7 @@
 import {Config} from '../services/config';
 import {PullRequest} from '../services/models';
 
-export function AssignedFilter(config: Config): Function {
+export function AssignedFilter(config: Config) {
     return (pullRequests: PullRequest[]) => {
         const loggedInUser = config.getUsername();
         const result: PullRequest[] = [];

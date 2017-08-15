@@ -28,7 +28,7 @@ export class Config {
 
     // setting up socker server
     public getSocketServerAddress(): string {
-        const address: string = <string> this.localStorageService.get(ConfigObject.SOCKET_SERVER);
+        const address: string = this.localStorageService.get(ConfigObject.SOCKET_SERVER) as string;
         const addressWithHttp = _.trimStart(address, 'http://');
         return 'http://' + addressWithHttp;
     }
@@ -80,6 +80,6 @@ export class Config {
     }
 
     private getSound(soundId: string): string {
-        return <string> this.localStorageService.get(soundId) || this.soundsDefaults[soundId] || null;
+        return this.localStorageService.get(soundId) as string || this.soundsDefaults[soundId] || null;
     }
 }

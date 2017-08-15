@@ -9,8 +9,10 @@ export class PullRequestRepository {
     public static $inject: string[] = ['$rootScope'];
 
     constructor(private $rootScope: ng.IRootScopeService) {
-        window['chrome'].extension.onConnect.addListener((port) => {
-            port.postMessage(new ChromeExtensionEvent(ChromeExtensionEvent.UPDATE_PULLREQUESTS, this.pullRequests));
+        window['chrome'].extension.onConnect.addListener((chromePort) => {
+            chromePort.postMessage(
+                new ChromeExtensionEvent(ChromeExtensionEvent.UPDATE_PULLREQUESTS, this.pullRequests)
+            );
         });
 
         const port = window['chrome'].extension.connect({name: 'Bitbucket Notifier'});

@@ -93,12 +93,12 @@ export class OptionsController implements ng.IComponentController {
             'Extension will reboot in in 5 seconds',
             {
                 disableCountDown: false,
-                onclose: () : void => {
+                onclose: (): void => {
                     window['chrome'].runtime.reload();
                 }
             }
         );
-    };
+    }
 
     public playSound(soundId: string): void {
         const sound = this.soundRepository.findById(soundId);
@@ -106,7 +106,7 @@ export class OptionsController implements ng.IComponentController {
             src: [sound.soundPath]
         });
         tempSound.play();
-    };
+    }
 
     public showNotification(type: string): void {
         const pullRequest = new PullRequest();
@@ -143,5 +143,5 @@ export class OptionsController implements ng.IComponentController {
             default:
                 break;
         }
-    };
+    }
 }

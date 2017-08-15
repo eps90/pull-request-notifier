@@ -20,7 +20,7 @@ export class Notifier {
     constructor(private notificationRepository: NotificationRepository, private soundManager: SoundManager) {
         this.chrome = window['chrome'];
         this.chrome.notifications.onClicked.addListener((notificationId) => {
-            const notification = <PullRequestNotification> this.notificationRepository.find(notificationId);
+            const notification = this.notificationRepository.find(notificationId) as PullRequestNotification;
             this.chrome.tabs.create({url: notification.pullRequestHtmlLink});
             this.chrome.notifications.clear(notificationId);
         });

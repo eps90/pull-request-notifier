@@ -1,8 +1,6 @@
 import * as _ from 'lodash';
 
-export interface ModelInterface {}
-
-export class Project implements ModelInterface {
+export class Project {
     public name: string = '';
     public fullName: string = '';
 
@@ -15,24 +13,24 @@ export class Project implements ModelInterface {
     }
 }
 
-export class User implements ModelInterface {
+export class User {
     public username: string = '';
     public displayName: string = '';
 }
 
-export class Reviewer implements ModelInterface {
+export class Reviewer {
     public approved: boolean;
     public user: User = new User();
 }
 
 export enum PullRequestState {Open, Merged, Declined}
 
-export class PullRequestLinks implements ModelInterface {
+export class PullRequestLinks {
     public self: string = '';
     public html: string = '';
 }
 
-export class PullRequest implements ModelInterface {
+export class PullRequest {
     public id: number;
     public title: string = '';
     public description: string = '';
@@ -76,20 +74,20 @@ export interface CommentLinksInterface {
     html?: LinkInterface;
 }
 
-export class Comment implements ModelInterface {
+export class Comment {
     public id: number;
     public content: CommentContentInterface;
     public links: CommentLinksInterface;
 }
 
-export class PullRequestEvent implements ModelInterface {
+export class PullRequestEvent {
     public actor: User = new User();
     public sourceEvent: string = '';
     public pullRequests: PullRequest[] = [];
     public context: PullRequest = new PullRequest();
 }
 
-export class PullRequestCommentEvent implements ModelInterface {
+export class PullRequestCommentEvent {
     public actor: User = new User();
     public pullRequest: PullRequest = new PullRequest();
     public comment: Comment = new Comment();

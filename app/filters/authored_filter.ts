@@ -1,7 +1,7 @@
 import {Config} from '../services/config';
 import {PullRequest} from '../services/models';
 
-export function AuthoredFilter(config: Config): Function {
+export function AuthoredFilter(config: Config) {
     return (pullRequests: PullRequest[]) => {
         const loggedInUser = config.getUsername();
         const result: PullRequest[] = [];
