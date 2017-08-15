@@ -1,4 +1,4 @@
-import {Sound} from "./models";
+import {Sound} from './models';
 
 export class SoundRepository {
     /** @todo Add sounds from json or yaml */
@@ -10,13 +10,13 @@ export class SoundRepository {
         new Sound('empty', null, 'None')
     ];
 
-    findAll(): Sound[] {
+    public findAll(): Sound[] {
         return this.sounds;
     }
 
-    findById(soundId: string): Sound {
+    public findById(soundId: string): Sound {
         const allSounds = this.findAll();
-        for (let sound of allSounds) {
+        for (const sound of allSounds) {
             if (sound.id === soundId) {
                 return sound;
             }

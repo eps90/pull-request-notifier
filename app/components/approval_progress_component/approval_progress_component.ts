@@ -1,13 +1,13 @@
 import './approval_progress_component.less';
 import componentTemplate from './approval_progress_component.html';
-import {ApprovalProgressController} from "./approval_progress_controller";
+import {ApprovalProgressController} from './approval_progress_controller';
 
 export class ApprovalProgressComponent implements ng.IComponentOptions {
-    bindings: any = {
+    public bindings: any = {
         reviewers: '<',
         mode: '@'
     };
-    template: string = componentTemplate;
+    public template: string = componentTemplate;
 
-    controller = ApprovalProgressController;
+    public controller = ApprovalProgressController;
 }

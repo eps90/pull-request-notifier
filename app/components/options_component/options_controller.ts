@@ -1,15 +1,15 @@
-import {Config} from "../../services/config";
-import {SoundRepository} from "../../services/sound_repository";
-import {Notifier} from "../../services/notifier";
-import {PullRequest, Sound, User} from "../../services/models";
+import {Config} from '../../services/config';
+import {SoundRepository} from '../../services/sound_repository';
+import {Notifier} from '../../services/notifier';
+import {PullRequest, Sound, User} from '../../services/models';
 import {Howl} from 'howler';
 
 export class OptionsController implements ng.IComponentController {
-    examples: any;
-    options: any;
-    sounds: Sound[];
+    public examples: any;
+    public options: any;
+    public sounds: Sound[];
 
-    static $inject: string[] = ['Config', 'growl', '$interval', 'SoundRepository', 'Notifier'];
+    public static $inject: string[] = ['Config', 'growl', '$interval', 'SoundRepository', 'Notifier'];
 
     constructor(
         private config: Config,
@@ -19,7 +19,7 @@ export class OptionsController implements ng.IComponentController {
         private notifier: Notifier
     ) {}
 
-    $onInit = () => {
+    public $onInit = () => {
         this.examples = {
             reviewers: [
                 {
@@ -77,9 +77,9 @@ export class OptionsController implements ng.IComponentController {
         };
 
         this.sounds = this.soundRepository.findAll();
-    };
+    }
 
-    saveOptions(): void {
+    public saveOptions(): void {
         this.config.setUsername(this.options.appUser);
         this.config.setSocketServerAddress(this.options.socketServerAddress);
         this.config.setPullRequestProgress(this.options.pullRequestProgress);
@@ -100,7 +100,7 @@ export class OptionsController implements ng.IComponentController {
         );
     };
 
-    playSound(soundId: string): void {
+    public playSound(soundId: string): void {
         const sound = this.soundRepository.findById(soundId);
         const tempSound = new Howl({
             src: [sound.soundPath]
@@ -108,7 +108,7 @@ export class OptionsController implements ng.IComponentController {
         tempSound.play();
     };
 
-    showNotification(type: string): void {
+    public showNotification(type: string): void {
         const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
         pullRequest.author.displayName = 'John smith';

@@ -1,9 +1,9 @@
-import {Project, PullRequest, PullRequestEvent, PullRequestLinks, PullRequestState, Reviewer, User} from "./models";
+import {Project, PullRequest, PullRequestEvent, PullRequestLinks, PullRequestState, Reviewer, User} from './models';
 import {Howl} from 'howler';
 
 export class UserFactory {
-    static create(rawObject: any): User {
-        var user = new User();
+    public static create(rawObject: any): User {
+        const user = new User();
         if (rawObject.hasOwnProperty('username')) {
             user.username = rawObject.username;
         }
@@ -16,8 +16,8 @@ export class UserFactory {
 }
 
 export class ProjectFactory {
-    static create(rawObject: any): Project {
-        var project = new Project();
+    public static create(rawObject: any): Project {
+        const project = new Project();
         if (rawObject.hasOwnProperty('name')) {
             project.name = rawObject.name;
         }
@@ -30,8 +30,8 @@ export class ProjectFactory {
 }
 
 export class ReviewerFactory {
-    static create(rawObject): Reviewer {
-        var reviewer = new Reviewer();
+    public static create(rawObject): Reviewer {
+        const reviewer = new Reviewer();
         if (rawObject.hasOwnProperty('user')) {
             reviewer.user = UserFactory.create(rawObject.user);
         }
@@ -45,8 +45,8 @@ export class ReviewerFactory {
 }
 
 export class PullRequestLinksFactory {
-    static create(rawObject: any): PullRequestLinks {
-        var links = new PullRequestLinks();
+    public static create(rawObject: any): PullRequestLinks {
+        const links = new PullRequestLinks();
 
         if (rawObject.hasOwnProperty('self')) {
             links.self = rawObject.self;
@@ -61,8 +61,8 @@ export class PullRequestLinksFactory {
 }
 
 export class PullRequestFactory {
-    static create(rawObject: any): PullRequest {
-        var pullRequest = new PullRequest();
+    public static create(rawObject: any): PullRequest {
+        const pullRequest = new PullRequest();
         if (rawObject.hasOwnProperty('id')) {
             pullRequest.id = rawObject.id;
         }
@@ -89,8 +89,8 @@ export class PullRequestFactory {
 
         if (rawObject.hasOwnProperty('reviewers') && Array.isArray(rawObject.reviewers)) {
             pullRequest.reviewers = [];
-            for (var ridx = 0, rlen = rawObject.reviewers.length; ridx < rlen; ridx++) {
-                pullRequest.reviewers.push(ReviewerFactory.create(rawObject.reviewers[ridx]));
+            for (const reviewer of rawObject.reviewers) {
+                pullRequest.reviewers.push(ReviewerFactory.create(reviewer));
             }
         }
 
@@ -117,10 +117,9 @@ export class PullRequestFactory {
         return pullRequest;
     }
 
-    static createFromArray(pullRequests: any[]): PullRequest[] {
-        var result = [];
-        for (let i = 0, len = pullRequests.length; i < len; i++) {
-            var pullRequest = pullRequests[i];
+    public static createFromArray(pullRequests: any[]): PullRequest[] {
+        const result = [];
+        for (const pullRequest of pullRequests) {
             result.push(this.create(pullRequest));
         }
 
@@ -129,8 +128,8 @@ export class PullRequestFactory {
 }
 
 export class PullRequestEventFactory {
-    static create(rawObject: any): PullRequestEvent {
-        var event = new PullRequestEvent();
+    public static create(rawObject: any): PullRequestEvent {
+        const event = new PullRequestEvent();
         if (rawObject.hasOwnProperty('actor')) {
             event.actor = UserFactory.create(rawObject.actor);
         }
@@ -141,8 +140,7 @@ export class PullRequestEventFactory {
 
         if (rawObject.hasOwnProperty('pullRequests')) {
             event.pullRequests = [];
-            for (var prIdx = 0, prLen = rawObject.pullRequests.length; prIdx < prLen; prIdx++) {
-                var currentPr = rawObject.pullRequests[prIdx];
+            for (const currentPr of rawObject.pullRequests) {
                 event.pullRequests.push(PullRequestFactory.create(currentPr));
             }
         }
@@ -156,7 +154,7 @@ export class PullRequestEventFactory {
 }
 
 export class HowlSoundFactory {
-    static createSound(soundPath: string): Howl {
+    public static createSound(soundPath: string): Howl {
         return new Howl({
             src: [soundPath]
         });

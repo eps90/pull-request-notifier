@@ -1,18 +1,18 @@
 // @todo TO REFACTOR!!!
 // @todo Move socket handling into another service?
-import {SocketManager} from "./socket_manager";
-import {Config} from "./config";
-import {Notifier} from "./notifier";
-import {Indicator} from "./indicator";
-import {PullRequestRepository} from "./pull_request_repository";
+import {SocketManager} from './socket_manager';
+import {Config} from './config';
+import {Notifier} from './notifier';
+import {Indicator} from './indicator';
+import {PullRequestRepository} from './pull_request_repository';
 import {
     ChromeExtensionEvent, PullRequest, PullRequestCommentEvent, PullRequestEvent, SocketClientEvent, SocketServerEvent,
     WebhookEvent
-} from "./models";
-import {PullRequestEventFactory} from "./factories";
+} from './models';
+import {PullRequestEventFactory} from './factories';
 
 export class SocketHandler {
-    static $inject: Array<string> = ['SocketManager', 'Config', 'PullRequestRepository', 'Notifier', 'Indicator'];
+    public static $inject: string[] = ['SocketManager', 'Config', 'PullRequestRepository', 'Notifier', 'Indicator'];
     constructor(
         private socketManager: SocketManager,
         private config: Config,
@@ -34,7 +34,7 @@ export class SocketHandler {
 
     private initListeners(): void {
         this.socketManager.socket.on('connect', () => {
-            var loggedInUser = this.config.getUsername();
+            const loggedInUser = this.config.getUsername();
             this.socketManager.socket.emit(SocketClientEvent.INTRODUCE, loggedInUser);
         });
 
@@ -66,14 +66,12 @@ export class SocketHandler {
         this.socketManager.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
             userPrs = PullRequestEventFactory.create(userPrs);
 
-            var loggedInUser = this.config.getUsername();
+            const loggedInUser = this.config.getUsername();
             this.pullRequestRepository.setPullRequests(userPrs.pullRequests);
             this.indicator.setText(this.pullRequestRepository.pullRequests.length.toString());
 
-            for (var prIndex = 0, prLen = userPrs.pullRequests.length; prIndex < prLen; prIndex++) {
-                var pr = userPrs.pullRequests[prIndex];
-                for (var reviewerIdx = 0, reviewersLen = pr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
-                    var reviewer = pr.reviewers[reviewerIdx];
+            for (const pr of userPrs.pullRequests) {
+                for (const reviewer of pr.reviewers) {
                     if (reviewer.user.username === loggedInUser && !reviewer.approved) {
                         this.notifier.notifyNewPullRequestAssigned(pr);
                     }
@@ -84,17 +82,16 @@ export class SocketHandler {
         this.socketManager.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: PullRequestEvent) => {
             userPrs = PullRequestEventFactory.create(userPrs);
 
-            var loggedInUser = this.config.getUsername();
+            const loggedInUser = this.config.getUsername();
 
-            var contextPr: PullRequest = userPrs.context;
-            var sourceEvent: string = userPrs.sourceEvent;
+            const contextPr: PullRequest = userPrs.context;
+            const sourceEvent: string = userPrs.sourceEvent;
 
             if (sourceEvent === WebhookEvent.PULLREQUEST_UPDATED
                 && this.pullRequestRepository.hasAssignmentChanged(contextPr)
                 && !this.pullRequestRepository.exists(contextPr)
             ) {
-                for (let reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
-                    let reviewer = contextPr.reviewers[reviewerIdx];
+                for (const reviewer of contextPr.reviewers) {
                     if (reviewer.user.username === loggedInUser) {
                         this.notifier.notifyNewPullRequestAssigned(contextPr);
                         break;
@@ -106,8 +103,7 @@ export class SocketHandler {
             this.indicator.setText(this.pullRequestRepository.pullRequests.length.toString());
 
             if (sourceEvent === WebhookEvent.PULLREQUEST_CREATED) {
-                for (let reviewerIdx = 0, reviewersLen = contextPr.reviewers.length; reviewerIdx < reviewersLen; reviewerIdx++) {
-                    let reviewer = contextPr.reviewers[reviewerIdx];
+                for (const reviewer of contextPr.reviewers) {
                     if (reviewer.user.username === loggedInUser) {
                         this.notifier.notifyNewPullRequestAssigned(contextPr);
                         break;

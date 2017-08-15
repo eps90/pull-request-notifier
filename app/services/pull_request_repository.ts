@@ -1,19 +1,19 @@
 // @todo Move event handling to some "Chrome events handler/emitter"
-import {ChromeExtensionEvent, PullRequest} from "./models";
-import {PullRequestFactory} from "./factories";
+import {ChromeExtensionEvent, PullRequest} from './models';
+import {PullRequestFactory} from './factories';
 import * as _ from 'lodash';
 
 export class PullRequestRepository {
-    static $inject: Array<string> = ['$rootScope'];
+    public pullRequests: PullRequest[] = [];
 
-    pullRequests: Array<PullRequest> = [];
+    public static $inject: string[] = ['$rootScope'];
 
     constructor(private $rootScope: ng.IRootScopeService) {
         window['chrome'].extension.onConnect.addListener((port) => {
             port.postMessage(new ChromeExtensionEvent(ChromeExtensionEvent.UPDATE_PULLREQUESTS, this.pullRequests));
         });
 
-        var port = window['chrome'].extension.connect({name: "Bitbucket Notifier"});
+        const port = window['chrome'].extension.connect({name: 'Bitbucket Notifier'});
         port.onMessage.addListener((message: ChromeExtensionEvent) => {
             this.$rootScope.$apply(() => {
                 this.pullRequests = PullRequestFactory.createFromArray(message.content);
@@ -29,7 +29,7 @@ export class PullRequestRepository {
         });
     }
 
-    setPullRequests(pullRequests: Array<PullRequest>): void {
+    public setPullRequests(pullRequests: PullRequest[]): void {
         this.pullRequests = pullRequests;
         window['chrome'].extension.sendMessage(
             new ChromeExtensionEvent(
@@ -39,14 +39,13 @@ export class PullRequestRepository {
         );
     }
 
-    hasAssignmentChanged(newPullRequest: PullRequest): boolean {
-        for (var prIdx = 0, prLen = this.pullRequests.length; prIdx < prLen; prIdx++) {
-            var pullRequest = this.pullRequests[prIdx];
+    public hasAssignmentChanged(newPullRequest: PullRequest): boolean {
+        for (const pullRequest of this.pullRequests) {
             if (pullRequest.equals(newPullRequest)) {
                 if (newPullRequest.reviewers.length !== pullRequest.reviewers.length) {
                     return true;
                 } else {
-                    var usersDiff = _.difference(
+                    const usersDiff = _.difference(
                         newPullRequest.getReviewersList(),
                         pullRequest.getReviewersList()
                     );
@@ -61,9 +60,8 @@ export class PullRequestRepository {
         return false;
     }
 
-    find(repositoryName: string, pullRequestId: number): PullRequest {
-        for (let prIdx = 0, len = this.pullRequests.length; prIdx < len; prIdx++) {
-            var pullRequest = this.pullRequests[prIdx];
+    public find(repositoryName: string, pullRequestId: number): PullRequest {
+        for (const pullRequest of this.pullRequests) {
             if (pullRequest.id === pullRequestId && pullRequest.targetRepository.fullName === repositoryName) {
                 return pullRequest;
             }
@@ -72,7 +70,7 @@ export class PullRequestRepository {
         return null;
     }
 
-    exists(pullRequest: PullRequest): boolean {
+    public exists(pullRequest: PullRequest): boolean {
         return this.find(pullRequest.targetRepository.fullName, pullRequest.id) !== null;
     }
 }

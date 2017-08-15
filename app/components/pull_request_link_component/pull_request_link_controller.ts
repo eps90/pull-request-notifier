@@ -1,18 +1,18 @@
-import {PullRequest} from "../../services/models";
+import {PullRequest} from '../../services/models';
 
 export class PullRequestLinkController implements ng.IComponentController {
-    pr: PullRequest;
-    size: string;
+    public pr: PullRequest;
+    public size: string;
 
-    $onInit = () => {
+    public $onInit = () => {
         this.size = this.size || 'sm';
-    };
+    }
 
-    isLarge(): boolean {
+    public isLarge(): boolean {
         return this.size.toLowerCase() === 'lg';
     }
 
-    goToPullRequest($event): void {
+    public goToPullRequest($event): void {
         $event.stopPropagation();
         if ($event.which === 1) {
             window['chrome'].tabs.create({

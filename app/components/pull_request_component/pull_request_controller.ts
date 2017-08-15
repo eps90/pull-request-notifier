@@ -1,19 +1,19 @@
-import {PullRequest} from "../../services/models";
-import {IAugmentedJQuery} from "angular";
+import {PullRequest} from '../../services/models';
+import {IAugmentedJQuery} from 'angular';
 
 export class PullRequestController implements ng.IComponentController {
-    static $inject: string[] = ['$state', '$element'];
+    public pullRequest: PullRequest;
 
-    pullRequest: PullRequest;
+    public static $inject: string[] = ['$state', '$element'];
 
     constructor(private state: angular.ui.IStateService, private $element: IAugmentedJQuery) {}
 
-    $onInit = () => {
+    public $onInit = () => {
         this.$element.on('click', () => {
             const pullRequest: PullRequest = this.pullRequest;
             const repositoryName = pullRequest.targetRepository.slugify();
             this.state.go('pull_request', {
-                repositoryName: repositoryName,
+                repositoryName,
                 pullRequestId: pullRequest.id
             });
         });

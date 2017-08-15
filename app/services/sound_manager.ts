@@ -1,11 +1,11 @@
-import {Config} from "./config";
-import {NotificationSound, Sound} from "./models";
-import {HowlSoundFactory} from "./factories";
-import {SoundRepository} from "./sound_repository";
+import {Config} from './config';
+import {NotificationSound, Sound} from './models';
+import {HowlSoundFactory} from './factories';
+import {SoundRepository} from './sound_repository';
 
 export class SoundManager {
 
-    static $inject: string[] = ['Config', 'SoundRepository'];
+    public static $inject: string[] = ['Config', 'SoundRepository'];
 
     private sounds: {[key: string]: Howl};
 
@@ -29,19 +29,19 @@ export class SoundManager {
         );
     }
 
-    playNewPullRequestSound(): void {
+    public playNewPullRequestSound(): void {
         this.sounds[NotificationSound.NEW_PULLREQUEST].play();
     }
 
-    playApprovedPullRequestSound(): void {
+    public playApprovedPullRequestSound(): void {
         this.sounds[NotificationSound.APPROVED_PULLREQUEST].play();
     }
 
-    playMergedPullRequestSound(): void {
+    public playMergedPullRequestSound(): void {
         this.sounds[NotificationSound.MERGED_PULLREQUEST].play();
     }
 
-    playReminderSound(): void {
+    public playReminderSound(): void {
         this.sounds[NotificationSound.REMINDER].play();
     }
 

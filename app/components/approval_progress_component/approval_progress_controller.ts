@@ -1,27 +1,26 @@
-
-import {Reviewer} from "../../services/models";
-import {Config} from "../../services/config";
+import {Reviewer} from '../../services/models';
+import {Config} from '../../services/config';
 
 export class ApprovalProgressController implements ng.IComponentController {
-    reviewers: Reviewer[];
-    mode: string;
-    pullRequestProgress: string;
-    reviewersCount: number;
-    approvalsCount: number;
-    progress: any;
+    public reviewers: Reviewer[];
+    public mode: string;
+    public pullRequestProgress: string;
+    public reviewersCount: number;
+    public approvalsCount: number;
+    public progress: any;
 
-    static $inject: string[] = ['Config'];
+    public static $inject: string[] = ['Config'];
 
     constructor(private config: Config) {}
 
-    $onInit = () => {
+    public $onInit = () => {
         this.reviewers = this.reviewers || [];
         this.pullRequestProgress = this.mode || this.config.getPullRequestProgress();
-    };
+    }
 
-    $doCheck = () => {
+    public $doCheck = () => {
         this.updateReviewers();
-    };
+    }
 
     private updateReviewers(): void {
         this.reviewersCount = this.reviewers.length;

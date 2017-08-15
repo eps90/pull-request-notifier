@@ -1,19 +1,19 @@
-import {Config} from "../../services/config";
-import {Reviewer} from "../../services/models";
+import {Config} from '../../services/config';
+import {Reviewer} from '../../services/models';
 
 export class UserVoteController implements ng.IComponentController {
-    static $inject: string[] = ['Config'];
+    public icon: string;
+    public label: string;
+    public reviewers: Reviewer[];
 
-    icon: string;
-    label: string;
-    reviewers: Reviewer[];
+    public static $inject: string[] = ['Config'];
 
     constructor(private config: Config) {}
 
-    $onInit = () => {
+    public $onInit = () => {
         const classes = ['fa'];
         let label = '';
-        for (let reviewer of this.reviewers) {
+        for (const reviewer of this.reviewers) {
             if (reviewer.user.username === this.config.getUsername()) {
                 if (reviewer.approved) {
                     classes.push('fa-check-circle', 'icon-approved');
@@ -28,5 +28,5 @@ export class UserVoteController implements ng.IComponentController {
 
         this.icon = classes.join(' ');
         this.label = label;
-    };
+    }
 }

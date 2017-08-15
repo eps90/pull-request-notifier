@@ -1,13 +1,13 @@
 import componentTemplate from './reminder_component.html';
 import './reminder_component.less';
-import {ReminderController} from "./reminder_controller";
+import {ReminderController} from './reminder_controller';
 
 export class ReminderComponent implements ng.IComponentOptions {
-    template: string = componentTemplate;
-    bindings: any = {
+    public template: string = componentTemplate;
+    public bindings: any = {
         pullRequest: '=',
         size: '@'
     };
 
-    controller = ReminderController;
+    public controller = ReminderController;
 }

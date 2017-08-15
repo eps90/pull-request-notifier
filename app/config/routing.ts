@@ -1,7 +1,10 @@
-import {Project} from "../services/models";
-import {PullRequestRepository} from "../services/pull_request_repository";
+import {Project} from '../services/models';
+import {PullRequestRepository} from '../services/pull_request_repository';
 
-export function RoutingConfiguration(stateProvider: angular.ui.IStateProvider, urlProvider: angular.ui.IUrlRouterProvider): void {
+export function RoutingConfiguration(
+    stateProvider: angular.ui.IStateProvider,
+    urlProvider: angular.ui.IUrlRouterProvider
+): void {
     urlProvider.otherwise('/');
     stateProvider
         .state('home', {
@@ -19,12 +22,12 @@ export function RoutingConfiguration(stateProvider: angular.ui.IStateProvider, u
                         '$stateParams',
                         'PullRequestRepository',
                         ($scope: ng.IScope, params: angular.ui.IStateParamsService, prRepo: PullRequestRepository) => {
-                            var repostoryName = Project.deslugify(params['repositoryName']);
-                            $scope['pullRequest'] = prRepo.find(repostoryName, params['pullRequestId']);
+                            const repositoryName = Project.deslugify(params['repositoryName']);
+                            $scope['pullRequest'] = prRepo.find(repositoryName, params['pullRequestId']);
                         }
                     ]
                 },
-                navbar: {
+                'navbar': {
                     template: '<navigation-brand icon="chevron-left" content="Pull Request">'
                 }
             }

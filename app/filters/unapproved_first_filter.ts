@@ -1,7 +1,7 @@
-import {Reviewer} from "../services/models";
+import {Reviewer} from '../services/models';
 
 export function UnapprovedFirst(): Function {
-    return function (reviewers: Reviewer[]): Reviewer[] {
+    return (reviewers: Reviewer[]): Reviewer[] => {
         return reviewers.sort((previousElement, currentElement) => {
             if (!previousElement.approved && currentElement.approved) {
                 return -1;

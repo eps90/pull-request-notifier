@@ -1,15 +1,15 @@
 import * as angular from 'angular';
 
-import {BackgroundComponent} from "../components/background_component/background_component";
-import {PullRequestRepository} from "../services/pull_request_repository";
-import {NotificationRepository} from "../services/notification_repository";
-import {SocketManager} from "../services/socket_manager";
-import {SocketHandler} from "../services/socket_handler";
-import {Notifier} from "../services/notifier";
-import {Config} from "../services/config";
-import {Indicator} from "../services/indicator";
-import {SoundManager} from "../services/sound_manager";
-import {SoundRepository} from "../services/sound_repository";
+import {BackgroundComponent} from '../components/background_component/background_component';
+import {PullRequestRepository} from '../services/pull_request_repository';
+import {NotificationRepository} from '../services/notification_repository';
+import {SocketManager} from '../services/socket_manager';
+import {SocketHandler} from '../services/socket_handler';
+import {Notifier} from '../services/notifier';
+import {Config} from '../services/config';
+import {Indicator} from '../services/indicator';
+import {SoundManager} from '../services/sound_manager';
+import {SoundRepository} from '../services/sound_repository';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
 const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'btford.socket-io']);

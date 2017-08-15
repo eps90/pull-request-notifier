@@ -1,16 +1,14 @@
-import {Config} from "../services/config";
-import {PullRequest} from "../services/models";
+import {Config} from '../services/config';
+import {PullRequest} from '../services/models';
 
 export function AssignedFilter(config: Config): Function {
-    return (pullRequests: Array<PullRequest>) => {
-        var loggedInUser = config.getUsername();
-        var result: Array<PullRequest> = [];
+    return (pullRequests: PullRequest[]) => {
+        const loggedInUser = config.getUsername();
+        const result: PullRequest[] = [];
 
-        for (var prIndex = 0, prsLength = pullRequests.length; prIndex < prsLength; prIndex++) {
-            var pullRequest = pullRequests[prIndex];
-            var reviewers = pullRequest.reviewers;
-            for (var reviewerIdx = 0, reviewersLength = reviewers.length; reviewerIdx < reviewersLength; reviewerIdx++) {
-                var reviewer = reviewers[reviewerIdx];
+        for (const pullRequest of pullRequests) {
+            const reviewers = pullRequest.reviewers;
+            for (const reviewer of reviewers) {
                 if (reviewer.user.username === loggedInUser && result.indexOf(pullRequest) === -1) {
                     result.push(pullRequest);
                 }
