@@ -17,7 +17,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "angular": "^1.6.2",
+    "angular": "^1.6.5",
     "angular-animate": "^1.6.2",
     "angular-emoji-filter-hd": "^0.0.9",
     "angular-growl-v2": "^0.7.5",
