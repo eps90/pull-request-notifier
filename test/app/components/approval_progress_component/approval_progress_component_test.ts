@@ -2,6 +2,7 @@ import {Config} from "../../../../app/services/config";
 import {PullRequestProgress, Reviewer, User} from "../../../../app/services/models";
 import * as angular from 'angular';
 import {MODULE_NAME} from '../../../../app/modules/bitbucket_notifier';
+import {ApprovalProgressController} from "../../../../app/components/approval_progress_component/approval_progress_controller";
 
 describe('ApprovalProgressComponent', () => {
     var $scope: ng.IScope,
@@ -29,7 +30,7 @@ describe('ApprovalProgressComponent', () => {
         'Config',
         ($c, $r, c) => {
             $compile = $c;
-            $scope = $r;
+            $scope = $r.$new();
             config = c;
         }
     ]));
@@ -43,7 +44,7 @@ describe('ApprovalProgressComponent', () => {
         disapprovingReviewer.user = new User();
         disapprovingReviewer.approved = false;
 
-        $scope['reviewers'] = [approvingReviewer, disapprovingReviewer];
+        $scope.reviewers = [approvingReviewer, disapprovingReviewer];
         element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
         $scope.$digest();
 
@@ -59,6 +60,16 @@ describe('ApprovalProgressComponent', () => {
     });
 
     describe('Appearance variants', () => {
+        let $componentController: ng.IComponentControllerService,
+            reviewers: Reviewer[];
+
+        beforeEach(inject([
+            '$componentController',
+            ($cc) => {
+                $componentController = $cc;
+            }
+        ]));
+
         beforeEach(() => {
             var approvedReviewer = new Reviewer();
             approvedReviewer.approved = true;
@@ -67,14 +78,17 @@ describe('ApprovalProgressComponent', () => {
             var anotherUnapprovedReviewer = new Reviewer();
             anotherUnapprovedReviewer.approved = false;
 
-            $scope['reviewers'] = [approvedReviewer, unapprovedReviewer, anotherUnapprovedReviewer];
+            reviewers = [approvedReviewer, unapprovedReviewer, anotherUnapprovedReviewer];
+            $scope['reviewers'] = reviewers;
         });
 
         it('should set up currently set pull request progress option', () => {
-            element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
-            $scope.$digest();
-
-            expect(element.isolateScope()['pullRequestProgress']).toEqual(prProgress);
+            const bindings = {
+                reviewers: reviewers
+            };
+            const ctrl = <ApprovalProgressController>$componentController('approvalProgress', null, bindings);
+            ctrl.$onInit();
+            expect(ctrl.pullRequestProgress).toEqual(prProgress);
         });
 
         it("should display proportions value if 'proportions' is set as progress option", () => {
@@ -104,10 +118,14 @@ describe('ApprovalProgressComponent', () => {
 
         it('should allow to override progress type by passing it to attribute', () => {
             prProgress = PullRequestProgress.PERCENT;
-            element = $compile('<approval-progress reviewers="reviewers" mode="progress_bar"></approval-progress>')($scope);
-            $scope.$digest();
+            const bindings = {
+                reviewers: reviewers,
+                mode: 'progress_bar'
+            };
+            const ctrl = <ApprovalProgressController>$componentController('approvalProgress', null, bindings);
+            ctrl.$onInit();
 
-            expect(element.isolateScope()['pullRequestProgress']).toEqual('progress_bar');
+            expect(ctrl.pullRequestProgress).toEqual('progress_bar');
         });
     });
 });

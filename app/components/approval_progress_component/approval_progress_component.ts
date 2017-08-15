@@ -1,53 +1,13 @@
-import {Config} from "../../services/config";
-import {Reviewer} from "../../services/models";
-import componentTemplate from './approval_progress_component.html';
 import './approval_progress_component.less';
+import componentTemplate from './approval_progress_component.html';
+import {ApprovalProgressController} from "./approval_progress_controller";
 
-export class ApprovalProgressComponent implements ng.IDirective {
-    restrict: string = 'E';
-    scope: any = {
-        reviewers: '=',
+export class ApprovalProgressComponent implements ng.IComponentOptions {
+    bindings: any = {
+        reviewers: '<',
         mode: '@'
     };
     template: string = componentTemplate;
 
-    constructor(private config: Config) {}
-
-    link: ng.IDirectiveLinkFn = (scope: any) => {
-        var reviewers: Array<Reviewer> = scope['reviewers'] || [];
-        scope.pullRequestProgress = scope.mode || this.config.getPullRequestProgress();
-
-        scope.$watch(
-            () => {
-                return reviewers;
-            },
-            (newValue, oldValue) => {
-                return newValue !== oldValue && updateReviewers();
-            },
-            true
-        );
-
-        function updateReviewers(): void {
-            scope.reviewersCount = reviewers.length;
-            scope.approvalsCount = reviewers.reduce(
-                (amount: number, reviewer: Reviewer) => {
-                    return amount + (reviewer.approved ? 1 : 0);
-                },
-                0
-            );
-
-            scope.progress = {
-                proportions: scope.approvalsCount + '/' + scope.reviewersCount,
-                percentage: Math.floor(scope.approvalsCount / scope.reviewersCount * 100) + '%'
-            };
-        }
-
-        updateReviewers();
-        };
-
-    static factory(): ng.IDirectiveFactory {
-        var directive = (config) => new ApprovalProgressComponent(config);
-        directive.$inject = ['Config'];
-        return directive;
-    }
+    controller = ApprovalProgressController;
 }

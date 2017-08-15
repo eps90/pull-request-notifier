@@ -34,7 +34,7 @@ const application = angular.module(MODULE_NAME, [
 application.directive('pullRequest', PullRequestComponent.factory());
 application.directive('pullRequestsList', PullRequestsListComponent.factory());
 application.directive('pullRequestsHeader', PullRequestsHeaderComponent.factory());
-application.directive('approvalProgress', ApprovalProgressComponent.factory());
+application.component('approvalProgress', new ApprovalProgressComponent());
 application.directive('userVote', UserVoteComponent.factory());
 application.directive('sectionTitle', SectionTitleComponent.factory());
 application.directive('pullRequestLink', PullRequestLinkComponent.factory());
