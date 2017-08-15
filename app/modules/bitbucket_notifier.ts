@@ -42,7 +42,7 @@ application.component('navigationBar', new NavigationBarComponent());
 application.component('navigationBrand', new NavigationBrandComponent());
 application.component('reminder', new ReminderComponent());
 application.component('pullRequestPreview', new PullRequestPreviewComponent());
-application.directive('reviewer', ReviewerComponent.factory());
+application.component('reviewer', new ReviewerComponent());
 
 application.filter('authored' , AuthoredFilter);
 application.filter('assigned', AssignedFilter);
