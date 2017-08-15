@@ -36,7 +36,7 @@ application.component('pullRequestsList', new PullRequestsListComponent());
 application.component('pullRequestsHeader', new PullRequestsHeaderComponent());
 application.component('approvalProgress', new ApprovalProgressComponent());
 application.directive('userVote', UserVoteComponent.factory());
-application.directive('sectionTitle', SectionTitleComponent.factory());
+application.component('sectionTitle', new SectionTitleComponent());
 application.component('pullRequestLink', new PullRequestLinkComponent());
 application.component('navigationBar', new NavigationBarComponent());
 application.component('navigationBrand', new NavigationBrandComponent());

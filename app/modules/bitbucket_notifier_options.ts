@@ -15,7 +15,7 @@ export const MODULE_NAME = 'bitbucketNotifier.options';
 const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'angular-growl']);
 
 application.component('options', new OptionsComponent());
-application.directive('sectionTitle', SectionTitleComponent.factory());
+application.component('sectionTitle', new SectionTitleComponent());
 application.component('navigationBar', new NavigationBarComponent());
 application.component('navigationBrand', new NavigationBrandComponent());
 application.component('approvalProgress', new ApprovalProgressComponent());
