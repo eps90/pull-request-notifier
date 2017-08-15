@@ -41,7 +41,7 @@ application.component('pullRequestLink', new PullRequestLinkComponent());
 application.component('navigationBar', new NavigationBarComponent());
 application.component('navigationBrand', new NavigationBrandComponent());
 application.directive('reminder', ReminderComponent.factory());
-application.directive('pullRequestPreview', PullRequestPreviewComponent.factory());
+application.component('pullRequestPreview', new PullRequestPreviewComponent());
 application.directive('reviewer', ReviewerComponent.factory());
 
 application.filter('authored' , AuthoredFilter);
