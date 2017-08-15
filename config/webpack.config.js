@@ -65,6 +65,14 @@ module.exports = (function webpackConfig() {
                 },
                 {
                     test: /\.(png|jpg|jpeg|gif|svg)$/,
+                    include: path.resolve(__dirname, '../assets/img'),
+                    use: {
+                        loader: 'url-loader'
+                    }
+                },
+                {
+                    test: /\.(png|jpg|jpeg|gif|svg)$/,
+                    exclude: path.resolve(__dirname, '../assets/img'),
                     use: {
                         loader: 'file-loader',
                         options: {
@@ -106,7 +114,7 @@ module.exports = (function webpackConfig() {
             })
         ],
 
-        "stats": "minimal"
+        "stats": "normal"
     };
 
     if (isDev) {
