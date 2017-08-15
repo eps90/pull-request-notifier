@@ -102,7 +102,7 @@ describe('PullRequestsListComponent', () => {
             var childPullRequest = element.find('.pull-requests-list.authored pull-request');
 
             expect(childPullRequest.length).toEqual(1);
-            expect(childPullRequest.isolateScope().mode).toEqual('AUTHORED');
+            expect(childPullRequest.attr('mode')).toEqual('AUTHORED');
         });
 
         it('should update pull requests list when pull requests repository changes', () => {
@@ -147,7 +147,7 @@ describe('PullRequestsListComponent', () => {
             var childPullRequest = element.find('.pull-requests-list.assigned pull-request');
 
             expect(childPullRequest.length).toEqual(2);
-            expect(childPullRequest.isolateScope().mode).toEqual('ASSIGNED');
+            expect(childPullRequest.attr('mode')).toEqual('ASSIGNED');
         });
 
         it('should update pull requests list when pull requests repository changes', () => {

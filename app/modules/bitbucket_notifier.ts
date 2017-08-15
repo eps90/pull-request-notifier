@@ -32,7 +32,7 @@ const application = angular.module(MODULE_NAME, [
     'ngAnimate'
 ]);
 application.component('pullRequest', new PullRequestComponent());
-application.directive('pullRequestsList', PullRequestsListComponent.factory());
+application.component('pullRequestsList', new PullRequestsListComponent());
 application.component('pullRequestsHeader', new PullRequestsHeaderComponent());
 application.component('approvalProgress', new ApprovalProgressComponent());
 application.directive('userVote', UserVoteComponent.factory());
