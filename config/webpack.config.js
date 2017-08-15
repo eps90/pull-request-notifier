@@ -106,6 +106,20 @@ module.exports = (function webpackConfig() {
         ]
     };
 
+    if (isDev) {
+        config.module.rules.push(
+            {
+                test: /\.ts$/,
+                enforce: 'pre',
+                loader: 'tslint-loader',
+                options: {
+                    emitErrors: true,
+                    failOnHint: true
+                }
+            }
+        )
+    }
+
     if (isTest) {
         config.devtool = 'inline-source-map';
     } else if (isProd) {
