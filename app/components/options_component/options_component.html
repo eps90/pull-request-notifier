@@ -11,13 +11,13 @@
                         <div class="form-group">
                             <label for="app-user" class="col-sm-3 control-label">Bitbucket username</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="app-user" placeholder="e.g. john.kowalsky" ng-model="options.appUser">
+                                <input type="text" class="form-control" id="app-user" placeholder="e.g. john.kowalsky" ng-model="$ctrl.options.appUser">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="socket-server-address" class="col-sm-3 control-label">Socket server address</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="socket-server-address" placeholder="e.g. http://localhost:8888" ng-model="options.socketServerAddress">
+                                <input type="text" class="form-control" id="socket-server-address" placeholder="e.g. http://localhost:8888" ng-model="$ctrl.options.socketServerAddress">
                             </div>
                         </div>
                         <div class="form-group">
@@ -25,19 +25,19 @@
                             <div class="col-sm-5">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="pull-request-progress" ng-model="options.pullRequestProgress" value="proportions">
+                                        <input type="radio" name="pull-request-progress" ng-model="$ctrl.options.pullRequestProgress" value="proportions">
                                         Proportions
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="pull-request-progress" ng-model="options.pullRequestProgress" value="percent">
+                                        <input type="radio" name="pull-request-progress" ng-model="$ctrl.options.pullRequestProgress" value="percent">
                                         Percentage
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="pull-request-progress" ng-model="options.pullRequestProgress" value="progress_bar">
+                                        <input type="radio" name="pull-request-progress" ng-model="$ctrl.options.pullRequestProgress" value="progress_bar">
                                         Progress bar
                                     </label>
                                 </div>
@@ -45,17 +45,17 @@
                             <div class="col-sm-4">
                                 <div class="radio">
                                     <div class="col-sm-12">
-                                        <approval-progress reviewers="examples.reviewers" mode="proportions"></approval-progress>
+                                        <approval-progress reviewers="$ctrl.examples.reviewers" mode="proportions"></approval-progress>
                                     </div>
                                 </div>
                                 <div class="radio">
                                     <div class="col-sm-12">
-                                        <approval-progress reviewers="examples.reviewers" mode="percent"></approval-progress>
+                                        <approval-progress reviewers="$ctrl.examples.reviewers" mode="percent"></approval-progress>
                                     </div>
                                 </div>
                                 <div class="radio">
                                     <div class="col-sm-12">
-                                        <approval-progress reviewers="examples.reviewers" mode="progress_bar"></approval-progress>
+                                        <approval-progress reviewers="$ctrl.examples.reviewers" mode="progress_bar"></approval-progress>
                                     </div>
                                 </div>
 
@@ -68,10 +68,10 @@
                             </div>
                             <div class="col-sm-4">
                                 <select name="new-pull-request-sound" id="new-pull-request-sound" class="form-control"
-                                        ng-model="options.newPullRequestSound" ng-options="sound.id as sound.label for sound in sounds"></select>
+                                        ng-model="$ctrl.options.newPullRequestSound" ng-options="sound.id as sound.label for sound in $ctrl.sounds"></select>
                             </div>
                             <div class="col-sm-1">
-                                <a href="#" ng-click="playSound(options.newPullRequestSound)" class="btn btn-primary">
+                                <a href="#" ng-click="playSound($ctrl.options.newPullRequestSound)" class="btn btn-primary">
                                     <i class="fa fa-play"></i>
                                 </a>
                             </div>
@@ -82,10 +82,10 @@
                             </div>
                             <div class="col-sm-4">
                                 <select name="approved-pull-request-sound" id="approved-pull-request-sound" class="form-control"
-                                        ng-model="options.approvedPullRequestSound" ng-options="sound.id as sound.label for sound in sounds"></select>
+                                        ng-model="$ctrl.options.approvedPullRequestSound" ng-options="sound.id as sound.label for sound in $ctrl.sounds"></select>
                             </div>
                             <div class="col-sm-1">
-                                <a href="#" ng-click="playSound(options.approvedPullRequestSound)" class="btn btn-primary">
+                                <a href="#" ng-click="playSound($ctrl.options.approvedPullRequestSound)" class="btn btn-primary">
                                     <i class="fa fa-play"></i>
                                 </a>
                             </div>
@@ -96,10 +96,10 @@
                             </div>
                             <div class="col-sm-4">
                                 <select name="merged-pull-request-sound" id="merged-pull-request-sound" class="form-control"
-                                        ng-model="options.mergedPullRequestSound" ng-options="sound.id as sound.label for sound in sounds"></select>
+                                        ng-model="$ctrl.options.mergedPullRequestSound" ng-options="sound.id as sound.label for sound in $ctrl.sounds"></select>
                             </div>
                             <div class="col-sm-1">
-                                <a href="#" ng-click="playSound(options.mergedPullRequestSound)" class="btn btn-primary">
+                                <a href="#" ng-click="playSound($ctrl.options.mergedPullRequestSound)" class="btn btn-primary">
                                     <i class="fa fa-play"></i>
                                 </a>
                             </div>
@@ -110,17 +110,17 @@
                             </div>
                             <div class="col-sm-4">
                                 <select name="reminder-sound" id="reminder-sound" class="form-control"
-                                        ng-model="options.reminderSound" ng-options="sound.id as sound.label for sound in sounds"></select>
+                                        ng-model="$ctrl.options.reminderSound" ng-options="sound.id as sound.label for sound in $ctrl.sounds"></select>
                             </div>
                             <div class="col-sm-1">
-                                <a href="#" ng-click="playSound(options.reminderSound)" class="btn btn-primary">
+                                <a href="#" ng-click="playSound($ctrl.options.reminderSound)" class="btn btn-primary">
                                     <i class="fa fa-play"></i>
                                 </a>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-9 col-sm-offset-3">
-                                <button type="submit" class="btn btn-primary btn-lg" id="submit" ng-click="saveOptions()">Save</button>
+                                <button type="submit" class="btn btn-primary btn-lg" id="submit" ng-click="$ctrl.saveOptions()">Save</button>
                             </div>
                         </div>
                     </form>
@@ -132,25 +132,25 @@
                     </div>
                     <div class="col-sm-12">
                         <div class="btn-group">
-                            <button id="assigned" ng-click="showNotification('assigned')" class="btn btn-primary">
+                            <button id="assigned" ng-click="$ctrl.showNotification('assigned')" class="btn btn-primary">
                                 Assigned
                             </button>
-                            <button id="approved" ng-click="showNotification('approved')" class="btn btn-primary">
+                            <button id="approved" ng-click="$ctrl.showNotification('approved')" class="btn btn-primary">
                                 Approved
                             </button>
-                            <button id="merged" ng-click="showNotification('merged')" class="btn btn-primary">
+                            <button id="merged" ng-click="$ctrl.showNotification('merged')" class="btn btn-primary">
                                 Merged
                             </button>
-                            <button id="remind" class="btn btn-primary" ng-click="showNotification('remind')">
+                            <button id="remind" class="btn btn-primary" ng-click="$ctrl.showNotification('remind')">
                                 Remind
                             </button>
-                            <button id="updated" ng-click="showNotification('updated')" class="btn btn-primary">
+                            <button id="updated" ng-click="$ctrl.showNotification('updated')" class="btn btn-primary">
                                 Update
                             </button>
-                            <button id="commented" ng-click="showNotification('commented')" class="btn btn-primary">
+                            <button id="commented" ng-click="$ctrl.showNotification('commented')" class="btn btn-primary">
                                 Commented
                             </button>
-                            <button id="replied" class="btn btn-primary" ng-click="showNotification('replied')">
+                            <button id="replied" class="btn btn-primary" ng-click="$ctrl.showNotification('replied')">
                                 Replied
                             </button>
                         </div>

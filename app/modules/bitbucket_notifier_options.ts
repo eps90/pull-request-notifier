@@ -14,7 +14,7 @@ import {NotificationRepository} from "../services/notification_repository";
 export const MODULE_NAME = 'bitbucketNotifier.options';
 const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'angular-growl']);
 
-application.directive('options', OptionsComponent.factory());
+application.component('options', new OptionsComponent());
 application.directive('sectionTitle', SectionTitleComponent.factory());
 application.component('navigationBar', new NavigationBarComponent());
 application.component('navigationBrand', new NavigationBrandComponent());
