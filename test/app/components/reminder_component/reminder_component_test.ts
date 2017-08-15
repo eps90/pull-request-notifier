@@ -55,11 +55,11 @@ describe('ReminderComponent', () => {
         element = $compile('<reminder></reminder>')($scope);
         $scope.$digest();
 
-        expect(element.isolateScope()['disabled']).toBeFalsy();
+        expect(element.find('a.remind-link').attr('disabled')).not.toEqual('disabled');
         var linkElement = element.find('a');
         linkElement.triggerHandler('click');
 
-        expect(element.isolateScope()['disabled']).toBeTruthy();
+        expect(element.find('a.remind-link').attr('disabled')).toEqual('disabled');
     });
 
     it('should change reminder icon on click', () => {
@@ -109,11 +109,11 @@ describe('ReminderComponent', () => {
             element = $compile('<reminder size="lg"></reminder>')($scope);
             $scope.$digest();
 
-            expect(element.isolateScope()['disabled']).toBeFalsy();
-            var linkElement = element.find('a.remind-button');
+            expect(element.find('a.remind-button').attr('disabled')).not.toEqual('disabled');
+            const linkElement = element.find('a.remind-button');
             linkElement.triggerHandler('click');
 
-            expect(element.isolateScope()['disabled']).toBeTruthy();
+            expect(element.find('a.remind-button').attr('disabled')).toEqual('disabled');
         });
 
         it('should change reminder icon on click', () => {

@@ -40,7 +40,7 @@ application.directive('sectionTitle', SectionTitleComponent.factory());
 application.component('pullRequestLink', new PullRequestLinkComponent());
 application.component('navigationBar', new NavigationBarComponent());
 application.component('navigationBrand', new NavigationBrandComponent());
-application.directive('reminder', ReminderComponent.factory());
+application.component('reminder', new ReminderComponent());
 application.component('pullRequestPreview', new PullRequestPreviewComponent());
 application.directive('reviewer', ReviewerComponent.factory());
 
