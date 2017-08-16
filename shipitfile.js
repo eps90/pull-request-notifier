@@ -11,7 +11,7 @@ var config = _.merge({
     default: {
         workspace: '/tmp/bitbucket-notifier-chrome',
         deployTo: '/tmp/bitbucket-notifier-chrome-dist',
-        dirToCopy: 'dist',
+        dirToCopy: 'build',
         repositoryUrl: 'git@bitbucket.org:dacsoftware/bitbucket-notifier-chrome-extension.git',
         ignores: ['.git', 'node_modules'],
         keepReleases: 3
