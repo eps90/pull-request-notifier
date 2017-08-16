@@ -12,7 +12,7 @@ gulp.task('manifest', ['copy-img'], function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('pack', ['webpack'], function () {
+gulp.task('pack', ['manifest'], function () {
     var crx = require('gulp-crx-pack'),
         merge = require('merge-stream'),
         zip = require('gulp-zip'),

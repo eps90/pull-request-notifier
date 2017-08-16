@@ -10,9 +10,9 @@
   },
   "scripts": {
     "test": "karma start",
-    "build:dev": "rimraf dist && webpack --config config/webpack.config.js --progress",
-    "build:watch": "rimraf dist && webpack --config config/webpack.config.js --watch --progress",
-    "build:prod": "rimraf dist && webpack --config config/webpack.config.js -p --progress",
+    "build:dev": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js --progress",
+    "build:watch": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js --watch --progress",
+    "build:prod": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js -p --progress",
     "start": "rimraf dist && webpack-dev-server --config config/webpack.config.js --progress --open"
   },
   "license": "Apache-2.0",
