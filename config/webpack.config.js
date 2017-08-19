@@ -6,7 +6,7 @@ const StyleLinkWebpackPlugin = require('stylelint-webpack-plugin');
 
 module.exports = (function webpackConfig() {
     const isProd = process.env.npm_lifecycle_event === 'build:prod';
-    const isTest = process.env.npm_lifecycle_event === 'test';
+    const isTest = process.env.npm_lifecycle_event.substr(0, 4) === 'test';
     const isDev = !isTest && !isProd;
 
     const config = {

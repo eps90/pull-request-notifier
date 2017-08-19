@@ -10,6 +10,7 @@
   },
   "scripts": {
     "test": "karma start",
+    "test-ci": "karma start --browsers ChromeHeadless",
     "build:dev": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js --progress",
     "build:watch": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js --watch --progress",
     "build:prod": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js -p --progress",
