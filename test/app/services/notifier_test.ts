@@ -3,6 +3,7 @@ import {SoundManager} from "../../../app/services/sound_manager";
 import {NotificationRepository} from "../../../app/services/notification_repository";
 import {PullRequest, PullRequestNotification, User} from "../../../app/services/models";
 import * as angular from 'angular';
+import {NotificationIcon} from "../../../app/models/notification_icon";
 
 describe('Notifier', () => {
     var notifier: Notifier,
@@ -15,7 +16,7 @@ describe('Notifier', () => {
     beforeEach(() => {
         expectedOptions = {
             type: 'basic',
-            iconUrl: '../../assets/img/bitbucket_logo_raw.png',
+            iconUrl: NotificationIcon.DEFAULT,
             title: '',
             message: '',
             contextMessage: '',
@@ -103,7 +104,7 @@ describe('Notifier', () => {
         expectedOptions.title = 'New pull request assigned to you!';
         expectedOptions.message = pullRequest.title;
         expectedOptions.contextMessage = 'by John Smith';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_new.png';
+        expectedOptions.iconUrl = NotificationIcon.NEW_PULL_REQUEST;
 
         notifier.notifyNewPullRequestAssigned(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
@@ -119,7 +120,7 @@ describe('Notifier', () => {
 
         expectedOptions.title = 'Your pull request has been merged';
         expectedOptions.message = pullRequest.title;
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_merged.png';
+        expectedOptions.iconUrl = NotificationIcon.MERGED_PULL_REQUEST;
 
         notifier.notifyPullRequestMerged(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
@@ -135,7 +136,7 @@ describe('Notifier', () => {
         expectedOptions.title = 'Your pull request has been approved';
         expectedOptions.message = pullRequest.title;
         expectedOptions.contextMessage = 'by John Smith';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_approved.png';
+        expectedOptions.iconUrl = NotificationIcon.APPROVED_PULL_REQUEST;
 
         notifier.notifyPullRequestApproved(pullRequest, mergingUser);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
@@ -147,7 +148,7 @@ describe('Notifier', () => {
 
         expectedOptions.title = 'Someone reminds you to review a pull request';
         expectedOptions.message = pullRequest.title;
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_reminder.png';
+        expectedOptions.iconUrl = NotificationIcon.PULL_REQUEST_REMINDER;
 
         notifier.notifyReminder(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
@@ -161,7 +162,7 @@ describe('Notifier', () => {
         expectedOptions.title = 'New pull request assigned to you!';
         expectedOptions.message = 'This is some title';
         expectedOptions.contextMessage = 'by John Smith';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_new.png';
+        expectedOptions.iconUrl = NotificationIcon.NEW_PULL_REQUEST;
 
         notifier.notifyNewPullRequestAssigned(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
@@ -175,7 +176,7 @@ describe('Notifier', () => {
         expectedOptions.title = 'Pull request has been updated';
         expectedOptions.message = 'This is some title';
         expectedOptions.contextMessage = 'by John Kowalsky';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_updated.png';
+        expectedOptions.iconUrl = NotificationIcon.UPDATED_PULL_REQUEST;
 
         notifier.notifyPullRequestUpdated(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
@@ -193,7 +194,7 @@ describe('Notifier', () => {
         expectedOptions.title = 'New comment on your pull request!';
         expectedOptions.message = 'This is some title';
         expectedOptions.contextMessage = 'by John Smith';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_new_comment.png';
+        expectedOptions.iconUrl = NotificationIcon.NEW_COMMENT_ON_PULL_REQUEST;
 
         notifier.notifyNewCommentAdded(pullRequest, commentingUser, commentLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
@@ -211,7 +212,7 @@ describe('Notifier', () => {
         expectedOptions.title = 'New reply for your comment';
         expectedOptions.message = 'This is some title';
         expectedOptions.contextMessage = 'by John Smith';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_new_reply.png';
+        expectedOptions.iconUrl = NotificationIcon.NEW_REPLY_ON_PULL_REQUEST;
 
         notifier.notifyNewReplyOnComment(pullRequest, replyingUser, commentLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
