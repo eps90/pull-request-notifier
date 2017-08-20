@@ -5,6 +5,10 @@ node_js:
   - "7"
   - "6"
 
+env:
+  - CI_BROWSER=ChromeHeadless
+  - CI_BROWSER=PhantomJS
+
 addons:
   chrome: stable
 
@@ -12,8 +16,3 @@ cache:
   yarn: true
   directories:
     - node_modules
-
-script:
-  - yarn run test-ci
-
-# TODO: Test against multiple browsers
