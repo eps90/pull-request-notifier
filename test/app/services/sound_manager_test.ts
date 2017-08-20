@@ -2,9 +2,9 @@ import {SoundManager} from '../../../app/services/sound_manager';
 import {Config} from '../../../app/services/config';
 import {SoundRepository} from '../../../app/services/sound_repository';
 import * as angular from 'angular';
-import {HowlSoundFactory} from '../../../app/services/factories';
 import {NotificationSound} from '../../../app/models/notification_sound';
 import {Sound} from '../../../app/models/sound';
+import {HowlSoundFactory} from '../../../app/services/factory/howl_sound_factory';
 
 describe('SoundManager', () => {
     let soundManager: SoundManager,

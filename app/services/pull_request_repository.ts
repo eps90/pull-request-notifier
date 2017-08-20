@@ -1,8 +1,8 @@
 // @todo Move event handling to some "Chrome events handler/emitter"
-import {PullRequestFactory} from './factories';
 import * as _ from 'lodash';
 import {PullRequest} from '../models/pull_request';
 import {ChromeExtensionEvent} from '../models/event/chrome_extension_event';
+import {PullRequestFactory} from './factory/pull_request_factory';
 
 export class PullRequestRepository {
     public pullRequests: PullRequest[] = [];
