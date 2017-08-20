@@ -1,5 +1,5 @@
-import {Reviewer} from '../../services/models';
 import {Config} from '../../services/config';
+import {Reviewer} from '../../models/reviewer';
 
 export class ApprovalProgressController implements ng.IComponentController {
     public reviewers: Reviewer[];

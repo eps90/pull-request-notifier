@@ -1,11 +1,13 @@
-import {Config} from "../../../app/services/config";
-import {PullRequest, Reviewer, User} from "../../../app/services/models";
+import {Config} from '../../../app/services/config';
 import * as angular from 'angular';
+import {PullRequest} from '../../../app/models/pull_request';
+import {Reviewer} from '../../../app/models/reviewer';
+import {User} from '../../../app/models/user';
 
 describe('AssignedFilter', () => {
-    var $filter,
+    let $filter,
         config: Config,
-        pullRequests: Array<PullRequest>,
+        pullRequests: PullRequest[],
         assignedFilter,
         loggedInUser: string;
 
@@ -32,27 +34,27 @@ describe('AssignedFilter', () => {
     beforeEach(() => {
         assignedFilter = $filter('assigned');
 
-        var assignedUser: User = new User();
+        let assignedUser: User = new User();
         assignedUser.username = 'john.smith';
 
-        var anotherAssignedUser: User = new User();
+        let anotherAssignedUser: User = new User();
         anotherAssignedUser.username = 'anna.kowalsky';
 
-        var loggedInReviewer: Reviewer = new Reviewer();
+        let loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = assignedUser;
 
-        var nonLoggedInReviewer: Reviewer = new Reviewer();
+        let nonLoggedInReviewer: Reviewer = new Reviewer();
         nonLoggedInReviewer.user = anotherAssignedUser;
 
-        var assignedPullRequest: PullRequest = new PullRequest();
+        let assignedPullRequest: PullRequest = new PullRequest();
         assignedPullRequest.id = 101;
         assignedPullRequest.reviewers = [loggedInReviewer, nonLoggedInReviewer];
 
-        var anotherAssignedPullRequest: PullRequest = new PullRequest();
+        let anotherAssignedPullRequest: PullRequest = new PullRequest();
         anotherAssignedPullRequest.id = 202;
         anotherAssignedPullRequest.reviewers = [loggedInReviewer];
 
-        var notAssignedPullRequest: PullRequest = new PullRequest();
+        let notAssignedPullRequest: PullRequest = new PullRequest();
         notAssignedPullRequest.id = 303;
         notAssignedPullRequest.reviewers = [nonLoggedInReviewer];
 
@@ -62,7 +64,7 @@ describe('AssignedFilter', () => {
     it('should include only pull requests authored by logged in user', () => {
         loggedInUser = 'john.smith';
 
-        var actual: Array<PullRequest> = assignedFilter(pullRequests);
+        let actual: PullRequest[] = assignedFilter(pullRequests);
         expect(actual.length).toEqual(2);
         expect(actual[0].id).toEqual(101);
         expect(actual[1].id).toEqual(202);
@@ -76,16 +78,16 @@ describe('AssignedFilter', () => {
     it('should not return duplicates', () => {
         loggedInUser = 'john.smith';
 
-        var assignedUser: User = new User();
+        let assignedUser: User = new User();
         assignedUser.username = 'john.smith';
 
-        var loggedInReviewer: Reviewer = new Reviewer();
+        let loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = assignedUser;
 
-        var duplicatedReviewer: Reviewer = new Reviewer();
+        let duplicatedReviewer: Reviewer = new Reviewer();
         duplicatedReviewer.user = assignedUser;
 
-        var assignedPullRequest: PullRequest = new PullRequest();
+        let assignedPullRequest: PullRequest = new PullRequest();
         assignedPullRequest.id = 101;
         assignedPullRequest.reviewers = [loggedInReviewer, duplicatedReviewer];
 

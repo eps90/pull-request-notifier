@@ -1,29 +1,32 @@
-import {Project, PullRequest, Reviewer, User} from "../../../app/services/models";
+import {Project} from '../../../app/models/project';
+import {PullRequest} from '../../../app/models/pull_request';
+import {Reviewer} from '../../../app/models/reviewer';
+import {User} from '../../../app/models/user';
 
 describe('Models', () => {
     describe('PullRequest', () => {
         it('should be able to determine equality to other PullRequest object', () => {
-            var commonId = 1;
-            var differentId = 2;
+            const commonId = 1;
+            const differentId = 2;
 
-            var commonProject = new Project();
+            const commonProject = new Project();
             commonProject.fullName = 'team_name/repo_name';
-            var otherProject = new Project();
+            const otherProject = new Project();
             otherProject.fullName = 'aaa/bbb';
 
-            var pullRequest = new PullRequest();
+            const pullRequest = new PullRequest();
             pullRequest.id = commonId;
             pullRequest.targetRepository = commonProject;
 
-            var samePullRequest = new PullRequest();
+            const samePullRequest = new PullRequest();
             samePullRequest.id = commonId;
             samePullRequest.targetRepository = commonProject;
 
-            var differentPullRequest = new PullRequest();
+            const differentPullRequest = new PullRequest();
             differentPullRequest.id = commonId;
             differentPullRequest.targetRepository = otherProject;
 
-            var anotherDifferentPr = new PullRequest();
+            const anotherDifferentPr = new PullRequest();
             anotherDifferentPr.id = differentId;
             anotherDifferentPr.targetRepository = commonProject;
 
@@ -35,37 +38,37 @@ describe('Models', () => {
         });
 
         it('should be able to return reviewers as an array of usernames', () => {
-            var userOne = new User();
+            const userOne = new User();
             userOne.username = 'john.smith';
-            var userTwo = new User();
+            const userTwo = new User();
             userTwo.username = 'anna.kowalsky';
 
-            var reviewerOne = new Reviewer();
+            const reviewerOne = new Reviewer();
             reviewerOne.user = userOne;
 
-            var reviewerTwo = new Reviewer();
+            const reviewerTwo = new Reviewer();
             reviewerTwo.user = userTwo;
 
-            var pullRequest = new PullRequest();
+            const pullRequest = new PullRequest();
             pullRequest.reviewers = [reviewerOne, reviewerTwo];
 
             expect(pullRequest.getReviewersList()).toEqual(['john.smith', 'anna.kowalsky']);
         });
 
         it('should be able to determine whether is is merge-ready', () => {
-            var approvedReviewer = new Reviewer();
+            const approvedReviewer = new Reviewer();
             approvedReviewer.approved = true;
 
-            var unapprovedReviewer = new Reviewer();
+            const unapprovedReviewer = new Reviewer();
             unapprovedReviewer.approved = false;
 
-            var readyPr = new PullRequest();
+            const readyPr = new PullRequest();
             readyPr.reviewers = [approvedReviewer];
 
-            var pendingPr = new PullRequest();
+            const pendingPr = new PullRequest();
             pendingPr.reviewers = [unapprovedReviewer];
 
-            var anotherPendningPr = new PullRequest();
+            const anotherPendningPr = new PullRequest();
             anotherPendningPr.reviewers = [approvedReviewer, unapprovedReviewer];
 
             expect(readyPr.isMergeReady()).toBeTruthy();
@@ -77,7 +80,7 @@ describe('Models', () => {
     describe('Project', () => {
         describe('slugify', () => {
             it('should slugify repository name', () => {
-                var projectProvider: [{repoName: string; expectedSlug: string}] = [
+                const projectProvider: [{repoName: string; expectedSlug: string}] = [
                     {
                         repoName: 'team/repo',
                         expectedSlug: 'team__repo'
@@ -93,19 +96,19 @@ describe('Models', () => {
                 ];
 
                 for (let testIdx = 0, len = projectProvider.length; testIdx < len; testIdx++) {
-                    let testData = projectProvider[testIdx];
+                    const testData = projectProvider[testIdx];
 
-                    let project = new Project();
+                    const project = new Project();
                     project.fullName = testData.repoName;
 
-                    let actual = project.slugify();
+                    const actual = project.slugify();
 
                     expect(actual).toEqual(testData.expectedSlug);
                 }
             });
 
             it('should deslugify slugified repository name', () => {
-                var slugsProvider: [{slug: string; expected: string}] = [
+                const slugsProvider: [{slug: string; expected: string}] = [
                     {
                         slug: 'team__repo',
                         expected: 'team/repo'
@@ -117,9 +120,9 @@ describe('Models', () => {
                 ];
 
                 for (let testIdx = 0, len = slugsProvider.length; testIdx < len; testIdx++) {
-                    let testData = slugsProvider[testIdx];
+                    const testData = slugsProvider[testIdx];
 
-                    var actual = Project.deslugify(testData.slug);
+                    const actual = Project.deslugify(testData.slug);
                     expect(actual).toEqual(testData.expected);
                 }
             });

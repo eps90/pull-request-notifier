@@ -1,4 +1,5 @@
-import {ChromeExtensionEvent, PullRequest} from '../../services/models';
+import {PullRequest} from '../../models/pull_request';
+import {ChromeExtensionEvent} from '../../models/event/chrome_extension_event';
 
 export class ReminderController implements ng.IComponentController {
     public size: string;

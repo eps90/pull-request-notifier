@@ -1,11 +1,12 @@
-import {Config} from "../../../app/services/config";
-import {PullRequest, User} from "../../../app/services/models";
+import {Config} from '../../../app/services/config';
 import * as angular from 'angular';
+import {PullRequest} from '../../../app/models/pull_request';
+import {User} from '../../../app/models/user';
 
 describe('AuthoredFilter', () => {
-    var $filter,
+    let $filter,
         config: Config,
-        pullRequests: Array<PullRequest>,
+        pullRequests: PullRequest[],
         authoredFilter,
         loggedInUsername: string;
 
@@ -31,21 +32,21 @@ describe('AuthoredFilter', () => {
     ]));
 
     beforeEach(() => {
-        var loggedInUser: User = new User();
+        let loggedInUser: User = new User();
         loggedInUser.username = 'john.smith';
 
-        var anotherUser: User = new User();
+        let anotherUser: User = new User();
         anotherUser.username = 'anna.kowalsky';
 
-        var authoredPullRequest: PullRequest = new PullRequest();
+        let authoredPullRequest: PullRequest = new PullRequest();
         authoredPullRequest.id = 101;
         authoredPullRequest.author = loggedInUser;
 
-        var autherdPullRequestTwo: PullRequest = new PullRequest();
+        let autherdPullRequestTwo: PullRequest = new PullRequest();
         autherdPullRequestTwo.id = 202;
         autherdPullRequestTwo.author = loggedInUser;
 
-        var anotherPullRequest: PullRequest = new PullRequest();
+        let anotherPullRequest: PullRequest = new PullRequest();
         anotherPullRequest.id = 303;
         anotherPullRequest.author = anotherUser;
 
@@ -56,7 +57,7 @@ describe('AuthoredFilter', () => {
     it('should include only pull requests authored by logged in user', () => {
         loggedInUsername = 'john.smith';
 
-        var result: Array<PullRequest> = authoredFilter(pullRequests);
+        let result: PullRequest[] = authoredFilter(pullRequests);
         expect(result.length).toEqual(2);
         expect(result[0].id).toEqual(101);
         expect(result[1].id).toEqual(202);

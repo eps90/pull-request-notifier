@@ -1,8 +1,10 @@
 import {Config} from '../../services/config';
 import {SoundRepository} from '../../services/sound_repository';
 import {Notifier} from '../../services/notifier';
-import {PullRequest, Sound, User} from '../../services/models';
 import {Howl} from 'howler';
+import {Sound} from '../../models/sound';
+import {PullRequest} from '../../models/pull_request';
+import {User} from '../../models/user';
 
 export class OptionsController implements ng.IComponentController {
     public examples: any;

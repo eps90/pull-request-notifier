@@ -1,5 +1,5 @@
 import {Config} from '../../services/config';
-import {Reviewer} from '../../services/models';
+import {Reviewer} from '../../models/reviewer';
 
 export class UserVoteController implements ng.IComponentController {
     public icon: string;

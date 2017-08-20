@@ -1,9 +1,9 @@
-import {Config} from "../../../../app/services/config";
-import {Notifier} from "../../../../app/services/notifier";
-import {PullRequestProgress} from "../../../../app/services/models";
+import {Config} from '../../../../app/services/config';
+import {Notifier} from '../../../../app/services/notifier';
 import * as angular from 'angular';
 import {Howl} from 'howler';
-import {OptionsController} from "../../../../app/components/options_component/options_controller";
+import {OptionsController} from '../../../../app/components/options_component/options_controller';
+import {PullRequestProgress} from '../../../../app/models/pull_request_progress';
 
 describe('OptionsComponent', () => {
     let config: Config,
@@ -220,7 +220,7 @@ describe('OptionsComponent', () => {
         spyOn(Howl.prototype, 'play').and.stub();
 
         const chosenSoundId = 'bell';
-        const ctrl = <OptionsController>$componentController('options', null);
+        const ctrl = $componentController('options', null) as OptionsController;
         ctrl.playSound(chosenSoundId);
 
         expect(Howl.prototype.play).toHaveBeenCalled();

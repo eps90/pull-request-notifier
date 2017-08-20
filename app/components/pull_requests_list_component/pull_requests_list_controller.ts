@@ -1,5 +1,5 @@
 import {PullRequestRepository} from '../../services/pull_request_repository';
-import {PullRequest} from '../../services/models';
+import {PullRequest} from '../../models/pull_request';
 
 export class PullRequestsListController implements ng.IComponentController {
     public pullRequests: PullRequest[];

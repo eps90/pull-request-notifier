@@ -1,9 +1,10 @@
-import {Config} from "../../../../app/services/config";
-import {Reviewer, User} from "../../../../app/services/models";
+import {Config} from '../../../../app/services/config';
 import * as angular from 'angular';
+import {User} from '../../../../app/models/user';
+import {Reviewer} from '../../../../app/models/reviewer';
 
 describe('UserVoteComponent', () => {
-    var $scope: ng.IScope,
+    let $scope: ng.IScope,
         $compile: ng.ICompileService,
         config: Config;
 
@@ -30,16 +31,16 @@ describe('UserVoteComponent', () => {
     ]));
 
     it('should set awaiting icon if user has not voted yet', () => {
-        var loggedInUser: User = new User();
+        let loggedInUser: User = new User();
         loggedInUser.username = 'john.smith';
 
-        var loggedInReviewer: Reviewer = new Reviewer();
+        let loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = false;
 
         $scope['reviewers'] = [loggedInReviewer];
 
-        var element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
+        let element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
         $scope.$digest();
 
         expect(element.find('.pr-icon').length).toEqual(1);
@@ -48,16 +49,16 @@ describe('UserVoteComponent', () => {
     });
 
     it('should set approved icon if user has approved a pull request', () => {
-        var loggedInUser: User = new User();
+        let loggedInUser: User = new User();
         loggedInUser.username = 'john.smith';
 
-        var loggedInReviewer: Reviewer = new Reviewer();
+        let loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = true;
 
         $scope['reviewers'] = [loggedInReviewer];
 
-        var element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
+        let element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
         $scope.$digest();
 
         expect(element.find('.pr-icon').length).toEqual(1);

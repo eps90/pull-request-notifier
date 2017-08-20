@@ -1,8 +1,8 @@
-import {Reviewer} from "../../../app/services/models";
 import * as angular from 'angular';
+import {Reviewer} from '../../../app/models/reviewer';
 
 describe('UnapprovedFirstFilter', () => {
-    var $filter;
+    let $filter;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(inject([
@@ -13,22 +13,22 @@ describe('UnapprovedFirstFilter', () => {
     ]));
 
     it('should sort reviewers with unapproved first', () => {
-        var approvedReviewer = new Reviewer();
+        let approvedReviewer = new Reviewer();
         approvedReviewer.approved = true;
 
-        var unapprovedReviewer = new Reviewer();
+        let unapprovedReviewer = new Reviewer();
         unapprovedReviewer.approved = false;
 
-        var otherApproved = new Reviewer();
+        let otherApproved = new Reviewer();
         otherApproved.approved = true;
 
-        var otherUnapproved = new Reviewer();
+        let otherUnapproved = new Reviewer();
         otherUnapproved.approved = false;
 
-        var reviewers = [approvedReviewer, unapprovedReviewer, otherApproved, otherUnapproved];
+        let reviewers = [approvedReviewer, unapprovedReviewer, otherApproved, otherUnapproved];
 
-        var unapprovedFirstFilter = $filter('unapprovedFirst');
-        var actual = unapprovedFirstFilter(reviewers);
+        let unapprovedFirstFilter = $filter('unapprovedFirst');
+        let actual = unapprovedFirstFilter(reviewers);
 
         expect(actual).toEqual([unapprovedReviewer, otherUnapproved, approvedReviewer, otherApproved]);
     });

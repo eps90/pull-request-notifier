@@ -1,11 +1,15 @@
-import {Config} from "../../../../app/services/config";
-import {PullRequestProgress, Reviewer, User} from "../../../../app/services/models";
+import {Config} from '../../../../app/services/config';
 import * as angular from 'angular';
 import {MODULE_NAME} from '../../../../app/modules/bitbucket_notifier';
-import {ApprovalProgressController} from "../../../../app/components/approval_progress_component/approval_progress_controller";
+import {
+    ApprovalProgressController
+} from '../../../../app/components/approval_progress_component/approval_progress_controller';
+import {PullRequestProgress} from '../../../../app/models/pull_request_progress';
+import {User} from '../../../../app/models/user';
+import {Reviewer} from '../../../../app/models/reviewer';
 
 describe('ApprovalProgressComponent', () => {
-    var $scope: ng.IScope,
+    let $scope: ng.IScope,
         $compile: ng.ICompileService,
         config: Config,
         element,
@@ -36,11 +40,11 @@ describe('ApprovalProgressComponent', () => {
     ]));
 
     it('should display number of approvals per assigned users count', () => {
-        var approvingReviewer = new Reviewer();
+        let approvingReviewer = new Reviewer();
         approvingReviewer.user = new User();
         approvingReviewer.approved = true;
 
-        var disapprovingReviewer = new Reviewer();
+        let disapprovingReviewer = new Reviewer();
         disapprovingReviewer.user = new User();
         disapprovingReviewer.approved = false;
 
@@ -71,11 +75,11 @@ describe('ApprovalProgressComponent', () => {
         ]));
 
         beforeEach(() => {
-            var approvedReviewer = new Reviewer();
+            let approvedReviewer = new Reviewer();
             approvedReviewer.approved = true;
-            var unapprovedReviewer = new Reviewer();
+            let unapprovedReviewer = new Reviewer();
             unapprovedReviewer.approved = false;
-            var anotherUnapprovedReviewer = new Reviewer();
+            let anotherUnapprovedReviewer = new Reviewer();
             anotherUnapprovedReviewer.approved = false;
 
             reviewers = [approvedReviewer, unapprovedReviewer, anotherUnapprovedReviewer];
@@ -84,9 +88,9 @@ describe('ApprovalProgressComponent', () => {
 
         it('should set up currently set pull request progress option', () => {
             const bindings = {
-                reviewers: reviewers
+                reviewers
             };
-            const ctrl = <ApprovalProgressController>$componentController('approvalProgress', null, bindings);
+            const ctrl = $componentController('approvalProgress', null, bindings) as ApprovalProgressController;
             ctrl.$onInit();
             expect(ctrl.pullRequestProgress).toEqual(prProgress);
         });
@@ -119,10 +123,10 @@ describe('ApprovalProgressComponent', () => {
         it('should allow to override progress type by passing it to attribute', () => {
             prProgress = PullRequestProgress.PERCENT;
             const bindings = {
-                reviewers: reviewers,
+                reviewers,
                 mode: 'progress_bar'
             };
-            const ctrl = <ApprovalProgressController>$componentController('approvalProgress', null, bindings);
+            const ctrl = $componentController('approvalProgress', null, bindings) as ApprovalProgressController;
             ctrl.$onInit();
 
             expect(ctrl.pullRequestProgress).toEqual('progress_bar');

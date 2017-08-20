@@ -1,5 +1,8 @@
-import {Project, PullRequest, Reviewer, User} from "../../../../app/services/models";
 import * as angular from 'angular';
+import {PullRequest} from '../../../../app/models/pull_request';
+import {User} from '../../../../app/models/user';
+import {Reviewer} from '../../../../app/models/reviewer';
+import {Project} from '../../../../app/models/project';
 
 describe('PullRequestComponent', () => {
     let element,
@@ -69,7 +72,7 @@ describe('PullRequestComponent', () => {
             $scope.$digest();
         });
 
-        it("should render basic pull request information", () => {
+        it('should render basic pull request information', () => {
             expect(element.html()).toContain('1');
             expect(element.html()).toContain('John Smith');
             expect(element.html()).toContain('This is a pull request');
@@ -87,7 +90,7 @@ describe('PullRequestComponent', () => {
             $scope.$digest();
         });
 
-        it("should render basic pull request information", () => {
+        it('should render basic pull request information', () => {
             expect(element.html()).toContain('1');
             expect(element.html()).toContain('John Smith');
             expect(element.html()).toContain('This is a pull request');

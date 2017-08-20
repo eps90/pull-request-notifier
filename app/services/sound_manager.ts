@@ -1,7 +1,8 @@
 import {Config} from './config';
-import {NotificationSound, Sound} from './models';
-import {HowlSoundFactory} from './factories';
 import {SoundRepository} from './sound_repository';
+import {NotificationSound} from '../models/notification_sound';
+import {Sound} from '../models/sound';
+import {HowlSoundFactory} from './factory/howl_sound_factory';
 
 export class SoundManager {
 

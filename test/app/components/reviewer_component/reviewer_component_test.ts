@@ -1,5 +1,5 @@
-import {Reviewer} from "../../../../app/services/models";
 import * as angular from 'angular';
+import {Reviewer} from "../../../../app/models/reviewer";
 
 describe('ReviewerComponent', () => {
     var element: ng.IAugmentedJQuery,

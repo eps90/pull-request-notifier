@@ -1,12 +1,14 @@
-import {Notifier} from "../../../app/services/notifier";
-import {SoundManager} from "../../../app/services/sound_manager";
-import {NotificationRepository} from "../../../app/services/notification_repository";
-import {PullRequest, PullRequestNotification, User} from "../../../app/services/models";
+import {Notifier} from '../../../app/services/notifier';
+import {SoundManager} from '../../../app/services/sound_manager';
+import {NotificationRepository} from '../../../app/services/notification_repository';
 import * as angular from 'angular';
-import {NotificationIcon} from "../../../app/models/notification_icon";
+import {NotificationIcon} from '../../../app/models/notification_icon';
+import {PullRequestNotification} from '../../../app/models/pull_request_notification';
+import {User} from '../../../app/models/user';
+import {PullRequest} from '../../../app/models/pull_request';
 
 describe('Notifier', () => {
-    var notifier: Notifier,
+    let notifier: Notifier,
         expectedOptions,
         soundManager: SoundManager,
         notificationRepostory: NotificationRepository,
@@ -72,17 +74,17 @@ describe('Notifier', () => {
 
     it('should create notificaion via Chrome API', () => {
         expectedOptions.title = 'Test title';
-        var notificationId = 'aaabbbb';
-        var notificationLink = 'http://example.com';
+        let notificationId = 'aaabbbb';
+        let notificationLink = 'http://example.com';
         notifier.notify(expectedOptions, notificationId, notificationLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(notificationId, expectedOptions);
         expect(notificationRepostory.add).toHaveBeenCalledWith(notificationId, notificationLink);
     });
 
     it('should open new tab with pull request on click and close the notification', () => {
-        var notification = new PullRequestNotification();
-        var notificationId = 'abcd123';
-        var pullRequestHtmlLink = 'http://example.com';
+        let notification = new PullRequestNotification();
+        let notificationId = 'abcd123';
+        let pullRequestHtmlLink = 'http://example.com';
         notification.notificationId = notificationId;
         notification.pullRequestHtmlLink = pullRequestHtmlLink;
 
@@ -94,10 +96,10 @@ describe('Notifier', () => {
     });
 
     it('should notify about new pull request', () => {
-        var author = new User();
+        let author = new User();
         author.displayName = 'John Smith';
 
-        var pullRequest = new PullRequest();
+        let pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
         pullRequest.author = author;
 
@@ -111,10 +113,10 @@ describe('Notifier', () => {
     });
 
     it('should notify about merged pull request', () => {
-        var author = new User();
+        let author = new User();
         author.displayName = 'John Smith';
 
-        var pullRequest = new PullRequest();
+        let pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
         pullRequest.author = author;
 
@@ -127,10 +129,10 @@ describe('Notifier', () => {
     });
 
     it('should notify about approvals', () => {
-        var mergingUser = new User();
+        let mergingUser = new User();
         mergingUser.displayName = 'John Smith';
 
-        var pullRequest = new PullRequest();
+        let pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
         expectedOptions.title = 'Your pull request has been approved';
@@ -143,7 +145,7 @@ describe('Notifier', () => {
     });
 
     it('should notify on reminders', () => {
-        var pullRequest = new PullRequest();
+        let pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
         expectedOptions.title = 'Someone reminds you to review a pull request';
@@ -155,7 +157,7 @@ describe('Notifier', () => {
     });
 
     it('should filter out emojis from title', () => {
-        var pullRequest = new PullRequest();
+        let pullRequest = new PullRequest();
         pullRequest.title = ':name_badge: This is some title';
         pullRequest.author.displayName = 'John Smith';
 
@@ -220,25 +222,25 @@ describe('Notifier', () => {
 
     describe('with sounds', () => {
         it('should play a notification sound for new pull request notification', () => {
-            var pullRequest = new PullRequest();
+            let pullRequest = new PullRequest();
             notifier.notifyNewPullRequestAssigned(pullRequest);
             expect(soundManager.playNewPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for approved pull request notification', () => {
-            var pullRequest = new PullRequest();
+            let pullRequest = new PullRequest();
             notifier.notifyPullRequestApproved(pullRequest, new User());
             expect(soundManager.playApprovedPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for merged pull request notification', () => {
-            var pullRequest = new PullRequest();
+            let pullRequest = new PullRequest();
             notifier.notifyPullRequestMerged(pullRequest);
             expect(soundManager.playMergedPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for reminder notification', () => {
-            var pullRequest = new PullRequest();
+            let pullRequest = new PullRequest();
             notifier.notifyReminder(pullRequest);
             expect(soundManager.playReminderSound).toHaveBeenCalled();
         });

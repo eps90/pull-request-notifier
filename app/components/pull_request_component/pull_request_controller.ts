@@ -1,5 +1,5 @@
-import {PullRequest} from '../../services/models';
 import {IAugmentedJQuery} from 'angular';
+import {PullRequest} from '../../models/pull_request';
 
 export class PullRequestController implements ng.IComponentController {
     public pullRequest: PullRequest;
