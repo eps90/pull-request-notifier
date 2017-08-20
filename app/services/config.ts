@@ -1,6 +1,7 @@
-import {ConfigObject, NotificationSound} from './models';
 import {SoundRepository} from './sound_repository';
 import * as _ from 'lodash';
+import {NotificationSound} from '../models/notification_sound';
+import {ConfigObject} from '../models/config_object';
 
 export class Config {
     public static $inject: string[] = ['localStorageService', 'SoundRepository'];

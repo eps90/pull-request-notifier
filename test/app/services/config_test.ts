@@ -1,7 +1,9 @@
-import {Config} from "../../../app/services/config";
-import {SoundRepository} from "../../../app/services/sound_repository";
-import {ConfigObject, PullRequestProgress, NotificationSound} from "../../../app/services/models";
+import {Config} from '../../../app/services/config';
+import {SoundRepository} from '../../../app/services/sound_repository';
 import * as angular from 'angular';
+import {ConfigObject} from '../../../app/models/config_object';
+import {PullRequestProgress} from '../../../app/models/pull_request_progress';
+import {NotificationSound} from '../../../app/models/notification_sound';
 
 describe('Config', () => {
     let config: Config,
@@ -26,13 +28,13 @@ describe('Config', () => {
 
     describe('of app user', () => {
         it('should fetch currently logged in user', () => {
-            var username = 'some_user';
+            let username = 'some_user';
             localStorageService.set(ConfigObject.USER, username);
             expect(config.getUsername()).toEqual(username);
         });
 
         it('should save logged in user', () => {
-            var username = 'some_user';
+            let username = 'some_user';
             config.setUsername(username);
             expect(localStorageService.get(ConfigObject.USER)).toEqual(username);
         });
@@ -40,21 +42,21 @@ describe('Config', () => {
 
     describe('of socket server', () => {
         it('should fetch an HTTP address to socket server', () => {
-            var address = 'http://localhost:1234';
+            let address = 'http://localhost:1234';
             localStorageService.set(ConfigObject.SOCKET_SERVER, address);
             expect(config.getSocketServerAddress()).toEqual(address);
         });
 
         it('should fetch a proper HTTP address even if does not start from \'http\'', () => {
-            var address = 'localhost:1234';
-            var expectedAddress = 'http://localhost:1234';
+            let address = 'localhost:1234';
+            let expectedAddress = 'http://localhost:1234';
 
             localStorageService.set(ConfigObject.SOCKET_SERVER, address);
             expect(config.getSocketServerAddress()).toEqual(expectedAddress);
         });
 
         it('should set socket server address', () => {
-            var address = 'localhost:1234';
+            let address = 'localhost:1234';
             config.setSocketServerAddress(address);
             expect(localStorageService.get(ConfigObject.SOCKET_SERVER)).toEqual(address);
         });
@@ -62,7 +64,7 @@ describe('Config', () => {
 
     describe('of pull request progress', () => {
         it('should get a pull request progress option', () => {
-            var option = PullRequestProgress.PROPORTIONS;
+            let option = PullRequestProgress.PROPORTIONS;
             localStorageService.set(ConfigObject.PULLREQUEST_PROGRESS, option);
             expect(config.getPullRequestProgress()).toEqual(option);
         });
@@ -72,7 +74,7 @@ describe('Config', () => {
         });
 
         it('should set pull request progress option', () => {
-            var option = PullRequestProgress.PERCENT;
+            let option = PullRequestProgress.PERCENT;
             config.setPullRequestProgress(option);
             expect(localStorageService.get(ConfigObject.PULLREQUEST_PROGRESS)).toEqual(option);
         });

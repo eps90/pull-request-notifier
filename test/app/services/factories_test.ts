@@ -1,20 +1,21 @@
-import {PullRequestState, User} from "../../../app/services/models";
 import {
     HowlSoundFactory,
     ProjectFactory, PullRequestEventFactory, PullRequestFactory, PullRequestLinksFactory, ReviewerFactory,
     UserFactory
-} from "../../../app/services/factories";
+} from '../../../app/services/factories';
 import {Howl} from 'howler';
+import {User} from '../../../app/models/user';
+import {PullRequestState} from '../../../app/models/pull_request_state';
 
 describe('Factories', () => {
     describe('UserFactory', () => {
         it('should create User object from raw object', () => {
-            var rawObject = {
+            let rawObject = {
                 displayName: 'John Kowalsky',
                 username: 'john.kowalsky'
             };
 
-            var user: User = UserFactory.create(rawObject);
+            let user: User = UserFactory.create(rawObject);
             expect(user.displayName).toEqual('John Kowalsky');
             expect(user.username).toEqual('john.kowalsky');
         });
@@ -22,12 +23,12 @@ describe('Factories', () => {
 
     describe('ProjectFactory', () => {
         it('should create Project object from raw object', () => {
-            var rawObject = {
+            let rawObject = {
                 name: 'Awesome project',
                 fullName: 'team_name/repo_name'
             };
 
-            var project = ProjectFactory.create(rawObject);
+            let project = ProjectFactory.create(rawObject);
             expect(project.fullName).toEqual('team_name/repo_name');
             expect(project.name).toEqual('Awesome project');
         });
@@ -35,7 +36,7 @@ describe('Factories', () => {
 
     describe('ReviewerFactory', () => {
         it('should create a Reviewer object from raw object', () => {
-            var rawObject = {
+            let rawObject = {
                 user: {
                     username: 'john.kowalsky',
                     displayName: 'John Kowalsky'
@@ -43,7 +44,7 @@ describe('Factories', () => {
                 approved: true
             };
 
-            var reviewer = ReviewerFactory.create(rawObject);
+            let reviewer = ReviewerFactory.create(rawObject);
             expect(reviewer.user.username).toEqual('john.kowalsky');
             expect(reviewer.user.displayName).toEqual('John Kowalsky');
             expect(reviewer.approved).toEqual(true);
@@ -52,12 +53,12 @@ describe('Factories', () => {
 
     describe('PullRequestLinksFactory', () => {
         it('should create PullRequestLinks object from raw object', () => {
-            var rawObject = {
+            let rawObject = {
                 self: 'http://example.com/self',
                 html: 'http://example.com/html'
             };
 
-            var links = PullRequestLinksFactory.create(rawObject);
+            let links = PullRequestLinksFactory.create(rawObject);
             expect(links.self).toEqual('http://example.com/self');
             expect(links.html).toEqual('http://example.com/html');
         });
@@ -65,7 +66,7 @@ describe('Factories', () => {
 
     describe('PullRequestFactory', () => {
         it('should create a PullRequest model object from raw object', () => {
-            var rawObject = {
+            let rawObject = {
                 id: 1,
                 title: 'This is a title',
                 description: 'This is a description',
@@ -94,7 +95,7 @@ describe('Factories', () => {
                 }
             };
 
-            var pullRequest = PullRequestFactory.create(rawObject);
+            let pullRequest = PullRequestFactory.create(rawObject);
             expect(pullRequest.id).toEqual(1);
             expect(pullRequest.title).toEqual('This is a title');
             expect(pullRequest.description).toEqual('This is a description');
@@ -113,7 +114,7 @@ describe('Factories', () => {
         });
 
         it('should create collection of PullRequest from raw array of objects', () => {
-            var pullRequests = [
+            let pullRequests = [
                 {
                     id: 1,
                     title: 'This is a title',
@@ -126,7 +127,7 @@ describe('Factories', () => {
                 }
             ];
 
-            var actual = PullRequestFactory.createFromArray(pullRequests);
+            let actual = PullRequestFactory.createFromArray(pullRequests);
 
             expect(actual.length).toEqual(2);
             expect(actual[0].id).toEqual(1);
@@ -140,7 +141,7 @@ describe('Factories', () => {
 
     describe('PullRequestEventFactory', () => {
         it('should create a PullRequestEvent object from raw object', () => {
-            var rawObject = {
+            let rawObject = {
                 actor: {
                     username: 'john.kowalsky',
                     displayName: 'John Kowalsky'
@@ -158,7 +159,7 @@ describe('Factories', () => {
                 }
             };
 
-            var event = PullRequestEventFactory.create(rawObject);
+            let event = PullRequestEventFactory.create(rawObject);
             expect(event.actor.username).toEqual('john.kowalsky');
             expect(event.actor.displayName).toEqual('John Kowalsky');
             expect(event.sourceEvent).toEqual('webhook:pullrequest:updated');

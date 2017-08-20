@@ -1,4 +1,4 @@
-import {Sound} from './models';
+import {Sound} from '../models/sound';
 
 export class SoundRepository {
     /** @todo Add sounds from json or yaml */

@@ -1,4 +1,4 @@
-import {PullRequest} from '../../services/models';
+import {PullRequest} from '../../models/pull_request';
 
 export class PullRequestLinkController implements ng.IComponentController {
     public pr: PullRequest;

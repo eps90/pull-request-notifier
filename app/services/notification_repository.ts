@@ -1,7 +1,8 @@
-import {PullRequestNotification, Notification} from './models';
+import {PullRequestNotification} from '../models/pull_request_notification';
+import {NotificationInterface} from '../models/notification_interface';
 
 export class NotificationRepository {
-    private notifications: Notification[] = [];
+    private notifications: NotificationInterface[] = [];
 
     public add(notificationId: string, pullRequestLink: string): void {
         const prNotification = new PullRequestNotification();
@@ -11,11 +12,11 @@ export class NotificationRepository {
         this.notifications.push(prNotification);
     }
 
-    public getAll(): Notification[] {
+    public getAll(): NotificationInterface[] {
         return this.notifications;
     }
 
-    public find(notificationId: string): Notification {
+    public find(notificationId: string): NotificationInterface {
         for (const notification of this.notifications) {
             if (notification.notificationId === notificationId) {
                 return notification;

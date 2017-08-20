@@ -1,5 +1,5 @@
-import {Project} from '../services/models';
 import {PullRequestRepository} from '../services/pull_request_repository';
+import {Project} from '../models/project';
 
 export function RoutingConfiguration(
     stateProvider: angular.ui.IStateProvider,

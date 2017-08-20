@@ -1,17 +1,22 @@
-import {SocketManager} from "../../../app/services/socket_manager";
-import {Config} from "../../../app/services/config";
-import {Notifier} from "../../../app/services/notifier";
-import {PullRequestRepository} from "../../../app/services/pull_request_repository";
-import {Indicator} from "../../../app/services/indicator";
-import {
-    ChromeExtensionEvent, PullRequest, PullRequestCommentEvent, PullRequestEvent, Reviewer, SocketClientEvent,
-    SocketServerEvent, User, WebhookEvent
-} from "../../../app/services/models";
+import {SocketManager} from '../../../app/services/socket_manager';
+import {Config} from '../../../app/services/config';
+import {Notifier} from '../../../app/services/notifier';
+import {PullRequestRepository} from '../../../app/services/pull_request_repository';
+import {Indicator} from '../../../app/services/indicator';
 import * as angular from 'angular';
+import {PullRequest} from '../../../app/models/pull_request';
+import {SocketClientEvent} from '../../../app/models/event/socket_client_event';
+import {PullRequestEvent} from '../../../app/models/event/pull_request_event';
+import {SocketServerEvent} from '../../../app/models/event/socket_server_event';
+import {ChromeExtensionEvent} from '../../../app/models/event/chrome_extension_event';
+import {User} from '../../../app/models/user';
+import {Reviewer} from '../../../app/models/reviewer';
+import {WebhookEvent} from '../../../app/models/event/webhook_event';
+import {PullRequestCommentEvent} from '../../../app/models/event/pull_request_comment_event';
 require('./../../angular-socket.io-mock');
 
 describe('SocketHandler', () => {
-    var socketHandler,
+    let socketHandler,
         socketManager: SocketManager,
         config: Config,
         pullRequestRepository: PullRequestRepository,
@@ -97,8 +102,8 @@ describe('SocketHandler', () => {
     });
 
     it('should update pull request repository on server:pullrequests:updated', () => {
-        var pullRequest: PullRequest = new PullRequest();
-        var userPullRequest: PullRequestEvent = new PullRequestEvent();
+        let pullRequest: PullRequest = new PullRequest();
+        let userPullRequest: PullRequestEvent = new PullRequestEvent();
         userPullRequest.sourceEvent = 'pullrequest:created';
         userPullRequest.pullRequests = [pullRequest];
         userPullRequest.context = pullRequest;
@@ -114,8 +119,8 @@ describe('SocketHandler', () => {
     });
 
     it('should emit client:remind on chrome event', () => {
-        var pullRequest = new PullRequest();
-        var chromeEvent = new ChromeExtensionEvent(
+        let pullRequest = new PullRequest();
+        let chromeEvent = new ChromeExtensionEvent(
             ChromeExtensionEvent.REMIND,
             pullRequest
         );
@@ -125,11 +130,11 @@ describe('SocketHandler', () => {
     });
 
     describe('chrome notifications', () => {
-        var pullRequestEvent: PullRequestEvent;
-        var pullRequest: PullRequest;
-        var pullRequestsList;
-        var johnSmith: User;
-        var annaKowalsky: User;
+        let pullRequestEvent: PullRequestEvent;
+        let pullRequest: PullRequest;
+        let pullRequestsList;
+        let johnSmith: User;
+        let annaKowalsky: User;
 
         beforeEach(() => {
             pullRequest = new PullRequest();
@@ -153,29 +158,29 @@ describe('SocketHandler', () => {
 
         describe('on introduce', () => {
             it('should notify about author\'s pull requests', () => {
-                var loggedInReviewer = new Reviewer();
+                let loggedInReviewer = new Reviewer();
                 loggedInReviewer.user = johnSmith;
                 loggedInReviewer.approved = false;
 
                 pullRequest.reviewers.push(loggedInReviewer);
 
                 socketManager.socket.receive(SocketServerEvent.INTRODUCED, pullRequestEvent);
-                var stub: jasmine.Spy = <jasmine.Spy> notifier.notifyNewPullRequestAssigned;
+                let stub: jasmine.Spy = notifier.notifyNewPullRequestAssigned as jasmine.Spy;
                 expect(stub.calls.count()).toEqual(1);
             });
 
             it('should not notify about assigned pull requests when author already approved a PullRequest', () => {
-                var unapprovedReviewer = new Reviewer();
+                let unapprovedReviewer = new Reviewer();
                 unapprovedReviewer.user = johnSmith;
                 unapprovedReviewer.approved = false;
 
-                var approvedReviewer = new Reviewer();
+                let approvedReviewer = new Reviewer();
                 approvedReviewer.user = johnSmith;
                 approvedReviewer.approved = true;
 
                 pullRequest.reviewers.push(unapprovedReviewer);
 
-                var approvedPullRequest = new PullRequest();
+                let approvedPullRequest = new PullRequest();
                 approvedPullRequest.id = 2;
                 approvedPullRequest.targetRepository.fullName = 'team_name/repo_name';
                 approvedPullRequest.reviewers.push(approvedReviewer);
@@ -195,7 +200,7 @@ describe('SocketHandler', () => {
                 hasAssignmentChanged = true;
                 exists = false;
 
-                var loggedInReviewer = new Reviewer();
+                let loggedInReviewer = new Reviewer();
                 loggedInReviewer.user = johnSmith;
                 loggedInReviewer.approved = false;
 
@@ -215,7 +220,7 @@ describe('SocketHandler', () => {
             it('should notify about new pull request assignment on webhook:pullrequest:created', () => {
                 pullRequestEvent.sourceEvent = WebhookEvent.PULLREQUEST_CREATED;
 
-                var loggedInReviewer = new Reviewer();
+                let loggedInReviewer = new Reviewer();
                 loggedInReviewer.user = johnSmith;
                 loggedInReviewer.approved = false;
 
@@ -237,7 +242,7 @@ describe('SocketHandler', () => {
             it('should not notify about new pull request on other event than pull:request:created', () => {
                 pullRequestEvent.sourceEvent = 'webhook:pullrequest:fulfilled';
 
-                var loggedInReviewer = new Reviewer();
+                let loggedInReviewer = new Reviewer();
                 loggedInReviewer.user = johnSmith;
                 loggedInReviewer.approved = false;
 
@@ -262,7 +267,7 @@ describe('SocketHandler', () => {
                 pullRequestEvent.sourceEvent = WebhookEvent.PULLREQUEST_FULFILLED;
                 pullRequest.author = annaKowalsky;
 
-                var loggedInReviewer = new Reviewer();
+                let loggedInReviewer = new Reviewer();
                 loggedInReviewer.user = johnSmith;
                 loggedInReviewer.approved = false;
                 pullRequest.reviewers.push(loggedInReviewer);
@@ -344,13 +349,13 @@ describe('SocketHandler', () => {
 
                 expect(notifier.notifyNewReplyOnComment).toHaveBeenCalledWith(pullRequest, johnSmith, commentLink);
             });
-        })
+        });
     });
 
     describe('indicator state', () => {
         it('should show number of pull requests on introduced event', () => {
-            var pullRequest: PullRequest = new PullRequest();
-            var pullRequestEvent: PullRequestEvent = new PullRequestEvent();
+            let pullRequest: PullRequest = new PullRequest();
+            let pullRequestEvent: PullRequestEvent = new PullRequestEvent();
             pullRequestRepository.pullRequests = [pullRequest];
 
             socketManager.socket.receive(SocketServerEvent.INTRODUCED, pullRequestEvent);
@@ -358,8 +363,8 @@ describe('SocketHandler', () => {
         });
 
         it('should show number of pull requests on pullrequest updated event', () => {
-            var pullRequest: PullRequest = new PullRequest();
-            var pullRequestEvent: PullRequestEvent = new PullRequestEvent();
+            let pullRequest: PullRequest = new PullRequest();
+            let pullRequestEvent: PullRequestEvent = new PullRequestEvent();
             pullRequestRepository.pullRequests = [pullRequest];
 
             socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
@@ -367,8 +372,8 @@ describe('SocketHandler', () => {
         });
 
         it('should bring back default badge text on disconnection', () => {
-            var pullRequest: PullRequest = new PullRequest();
-            var pullRequestEvent: PullRequestEvent = new PullRequestEvent();
+            let pullRequest: PullRequest = new PullRequest();
+            let pullRequestEvent: PullRequestEvent = new PullRequestEvent();
             pullRequestRepository.pullRequests = [pullRequest];
 
             socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);

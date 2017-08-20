@@ -1,5 +1,11 @@
-import {Project, PullRequest, PullRequestEvent, PullRequestLinks, PullRequestState, Reviewer, User} from './models';
 import {Howl} from 'howler';
+import {User} from '../models/user';
+import {Project} from '../models/project';
+import {Reviewer} from '../models/reviewer';
+import {PullRequestLinks} from '../models/pull_request_links';
+import {PullRequest} from '../models/pull_request';
+import {PullRequestState} from '../models/pull_request_state';
+import {PullRequestEvent} from '../models/event/pull_request_event';
 
 export class UserFactory {
     public static create(rawObject: any): User {

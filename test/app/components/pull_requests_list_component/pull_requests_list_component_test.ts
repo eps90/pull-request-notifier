@@ -1,13 +1,17 @@
-import {ConfigObject, Project, PullRequest, Reviewer, User} from "../../../../app/services/models";
-import {PullRequestRepository} from "../../../../app/services/pull_request_repository";
+import {PullRequestRepository} from '../../../../app/services/pull_request_repository';
 import * as angular from 'angular';
+import {PullRequest} from '../../../../app/models/pull_request';
+import {User} from '../../../../app/models/user';
+import {Reviewer} from '../../../../app/models/reviewer';
+import {Project} from '../../../../app/models/project';
+import {ConfigObject} from '../../../../app/models/config_object';
 
 describe('PullRequestsListComponent', () => {
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    var element,
+    let element,
         $compile: ng.ICompileService,
         $scope: ng.IRootScopeService,
-        pullRequests: Array<PullRequest> = [],
+        pullRequests: PullRequest[] = [],
         localStorageService: angular.local.storage.ILocalStorageService,
         pullRequestRepository: PullRequestRepository;
 
@@ -48,27 +52,27 @@ describe('PullRequestsListComponent', () => {
     );
 
     beforeEach(() => {
-        var loggedInUser: User = new User();
+        let loggedInUser: User = new User();
         loggedInUser.displayName = 'John Smith';
         loggedInUser.username = 'john.smith';
 
-        var nonLoggedInUser: User = new User();
+        let nonLoggedInUser: User = new User();
         nonLoggedInUser.displayName = 'Anna Kowalsky';
         nonLoggedInUser.username = 'anna.kowalsky';
 
-        var loggedInReviewer: Reviewer = new Reviewer();
+        let loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = true;
 
-        var nonLoggedInReviewer: Reviewer = new Reviewer();
+        let nonLoggedInReviewer: Reviewer = new Reviewer();
         nonLoggedInReviewer.user = nonLoggedInUser;
         nonLoggedInReviewer.approved = false;
 
-        var project: Project = new Project();
+        let project: Project = new Project();
         project.name = 'CRM';
         project.fullName = 'dacsoftware/crm';
 
-        var authoredPullRequest: PullRequest = new PullRequest();
+        let authoredPullRequest: PullRequest = new PullRequest();
 
         authoredPullRequest.id = 1;
         authoredPullRequest.title = 'This is a pull request';
@@ -77,7 +81,7 @@ describe('PullRequestsListComponent', () => {
         authoredPullRequest.targetRepository = project;
         authoredPullRequest.targetBranch = 'master';
 
-        var assignedPullRequest: PullRequest = new PullRequest();
+        let assignedPullRequest: PullRequest = new PullRequest();
         assignedPullRequest.id = 2;
         assignedPullRequest.author = nonLoggedInUser;
         assignedPullRequest.title = 'This is another title';
@@ -99,7 +103,7 @@ describe('PullRequestsListComponent', () => {
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('.pull-requests-list.authored pull-request');
+            let childPullRequest = element.find('.pull-requests-list.authored pull-request');
 
             expect(childPullRequest.length).toEqual(1);
             expect(childPullRequest.attr('mode')).toEqual('AUTHORED');
@@ -109,13 +113,13 @@ describe('PullRequestsListComponent', () => {
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('.pull-requests-list.authored pull-request');
+            let childPullRequest = element.find('.pull-requests-list.authored pull-request');
 
             expect(childPullRequest.length).toEqual(1);
 
-            var loggedInUser = new User();
+            let loggedInUser = new User();
             loggedInUser.username = 'john.smith';
-            var newPullRequest: PullRequest = new PullRequest();
+            let newPullRequest: PullRequest = new PullRequest();
             newPullRequest.author = loggedInUser;
 
             pullRequestRepository.pullRequests.push(newPullRequest);
@@ -144,7 +148,7 @@ describe('PullRequestsListComponent', () => {
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('.pull-requests-list.assigned pull-request');
+            let childPullRequest = element.find('.pull-requests-list.assigned pull-request');
 
             expect(childPullRequest.length).toEqual(2);
             expect(childPullRequest.attr('mode')).toEqual('ASSIGNED');
@@ -154,17 +158,17 @@ describe('PullRequestsListComponent', () => {
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('.pull-requests-list.assigned pull-request');
+            let childPullRequest = element.find('.pull-requests-list.assigned pull-request');
 
             expect(childPullRequest.length).toEqual(2);
 
-            var loggedInUser = new User();
+            let loggedInUser = new User();
             loggedInUser.username = 'anna.kowalsky';
-            var loggedInReviewer = new Reviewer();
+            let loggedInReviewer = new Reviewer();
             loggedInReviewer.user = loggedInUser;
             loggedInReviewer.approved = false;
 
-            var newPullRequest: PullRequest = new PullRequest();
+            let newPullRequest: PullRequest = new PullRequest();
             newPullRequest.reviewers.push(loggedInReviewer);
 
             pullRequestRepository.pullRequests.push(newPullRequest);

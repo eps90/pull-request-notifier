@@ -1,5 +1,5 @@
 import {Config} from '../services/config';
-import {PullRequest} from '../services/models';
+import {PullRequest} from '../models/pull_request';
 
 export function AuthoredFilter(config: Config) {
     return (pullRequests: PullRequest[]) => {

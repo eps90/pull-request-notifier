@@ -1,8 +1,10 @@
 import {NotificationRepository} from './notification_repository';
 import {SoundManager} from './sound_manager';
-import {PullRequest, PullRequestNotification, User} from './models';
 import * as _ from 'lodash';
 import {NotificationIcon} from '../models/notification_icon';
+import {PullRequestNotification} from '../models/pull_request_notification';
+import {PullRequest} from '../models/pull_request';
+import {User} from '../models/user';
 
 interface NotificationOptions {
     type?: string;

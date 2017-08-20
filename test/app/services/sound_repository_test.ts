@@ -1,6 +1,6 @@
-import {SoundRepository} from "../../../app/services/sound_repository";
-import {Sound} from "../../../app/services/models";
+import {SoundRepository} from '../../../app/services/sound_repository';
 import * as angular from 'angular';
+import {Sound} from '../../../app/models/sound';
 
 describe('SoundRepository', () => {
     let soundRepository: SoundRepository;

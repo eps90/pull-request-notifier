@@ -5,11 +5,14 @@ import {Config} from './config';
 import {Notifier} from './notifier';
 import {Indicator} from './indicator';
 import {PullRequestRepository} from './pull_request_repository';
-import {
-    ChromeExtensionEvent, PullRequest, PullRequestCommentEvent, PullRequestEvent, SocketClientEvent, SocketServerEvent,
-    WebhookEvent
-} from './models';
 import {PullRequestEventFactory} from './factories';
+import {ChromeExtensionEvent} from '../models/event/chrome_extension_event';
+import {SocketClientEvent} from '../models/event/socket_client_event';
+import {SocketServerEvent} from '../models/event/socket_server_event';
+import {PullRequest} from '../models/pull_request';
+import {PullRequestCommentEvent} from '../models/event/pull_request_comment_event';
+import {PullRequestEvent} from '../models/event/pull_request_event';
+import {WebhookEvent} from '../models/event/webhook_event';
 
 export class SocketHandler {
     public static $inject: string[] = ['SocketManager', 'Config', 'PullRequestRepository', 'Notifier', 'Indicator'];

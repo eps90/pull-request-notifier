@@ -1,5 +1,6 @@
-import {ChromeExtensionEvent, PullRequest} from "../../../../app/services/models";
 import * as angular from 'angular';
+import {PullRequest} from "../../../../app/models/pull_request";
+import {ChromeExtensionEvent} from "../../../../app/models/event/chrome_extension_event";
 
 describe('ReminderComponent', () => {
     var $scope: ng.IScope,

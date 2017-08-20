@@ -1,4 +1,4 @@
-import {Reviewer} from '../services/models';
+import {Reviewer} from '../models/reviewer';
 
 export function UnapprovedFirst() {
     return (reviewers: Reviewer[]): Reviewer[] => {
