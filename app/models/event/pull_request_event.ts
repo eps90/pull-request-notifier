@@ -1,4 +1,4 @@
-import {User} from "../user";
+import {User} from '../user';
 import {PullRequest} from '../pull_request';
 
 export class PullRequestEvent {
