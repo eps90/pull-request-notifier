@@ -4,9 +4,9 @@ import {User} from '../../../../app/models/user';
 import {Reviewer} from '../../../../app/models/reviewer';
 
 describe('UserVoteComponent', () => {
-    let $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        config: Config;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let config: Config;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(angular.mock.module([
@@ -31,16 +31,16 @@ describe('UserVoteComponent', () => {
     ]));
 
     it('should set awaiting icon if user has not voted yet', () => {
-        let loggedInUser: User = new User();
+        const loggedInUser: User = new User();
         loggedInUser.username = 'john.smith';
 
-        let loggedInReviewer: Reviewer = new Reviewer();
+        const loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = false;
 
         $scope['reviewers'] = [loggedInReviewer];
 
-        let element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
+        const element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
         $scope.$digest();
 
         expect(element.find('.pr-icon').length).toEqual(1);
@@ -49,16 +49,16 @@ describe('UserVoteComponent', () => {
     });
 
     it('should set approved icon if user has approved a pull request', () => {
-        let loggedInUser: User = new User();
+        const loggedInUser: User = new User();
         loggedInUser.username = 'john.smith';
 
-        let loggedInReviewer: Reviewer = new Reviewer();
+        const loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = true;
 
         $scope['reviewers'] = [loggedInReviewer];
 
-        let element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
+        const element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
         $scope.$digest();
 
         expect(element.find('.pr-icon').length).toEqual(1);

@@ -9,11 +9,11 @@ import {User} from '../../../../app/models/user';
 import {Reviewer} from '../../../../app/models/reviewer';
 
 describe('ApprovalProgressComponent', () => {
-    let $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        config: Config,
-        element,
-        prProgress = null;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let config: Config;
+    let element;
+    let prProgress = null;
 
     beforeEach(angular.mock.module(MODULE_NAME));
     beforeEach(angular.mock.module([
@@ -40,11 +40,11 @@ describe('ApprovalProgressComponent', () => {
     ]));
 
     it('should display number of approvals per assigned users count', () => {
-        let approvingReviewer = new Reviewer();
+        const approvingReviewer = new Reviewer();
         approvingReviewer.user = new User();
         approvingReviewer.approved = true;
 
-        let disapprovingReviewer = new Reviewer();
+        const disapprovingReviewer = new Reviewer();
         disapprovingReviewer.user = new User();
         disapprovingReviewer.approved = false;
 
@@ -64,8 +64,8 @@ describe('ApprovalProgressComponent', () => {
     });
 
     describe('Appearance variants', () => {
-        let $componentController: ng.IComponentControllerService,
-            reviewers: Reviewer[];
+        let $componentController: ng.IComponentControllerService;
+        let reviewers: Reviewer[];
 
         beforeEach(inject([
             '$componentController',
@@ -75,11 +75,11 @@ describe('ApprovalProgressComponent', () => {
         ]));
 
         beforeEach(() => {
-            let approvedReviewer = new Reviewer();
+            const approvedReviewer = new Reviewer();
             approvedReviewer.approved = true;
-            let unapprovedReviewer = new Reviewer();
+            const unapprovedReviewer = new Reviewer();
             unapprovedReviewer.approved = false;
-            let anotherUnapprovedReviewer = new Reviewer();
+            const anotherUnapprovedReviewer = new Reviewer();
             anotherUnapprovedReviewer.approved = false;
 
             reviewers = [approvedReviewer, unapprovedReviewer, anotherUnapprovedReviewer];

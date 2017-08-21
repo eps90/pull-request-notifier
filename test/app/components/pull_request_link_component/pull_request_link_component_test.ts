@@ -2,10 +2,10 @@ import * as angular from 'angular';
 import {PullRequest} from '../../../../app/models/pull_request';
 
 describe('PullRequestLinkComponent', () => {
-    let $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        element: ng.IAugmentedJQuery,
-        newTabObj;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let element: ng.IAugmentedJQuery;
+    let newTabObj;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(() => {

@@ -1,7 +1,7 @@
 describe('NavigationBrandComponent', () => {
-    var element: ng.IAugmentedJQuery,
-        $scope: ng.IScope,
-        $compile: ng.ICompileService;
+    let element: ng.IAugmentedJQuery;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(inject([
@@ -14,13 +14,13 @@ describe('NavigationBrandComponent', () => {
     ]));
 
     it('should render navigation brand with icon and content', () => {
-        var icon = 'bitbucket';
-        var content = "My Content";
+        const icon = 'bitbucket';
+        const content = 'My Content';
 
         element = $compile(`<navigation-brand icon="${icon}" content="${content}"></navigation-brand>`)($scope);
         $scope.$digest();
 
-        var expectedIconClass = 'fa-' + icon;
+        const expectedIconClass = 'fa-' + icon;
         expect(element.find('.icon').first().hasClass(expectedIconClass)).toBeTruthy();
         expect(element.text()).toContain(content);
     });

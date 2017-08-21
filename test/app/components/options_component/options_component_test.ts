@@ -6,21 +6,21 @@ import {OptionsController} from '../../../../app/components/options_component/op
 import {PullRequestProgress} from '../../../../app/models/pull_request_progress';
 
 describe('OptionsComponent', () => {
-    let config: Config,
-        appUser,
-        socketServer,
-        pullRequestProgress,
-        newPullRequestSound,
-        approvedPullRequestSound,
-        mergedPullRequestSound,
-        reminderSound,
-        element: ng.IAugmentedJQuery,
-        $rootScope: ng.IRootScopeService,
-        $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        growl: angular.growl.IGrowlService,
-        notifier: Notifier,
-        $componentController: ng.IComponentControllerService;
+    let config: Config;
+    let appUser;
+    let socketServer;
+    let pullRequestProgress;
+    let newPullRequestSound;
+    let approvedPullRequestSound;
+    let mergedPullRequestSound;
+    let reminderSound;
+    let element: ng.IAugmentedJQuery;
+    let $rootScope: ng.IRootScopeService;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let growl: angular.growl.IGrowlService;
+    let notifier: Notifier;
+    let $componentController: ng.IComponentControllerService;
 
     beforeEach(angular.mock.module('bitbucketNotifier.options'));
     beforeEach(angular.mock.module([

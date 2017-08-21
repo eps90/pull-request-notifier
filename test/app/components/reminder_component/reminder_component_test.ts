@@ -1,11 +1,11 @@
 import * as angular from 'angular';
-import {PullRequest} from "../../../../app/models/pull_request";
-import {ChromeExtensionEvent} from "../../../../app/models/event/chrome_extension_event";
+import {PullRequest} from '../../../../app/models/pull_request';
+import {ChromeExtensionEvent} from '../../../../app/models/event/chrome_extension_event';
 
 describe('ReminderComponent', () => {
-    var $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        element: ng.IAugmentedJQuery;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let element: ng.IAugmentedJQuery;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(() => {
@@ -29,19 +29,19 @@ describe('ReminderComponent', () => {
         element = $compile('<reminder></reminder>')($scope);
         $scope.$digest();
 
-        var remindLink = element.find('a.remind-link');
+        const remindLink = element.find('a.remind-link');
         expect(remindLink.length).toEqual(1);
         expect(remindLink.find('i').first().hasClass('fa-bell')).toBeTruthy();
     });
 
     it('should call chrome.extension.sendMessage on click', () => {
-        var pullRequest = new PullRequest();
+        const pullRequest = new PullRequest();
         $scope['myPr'] = pullRequest;
 
         element = $compile('<reminder pull-request="myPr"></reminder>')($scope);
         $scope.$digest();
 
-        var linkElement = element.find('a');
+        const linkElement = element.find('a');
         linkElement.triggerHandler('click');
 
         expect(window['chrome'].extension.sendMessage).toHaveBeenCalledWith(
@@ -57,7 +57,7 @@ describe('ReminderComponent', () => {
         $scope.$digest();
 
         expect(element.find('a.remind-link').attr('disabled')).not.toEqual('disabled');
-        var linkElement = element.find('a');
+        const linkElement = element.find('a');
         linkElement.triggerHandler('click');
 
         expect(element.find('a.remind-link').attr('disabled')).toEqual('disabled');
@@ -70,7 +70,7 @@ describe('ReminderComponent', () => {
         // make sure that only one icon is shown at time
         expect(element.find('a i.fa-check').length).toEqual(0);
 
-        var linkElement = element.find('a');
+        let linkElement = element.find('a');
         linkElement.triggerHandler('click');
 
         linkElement = element.find('a');
@@ -82,20 +82,20 @@ describe('ReminderComponent', () => {
             element = $compile('<reminder size="lg"></reminder>')($scope);
             $scope.$digest();
 
-            var remindLink = element.find('a.remind-button');
+            const remindLink = element.find('a.remind-button');
             expect(remindLink.length).toEqual(1);
             expect(element.find('a.remind-link').length).toEqual(0);
             expect(remindLink.find('i').first().hasClass('fa-bell')).toBeTruthy();
         });
 
         it('should call chrome.extension.sendMessage on click', () => {
-            var pullRequest = new PullRequest();
+            const pullRequest = new PullRequest();
             $scope['myPr'] = pullRequest;
 
             element = $compile('<reminder pull-request="myPr" size="lg"></reminder>')($scope);
             $scope.$digest();
 
-            var linkElement = element.find('a.remind-button');
+            const linkElement = element.find('a.remind-button');
             linkElement.triggerHandler('click');
 
             expect(window['chrome'].extension.sendMessage).toHaveBeenCalledWith(
@@ -124,7 +124,7 @@ describe('ReminderComponent', () => {
             // make sure that only one icon is shown at time
             expect(element.find('a.remind-button i.fa-check').length).toEqual(0);
 
-            var linkElement = element.find('a.remind-button');
+            let linkElement = element.find('a.remind-button');
             linkElement.triggerHandler('click');
 
             linkElement = element.find('a.remind-button');
