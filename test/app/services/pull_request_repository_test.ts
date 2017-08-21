@@ -7,9 +7,12 @@ import {Project} from '../../../app/models/project';
 import {ChromeExtensionEvent} from '../../../app/models/event/chrome_extension_event';
 
 describe('PullRequestRepository', () => {
-    let pullRequestRepositoryOne: PullRequestRepository,
-        pullRequestRepositoryTwo: PullRequestRepository,
-        messageFunc, connectionFunc, connectPort, connectPortFn;
+    let pullRequestRepositoryOne: PullRequestRepository;
+    let pullRequestRepositoryTwo: PullRequestRepository;
+    let messageFunc;
+    let connectionFunc;
+    let connectPort;
+    let connectPortFn;
 
     beforeEach(() => {
         connectPort = {
@@ -47,8 +50,8 @@ describe('PullRequestRepository', () => {
     ]));
 
     it('should keep the same value each time', () => {
-        let pullRequestOne: PullRequest = new PullRequest();
-        let pullRequestTwo: PullRequest = new PullRequest();
+        const pullRequestOne: PullRequest = new PullRequest();
+        const pullRequestTwo: PullRequest = new PullRequest();
 
         pullRequestRepositoryOne.pullRequests = [pullRequestOne];
         pullRequestRepositoryTwo.pullRequests.push(pullRequestTwo);
@@ -59,8 +62,8 @@ describe('PullRequestRepository', () => {
     it('should set the list of pull requests', () => {
         expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
 
-        let pullRequest: PullRequest = new PullRequest();
-        let pullRequestsList = [pullRequest];
+        const pullRequest: PullRequest = new PullRequest();
+        const pullRequestsList = [pullRequest];
 
         pullRequestRepositoryOne.setPullRequests(pullRequestsList);
 
@@ -68,71 +71,71 @@ describe('PullRequestRepository', () => {
     });
 
     it('should be able to detect new assignment', () => {
-        let project = new Project();
+        const project = new Project();
         project.fullName = 'team_name/repo_name';
 
-        let user = new User();
+        const user = new User();
         user.username = 'john.smith';
-        let reviewer = new Reviewer();
+        const reviewer = new Reviewer();
         reviewer.user = user;
         reviewer.approved = false;
 
-        let pullRequest: PullRequest = new PullRequest();
+        const pullRequest: PullRequest = new PullRequest();
         pullRequest.id = 1;
         pullRequest.targetRepository = project;
         pullRequest.reviewers = [];
 
-        let changedPullRequest: PullRequest = new PullRequest();
+        const changedPullRequest: PullRequest = new PullRequest();
         changedPullRequest.id = 1;
         changedPullRequest.targetRepository = project;
         changedPullRequest.reviewers = [reviewer];
 
         pullRequestRepositoryOne.pullRequests = [pullRequest];
-        let actual: boolean = pullRequestRepositoryOne.hasAssignmentChanged(changedPullRequest);
+        const actual: boolean = pullRequestRepositoryOne.hasAssignmentChanged(changedPullRequest);
         expect(actual).toBeTruthy();
     });
 
     it('should be able to detect when user is assigned', () => {
-        let project = new Project();
+        const project = new Project();
         project.fullName = 'team_name/repo_name';
 
-        let user = new User();
+        const user = new User();
         user.username = 'john.smith';
-        let newUser = new User();
+        const newUser = new User();
         newUser.username = 'anna.kowalsky';
 
-        let reviewer = new Reviewer();
+        const reviewer = new Reviewer();
         reviewer.user = user;
         reviewer.approved = false;
-        let newReviewer = new Reviewer();
+        const newReviewer = new Reviewer();
         newReviewer.user = newUser;
         newReviewer.approved = false;
 
-        let pullRequest: PullRequest = new PullRequest();
+        const pullRequest: PullRequest = new PullRequest();
         pullRequest.id = 1;
         pullRequest.targetRepository = project;
         pullRequest.reviewers = [reviewer];
 
-        let changedPullRequest: PullRequest = new PullRequest();
+        const changedPullRequest: PullRequest = new PullRequest();
         changedPullRequest.id = 1;
         changedPullRequest.targetRepository = project;
         changedPullRequest.reviewers = [newReviewer];
 
         pullRequestRepositoryOne.pullRequests = [pullRequest];
-        let actual: boolean = pullRequestRepositoryOne.hasAssignmentChanged(changedPullRequest);
+        const actual: boolean = pullRequestRepositoryOne.hasAssignmentChanged(changedPullRequest);
         expect(actual).toBeTruthy();
     });
 
     it('should determine whether given pull request already exists', () => {
-        let existentPullRequest = new PullRequest();
+        const existentPullRequest = new PullRequest();
         existentPullRequest.id = 1;
         existentPullRequest.targetRepository.fullName = 'team_name/repo_name';
 
-        let newPullRequest = new PullRequest();
+        const newPullRequest = new PullRequest();
         newPullRequest.id = 2;
         newPullRequest.targetRepository.fullName = 'team_name/repo_name';
 
-        let anotherNewPullRequest = new PullRequest();
+        const anotherNewPullRequest = new PullRequest();
         anotherNewPullRequest.id = 1;
         anotherNewPullRequest.targetRepository.fullName = 'another_team/another_repo';
 
@@ -145,37 +148,37 @@ describe('PullRequestRepository', () => {
 
     describe('finding pull request', () => {
         it('should find pull request by id and repository name', () => {
-            let repositoryName = 'team_name/repo_name';
-            let prId = 3;
+            const repositoryName = 'team_name/repo_name';
+            const prId = 3;
 
-            let project = new Project();
+            const project = new Project();
             project.fullName = repositoryName;
 
-            let pullRequest = new PullRequest();
+            const pullRequest = new PullRequest();
             pullRequest.targetRepository = project;
             pullRequest.id = prId;
 
             pullRequestRepositoryOne.pullRequests = [pullRequest];
 
-            let actual: PullRequest = pullRequestRepositoryOne.find(repositoryName, prId);
+            const actual: PullRequest = pullRequestRepositoryOne.find(repositoryName, prId);
             expect(actual).toEqual(pullRequest);
         });
 
         it('should return null if pull request has not been found', () => {
-            let repositoryName = 'team_name/repo_name';
-            let prId = 3;
+            const repositoryName = 'team_name/repo_name';
+            const prId = 3;
 
             pullRequestRepositoryOne.pullRequests = [];
 
-            let actual: PullRequest = pullRequestRepositoryOne.find(repositoryName, prId);
+            const actual: PullRequest = pullRequestRepositoryOne.find(repositoryName, prId);
             expect(actual).toBeNull();
         });
     });
 
     describe('with chrome events', () => {
         it('should emit chrome event on pull request collection change', () => {
-            let pullRequest: PullRequest = new PullRequest();
-            let pullRequestsList = [pullRequest];
+            const pullRequest: PullRequest = new PullRequest();
+            const pullRequestsList = [pullRequest];
 
             pullRequestRepositoryOne.setPullRequests(pullRequestsList);
             expect(window['chrome'].extension.sendMessage)
@@ -188,8 +191,8 @@ describe('PullRequestRepository', () => {
         });
 
         it('should listen to event to update pull requests', () => {
-            let pullRequest: PullRequest = new PullRequest();
-            let pullRequestsList = [pullRequest];
+            const pullRequest: PullRequest = new PullRequest();
+            const pullRequestsList = [pullRequest];
 
             expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
             messageFunc({type: ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: pullRequestsList});
@@ -197,10 +200,10 @@ describe('PullRequestRepository', () => {
         });
 
         it('should send all pull requests on connection', () => {
-            let pullRequest: PullRequest = new PullRequest();
+            const pullRequest: PullRequest = new PullRequest();
             pullRequestRepositoryOne.pullRequests = [pullRequest];
 
-            let port = {
+            const port = {
                 postMessage: jasmine.createSpy('port.postMessage')
             };
             connectionFunc(port);
@@ -213,8 +216,8 @@ describe('PullRequestRepository', () => {
         });
 
         it('should receive all pull requests on connection', () => {
-            let pullRequest: PullRequest = new PullRequest();
-            let pullRequestsList = [pullRequest];
+            const pullRequest: PullRequest = new PullRequest();
+            const pullRequestsList = [pullRequest];
 
             expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
             connectPortFn(

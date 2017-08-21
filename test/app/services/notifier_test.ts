@@ -8,12 +8,12 @@ import {User} from '../../../app/models/user';
 import {PullRequest} from '../../../app/models/pull_request';
 
 describe('Notifier', () => {
-    let notifier: Notifier,
-        expectedOptions,
-        soundManager: SoundManager,
-        notificationRepostory: NotificationRepository,
-        notificationStub: PullRequestNotification,
-        onClickedStub;
+    let notifier: Notifier;
+    let expectedOptions;
+    let soundManager: SoundManager;
+    let notificationRepostory: NotificationRepository;
+    let notificationStub: PullRequestNotification;
+    let onClickedStub;
 
     beforeEach(() => {
         expectedOptions = {
@@ -74,17 +74,17 @@ describe('Notifier', () => {
 
     it('should create notificaion via Chrome API', () => {
         expectedOptions.title = 'Test title';
-        let notificationId = 'aaabbbb';
-        let notificationLink = 'http://example.com';
+        const notificationId = 'aaabbbb';
+        const notificationLink = 'http://example.com';
         notifier.notify(expectedOptions, notificationId, notificationLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(notificationId, expectedOptions);
         expect(notificationRepostory.add).toHaveBeenCalledWith(notificationId, notificationLink);
     });
 
     it('should open new tab with pull request on click and close the notification', () => {
-        let notification = new PullRequestNotification();
-        let notificationId = 'abcd123';
-        let pullRequestHtmlLink = 'http://example.com';
+        const notification = new PullRequestNotification();
+        const notificationId = 'abcd123';
+        const pullRequestHtmlLink = 'http://example.com';
         notification.notificationId = notificationId;
         notification.pullRequestHtmlLink = pullRequestHtmlLink;
 
@@ -96,10 +96,10 @@ describe('Notifier', () => {
     });
 
     it('should notify about new pull request', () => {
-        let author = new User();
+        const author = new User();
         author.displayName = 'John Smith';
 
-        let pullRequest = new PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
         pullRequest.author = author;
 
@@ -113,10 +113,10 @@ describe('Notifier', () => {
     });
 
     it('should notify about merged pull request', () => {
-        let author = new User();
+        const author = new User();
         author.displayName = 'John Smith';
 
-        let pullRequest = new PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
         pullRequest.author = author;
 
@@ -129,10 +129,10 @@ describe('Notifier', () => {
     });
 
     it('should notify about approvals', () => {
-        let mergingUser = new User();
+        const mergingUser = new User();
         mergingUser.displayName = 'John Smith';
 
-        let pullRequest = new PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
         expectedOptions.title = 'Your pull request has been approved';
@@ -145,7 +145,7 @@ describe('Notifier', () => {
     });
 
     it('should notify on reminders', () => {
-        let pullRequest = new PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
         expectedOptions.title = 'Someone reminds you to review a pull request';
@@ -157,7 +157,7 @@ describe('Notifier', () => {
     });
 
     it('should filter out emojis from title', () => {
-        let pullRequest = new PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = ':name_badge: This is some title';
         pullRequest.author.displayName = 'John Smith';
 
@@ -222,25 +222,25 @@ describe('Notifier', () => {
 
     describe('with sounds', () => {
         it('should play a notification sound for new pull request notification', () => {
-            let pullRequest = new PullRequest();
+            const pullRequest = new PullRequest();
             notifier.notifyNewPullRequestAssigned(pullRequest);
             expect(soundManager.playNewPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for approved pull request notification', () => {
-            let pullRequest = new PullRequest();
+            const pullRequest = new PullRequest();
             notifier.notifyPullRequestApproved(pullRequest, new User());
             expect(soundManager.playApprovedPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for merged pull request notification', () => {
-            let pullRequest = new PullRequest();
+            const pullRequest = new PullRequest();
             notifier.notifyPullRequestMerged(pullRequest);
             expect(soundManager.playMergedPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for reminder notification', () => {
-            let pullRequest = new PullRequest();
+            const pullRequest = new PullRequest();
             notifier.notifyReminder(pullRequest);
             expect(soundManager.playReminderSound).toHaveBeenCalled();
         });

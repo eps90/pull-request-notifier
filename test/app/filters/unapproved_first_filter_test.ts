@@ -13,22 +13,22 @@ describe('UnapprovedFirstFilter', () => {
     ]));
 
     it('should sort reviewers with unapproved first', () => {
-        let approvedReviewer = new Reviewer();
+        const approvedReviewer = new Reviewer();
         approvedReviewer.approved = true;
 
-        let unapprovedReviewer = new Reviewer();
+        const unapprovedReviewer = new Reviewer();
         unapprovedReviewer.approved = false;
 
-        let otherApproved = new Reviewer();
+        const otherApproved = new Reviewer();
         otherApproved.approved = true;
 
-        let otherUnapproved = new Reviewer();
+        const otherUnapproved = new Reviewer();
         otherUnapproved.approved = false;
 
-        let reviewers = [approvedReviewer, unapprovedReviewer, otherApproved, otherUnapproved];
+        const reviewers = [approvedReviewer, unapprovedReviewer, otherApproved, otherUnapproved];
 
-        let unapprovedFirstFilter = $filter('unapprovedFirst');
-        let actual = unapprovedFirstFilter(reviewers);
+        const unapprovedFirstFilter = $filter('unapprovedFirst');
+        const actual = unapprovedFirstFilter(reviewers);
 
         expect(actual).toEqual([unapprovedReviewer, otherUnapproved, approvedReviewer, otherApproved]);
     });

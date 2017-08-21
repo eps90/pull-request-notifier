@@ -7,10 +7,10 @@ import {Sound} from '../../../app/models/sound';
 import {HowlSoundFactory} from '../../../app/services/factory/howl_sound_factory';
 
 describe('SoundManager', () => {
-    let soundManager: SoundManager,
-        soundRepository: SoundRepository,
-        config: Config,
-        sounds;
+    let soundManager: SoundManager;
+    let soundRepository: SoundRepository;
+    let config: Config;
+    let sounds;
 
     beforeEach(function collectSounds(): void {
         sounds = {};

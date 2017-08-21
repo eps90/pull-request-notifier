@@ -1,7 +1,7 @@
 describe('Section title component', () => {
-    var $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        element: ng.IAugmentedJQuery;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let element: ng.IAugmentedJQuery;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(inject([
@@ -16,7 +16,7 @@ describe('Section title component', () => {
     it('should render a title', () => {
         element = $compile('<section-title>This is a title</section-title>')($scope);
         $scope.$digest();
-        var titleElement = element.find('h2.title');
+        const titleElement = element.find('h2.title');
 
         expect(_.trim(titleElement.text())).toEqual('This is a title');
     });
@@ -25,7 +25,7 @@ describe('Section title component', () => {
         element = $compile('<section-title icon="cogs">This is a title</section-title>')($scope);
         $scope.$digest();
 
-        var iconElement = element.find('i');
+        const iconElement = element.find('i');
         expect(iconElement.hasClass('fa')).toBeTruthy();
         expect(iconElement.hasClass('fa-cogs')).toBeTruthy();
         expect(iconElement.hasClass('title-icon')).toBeTruthy();

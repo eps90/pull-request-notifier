@@ -1,11 +1,11 @@
 import * as angular from 'angular';
 
-describe("NavigationBarComponent", () => {
-    var $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        element: ng.IAugmentedJQuery,
-        appVersion = '1.0.0',
-        bitbucketUrl = 'http://example.com';
+describe('NavigationBarComponent', () => {
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let element: ng.IAugmentedJQuery;
+    const appVersion = '1.0.0';
+    const bitbucketUrl = 'http://example.com';
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(() => [
@@ -37,8 +37,8 @@ describe("NavigationBarComponent", () => {
         element = $compile('<navigation-bar></navigation-bar>')($scope);
         $scope.$digest();
 
-        var versionField = element.find('.app-version');
-        var expectedAppVersion = 'v' + appVersion;
+        const versionField = element.find('.app-version');
+        const expectedAppVersion = 'v' + appVersion;
         expect(versionField.text()).toEqual(expectedAppVersion);
     });
 });

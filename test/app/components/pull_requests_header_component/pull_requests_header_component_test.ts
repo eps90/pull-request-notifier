@@ -1,7 +1,7 @@
 describe('PullRequestsHeaderComponent', () => {
-    var $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        element;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let element;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(inject([

@@ -14,19 +14,19 @@ describe('NotificationRepository', () => {
     ]));
 
     it('should add notification to repository', () => {
-        let notificationId = 'aaaa';
-        let prLink = 'http://example.com';
+        const notificationId = 'aaaa';
+        const prLink = 'http://example.com';
 
         notificationRepository.add(notificationId, prLink);
         expect(notificationRepository.getAll().length).toEqual(1);
     });
 
     it('should find single notification', () => {
-        let notificationId = 'abcd';
-        let prLink = 'http://example.com';
+        const notificationId = 'abcd';
+        const prLink = 'http://example.com';
 
         notificationRepository.add(notificationId, prLink);
-        let actualNotification = notificationRepository.find(notificationId) as PullRequestNotification;
+        const actualNotification = notificationRepository.find(notificationId) as PullRequestNotification;
 
         expect(actualNotification.pullRequestHtmlLink).toEqual('http://example.com');
     });

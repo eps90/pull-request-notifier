@@ -8,12 +8,12 @@ import {ConfigObject} from '../../../../app/models/config_object';
 
 describe('PullRequestsListComponent', () => {
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    let element,
-        $compile: ng.ICompileService,
-        $scope: ng.IRootScopeService,
-        pullRequests: PullRequest[] = [],
-        localStorageService: angular.local.storage.ILocalStorageService,
-        pullRequestRepository: PullRequestRepository;
+    let element;
+    let $compile: ng.ICompileService;
+    let $scope: ng.IRootScopeService;
+    let pullRequests: PullRequest[] = [];
+    let localStorageService: angular.local.storage.ILocalStorageService;
+    let pullRequestRepository: PullRequestRepository;
 
     beforeEach(() => {
         window['chrome'] = {
@@ -52,27 +52,27 @@ describe('PullRequestsListComponent', () => {
     );
 
     beforeEach(() => {
-        let loggedInUser: User = new User();
+        const loggedInUser: User = new User();
         loggedInUser.displayName = 'John Smith';
         loggedInUser.username = 'john.smith';
 
-        let nonLoggedInUser: User = new User();
+        const nonLoggedInUser: User = new User();
         nonLoggedInUser.displayName = 'Anna Kowalsky';
         nonLoggedInUser.username = 'anna.kowalsky';
 
-        let loggedInReviewer: Reviewer = new Reviewer();
+        const loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = true;
 
-        let nonLoggedInReviewer: Reviewer = new Reviewer();
+        const nonLoggedInReviewer: Reviewer = new Reviewer();
         nonLoggedInReviewer.user = nonLoggedInUser;
         nonLoggedInReviewer.approved = false;
 
-        let project: Project = new Project();
+        const project: Project = new Project();
         project.name = 'CRM';
         project.fullName = 'dacsoftware/crm';
 
-        let authoredPullRequest: PullRequest = new PullRequest();
+        const authoredPullRequest: PullRequest = new PullRequest();
 
         authoredPullRequest.id = 1;
         authoredPullRequest.title = 'This is a pull request';
@@ -81,7 +81,7 @@ describe('PullRequestsListComponent', () => {
         authoredPullRequest.targetRepository = project;
         authoredPullRequest.targetBranch = 'master';
 
-        let assignedPullRequest: PullRequest = new PullRequest();
+        const assignedPullRequest: PullRequest = new PullRequest();
         assignedPullRequest.id = 2;
         assignedPullRequest.author = nonLoggedInUser;
         assignedPullRequest.title = 'This is another title';
@@ -103,7 +103,7 @@ describe('PullRequestsListComponent', () => {
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            let childPullRequest = element.find('.pull-requests-list.authored pull-request');
+            const childPullRequest = element.find('.pull-requests-list.authored pull-request');
 
             expect(childPullRequest.length).toEqual(1);
             expect(childPullRequest.attr('mode')).toEqual('AUTHORED');
@@ -117,9 +117,9 @@ describe('PullRequestsListComponent', () => {
 
             expect(childPullRequest.length).toEqual(1);
 
-            let loggedInUser = new User();
+            const loggedInUser = new User();
             loggedInUser.username = 'john.smith';
-            let newPullRequest: PullRequest = new PullRequest();
+            const newPullRequest: PullRequest = new PullRequest();
             newPullRequest.author = loggedInUser;
 
             pullRequestRepository.pullRequests.push(newPullRequest);
@@ -148,7 +148,7 @@ describe('PullRequestsListComponent', () => {
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            let childPullRequest = element.find('.pull-requests-list.assigned pull-request');
+            const childPullRequest = element.find('.pull-requests-list.assigned pull-request');
 
             expect(childPullRequest.length).toEqual(2);
             expect(childPullRequest.attr('mode')).toEqual('ASSIGNED');
@@ -162,13 +162,13 @@ describe('PullRequestsListComponent', () => {
 
             expect(childPullRequest.length).toEqual(2);
 
-            let loggedInUser = new User();
+            const loggedInUser = new User();
             loggedInUser.username = 'anna.kowalsky';
-            let loggedInReviewer = new Reviewer();
+            const loggedInReviewer = new Reviewer();
             loggedInReviewer.user = loggedInUser;
             loggedInReviewer.approved = false;
 
-            let newPullRequest: PullRequest = new PullRequest();
+            const newPullRequest: PullRequest = new PullRequest();
             newPullRequest.reviewers.push(loggedInReviewer);
 
             pullRequestRepository.pullRequests.push(newPullRequest);

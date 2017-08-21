@@ -4,11 +4,11 @@ import {PullRequest} from '../../../app/models/pull_request';
 import {User} from '../../../app/models/user';
 
 describe('AuthoredFilter', () => {
-    let $filter,
-        config: Config,
-        pullRequests: PullRequest[],
-        authoredFilter,
-        loggedInUsername: string;
+    let $filter;
+    let config: Config;
+    let pullRequests: PullRequest[];
+    let authoredFilter;
+    let loggedInUsername: string;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
 
@@ -32,21 +32,21 @@ describe('AuthoredFilter', () => {
     ]));
 
     beforeEach(() => {
-        let loggedInUser: User = new User();
+        const loggedInUser: User = new User();
         loggedInUser.username = 'john.smith';
 
-        let anotherUser: User = new User();
+        const anotherUser: User = new User();
         anotherUser.username = 'anna.kowalsky';
 
-        let authoredPullRequest: PullRequest = new PullRequest();
+        const authoredPullRequest: PullRequest = new PullRequest();
         authoredPullRequest.id = 101;
         authoredPullRequest.author = loggedInUser;
 
-        let autherdPullRequestTwo: PullRequest = new PullRequest();
+        const autherdPullRequestTwo: PullRequest = new PullRequest();
         autherdPullRequestTwo.id = 202;
         autherdPullRequestTwo.author = loggedInUser;
 
-        let anotherPullRequest: PullRequest = new PullRequest();
+        const anotherPullRequest: PullRequest = new PullRequest();
         anotherPullRequest.id = 303;
         anotherPullRequest.author = anotherUser;
 
@@ -57,7 +57,7 @@ describe('AuthoredFilter', () => {
     it('should include only pull requests authored by logged in user', () => {
         loggedInUsername = 'john.smith';
 
-        let result: PullRequest[] = authoredFilter(pullRequests);
+        const result: PullRequest[] = authoredFilter(pullRequests);
         expect(result.length).toEqual(2);
         expect(result[0].id).toEqual(101);
         expect(result[1].id).toEqual(202);

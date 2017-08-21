@@ -5,11 +5,11 @@ import {Reviewer} from '../../../../app/models/reviewer';
 import {Project} from '../../../../app/models/project';
 
 describe('PullRequestComponent', () => {
-    let element,
-        $compile: ng.ICompileService,
-        $scope: ng.IRootScopeService,
-        uiRouterState: angular.ui.IStateService,
-        pullRequest: PullRequest = new PullRequest();
+    let element;
+    let $compile: ng.ICompileService;
+    let $scope: ng.IRootScopeService;
+    let uiRouterState: angular.ui.IStateService;
+    const pullRequest: PullRequest = new PullRequest();
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(angular.mock.module([

@@ -4,8 +4,8 @@ import {SocketClientEvent} from '../../../app/models/event/socket_client_event';
 
 describe('SocketManager', () => {
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
-    let socketManager: SocketManager,
-        secondSocketManager: SocketClientEvent;
+    let socketManager: SocketManager;
+    let secondSocketManager: SocketClientEvent;
 
     beforeEach(inject([
         'SocketManager',
