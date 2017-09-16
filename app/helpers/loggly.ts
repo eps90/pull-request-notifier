@@ -1,8 +1,11 @@
 export function setUpLogglyLogger(application: ng.IModule) {
-    if (process.env.LOGGLY_TOKEN.length > 0) {
+    const logglyToken = process.env.hasOwnProperty('LOGGLY_TOKEN')
+        ? process.env.LOGGLY_TOKEN
+        : '';
+    if (logglyToken.length > 0) {
         application.config(['LogglyLoggerProvider', (logglyLoggerProvider) => {
             logglyLoggerProvider
-                .inputToken(process.env.LOGGLY_TOKEN)
+                .inputToken(logglyToken)
                 .inputTag('pull-request-notifier')
                 .sendConsoleErrors(true);
         }]);
