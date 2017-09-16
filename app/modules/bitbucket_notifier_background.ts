@@ -10,9 +10,10 @@ import {Config} from '../services/config';
 import {Indicator} from '../services/indicator';
 import {SoundManager} from '../services/sound_manager';
 import {SoundRepository} from '../services/sound_repository';
+import 'angular-loggly-logger';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
-const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'btford.socket-io']);
+const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'btford.socket-io', 'logglyLogger']);
 
 application.directive('background', BackgroundComponent.factory());
 
@@ -31,5 +32,13 @@ if (PRODUCTION) {
         $compileProvider.debugInfoEnabled(false);
         $compileProvider.cssClassDirectivesEnabled(false);
         $compileProvider.commentDirectivesEnabled(false);
+    }]);
+}
+
+if (process.env.LOGGLY_TOKEN.length > 0) {
+    application.config(['LogglyLoggerProvider', (logglyLoggerProvider) => {
+        logglyLoggerProvider
+            .inputToken(process.env.LOGGLY_TOKEN)
+            .sendConsoleErrors(true);
     }]);
 }
