@@ -195,6 +195,10 @@ angular-emoji-filter-hd@^0.0.9:
     grunt-contrib-uglify "^0.2.7"
     grunt-replace "0.9.1"
 
+angular-google-analytics@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/angular-google-analytics/-/angular-google-analytics-1.1.8.tgz#e497926c0f77cd6eec0c0cbdf0b20e58938cf8a0"
+
 angular-growl-v2@^0.7.5:
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/angular-growl-v2/-/angular-growl-v2-0.7.5.tgz#57876d511622801948c02e3a95dd96337af6470d"
