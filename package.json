@@ -23,6 +23,7 @@
     "angular-emoji-filter-hd": "^0.0.9",
     "angular-growl-v2": "^0.7.5",
     "angular-local-storage": "^0.6.0",
+    "angular-loggly-logger": "^0.2.4",
     "angular-sanitize": "^1.6.5",
     "angular-socket-io": "^0.7.0",
     "angular-ui-bootstrap": "^2.5.0",
