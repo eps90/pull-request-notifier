@@ -203,6 +203,17 @@ angular-local-storage@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/angular-local-storage/-/angular-local-storage-0.6.0.tgz#4dba9772fef752070de5a93e202be886b299c686"
 
+angular-loggly-logger@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/angular-loggly-logger/-/angular-loggly-logger-0.2.4.tgz#d41bf80c66d6ea66c5a81d1ac59e4be16cfe28d9"
+  dependencies:
+    angular "^1.5.6"
+    angular-mocks "^1.5.6"
+
+angular-mocks@^1.5.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/angular-mocks/-/angular-mocks-1.6.6.tgz#c93018e7838c6dc5ceaf1a6bcf9be13c830ea515"
+
 angular-mocks@^1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/angular-mocks/-/angular-mocks-1.6.5.tgz#c62f8014cc6d3ed3fd1b383a634ca0009af3efee"
@@ -236,6 +247,10 @@ angular@^1.0.8:
 angular@^1.3.2, angular@^1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/angular/-/angular-1.6.5.tgz#37f788eebec5ce2e3fa02b17bbcb2a231576a0d6"
+
+angular@^1.5.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/angular/-/angular-1.6.6.tgz#fd5a3cfb437ce382d854ee01120797978527cb64"
 
 ansi-cyan@^0.1.1:
   version "0.1.1"
@@ -1698,6 +1713,16 @@ domutils@1.5.1:
   dependencies:
     dom-serializer "0"
     domelementtype "1"
+
+dotenv-webpack@^1.5.4:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/dotenv-webpack/-/dotenv-webpack-1.5.4.tgz#9c92e46e412a1cfbc60217ed33d69d2bbfddbf9f"
+  dependencies:
+    dotenv "^4.0.0"
+
+dotenv@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-4.0.0.tgz#864ef1379aced55ce6f95debecdce179f7a0cd1d"
 
 duplexer2@0.0.2:
   version "0.0.2"

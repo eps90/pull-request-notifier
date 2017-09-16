@@ -5,3 +5,4 @@ dist
 build
 .tmp
 shipitfile.local.js
+/.env

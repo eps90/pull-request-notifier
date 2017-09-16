@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLinkWebpackPlugin = require('stylelint-webpack-plugin');
+const DotEnvPlugin = require('dotenv-webpack');
 
 module.exports = (function webpackConfig() {
     const isProd = process.env.npm_lifecycle_event === 'build:prod';
@@ -106,6 +107,10 @@ module.exports = (function webpackConfig() {
         },
 
         plugins: [
+            new DotEnvPlugin({
+                path: path.resolve(__dirname, '../.env'),
+                safe: isProd
+            }),
             new webpack.ProvidePlugin({
                 'window.jQuery': 'jquery'
             }),

@@ -19,6 +19,8 @@ import {PullRequestRepository} from '../services/pull_request_repository';
 import {SoundRepository} from '../services/sound_repository';
 import {Config} from '../services/config';
 import {RoutingConfiguration} from '../config/routing';
+import 'angular-loggly-logger';
+import {setUpLogglyLogger} from '../helpers/loggly';
 
 export const MODULE_NAME = 'bitbucketNotifier';
 
@@ -29,7 +31,8 @@ const application = angular.module(MODULE_NAME, [
     'ngSanitize',
     'ui.router',
     'ng-showdown',
-    'ngAnimate'
+    'ngAnimate',
+    'logglyLogger'
 ]);
 application.component('pullRequest', new PullRequestComponent());
 application.component('pullRequestsList', new PullRequestsListComponent());
@@ -63,3 +66,5 @@ if (PRODUCTION) {
         $compileProvider.commentDirectivesEnabled(false);
     }]);
 }
+
+setUpLogglyLogger(application);

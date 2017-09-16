@@ -10,9 +10,11 @@ import {SoundManager} from '../services/sound_manager';
 import {SoundRepository} from '../services/sound_repository';
 import {Notifier} from '../services/notifier';
 import {NotificationRepository} from '../services/notification_repository';
+import 'angular-loggly-logger';
+import {setUpLogglyLogger} from '../helpers/loggly';
 
 export const MODULE_NAME = 'bitbucketNotifier.options';
-const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'angular-growl']);
+const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'angular-growl', 'logglyLogger']);
 
 application.component('options', new OptionsComponent());
 application.component('sectionTitle', new SectionTitleComponent());
@@ -40,3 +42,5 @@ if (PRODUCTION) {
         $compileProvider.commentDirectivesEnabled(false);
     }]);
 }
+
+setUpLogglyLogger(application);
