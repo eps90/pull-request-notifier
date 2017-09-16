@@ -18,6 +18,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
+    "@types/angular-google-analytics": "^1.1.33",
     "angular": "^1.6.5",
     "angular-animate": "^1.6.5",
     "angular-emoji-filter-hd": "^0.0.9",
