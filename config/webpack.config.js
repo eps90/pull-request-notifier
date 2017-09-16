@@ -108,7 +108,7 @@ module.exports = (function webpackConfig() {
 
         plugins: [
             new DotEnvPlugin({
-                safe: isProd || isTest
+                path: path.resolve(__dirname, '../.env')
             }),
             new webpack.ProvidePlugin({
                 'window.jQuery': 'jquery'
