@@ -20,6 +20,7 @@ import {SoundRepository} from '../services/sound_repository';
 import {Config} from '../services/config';
 import {RoutingConfiguration} from '../config/routing';
 import 'angular-loggly-logger';
+import {setUpLogglyLogger} from '../helpers/loggly';
 
 export const MODULE_NAME = 'bitbucketNotifier';
 
@@ -66,10 +67,4 @@ if (PRODUCTION) {
     }]);
 }
 
-if (process.env.LOGGLY_TOKEN.length > 0) {
-    application.config(['LogglyLoggerProvider', (logglyLoggerProvider) => {
-        logglyLoggerProvider
-            .inputToken(process.env.LOGGLY_TOKEN)
-            .sendConsoleErrors(true);
-    }]);
-}
+setUpLogglyLogger(application);

@@ -11,6 +11,7 @@ import {SoundRepository} from '../services/sound_repository';
 import {Notifier} from '../services/notifier';
 import {NotificationRepository} from '../services/notification_repository';
 import 'angular-loggly-logger';
+import {setUpLogglyLogger} from '../helpers/loggly';
 
 export const MODULE_NAME = 'bitbucketNotifier.options';
 const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'angular-growl', 'logglyLogger']);
@@ -42,10 +43,4 @@ if (PRODUCTION) {
     }]);
 }
 
-if (process.env.LOGGLY_TOKEN.length > 0) {
-    application.config(['LogglyLoggerProvider', (logglyLoggerProvider) => {
-        logglyLoggerProvider
-            .inputToken(process.env.LOGGLY_TOKEN)
-            .sendConsoleErrors(true);
-    }]);
-}
+setUpLogglyLogger(application);
