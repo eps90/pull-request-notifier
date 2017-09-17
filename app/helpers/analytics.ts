@@ -1,10 +1,16 @@
 const GOOGLE_ANALYTICS_KEY = process.env.GOOGLE_ANALYTICS_KEY || '';
 
 export function setUpAnalytics(application: ng.IModule): void {
-    if (GOOGLE_ANALYTICS_KEY.length > 0) {
-        application.config([
-            'AnalyticsProvider',
-            (analyticsProvider) => {
+    application.config([
+        'AnalyticsProvider',
+        (analyticsProvider) => {
+            if (TEST) {
+                analyticsProvider
+                    .enterTestMode()
+                    .setAccount('');
+            }
+
+            if (GOOGLE_ANALYTICS_KEY.length > 0) {
                 analyticsProvider
                     .setAccount({
                         tracker: GOOGLE_ANALYTICS_KEY,
@@ -17,13 +23,9 @@ export function setUpAnalytics(application: ng.IModule): void {
                     })
                     .setPageEvent('$stateChangeSuccess')
                     .enterDebugMode(DEV);
-
-                if (TEST) {
-                    analyticsProvider.enterTestMode();
-                }
             }
-        ]);
-    }
+        }
+    ]);
 }
 
 export function setUpAnalyticsTrackPrefix(application: ng.IModule, pagePrefix: string): void {
