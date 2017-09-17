@@ -25,7 +25,8 @@
         ],
         "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
         "no-unused-expression": ["allow-fast-null-checks"],
-        "no-var-requires": false
+        "no-var-requires": false,
+        "no-empty": false
     }
 
 }
