@@ -20,7 +20,9 @@ import {SoundRepository} from '../services/sound_repository';
 import {Config} from '../services/config';
 import {RoutingConfiguration} from '../config/routing';
 import 'angular-loggly-logger';
+import 'angular-google-analytics';
 import {setUpLogglyLogger} from '../helpers/loggly';
+import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 
 export const MODULE_NAME = 'bitbucketNotifier';
 
@@ -32,7 +34,8 @@ const application = angular.module(MODULE_NAME, [
     'ui.router',
     'ng-showdown',
     'ngAnimate',
-    'logglyLogger'
+    'logglyLogger',
+    'angular-google-analytics'
 ]);
 application.component('pullRequest', new PullRequestComponent());
 application.component('pullRequestsList', new PullRequestsListComponent());
@@ -68,3 +71,7 @@ if (PRODUCTION) {
 }
 
 setUpLogglyLogger(application);
+setUpAnalytics(application);
+setUpAnalyticsTrackPrefix(application, 'popup.html');
+
+application.run(['Analytics', (analytics) => {}]);
