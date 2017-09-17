@@ -7,6 +7,7 @@ import {PullRequest} from '../models/pull_request';
 import {User} from '../models/user';
 import {AnalyticsEventDispatcher} from './analytics_event_dispatcher';
 import {NotificationOpenedEvent} from '../models/analytics_event/notification_opened_event';
+import {PullRequestOpenedEvent} from '../models/analytics_event/pull_request_opened_event';
 
 interface NotificationOptions {
     type?: string;
@@ -32,6 +33,7 @@ export class Notifier {
             const notification = this.notificationRepository.find(notificationId) as PullRequestNotification;
             this.chrome.tabs.create({url: notification.pullRequestHtmlLink});
             this.chrome.notifications.clear(notificationId);
+            this.analyticsEventDispatcher.dispatch(PullRequestOpenedEvent.fromNotification());
         });
     }
 
