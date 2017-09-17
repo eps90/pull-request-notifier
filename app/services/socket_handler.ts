@@ -13,15 +13,25 @@ import {PullRequestCommentEvent} from '../models/event/pull_request_comment_even
 import {PullRequestEvent} from '../models/event/pull_request_event';
 import {WebhookEvent} from '../models/event/webhook_event';
 import {PullRequestEventFactory} from './factory/pull_request_event_factory';
+import {AnalyticsEventDispatcher} from './analytics_event_dispatcher';
+import {SocketEvent} from '../models/analytics_event/socket_event';
 
 export class SocketHandler {
-    public static $inject: string[] = ['SocketManager', 'Config', 'PullRequestRepository', 'Notifier', 'Indicator'];
+    public static $inject: string[] = [
+        'SocketManager',
+        'Config',
+        'PullRequestRepository',
+        'Notifier',
+        'Indicator',
+        'AnalyticsEventDispatcher'
+    ];
     constructor(
         private socketManager: SocketManager,
         private config: Config,
         private pullRequestRepository: PullRequestRepository,
         private notifier: Notifier,
-        private indicator: Indicator
+        private indicator: Indicator,
+        private analyticsEventDispatcher: AnalyticsEventDispatcher
     ) {
         this.initListeners();
         this.initChromeEvents();
@@ -39,11 +49,17 @@ export class SocketHandler {
         this.socketManager.socket.on('connect', () => {
             const loggedInUser = this.config.getUsername();
             this.socketManager.socket.emit(SocketClientEvent.INTRODUCE, loggedInUser);
+            this.analyticsEventDispatcher.dispatch(
+                SocketEvent.connected()
+            );
         });
 
         this.socketManager.socket.on('disconnect', () => {
             this.pullRequestRepository.setPullRequests([]);
             this.indicator.reset();
+            this.analyticsEventDispatcher.dispatch(
+                SocketEvent.disconnected()
+            );
         });
 
         this.socketManager.socket.on(SocketServerEvent.REMIND, (pullRequest: PullRequest) => {
