@@ -23,7 +23,7 @@ import 'angular-loggly-logger';
 import 'angular-google-analytics';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
-import {AnalyticsEventDispatcher} from "../services/analytics_event_dispatcher";
+import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 
 export const MODULE_NAME = 'bitbucketNotifier';
 
