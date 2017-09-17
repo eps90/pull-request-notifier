@@ -23,6 +23,7 @@ import 'angular-loggly-logger';
 import 'angular-google-analytics';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
+import {AnalyticsEventDispatcher} from "../services/analytics_event_dispatcher";
 
 export const MODULE_NAME = 'bitbucketNotifier';
 
@@ -57,6 +58,7 @@ application.filter('unapprovedFirst', UnapprovedFirst);
 application.service('PullRequestRepository', PullRequestRepository);
 application.service('SoundRepository', SoundRepository);
 application.service('Config', Config);
+application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 
 application.value('bitbucketUrl', 'https://bitbucket.org');
 

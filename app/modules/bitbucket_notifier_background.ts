@@ -14,6 +14,7 @@ import 'angular-loggly-logger';
 import 'angular-google-analytics';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
+import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
 const application = angular.module(
@@ -36,6 +37,7 @@ application.service('Config', Config);
 application.service('Indicator', Indicator);
 application.service('SoundManager', SoundManager);
 application.service('SoundRepository', SoundRepository);
+application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 
 if (PRODUCTION) {
     application.config(['$compileProvider', ($compileProvider: ng.ICompileProvider) =>  {
