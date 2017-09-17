@@ -4,3 +4,5 @@ declare module '*.html' {
 }
 
 declare const PRODUCTION: boolean;
+declare const DEV: boolean;
+declare const TEST: boolean;

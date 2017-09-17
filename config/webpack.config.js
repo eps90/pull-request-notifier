@@ -115,7 +115,9 @@ module.exports = (function webpackConfig() {
                 'window.jQuery': 'jquery'
             }),
             new webpack.DefinePlugin({
-                PRODUCTION: JSON.stringify(isProd)
+                PRODUCTION: JSON.stringify(isProd),
+                DEV: JSON.stringify(isDev),
+                TEST: JSON.stringify(isTest)
             })
         ],
 
