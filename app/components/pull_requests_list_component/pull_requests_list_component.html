@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <section-title icon="code-fork">Active pull requests</section-title>
         <uib-tabset justified="true" type="pills">
-            <uib-tab>
+            <uib-tab select="$ctrl.onSelect('ASSIGNED')">
                 <uib-tab-heading>
                     <i class="fa fa-thumb-tack tab-icon"></i> Assigned
                 </uib-tab-heading>
@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </uib-tab>
-            <uib-tab>
+            <uib-tab select="$ctrl.onSelect('AUTHORED')">
                 <uib-tab-heading>
                     <i class="fa fa-user tab-icon"></i> Authored
                 </uib-tab-heading>
