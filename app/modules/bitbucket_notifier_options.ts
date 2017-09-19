@@ -11,10 +11,20 @@ import {SoundRepository} from '../services/sound_repository';
 import {Notifier} from '../services/notifier';
 import {NotificationRepository} from '../services/notification_repository';
 import 'angular-loggly-logger';
+import 'angular-google-analytics';
 import {setUpLogglyLogger} from '../helpers/loggly';
+import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
+import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 
 export const MODULE_NAME = 'bitbucketNotifier.options';
-const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'angular-growl', 'logglyLogger']);
+const application = angular.module(
+    MODULE_NAME,
+    [
+        'LocalStorageModule',
+        'angular-growl',
+        'logglyLogger',
+        'angular-google-analytics'
+    ]);
 
 application.component('options', new OptionsComponent());
 application.component('sectionTitle', new SectionTitleComponent());
@@ -26,6 +36,7 @@ application.service('SoundManager', SoundManager);
 application.service('SoundRepository', SoundRepository);
 application.service('Notifier', Notifier);
 application.service('NotificationRepository', NotificationRepository);
+application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 
 application.value('bitbucketUrl', 'https://bitbucket.org');
 
@@ -44,3 +55,7 @@ if (PRODUCTION) {
 }
 
 setUpLogglyLogger(application);
+setUpAnalytics(application);
+setUpAnalyticsTrackPrefix(application, 'options.html');
+
+application.run(['Analytics', (analytics) => {}]);

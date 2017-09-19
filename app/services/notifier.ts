@@ -5,6 +5,9 @@ import {NotificationIcon} from '../models/notification_icon';
 import {PullRequestNotification} from '../models/pull_request_notification';
 import {PullRequest} from '../models/pull_request';
 import {User} from '../models/user';
+import {AnalyticsEventDispatcher} from './analytics_event_dispatcher';
+import {NotificationOpenedEvent} from '../models/analytics_event/notification_opened_event';
+import {PullRequestOpenedEvent} from '../models/analytics_event/pull_request_opened_event';
 
 interface NotificationOptions {
     type?: string;
@@ -17,15 +20,20 @@ interface NotificationOptions {
 }
 
 export class Notifier {
-    public static $inject: string[] = ['NotificationRepository', 'SoundManager'];
+    public static $inject: string[] = ['NotificationRepository', 'SoundManager', 'AnalyticsEventDispatcher'];
 
     private chrome: any;
-    constructor(private notificationRepository: NotificationRepository, private soundManager: SoundManager) {
+    constructor(
+        private notificationRepository: NotificationRepository,
+        private soundManager: SoundManager,
+        private analyticsEventDispatcher: AnalyticsEventDispatcher
+    ) {
         this.chrome = window['chrome'];
         this.chrome.notifications.onClicked.addListener((notificationId) => {
             const notification = this.notificationRepository.find(notificationId) as PullRequestNotification;
             this.chrome.tabs.create({url: notification.pullRequestHtmlLink});
             this.chrome.notifications.clear(notificationId);
+            this.analyticsEventDispatcher.dispatch(PullRequestOpenedEvent.fromNotification());
         });
     }
 
@@ -57,6 +65,7 @@ export class Notifier {
 
         this.notify(options, notificationId, pullRequest.links.html);
         this.soundManager.playNewPullRequestSound();
+        this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onNewPullRequest());
     }
 
     public notifyPullRequestMerged(pullRequest: PullRequest): void {
@@ -69,6 +78,7 @@ export class Notifier {
 
         this.notify(options, notificationId, pullRequest.links.html);
         this.soundManager.playMergedPullRequestSound();
+        this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onMergedPullRequest());
     }
 
     public notifyPullRequestApproved(pullRequest: PullRequest, actor: User): void {
@@ -82,6 +92,7 @@ export class Notifier {
 
         this.notify(options, notificationId, pullRequest.links.html);
         this.soundManager.playApprovedPullRequestSound();
+        this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onApprovedPullRequest());
     }
 
     public notifyReminder(pullRequest: PullRequest): void {
@@ -94,6 +105,7 @@ export class Notifier {
 
         this.notify(options, notificationId, pullRequest.links.html);
         this.soundManager.playReminderSound();
+        this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onRemindAlert());
     }
 
     public notifyPullRequestUpdated(pullRequest: PullRequest): void {
@@ -106,6 +118,7 @@ export class Notifier {
         const notificationId = this.getNotificationId(pullRequest);
 
         this.notify(options, notificationId, pullRequest.links.html);
+        this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onUpdatedPullRequest());
     }
 
     public notifyNewCommentAdded(pullRequest: PullRequest, commentingUser: User, commentLink: string): void {
@@ -118,6 +131,7 @@ export class Notifier {
         const notificationId = this.getNotificationId(pullRequest);
 
         this.notify(options, notificationId, commentLink);
+        this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onCommentInPullRequest());
     }
 
     public notifyNewReplyOnComment(pullRequest: PullRequest, replyingUser: User, commentLink: string): void {
@@ -130,6 +144,9 @@ export class Notifier {
         const notificationId = this.getNotificationId(pullRequest);
 
         this.notify(options, notificationId, commentLink);
+        this.analyticsEventDispatcher.dispatch(
+            NotificationOpenedEvent.onRepliedCommentInPullRequest()
+        );
     }
 
     private getNotificationId(pullRequest: PullRequest): string {

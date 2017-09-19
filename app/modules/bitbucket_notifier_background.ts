@@ -11,10 +11,20 @@ import {Indicator} from '../services/indicator';
 import {SoundManager} from '../services/sound_manager';
 import {SoundRepository} from '../services/sound_repository';
 import 'angular-loggly-logger';
+import 'angular-google-analytics';
 import {setUpLogglyLogger} from '../helpers/loggly';
+import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
+import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
-const application = angular.module(MODULE_NAME, ['LocalStorageModule', 'btford.socket-io', 'logglyLogger']);
+const application = angular.module(
+    MODULE_NAME,
+    [
+        'LocalStorageModule',
+        'btford.socket-io',
+        'logglyLogger',
+        'angular-google-analytics'
+    ]);
 
 application.directive('background', BackgroundComponent.factory());
 
@@ -27,6 +37,7 @@ application.service('Config', Config);
 application.service('Indicator', Indicator);
 application.service('SoundManager', SoundManager);
 application.service('SoundRepository', SoundRepository);
+application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 
 if (PRODUCTION) {
     application.config(['$compileProvider', ($compileProvider: ng.ICompileProvider) =>  {
@@ -37,3 +48,7 @@ if (PRODUCTION) {
 }
 
 setUpLogglyLogger(application);
+setUpAnalytics(application);
+setUpAnalyticsTrackPrefix(application, 'background.html');
+
+application.run(['Analytics', (analytics) => {}]);
