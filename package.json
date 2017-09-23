@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "rimraf build && karma start",
-    "test-ci": "rimraf build && GENERATE_COVERAGE=1 karma start --browsers ChromeHeadless",
+    "test-ci": "rimraf build && GENERATE_COVERAGE=1 karma start --browsers ChromeHeadless && cat build/coverage/xml/lcov.info | coveralls",
     "test-cov": "rimraf build && GENERATE_COVERAGE=1 karma start && remap-istanbul -i build/coverage/json/coverage-final.json -o build/coverage/html-ts -t html",
     "build:dev": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js --progress",
     "build:watch": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js --watch --progress",
