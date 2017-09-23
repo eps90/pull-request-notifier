@@ -1,5 +1,7 @@
 # Bitbucket Notifier - Chrome Extension
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1721a07572614288b17dbd034213ad32)](https://www.codacy.com/app/eps90/pull-request-notifier?utm_source=github.com&utm_medium=referral&utm_content=eps90/pull-request-notifier&utm_campaign=badger)
+
 The Google Chrome extension for Bitbucket Notifier.
 
 ## Requirements
