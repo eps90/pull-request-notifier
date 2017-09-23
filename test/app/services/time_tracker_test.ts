@@ -1,32 +1,7 @@
 import * as angular from 'angular';
 import {TimeTracker} from '../../../app/services/time_tracker';
-import {TimingEventInterface} from '../../../app/models/analytics_event/timing_event';
-import {TimingEventKeyAwareInterface} from '../../../app/models/analytics_event/timing_event_key_aware';
-
-class SampleTiming implements TimingEventInterface {
-    public getCategory(): string {
-        return 'Sample';
-    }
-
-    public getVariable(): string {
-        return 'Timing';
-    }
-}
-
-class SampleTimingWithKey implements TimingEventKeyAwareInterface {
-    public getEventKey(): string {
-        return 'EventKey!@#';
-    }
-
-    public getCategory(): string {
-        return 'Sample';
-    }
-
-    public getVariable(): string {
-        return 'Timing';
-    }
-
-}
+import {SampleTiming} from './mock/sample_timing';
+import {SampleTimingWithKey} from './mock/sample_timing_with_key';
 
 describe('Time tracker', () => {
     let timeTracker: TimeTracker;

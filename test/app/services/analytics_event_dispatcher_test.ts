@@ -1,48 +1,7 @@
 import * as angular from 'angular';
 import {AnalyticsEventDispatcher} from '../../../app/services/analytics_event_dispatcher';
-import {AnalyticsEventInterface} from '../../../app/models/analytics_event/analytics_event';
-import {ExtendedAnalyticsEventInterface} from '../../../app/models/analytics_event/extended_analytics_event';
-
-class SampleEvent implements AnalyticsEventInterface {
-    public getCategory(): string {
-        return 'Some category';
-    }
-
-    public getAction(): string {
-        return 'Some action';
-    }
-
-    public getLabel(): string {
-        return 'Some label';
-    }
-}
-
-class ExtendedEvent implements ExtendedAnalyticsEventInterface {
-    public getValue(): number {
-        return 999;
-    }
-
-    public getDimensions(): { [p: string]: any } {
-        return {dimension1: 1};
-    }
-
-    public isNonInteractive(): boolean {
-        return true;
-    }
-
-    public getCategory(): string {
-        return 'Some category';
-    }
-
-    public getAction(): string {
-        return 'Some action';
-    }
-
-    public getLabel(): string {
-        return 'Some label';
-    }
-
-}
+import {SampleEvent} from './mock/sample_event';
+import {ExtendedEvent} from './mock/extended_event';
 
 describe('AnalyticsEventDispatcher', () => {
     let eventDispatcher: AnalyticsEventDispatcher;
