@@ -1,4 +1,5 @@
 import {TimingEventInterface} from '../models/analytics_event/timing_event';
+import {TimingEventKeyAwareInterface} from '../models/analytics_event/timing_event_key_aware';
 
 export class TimeTracker {
     public static $inject: string[] = ['Analytics'];
@@ -9,12 +10,16 @@ export class TimeTracker {
     }
 
     public start(timingEvent: TimingEventInterface): void {
-        const timingEventKey = this.buildEventKey(timingEvent);
+        const timingEventKey = isKeyAware(timingEvent)
+            ? timingEvent.getEventKey()
+            : buildEventKey(timingEvent);
         this.timings[timingEventKey] = new Date().getTime();
     }
 
     public stop(timingEvent: TimingEventInterface): void {
-        const timingEventKey = this.buildEventKey(timingEvent);
+        const timingEventKey = isKeyAware(timingEvent)
+            ? timingEvent.getEventKey()
+            : buildEventKey(timingEvent);
 
         if (!this.timings.hasOwnProperty(timingEventKey)) {
             return;
@@ -32,8 +37,12 @@ export class TimeTracker {
 
         delete this.timings[timingEventKey];
     }
+}
 
-    private buildEventKey(timingEvent: TimingEventInterface) {
-        return `${timingEvent.getCategory()}.${timingEvent.getVariable()}`;
-    }
+function isKeyAware(event: TimingEventInterface | TimingEventKeyAwareInterface): event is TimingEventKeyAwareInterface {
+    return (event as TimingEventKeyAwareInterface).getEventKey !== undefined;
+}
+
+function buildEventKey(timingEvent: TimingEventInterface): string {
+    return `${timingEvent.getCategory()}.${timingEvent.getVariable()}`;
 }

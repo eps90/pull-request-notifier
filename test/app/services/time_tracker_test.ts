@@ -1,6 +1,7 @@
 import * as angular from 'angular';
 import {TimeTracker} from '../../../app/services/time_tracker';
 import {TimingEventInterface} from '../../../app/models/analytics_event/timing_event';
+import {TimingEventKeyAwareInterface} from '../../../app/models/analytics_event/timing_event_key_aware';
 
 class SampleTiming implements TimingEventInterface {
     public getCategory(): string {
@@ -10,6 +11,21 @@ class SampleTiming implements TimingEventInterface {
     public getVariable(): string {
         return 'Timing';
     }
+}
+
+class SampleTimingWithKey implements TimingEventKeyAwareInterface {
+    public getEventKey(): string {
+        return 'EventKey!@#';
+    }
+
+    public getCategory(): string {
+        return 'Sample';
+    }
+
+    public getVariable(): string {
+        return 'Timing';
+    }
+
 }
 
 describe('Time tracker', () => {
@@ -80,5 +96,29 @@ describe('Time tracker', () => {
         timeTracker.stop(timingEvent);
 
         expect(analytics.trackTimings).toHaveBeenCalledTimes(1);
+    });
+
+    it('should handle key aware events', () => {
+        const startDate = new Date(2017, 0, 1, 12, 0, 0, 0);
+        jasmine.clock().mockDate(startDate);
+
+        const timingEventWithKey = new SampleTimingWithKey();
+        const timingEvent = new SampleTiming();
+
+        timeTracker.start(timingEventWithKey);
+
+        const timeDelta = 100;
+        jasmine.clock().tick(timeDelta);
+        timeTracker.stop(timingEvent);
+
+        const newTimeDelta = 150;
+        jasmine.clock().tick(newTimeDelta);
+        timeTracker.stop(timingEventWithKey);
+
+        expect(analytics.trackTimings).toHaveBeenCalledWith(
+            timingEventWithKey.getCategory(),
+            timingEventWithKey.getVariable(),
+            timeDelta + newTimeDelta
+        );
     });
 });
