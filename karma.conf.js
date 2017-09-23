@@ -4,8 +4,9 @@
 var browsers = process.env.hasOwnProperty('CI_BROWSER')
     ? [process.env.CI_BROWSER]
     : ['Chrome', 'PhantomJS'];
+var generateCoverage = !!process.env['GENERATE_COVERAGE'] || false;
 module.exports = function (config) {
-    config.set({
+    var karmaConfig = {
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
@@ -35,14 +36,14 @@ module.exports = function (config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
             // 'test/bootstrap.js': ['webpack', 'sourcemap']
-            'src/**/*': ['webpack', 'sourcemap', 'coverage'],
+            'src/**/*': ['webpack', 'sourcemap'],
             'test/**/*':  ['webpack', 'sourcemap']
         },
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['jasmine-diff', 'dots', 'coverage'],
+        reporters: ['jasmine-diff', 'dots'],
 
 
         // web server port
@@ -86,8 +87,8 @@ module.exports = function (config) {
         coverageReporter: {
             reporters: [
                 {
-                    type: 'html',
-                    dir: 'build/coverage/html-js',
+                    type: 'lcov',
+                    dir: 'build/coverage/xml',
                     subdir: '.'
                 },
                 {
@@ -97,5 +98,16 @@ module.exports = function (config) {
                 }
             ]
         }
-    })
+    };
+
+    if (generateCoverage) {
+        console.log('GENERATING COVERAGE');
+        karmaConfig.reporters.push('coverage');
+        karmaConfig.preprocessors = {
+            'src/**/*': ['webpack', 'sourcemap', 'coverage'],
+            'test/**/*':  ['webpack', 'sourcemap']
+        };
+    }
+
+    config.set(karmaConfig);
 };
