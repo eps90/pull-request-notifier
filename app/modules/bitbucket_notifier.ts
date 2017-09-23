@@ -78,4 +78,8 @@ setUpLogglyLogger(application);
 setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'popup.html');
 
-application.run(['Analytics', (analytics) => {}]);
+application.run(['Analytics', (analytics) => {
+    if (!TEST) {
+        window['chrome'].runtime.connect();
+    }
+}]);
