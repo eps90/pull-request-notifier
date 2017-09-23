@@ -34,13 +34,15 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'test/bootstrap.js': ['webpack', 'sourcemap']
+            // 'test/bootstrap.js': ['webpack', 'sourcemap']
+            'src/**/*': ['webpack', 'sourcemap', 'coverage'],
+            'test/**/*':  ['webpack', 'sourcemap']
         },
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['jasmine-diff', 'dots'],
+        reporters: ['jasmine-diff', 'dots', 'coverage'],
 
 
         // web server port
@@ -80,6 +82,20 @@ module.exports = function (config) {
         },
         webpackMiddleware: {
             noInfo: 'errors-only'
+        },
+        coverageReporter: {
+            reporters: [
+                {
+                    type: 'html',
+                    dir: 'build/coverage/html-js',
+                    subdir: '.'
+                },
+                {
+                    type: 'json',
+                    dir: 'build/coverage/json',
+                    subdir: '.'
+                }
+            ]
         }
     })
 };
