@@ -36,6 +36,9 @@ describe('Notifier', () => {
                     addListener: jasmine.createSpy('chrome.notifications.onClicked.addListener').and.callFake((fn) => {
                         onClickedStub = fn;
                     })
+                },
+                onClosed: {
+                    addListener: jasmine.createSpy('chrome.notifications.onClosed.addListener')
                 }
             },
             tabs: {

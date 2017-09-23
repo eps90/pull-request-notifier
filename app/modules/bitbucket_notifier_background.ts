@@ -15,6 +15,8 @@ import 'angular-google-analytics';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
+import {TimeTracker} from '../services/time_tracker';
+import {PopupOpenedTimingEvent} from '../models/analytics_event/popup_opened_timing_event';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
 const application = angular.module(
@@ -38,6 +40,7 @@ application.service('Indicator', Indicator);
 application.service('SoundManager', SoundManager);
 application.service('SoundRepository', SoundRepository);
 application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
+application.service('TimeTracker', TimeTracker);
 
 if (PRODUCTION) {
     application.config(['$compileProvider', ($compileProvider: ng.ICompileProvider) =>  {
@@ -51,4 +54,15 @@ setUpLogglyLogger(application);
 setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'background.html');
 
-application.run(['Analytics', (analytics) => {}]);
+application.run(['Analytics', 'TimeTracker', (analytics, timeTracker: TimeTracker) => {
+    if (!TEST) {
+        window['chrome'].runtime.onConnect.addListener((externalPort) => {
+            const event = new PopupOpenedTimingEvent();
+            timeTracker.start(event);
+
+            externalPort.onDisconnect.addListener(() => {
+                timeTracker.stop(event);
+            });
+        });
+    }
+}]);
