@@ -4,8 +4,9 @@
 var browsers = process.env.hasOwnProperty('CI_BROWSER')
     ? [process.env.CI_BROWSER]
     : ['Chrome', 'PhantomJS'];
+var generateCoverage = !!process.env['GENERATE_COVERAGE'] || false;
 module.exports = function (config) {
-    config.set({
+    var karmaConfig = {
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
@@ -34,7 +35,9 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'test/bootstrap.js': ['webpack', 'sourcemap']
+            // 'test/bootstrap.js': ['webpack', 'sourcemap']
+            'src/**/*': ['webpack', 'sourcemap'],
+            'test/**/*':  ['webpack', 'sourcemap']
         },
 
         // test results reporter to use
@@ -80,6 +83,31 @@ module.exports = function (config) {
         },
         webpackMiddleware: {
             noInfo: 'errors-only'
+        },
+        coverageReporter: {
+            reporters: [
+                {
+                    type: 'lcov',
+                    dir: 'build/coverage/xml',
+                    subdir: '.'
+                },
+                {
+                    type: 'json',
+                    dir: 'build/coverage/json',
+                    subdir: '.'
+                }
+            ]
         }
-    })
+    };
+
+    if (generateCoverage) {
+        console.log('GENERATING COVERAGE');
+        karmaConfig.reporters.push('coverage');
+        karmaConfig.preprocessors = {
+            'src/**/*': ['webpack', 'sourcemap', 'coverage'],
+            'test/**/*':  ['webpack', 'sourcemap']
+        };
+    }
+
+    config.set(karmaConfig);
 };

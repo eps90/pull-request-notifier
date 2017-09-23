@@ -145,6 +145,15 @@ module.exports = (function webpackConfig() {
     }
 
     if (isTest) {
+        config.module.rules.push({
+            test: /\.ts$/,
+            enforce: 'post',
+            loader: 'istanbul-instrumenter-loader',
+            exclude: [
+                'node_modules',
+                /\.spec\.ts$/
+            ]
+        });
         config.devtool = 'inline-source-map';
     } else if (isProd) {
         config.devtool = 'source-map';
