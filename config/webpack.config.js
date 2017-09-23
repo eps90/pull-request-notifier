@@ -124,7 +124,7 @@ module.exports = (function webpackConfig() {
         "stats": "normal"
     };
 
-    if (isDev) {
+    if (isDev || isTest) {
         config.module.rules.push(
             {
                 test: /\.ts$/,
