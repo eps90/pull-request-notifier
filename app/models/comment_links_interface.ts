@@ -1,4 +1,4 @@
-import {LinkInterface} from "./link_interface";
+import {LinkInterface} from './link_interface';
 
 export interface CommentLinksInterface {
     self?: LinkInterface;

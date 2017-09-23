@@ -17,8 +17,8 @@ describe('SoundRepository', () => {
         const actual = soundRepository.findAll();
         expect(actual.length).toBeGreaterThan(0);
 
-        for (let i = 0, len = actual.length; i < len; i++) {
-            expect(actual[i] instanceof Sound).toBeTruthy();
+        for (const actualSound of actual) {
+            expect(actualSound instanceof Sound).toBeTruthy();
         }
     });
 

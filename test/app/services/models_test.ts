@@ -95,9 +95,7 @@ describe('Models', () => {
                     }
                 ];
 
-                for (let testIdx = 0, len = projectProvider.length; testIdx < len; testIdx++) {
-                    const testData = projectProvider[testIdx];
-
+                for (const testData of projectProvider) {
                     const project = new Project();
                     project.fullName = testData.repoName;
 
@@ -119,9 +117,7 @@ describe('Models', () => {
                     }
                 ];
 
-                for (let testIdx = 0, len = slugsProvider.length; testIdx < len; testIdx++) {
-                    const testData = slugsProvider[testIdx];
-
+                for (const testData of slugsProvider) {
                     const actual = Project.deslugify(testData.slug);
                     expect(actual).toEqual(testData.expected);
                 }

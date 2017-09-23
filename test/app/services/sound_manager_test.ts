@@ -12,7 +12,7 @@ describe('SoundManager', () => {
     let config: Config;
     let sounds;
 
-    beforeEach(function collectSounds(): void {
+    beforeEach(() => {
         sounds = {};
         const counter = 0;
         spyOn(HowlSoundFactory, 'createSound').and.callFake((soundPath) => {
@@ -64,7 +64,9 @@ describe('SoundManager', () => {
                 .toEqual(['sound__' + soundKey + '.mp3']);
         }
 
+        /* tslint:disable */
         new SoundManager(config, soundRepository);
+        /* tslint:enable */
 
         testSoundRegistration(NotificationSound.NEW_PULLREQUEST);
         testSoundRegistration(NotificationSound.APPROVED_PULLREQUEST);
