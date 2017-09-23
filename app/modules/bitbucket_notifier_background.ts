@@ -16,7 +16,7 @@ import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
-import {PopupOpenedTimingEvent} from '../models/event/popup_opened_timing_event';
+import {PopupOpenedTimingEvent} from '../models/analytics_event/popup_opened_timing_event';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
 const application = angular.module(

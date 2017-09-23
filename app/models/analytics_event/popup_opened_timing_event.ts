@@ -1,4 +1,4 @@
-import {TimingEventInterface} from '../analytics_event/timing_event';
+import {TimingEventInterface} from './timing_event';
 
 export class PopupOpenedTimingEvent implements TimingEventInterface {
     public getCategory(): string {
