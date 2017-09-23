@@ -8,6 +8,8 @@ import {User} from '../models/user';
 import {AnalyticsEventDispatcher} from './analytics_event_dispatcher';
 import {NotificationOpenedEvent} from '../models/analytics_event/notification_opened_event';
 import {PullRequestOpenedEvent} from '../models/analytics_event/pull_request_opened_event';
+import {TimeTracker} from './time_tracker';
+import {NotificationOpenedTimingEvent} from '../models/analytics_event/notification_opened_timing_event';
 
 interface NotificationOptions {
     type?: string;
@@ -20,13 +22,19 @@ interface NotificationOptions {
 }
 
 export class Notifier {
-    public static $inject: string[] = ['NotificationRepository', 'SoundManager', 'AnalyticsEventDispatcher'];
+    public static $inject: string[] = [
+        'NotificationRepository',
+        'SoundManager',
+        'AnalyticsEventDispatcher',
+        'TimeTracker'
+    ];
 
     private chrome: any;
     constructor(
         private notificationRepository: NotificationRepository,
         private soundManager: SoundManager,
-        private analyticsEventDispatcher: AnalyticsEventDispatcher
+        private analyticsEventDispatcher: AnalyticsEventDispatcher,
+        private timeTracker: TimeTracker
     ) {
         this.chrome = window['chrome'];
         this.chrome.notifications.onClicked.addListener((notificationId) => {
@@ -34,6 +42,11 @@ export class Notifier {
             this.chrome.tabs.create({url: notification.pullRequestHtmlLink});
             this.chrome.notifications.clear(notificationId);
             this.analyticsEventDispatcher.dispatch(PullRequestOpenedEvent.fromNotification());
+        });
+        this.chrome.notifications.onClosed.addListener((notificationId: string, byUser: boolean) => {
+            if (byUser) {
+                this.timeTracker.stop(NotificationOpenedTimingEvent.onClosed(notificationId));
+            }
         });
     }
 
@@ -66,6 +79,7 @@ export class Notifier {
         this.notify(options, notificationId, pullRequest.links.html);
         this.soundManager.playNewPullRequestSound();
         this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onNewPullRequest());
+        this.timeTracker.start(NotificationOpenedTimingEvent.onNewPullRequest(notificationId));
     }
 
     public notifyPullRequestMerged(pullRequest: PullRequest): void {
@@ -79,6 +93,7 @@ export class Notifier {
         this.notify(options, notificationId, pullRequest.links.html);
         this.soundManager.playMergedPullRequestSound();
         this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onMergedPullRequest());
+        this.timeTracker.start(NotificationOpenedTimingEvent.onMergedPullRequest(notificationId));
     }
 
     public notifyPullRequestApproved(pullRequest: PullRequest, actor: User): void {
@@ -93,6 +108,7 @@ export class Notifier {
         this.notify(options, notificationId, pullRequest.links.html);
         this.soundManager.playApprovedPullRequestSound();
         this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onApprovedPullRequest());
+        this.timeTracker.start(NotificationOpenedTimingEvent.onApprovedPullRequest(notificationId));
     }
 
     public notifyReminder(pullRequest: PullRequest): void {
@@ -106,6 +122,7 @@ export class Notifier {
         this.notify(options, notificationId, pullRequest.links.html);
         this.soundManager.playReminderSound();
         this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onRemindAlert());
+        this.timeTracker.start(NotificationOpenedTimingEvent.onRemindAlert(notificationId));
     }
 
     public notifyPullRequestUpdated(pullRequest: PullRequest): void {
@@ -119,6 +136,7 @@ export class Notifier {
 
         this.notify(options, notificationId, pullRequest.links.html);
         this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onUpdatedPullRequest());
+        this.timeTracker.start(NotificationOpenedTimingEvent.onUpdatedPullRequest(notificationId));
     }
 
     public notifyNewCommentAdded(pullRequest: PullRequest, commentingUser: User, commentLink: string): void {
@@ -132,6 +150,7 @@ export class Notifier {
 
         this.notify(options, notificationId, commentLink);
         this.analyticsEventDispatcher.dispatch(NotificationOpenedEvent.onCommentInPullRequest());
+        this.timeTracker.start(NotificationOpenedTimingEvent.onCommentInPullRequest(notificationId));
     }
 
     public notifyNewReplyOnComment(pullRequest: PullRequest, replyingUser: User, commentLink: string): void {
@@ -147,6 +166,7 @@ export class Notifier {
         this.analyticsEventDispatcher.dispatch(
             NotificationOpenedEvent.onRepliedCommentInPullRequest()
         );
+        this.timeTracker.start(NotificationOpenedTimingEvent.onRepliedCommentInPullRequest(notificationId));
     }
 
     private getNotificationId(pullRequest: PullRequest): string {
