@@ -24,6 +24,7 @@ import 'angular-google-analytics';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
+import {TimeTracker} from '../services/time_tracker';
 
 export const MODULE_NAME = 'bitbucketNotifier';
 
@@ -59,6 +60,7 @@ application.service('PullRequestRepository', PullRequestRepository);
 application.service('SoundRepository', SoundRepository);
 application.service('Config', Config);
 application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
+application.service('TimeTracker', TimeTracker);
 
 application.value('bitbucketUrl', 'https://bitbucket.org');
 
