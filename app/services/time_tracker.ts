@@ -1,9 +1,10 @@
 import {TimingEventInterface} from '../models/analytics_event/timing_event';
 import {TimingEventKeyAwareInterface} from '../models/analytics_event/timing_event_key_aware';
+import {TrackingItem} from '../models/analytics_event/tracking_item';
 
 export class TimeTracker {
     public static $inject: string[] = ['Analytics'];
-    private timings: {[key: string]: number};
+    private timings: {[key: string]: TrackingItem};
 
     constructor(private analytics: angular.google.analytics.AnalyticsService) {
         this.timings = {};
@@ -13,7 +14,8 @@ export class TimeTracker {
         const timingEventKey = isKeyAware(timingEvent)
             ? timingEvent.getEventKey()
             : buildEventKey(timingEvent);
-        this.timings[timingEventKey] = new Date().getTime();
+
+        this.timings[timingEventKey] = new TrackingItem(timingEvent, new Date().getTime());
     }
 
     public stop(timingEvent: TimingEventInterface): void {
@@ -25,13 +27,16 @@ export class TimeTracker {
             return;
         }
 
-        const startDate = this.timings[timingEventKey];
+        const trackingItem = this.timings[timingEventKey];
+        const startDate = trackingItem.startTime;
+        const trackedEvent = trackingItem.event;
+
         const endDate = new Date().getTime();
         const timeDelta = endDate - startDate;
 
         this.analytics.trackTimings(
-            timingEvent.getCategory(),
-            timingEvent.getVariable(),
+            trackedEvent.getCategory(),
+            trackedEvent.getVariable(),
             timeDelta
         );
 
