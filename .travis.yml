@@ -6,8 +6,12 @@ node_js:
   - "6"
 
 env:
-  - CI_BROWSER=ChromeHeadless
-  - CI_BROWSER=PhantomJS
+  global:
+    - GENERATE_COVERAGE=1
+
+  matrix:
+    - CI_BROWSER=ChromeHeadless
+    - CI_BROWSER=PhantomJS
 
 addons:
   chrome: stable
@@ -16,3 +20,6 @@ cache:
   yarn: true
   directories:
     - node_modules
+
+after_success:
+  - 'bash send_coverage.sh'

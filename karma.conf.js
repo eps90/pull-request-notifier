@@ -14,7 +14,7 @@ module.exports = function (config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine'],
+        frameworks: ['jasmine', 'source-map-support'],
 
         jasmineDiffReporter: {
             pretty: true,
@@ -36,8 +36,8 @@ module.exports = function (config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
             // 'test/bootstrap.js': ['webpack', 'sourcemap']
-            'src/**/*': ['webpack', 'sourcemap'],
-            'test/**/*':  ['webpack', 'sourcemap']
+            'src/**/*': ['webpack'],
+            'test/**/*':  ['webpack']
         },
 
         // test results reporter to use
@@ -87,11 +87,6 @@ module.exports = function (config) {
         coverageReporter: {
             reporters: [
                 {
-                    type: 'lcov',
-                    dir: 'build/coverage/xml',
-                    subdir: '.'
-                },
-                {
                     type: 'json',
                     dir: 'build/coverage/json',
                     subdir: '.'
@@ -101,12 +96,7 @@ module.exports = function (config) {
     };
 
     if (generateCoverage) {
-        console.log('GENERATING COVERAGE');
         karmaConfig.reporters.push('coverage');
-        karmaConfig.preprocessors = {
-            'src/**/*': ['webpack', 'sourcemap', 'coverage'],
-            'test/**/*':  ['webpack', 'sourcemap']
-        };
     }
 
     config.set(karmaConfig);
