@@ -1,19 +1,18 @@
 {
-  "name": "bitbucket-notifier-chrome",
+  "name": "pull-request-notifier",
   "version": "0.6.0",
-  "description": "Bitbucket integration tool. Notifies updates bout pull requests (so far)",
-  "main": "index.js",
-  "author": "Jakub Turek <jakub.turek.edpauto.com>",
+  "description": "Pull reuqests notifications",
+  "author": "Jakub Turek <ja@kubaturek.pl>",
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:dacsoftware/bitbucket-notifier-chrome-extension.git"
+    "url": "https://github.com/eps90/pull-request-notifier"
   },
   "scripts": {
     "test": "rimraf build && karma start",
     "test-cov": "rimraf build && karma start && remap-istanbul -i build/coverage/json/coverage-final.json -o build/coverage/html-ts -t html",
     "build:dev": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js --progress",
     "build:watch": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js --watch --progress",
-    "build:prod": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js -p --progress",
+    "build:prod": "rimraf dist && rimraf build && gulp manifest && webpack --config config/webpack.config.js -p --progress && gulp pack",
     "start": "rimraf dist && webpack-dev-server --config config/webpack.config.js --progress --open"
   },
   "license": "Apache-2.0",
