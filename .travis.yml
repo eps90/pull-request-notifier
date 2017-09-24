@@ -22,4 +22,4 @@ cache:
     - node_modules
 
 after_success:
-  - 'if [ "$TRAVIS_PULL_REQUEST = "false" ]; then cat build/coverage/xml/lcov.info | node_modules/.bin/coveralls; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST = "false" ]; then bash send_coverage.sh; fi'
