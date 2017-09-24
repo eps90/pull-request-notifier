@@ -10,8 +10,6 @@ Currently only Bitbucket is supported. GitHub support is on the way (see milesto
 
 ![assigned_prs](docs/pr_notifier_assigned.png)
 
-![authored_prs](docs/pr_notifier_authored.png)
-
 ## Why?
 
 The motivation of creating this project is simple. 
