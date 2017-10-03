@@ -179,13 +179,13 @@ Currently, following events are sending hits to Google Analytics:
 * How long is pop-up opened?
 * How long is notification shown (and closed by user interaction)? 
 
-## Deployment
-
- > todo
-
 ## Contributing
  
- > todo
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct, and the process for submitting pull requests.
+ 
+## Versioning
+
+The project uses [SemVer](http://semver.org/) for versioning. For the versions available, [see the tags on this repository](https://github.com/eps90/pull-request-notifier/tags). 
 
 ## License
 
