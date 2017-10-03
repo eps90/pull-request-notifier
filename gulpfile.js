@@ -19,8 +19,8 @@ gulp.task('pack', ['manifest'], function () {
         fs = require('fs'),
         url = require('url'),
         manifest = require('./manifest.json'),
-        targetCrxFilename = 'bitbucket-notifier-chrome.crx',
-        targetZipFileName = 'bitbucket-notifier-chrome.zip';
+        targetCrxFilename = 'pull-request-notifier.crx',
+        targetZipFileName = 'pull-request-notifier.zip';
 
     var updateUrlParts = url.parse(manifest.update_url);
     var codeBase = url.resolve(
@@ -34,7 +34,7 @@ gulp.task('pack', ['manifest'], function () {
     var crxPipeline = gulp.src('dist')
         .pipe(crx({
             privateKey: fs.readFileSync(process.env.CRX_PEM_PATH || '../bbnotifier.pem'),
-            filename: 'bitbucket-notifier-chrome.crx',
+            filename: 'pull-request-notifier.crx',
             codebase: codeBase,
             updateXmlFilename: 'update.xml'
         }))
