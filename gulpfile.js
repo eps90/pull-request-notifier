@@ -3,7 +3,13 @@ require('gulp-stats')(gulp);
 
 gulp.task('copy-img', function ()  {
     "use strict";
-    gulp.src(['assets/img/bitbucket_logo.png', 'assets/img/bitbucket_logo_raw.png'])
+    gulp.src([
+        'assets/img/bitbucket_logo.png',
+        'assets/img/icon128.png',
+        'assets/img/icon64.png',
+        'assets/img/icon48.png',
+        'assets/img/icon32.png',
+    ])
         .pipe(gulp.dest('dist/img'));
 });
 

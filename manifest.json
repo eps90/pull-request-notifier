@@ -8,7 +8,10 @@
     "default_popup": "popup.html"
   },
   "icons": {
-    "128": "img/bitbucket_logo_raw.png"
+    "32": "img/icon32.png",
+    "48": "img/icon48.png",
+    "64": "img/icon64.png",
+    "128": "img/icon128.png"
   },
   "permissions": [
     "notifications",
