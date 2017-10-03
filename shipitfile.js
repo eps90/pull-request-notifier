@@ -12,7 +12,7 @@ var config = _.merge({
         workspace: '/tmp/bitbucket-notifier-chrome',
         deployTo: '/tmp/bitbucket-notifier-chrome-dist',
         dirToCopy: 'build',
-        repositoryUrl: 'git@bitbucket.org:dacsoftware/bitbucket-notifier-chrome-extension.git',
+        repositoryUrl: 'git@bitbucket.org:eps90/pull-request-notifier.git',
         ignores: ['.git', 'node_modules'],
         keepReleases: 3
     },
