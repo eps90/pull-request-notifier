@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Bitbucket Notifier",
+  "name": "Pull Request Notifier",
   "version": "0.6.0",
-  "description": "Bitbucket integration tool. Notifies updates about pull requests (so far)",
+  "description": "Pull reuqests notifications",
   "browser_action": {
     "default_icon": "img/bitbucket_logo.png",
     "default_popup": "popup.html"
@@ -22,7 +22,7 @@
     "persistent": true
   },
   "options_page": "options.html",
-  "update_url": "http://bitbucket-notifier.kubaturek.pl/update.xml",
+  "update_url": "http://your-url.com/update.xml",
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
