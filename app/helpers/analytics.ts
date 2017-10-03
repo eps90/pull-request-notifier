@@ -21,8 +21,11 @@ export function setUpAnalytics(application: ng.IModule): void {
                             checkProtocolTask: () => {}
                         }
                     })
-                    .setPageEvent('$stateChangeSuccess')
-                    .enterDebugMode(DEV);
+                    .setPageEvent('$stateChangeSuccess');
+
+                if (DEV) {
+                    analyticsProvider.enterDebugMode(true);
+                }
             }
         }
     ]);
