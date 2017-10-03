@@ -156,7 +156,7 @@ module.exports = (function webpackConfig() {
         });
         config.devtool = 'inline-source-map';
     } else if (isProd) {
-        config.devtool = 'source-map';
+        config.devtool = '';
     } else {
         config.devtool = 'source-map';
     }
