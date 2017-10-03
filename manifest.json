@@ -22,7 +22,6 @@
     "persistent": true
   },
   "options_page": "options.html",
-  "update_url": "http://your-url.com/update.xml",
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {

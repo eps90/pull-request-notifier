@@ -22,7 +22,7 @@ gulp.task('pack', ['manifest'], function () {
         targetCrxFilename = 'pull-request-notifier.crx',
         targetZipFileName = 'pull-request-notifier.zip';
 
-    var updateUrlParts = url.parse(manifest.update_url);
+    var updateUrlParts = url.parse(manifest.update_url || '');
     var codeBase = url.resolve(
         url.format({
             protocol: updateUrlParts.protocol,
