@@ -34,5 +34,6 @@
       "global": true
     }
   },
-  "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'"
+  "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
+  "minimum_chrome_version": "33.0.0"
 }
