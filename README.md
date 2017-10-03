@@ -10,8 +10,6 @@ Currently only Bitbucket is supported. GitHub support is on the way (see milesto
 
 ![assigned_prs](docs/pr_notifier_assigned.png)
 
-![authored_prs](docs/pr_notifier_authored.png)
-
 ## Why?
 
 The motivation of creating this project is simple. 
@@ -144,17 +142,50 @@ yarn run build:prod
 | generating html views | :white_check_mark: | :x: | :white_check_mark: |
 | sources uglifying | :x: | :x: | :white_check_mark: |
 
+### Environment variables with DotEnv
+
+For some cases, e.g. Google Analytics or Loggly integration, you must provide a token to communicate with the service.
+This can be made by a **DotEnv** webpack plugin. To set up your secrets, create a copy of `.env.example` in the project root
+and rename it to `.env`. Then update desired values.  
+
+> The `.env` file is ignored by git.
+
 ## Google Analytics tracking
 
- > todo
+Extension is integrated with Google Analytics. It sends page views, events and custom timings.
 
-## Deployment
+### Enable tracking
 
- > todo
+To enable tracking, simply insert a tracking code into `.env` file for `GOOGLE_ANALYTICS_KEY` variable.
+
+### Tracking details
+
+Currently, following events are sending hits to Google Analytics:
+
+1. Page views:
+* Pop-up
+* Background page (when extension starts)
+* Options page
+
+2. Events:
+* Pop-up opened
+* Pull request opened and which way it's been opened
+* Reminder sent
+* Successful connection to server established
+* Switch tabs (and which tab)
+* Notification shown (and which notification)
+
+3. Custom timings:
+* How long is pop-up opened?
+* How long is notification shown (and closed by user interaction)? 
 
 ## Contributing
  
- > todo
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct, and the process for submitting pull requests.
+ 
+## Versioning
+
+The project uses [SemVer](http://semver.org/) for versioning. For the versions available, [see the tags on this repository](https://github.com/eps90/pull-request-notifier/tags). 
 
 ## License
 
