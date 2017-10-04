@@ -6,29 +6,30 @@ import {AnalyticsEventDispatcher} from '../../services/analytics_event_dispatche
 export class PullRequestsListController implements ng.IComponentController {
     public pullRequests: PullRequest[];
 
-    public static $inject: string[] = ['PullRequestRepository', 'AnalyticsEventDispatcher'];
+    public static $inject: string[] = ['PullRequestRepository', 'AnalyticsEventDispatcher', '$scope'];
 
     private currentlyChosenTab: string;
 
     constructor(
         private pullRequestRepository: PullRequestRepository,
-        private analyticsEventDispatcher: AnalyticsEventDispatcher
+        private analyticsEventDispatcher: AnalyticsEventDispatcher,
+        private $scope: ng.IScope
     ) {}
 
     public $onInit = () => {
         this.pullRequests = this.pullRequestRepository.pullRequests;
-        //
-        // scope.$watch(
-        //     () => {
-        //         return this.pullRequestRepository.pullRequests;
-        //     },
-        //     (newValue, oldValue) => {
-        //         if (newValue !== oldValue) {
-        //             scope['pullRequests'] = newValue;
-        //         }
-        //     },
-        //     true
-        // );
+
+        this.$scope.$watch(
+            () => {
+                return this.pullRequestRepository.pullRequests;
+            },
+            (newValue, oldValue) => {
+                if (newValue !== oldValue) {
+                    this.pullRequests = newValue;
+                }
+            },
+            true
+        );
     }
 
     public onSelect(tabName: string): void {
