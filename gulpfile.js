@@ -18,15 +18,22 @@ gulp.task('manifest', ['copy-img'], function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('pack', ['manifest'], function () {
+gulp.task('zip', ['manifest'], function () {
+    "use strict";
+    var zip = require('gulp-zip');
+    var targetZipFileName = 'pull-request-notifier.zip';
+
+    return gulp.src('dist/**/*')
+        .pipe(zip(targetZipFileName))
+        .pipe(gulp.dest('build'));
+});
+
+gulp.task('crx', ['manifest', 'zip'], function () {
     var crx = require('gulp-crx-pack'),
-        merge = require('merge-stream'),
-        zip = require('gulp-zip'),
         fs = require('fs'),
         url = require('url'),
         manifest = require('./manifest.json'),
-        targetCrxFilename = 'pull-request-notifier.crx',
-        targetZipFileName = 'pull-request-notifier.zip';
+        targetCrxFilename = 'pull-request-notifier.crx';
 
     var updateUrlParts = url.parse(manifest.update_url || '');
     var codeBase = url.resolve(
@@ -37,7 +44,7 @@ gulp.task('pack', ['manifest'], function () {
         '/' + targetCrxFilename
     );
 
-    var crxPipeline = gulp.src('dist')
+    return gulp.src('dist')
         .pipe(crx({
             privateKey: fs.readFileSync(process.env.CRX_PEM_PATH || '../bbnotifier.pem'),
             filename: 'pull-request-notifier.crx',
@@ -45,12 +52,6 @@ gulp.task('pack', ['manifest'], function () {
             updateXmlFilename: 'update.xml'
         }))
         .pipe(gulp.dest('build'));
-
-    var zipPipeline = gulp.src('dist/**/*')
-        .pipe(zip(targetZipFileName))
-        .pipe(gulp.dest('build'));
-
-    return merge(crxPipeline, zipPipeline);
 });
 
 gulp.task('deploy', function (cb) {
