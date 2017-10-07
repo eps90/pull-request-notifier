@@ -2,13 +2,22 @@
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
+## General
+
+1. Write clean code.
+2. Follow SOLID and KISS principles in your code.
+3. Ensure your feature is fully covered with tests.
+4. If you're developing new feature, create a pull request to `develop` branch.
+5. In case you have a hotfix to create, start making your changes from `master` and create a pull request to this branch.
+
 ## Pull Request Process
 
-1. Ensure that project still runs the build and passes all tests successfully.
+1. **Start developing your changes from `develop` branch`. This is a branch with awaiting features to be released.
+2. Ensure that project still runs the build and passes all tests successfully.
 2. Verify that the built application is starting without errors or other problems making it unusable. 
 3. If needed, update README.md with installation instructions, necessary environment variables, paths, etc. 
 4. Once Pull Request is made, automatic build is being fired on Travis and Codacy. Make sure it still passes.
-4. The Pull Request will be merged once it's reviewed by repository owner and/or contributors 
+5. The Pull Request will be merged once it's reviewed by repository owner and/or contributors 
 and gets approvals from all people involved in a code review.
 
 
