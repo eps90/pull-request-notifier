@@ -12,7 +12,8 @@
     "test-cov": "rimraf build && karma start && remap-istanbul -i build/coverage/json/coverage-final.json -o build/coverage/html-ts -t html",
     "build:dev": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js --progress",
     "build:watch": "rimraf dist && gulp manifest && webpack --config config/webpack.config.js --watch --progress",
-    "build:prod": "rimraf dist && rimraf build && gulp manifest && webpack --config config/webpack.config.js -p --progress && gulp pack",
+    "build:prod": "rimraf dist && rimraf build && gulp manifest && webpack --config config/webpack.config.js -p --progress && gulp zip",
+    "build:crx": "rimraf dist && rimraf build && gulp manifest && webpack --config config/webpack.config.js -p --progress && gulp crx",
     "start": "rimraf dist && webpack-dev-server --config config/webpack.config.js --progress --open"
   },
   "license": "Apache-2.0",
