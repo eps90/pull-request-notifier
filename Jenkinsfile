@@ -1,8 +1,5 @@
 pipeline {
     agent { docker 'eps90/node-yarn' }
-    parameters {
-        choice(choices: 'dev\nprod', name: 'deploy_env')
-    }
     environment {
         ENV_FILE_PATH = credentials("env-${params.deploy_env}")
     }
