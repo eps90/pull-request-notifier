@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('say hello') {
             steps {
-                echo "Building ${params.deploy_env}"
+                echo "Running build on ${params.deploy_env} enviornment"
                 sh 'yarn --version'
                 sh 'gulp --version'
                 sh 'node --version'
@@ -43,7 +43,6 @@ pipeline {
 
         stage('set up environment') {
             steps {
-                echo "Running build on ${params.deploy_env} enviornment"
                 sh "rm -f .env"
                 sh "cp '${ENV_FILE_PATH}' .env"
             }
