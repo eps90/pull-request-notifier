@@ -1,27 +1,31 @@
 {
   "manifest_version": 2,
-  "name": "Bitbucket Notifier",
+  "name": "Pull Request Notifier for Bitbucket",
+  "short_name": "Pull Request Notifier",
   "version": "0.6.0",
-  "description": "Bitbucket integration tool. Notifies updates about pull requests (so far)",
+  "description": "Get notified when a pull request is ready for a code review. Pull requests notifications for Bitbucket.",
   "browser_action": {
-    "default_icon": "assets/img/bitbucket_logo.png",
-    "default_popup": "build/views/popup.html"
+    "default_icon": "img/bitbucket_logo.png",
+    "default_popup": "popup.html"
   },
   "icons": {
-    "128": "assets/img/bitbucket_logo_raw.png"
+    "32": "img/icon32.png",
+    "48": "img/icon48.png",
+    "64": "img/icon64.png",
+    "128": "img/icon128.png"
   },
   "permissions": [
     "notifications",
     "storage",
+    "cookies",
     "http://*/*",
     "https://*/*"
   ],
   "background": {
-    "page": "build/views/background.html",
+    "page": "background.html",
     "persistent": true
   },
-  "options_page": "build/views/options.html",
-  "update_url": "http://bitbucket-notifier.kubaturek.pl/update.xml",
+  "options_page": "options.html",
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
@@ -29,5 +33,7 @@
       },
       "global": true
     }
-  }
+  },
+  "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
+  "minimum_chrome_version": "33.0.0"
 }

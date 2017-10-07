@@ -1,15 +1,17 @@
-///<reference path="../../../../app/_typings.ts"/>
+import * as angular from 'angular';
+import {PullRequest} from '../../../../app/models/pull_request';
+import {User} from '../../../../app/models/user';
+import {Reviewer} from '../../../../app/models/reviewer';
+import {Project} from '../../../../app/models/project';
 
 describe('PullRequestComponent', () => {
-    var element,
-        $compile: ng.ICompileService,
-        $scope: ng.IRootScopeService,
-        uiRouterState: angular.ui.IStateService,
-        pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+    let element;
+    let $compile: ng.ICompileService;
+    let $scope: ng.IRootScopeService;
+    let uiRouterState: angular.ui.IStateService;
+    const pullRequest: PullRequest = new PullRequest();
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
-
     beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
@@ -33,26 +35,26 @@ describe('PullRequestComponent', () => {
     );
 
     beforeEach(() => {
-        var author: BitbucketNotifier.User = new BitbucketNotifier.User();
+        const author: User = new User();
         author.displayName = 'John Smith';
 
-        var userAsReviewer: BitbucketNotifier.User = new BitbucketNotifier.User();
+        const userAsReviewer: User = new User();
         userAsReviewer.displayName = 'Anna Kowalsky';
 
-        var secondUserAsReviewer: BitbucketNotifier.User = new BitbucketNotifier.User();
+        const secondUserAsReviewer: User = new User();
         secondUserAsReviewer.displayName = 'Jack Sparrow';
 
-        var reviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        const reviewer: Reviewer = new Reviewer();
         reviewer.user = userAsReviewer;
         reviewer.approved = true;
 
-        var secondReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        const secondReviewer: Reviewer = new Reviewer();
         secondReviewer.user = secondUserAsReviewer;
         secondReviewer.approved = false;
 
-        var project: BitbucketNotifier.Project = new BitbucketNotifier.Project();
+        const project: Project = new Project();
         project.name = 'CRM';
-        project.fullName = 'dacsoftware/my_sweet_project';
+        project.fullName = 'company_name/my_sweet_project';
 
         pullRequest.id = 1;
         pullRequest.title = 'This is a pull request';
@@ -70,7 +72,7 @@ describe('PullRequestComponent', () => {
             $scope.$digest();
         });
 
-        it("should render basic pull request information", () => {
+        it('should render basic pull request information', () => {
             expect(element.html()).toContain('1');
             expect(element.html()).toContain('John Smith');
             expect(element.html()).toContain('This is a pull request');
@@ -88,7 +90,7 @@ describe('PullRequestComponent', () => {
             $scope.$digest();
         });
 
-        it("should render basic pull request information", () => {
+        it('should render basic pull request information', () => {
             expect(element.html()).toContain('1');
             expect(element.html()).toContain('John Smith');
             expect(element.html()).toContain('This is a pull request');
@@ -107,7 +109,7 @@ describe('PullRequestComponent', () => {
         expect(uiRouterState.go).toHaveBeenCalledWith(
             'pull_request',
             {
-                repositoryName: 'dacsoftware__my_sweet_project',
+                repositoryName: 'company_name__my_sweet_project',
                 pullRequestId: 1
             }
         );

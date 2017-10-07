@@ -1,16 +1,30 @@
-///<reference path="../../../app/_typings.ts"/>
+import {SocketManager} from '../../../app/services/socket_manager';
+import {Config} from '../../../app/services/config';
+import {Notifier} from '../../../app/services/notifier';
+import {PullRequestRepository} from '../../../app/services/pull_request_repository';
+import {Indicator} from '../../../app/services/indicator';
+import * as angular from 'angular';
+import {PullRequest} from '../../../app/models/pull_request';
+import {SocketClientEvent} from '../../../app/models/event/socket_client_event';
+import {PullRequestEvent} from '../../../app/models/event/pull_request_event';
+import {SocketServerEvent} from '../../../app/models/event/socket_server_event';
+import {ChromeExtensionEvent} from '../../../app/models/event/chrome_extension_event';
+import {User} from '../../../app/models/user';
+import {Reviewer} from '../../../app/models/reviewer';
+import {WebhookEvent} from '../../../app/models/event/webhook_event';
+import {PullRequestCommentEvent} from '../../../app/models/event/pull_request_comment_event';
+require('./../../angular-socket.io-mock');
 
-import PullRequestCommentEvent = BitbucketNotifier.PullRequestCommentEvent;
 describe('SocketHandler', () => {
-    var socketHandler,
-        socketManager: BitbucketNotifier.SocketManager,
-        config: BitbucketNotifier.Config,
-        pullRequestRepository: BitbucketNotifier.PullRequestRepository,
-        notifier: BitbucketNotifier.Notifier,
-        indicator: BitbucketNotifier.Indicator,
-        hasAssignmentChanged = false,
-        exists = true,
-        extensionListener: Function;
+    let socketHandler;
+    let socketManager: SocketManager;
+    let config: Config;
+    let pullRequestRepository: PullRequestRepository;
+    let notifier: Notifier;
+    let indicator: Indicator;
+    let hasAssignmentChanged = false;
+    let exists = true;
+    let extensionListener: (chromeEvent) => void;
 
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(angular.mock.module(['$provide', ($p: ng.auto.IProvideService) => {
@@ -41,7 +55,7 @@ describe('SocketHandler', () => {
         $p.value('PullRequestRepository', {
             pullRequests: [],
             setPullRequests: jasmine.createSpy('PullRequestRepository.setpullRequests')
-                .and.callFake((pullRequests: BitbucketNotifier.PullRequest[]) => {
+                .and.callFake((pullRequests: PullRequest[]) => {
                     this.pullRequests = pullRequests;
                 }),
             hasAssignmentChanged: jasmine.createSpy('PullRequestRepository.hasAssignmentChanged')
@@ -84,17 +98,17 @@ describe('SocketHandler', () => {
     it('should emit client:introduce event with logged in user, on connection', () => {
         socketManager.socket.receive('connect');
         expect(socketManager.socket.emits).toEqual(jasmine.objectContaining({'client:introduce': jasmine.anything()}));
-        expect(socketManager.socket.emits[BitbucketNotifier.SocketClientEvent.INTRODUCE][0]).toEqual(['john.smith']);
+        expect(socketManager.socket.emits[SocketClientEvent.INTRODUCE][0]).toEqual(['john.smith']);
     });
 
     it('should update pull request repository on server:pullrequests:updated', () => {
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-        var userPullRequest: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
+        const pullRequest: PullRequest = new PullRequest();
+        const userPullRequest: PullRequestEvent = new PullRequestEvent();
         userPullRequest.sourceEvent = 'pullrequest:created';
         userPullRequest.pullRequests = [pullRequest];
         userPullRequest.context = pullRequest;
 
-        socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, userPullRequest);
+        socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, userPullRequest);
 
         expect(pullRequestRepository.setPullRequests).toHaveBeenCalledWith([pullRequest]);
     });
@@ -105,9 +119,9 @@ describe('SocketHandler', () => {
     });
 
     it('should emit client:remind on chrome event', () => {
-        var pullRequest = new BitbucketNotifier.PullRequest();
-        var chromeEvent = new BitbucketNotifier.ChromeExtensionEvent(
-            BitbucketNotifier.ChromeExtensionEvent.REMIND,
+        const pullRequest = new PullRequest();
+        const chromeEvent = new ChromeExtensionEvent(
+            ChromeExtensionEvent.REMIND,
             pullRequest
         );
 
@@ -116,64 +130,64 @@ describe('SocketHandler', () => {
     });
 
     describe('chrome notifications', () => {
-        var pullRequestEvent: BitbucketNotifier.PullRequestEvent;
-        var pullRequest: BitbucketNotifier.PullRequest;
-        var pullRequestsList;
-        var johnSmith: BitbucketNotifier.User;
-        var annaKowalsky: BitbucketNotifier.User;
+        let pullRequestEvent: PullRequestEvent;
+        let pullRequest: PullRequest;
+        let pullRequestsList;
+        let johnSmith: User;
+        let annaKowalsky: User;
 
         beforeEach(() => {
-            pullRequest = new BitbucketNotifier.PullRequest();
+            pullRequest = new PullRequest();
             pullRequest.id = 1;
             pullRequest.targetRepository.fullName = 'team_name/repo_name';
 
             pullRequestsList = [pullRequest];
 
-            pullRequestEvent = new BitbucketNotifier.PullRequestEvent();
+            pullRequestEvent = new PullRequestEvent();
             pullRequestEvent.pullRequests = pullRequestsList;
             pullRequestEvent.context = pullRequest;
 
-            johnSmith = new BitbucketNotifier.User();
+            johnSmith = new User();
             johnSmith.username = 'john.smith';
             johnSmith.displayName = 'John Smith';
 
-            annaKowalsky = new BitbucketNotifier.User();
+            annaKowalsky = new User();
             annaKowalsky.displayName = 'Anna Kowalsky';
             annaKowalsky.username = 'anna.kowalsky';
         });
 
         describe('on introduce', () => {
             it('should notify about author\'s pull requests', () => {
-                var loggedInReviewer = new BitbucketNotifier.Reviewer();
+                const loggedInReviewer = new Reviewer();
                 loggedInReviewer.user = johnSmith;
                 loggedInReviewer.approved = false;
 
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
-                var stub: jasmine.Spy = <jasmine.Spy> notifier.notifyNewPullRequestAssigned;
+                socketManager.socket.receive(SocketServerEvent.INTRODUCED, pullRequestEvent);
+                const stub: jasmine.Spy = notifier.notifyNewPullRequestAssigned as jasmine.Spy;
                 expect(stub.calls.count()).toEqual(1);
             });
 
             it('should not notify about assigned pull requests when author already approved a PullRequest', () => {
-                var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+                const unapprovedReviewer = new Reviewer();
                 unapprovedReviewer.user = johnSmith;
                 unapprovedReviewer.approved = false;
 
-                var approvedReviewer = new BitbucketNotifier.Reviewer();
+                const approvedReviewer = new Reviewer();
                 approvedReviewer.user = johnSmith;
                 approvedReviewer.approved = true;
 
                 pullRequest.reviewers.push(unapprovedReviewer);
 
-                var approvedPullRequest = new BitbucketNotifier.PullRequest();
+                const approvedPullRequest = new PullRequest();
                 approvedPullRequest.id = 2;
                 approvedPullRequest.targetRepository.fullName = 'team_name/repo_name';
                 approvedPullRequest.reviewers.push(approvedReviewer);
 
                 pullRequestsList.push(approvedPullRequest);
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
+                socketManager.socket.receive(SocketServerEvent.INTRODUCED, pullRequestEvent);
 
                 expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest);
                 expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalledWith(approvedPullRequest);
@@ -181,111 +195,118 @@ describe('SocketHandler', () => {
         });
 
         describe('on updated pull request', () => {
-            it('should notify about new assignment when assignment has changed and pull request has not been already indexed', () => {
-                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_UPDATED;
+            it('should notify about new assignment when assignment has changed' +
+                ' and pull request has not been already indexed',
+                () => {
+                pullRequestEvent.sourceEvent = WebhookEvent.PULLREQUEST_UPDATED;
                 hasAssignmentChanged = true;
                 exists = false;
 
-                var loggedInReviewer = new BitbucketNotifier.Reviewer();
+                const loggedInReviewer = new Reviewer();
                 loggedInReviewer.user = johnSmith;
                 loggedInReviewer.approved = false;
 
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest);
             });
 
             it('should notify about pull request update when pull request has been updated', () => {
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUEST_UPDATED, pullRequest);
+                socketManager.socket.receive(SocketServerEvent.PULLREQUEST_UPDATED, pullRequest);
                 expect(notifier.notifyPullRequestUpdated).toHaveBeenCalledWith(pullRequest);
             });
         });
 
         describe('on new pull request', () => {
             it('should notify about new pull request assignment on webhook:pullrequest:created', () => {
-                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_CREATED;
+                pullRequestEvent.sourceEvent = WebhookEvent.PULLREQUEST_CREATED;
 
-                var loggedInReviewer = new BitbucketNotifier.Reviewer();
+                const loggedInReviewer = new Reviewer();
                 loggedInReviewer.user = johnSmith;
                 loggedInReviewer.approved = false;
 
                 pullRequest.author = annaKowalsky;
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).toHaveBeenCalledWith(pullRequest);
             });
 
-            it('should not notify about new pull request on webhook:pullrequest:created, if author is assigned user', () => {
-                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_CREATED;
+            it('should not notify about new pull request on webhook:pullrequest:created, ' +
+                'if author is assigned user',
+                () => {
+                pullRequestEvent.sourceEvent = WebhookEvent.PULLREQUEST_CREATED;
                 pullRequest.author = johnSmith;
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
             });
 
             it('should not notify about new pull request on other event than pull:request:created', () => {
                 pullRequestEvent.sourceEvent = 'webhook:pullrequest:fulfilled';
 
-                var loggedInReviewer = new BitbucketNotifier.Reviewer();
+                const loggedInReviewer = new Reviewer();
                 loggedInReviewer.user = johnSmith;
                 loggedInReviewer.approved = false;
 
                 pullRequest.author = annaKowalsky;
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyNewPullRequestAssigned).not.toHaveBeenCalled();
             });
         });
 
         describe('on merged pull request', () => {
-            it('should notify author about merged pull request on webhook:pullrequest:fulfilled event', () => {
-                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_FULFILLED;
+            it('should notify author about merged pull request on webhook:pullrequest:fulfilled event',
+                () => {
+                pullRequestEvent.sourceEvent = WebhookEvent.PULLREQUEST_FULFILLED;
                 pullRequest.author = johnSmith;
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestMerged).toHaveBeenCalledWith(pullRequest);
             });
 
-            it('should not notify about merged pull request on webhook:pullrequest:fulfilled event, if user is a reviewer', () => {
-                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_FULFILLED;
+            it('should not notify about merged pull request on webhook:pullrequest:fulfilled event, ' +
+                'if user is a reviewer',
+                () => {
+                pullRequestEvent.sourceEvent = WebhookEvent.PULLREQUEST_FULFILLED;
                 pullRequest.author = annaKowalsky;
 
-                var loggedInReviewer = new BitbucketNotifier.Reviewer();
+                const loggedInReviewer = new Reviewer();
                 loggedInReviewer.user = johnSmith;
                 loggedInReviewer.approved = false;
                 pullRequest.reviewers.push(loggedInReviewer);
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestMerged).not.toHaveBeenCalled();
             });
         });
 
         describe('on approval', () => {
             it('should notify author of pull request about approval', () => {
-                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_APPROVED;
+                pullRequestEvent.sourceEvent = WebhookEvent.PULLREQUEST_APPROVED;
                 pullRequest.author = johnSmith;
                 pullRequestEvent.actor = annaKowalsky;
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestApproved).toHaveBeenCalledWith(pullRequest, annaKowalsky);
             });
 
             it('should not notify logged in user about approval, if he is not the author of this PR', () => {
-                pullRequestEvent.sourceEvent = BitbucketNotifier.WebhookEvent.PULLREQUEST_APPROVED;
+                pullRequestEvent.sourceEvent = WebhookEvent.PULLREQUEST_APPROVED;
                 pullRequest.author = annaKowalsky;
                 pullRequestEvent.actor = johnSmith;
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+                socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
                 expect(notifier.notifyPullRequestApproved).not.toHaveBeenCalled();
             });
         });
 
         describe('on reminder', () => {
             it('should notify assignee with reminder about pull request', () => {
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.REMIND, pullRequest);
+                socketManager.socket.receive(SocketServerEvent.REMIND, pullRequest);
                 expect(notifier.notifyReminder).toHaveBeenCalledWith(pullRequest);
             });
         });
@@ -302,7 +323,7 @@ describe('SocketHandler', () => {
                     }
                 };
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_COMMENT, pullRequestWithComment);
+                socketManager.socket.receive(SocketServerEvent.NEW_COMMENT, pullRequestWithComment);
 
                 expect(notifier.notifyNewCommentAdded).toHaveBeenCalledWith(pullRequest, johnSmith, commentLink);
             });
@@ -314,7 +335,7 @@ describe('SocketHandler', () => {
                 pullRequestWithComment.actor = johnSmith;
                 pullRequestWithComment.pullRequest = pullRequest;
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_COMMENT, pullRequestWithComment);
+                socketManager.socket.receive(SocketServerEvent.NEW_COMMENT, pullRequestWithComment);
 
                 expect(notifier.notifyNewCommentAdded).not.toHaveBeenCalled();
             });
@@ -331,38 +352,38 @@ describe('SocketHandler', () => {
                     }
                 };
 
-                socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.NEW_REPLY_FOR_COMMENT, pullRequestWithComment);
+                socketManager.socket.receive(SocketServerEvent.NEW_REPLY_FOR_COMMENT, pullRequestWithComment);
 
                 expect(notifier.notifyNewReplyOnComment).toHaveBeenCalledWith(pullRequest, johnSmith, commentLink);
             });
-        })
+        });
     });
 
     describe('indicator state', () => {
         it('should show number of pull requests on introduced event', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-            var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
+            const pullRequest: PullRequest = new PullRequest();
+            const pullRequestEvent: PullRequestEvent = new PullRequestEvent();
             pullRequestRepository.pullRequests = [pullRequest];
 
-            socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.INTRODUCED, pullRequestEvent);
+            socketManager.socket.receive(SocketServerEvent.INTRODUCED, pullRequestEvent);
             expect(indicator.setText).toHaveBeenCalledWith('1');
         });
 
         it('should show number of pull requests on pullrequest updated event', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-            var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
+            const pullRequest: PullRequest = new PullRequest();
+            const pullRequestEvent: PullRequestEvent = new PullRequestEvent();
             pullRequestRepository.pullRequests = [pullRequest];
 
-            socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+            socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
             expect(indicator.setText).toHaveBeenCalledWith('1');
         });
 
         it('should bring back default badge text on disconnection', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-            var pullRequestEvent: BitbucketNotifier.PullRequestEvent = new BitbucketNotifier.PullRequestEvent();
+            const pullRequest: PullRequest = new PullRequest();
+            const pullRequestEvent: PullRequestEvent = new PullRequestEvent();
             pullRequestRepository.pullRequests = [pullRequest];
 
-            socketManager.socket.receive(BitbucketNotifier.SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
+            socketManager.socket.receive(SocketServerEvent.PULLREQUESTS_UPDATED, pullRequestEvent);
             expect(indicator.setText).toHaveBeenCalledWith('1');
 
             socketManager.socket.receive('disconnect');

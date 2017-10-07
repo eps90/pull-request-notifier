@@ -1,18 +1,25 @@
-///<reference path="../../../../app/_typings.ts"/>
+import {Config} from '../../../../app/services/config';
+import * as angular from 'angular';
+import {MODULE_NAME} from '../../../../app/modules/bitbucket_notifier';
+import {
+    ApprovalProgressController
+} from '../../../../app/components/approval_progress_component/approval_progress_controller';
+import {PullRequestProgress} from '../../../../app/models/pull_request_progress';
+import {User} from '../../../../app/models/user';
+import {Reviewer} from '../../../../app/models/reviewer';
 
 describe('ApprovalProgressComponent', () => {
-    var $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        config: BitbucketNotifier.Config,
-        element,
-        prProgress = null;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let config: Config;
+    let element;
+    let prProgress = null;
 
-    beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
+    beforeEach(angular.mock.module(MODULE_NAME));
     beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
-            prProgress = BitbucketNotifier.PullRequestProgress.PROPORTIONS;
+            prProgress = PullRequestProgress.PROPORTIONS;
 
             $provide.value('Config', {
                 getPullRequestProgress: jasmine.createSpy('Config.getPullRequestProgress').and.callFake(() => {
@@ -27,21 +34,21 @@ describe('ApprovalProgressComponent', () => {
         'Config',
         ($c, $r, c) => {
             $compile = $c;
-            $scope = $r;
+            $scope = $r.$new();
             config = c;
         }
     ]));
 
     it('should display number of approvals per assigned users count', () => {
-        var approvingReviewer = new BitbucketNotifier.Reviewer();
-        approvingReviewer.user = new BitbucketNotifier.User();
+        const approvingReviewer = new Reviewer();
+        approvingReviewer.user = new User();
         approvingReviewer.approved = true;
 
-        var disapprovingReviewer = new BitbucketNotifier.Reviewer();
-        disapprovingReviewer.user = new BitbucketNotifier.User();
+        const disapprovingReviewer = new Reviewer();
+        disapprovingReviewer.user = new User();
         disapprovingReviewer.approved = false;
 
-        $scope['reviewers'] = [approvingReviewer, disapprovingReviewer];
+        $scope.reviewers = [approvingReviewer, disapprovingReviewer];
         element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
         $scope.$digest();
 
@@ -57,26 +64,39 @@ describe('ApprovalProgressComponent', () => {
     });
 
     describe('Appearance variants', () => {
+        let $componentController: ng.IComponentControllerService;
+        let reviewers: Reviewer[];
+
+        beforeEach(inject([
+            '$componentController',
+            ($cc) => {
+                $componentController = $cc;
+            }
+        ]));
+
         beforeEach(() => {
-            var approvedReviewer = new BitbucketNotifier.Reviewer();
+            const approvedReviewer = new Reviewer();
             approvedReviewer.approved = true;
-            var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+            const unapprovedReviewer = new Reviewer();
             unapprovedReviewer.approved = false;
-            var anotherUnapprovedReviewer = new BitbucketNotifier.Reviewer();
+            const anotherUnapprovedReviewer = new Reviewer();
             anotherUnapprovedReviewer.approved = false;
 
-            $scope['reviewers'] = [approvedReviewer, unapprovedReviewer, anotherUnapprovedReviewer];
+            reviewers = [approvedReviewer, unapprovedReviewer, anotherUnapprovedReviewer];
+            $scope['reviewers'] = reviewers;
         });
 
         it('should set up currently set pull request progress option', () => {
-            element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
-            $scope.$digest();
-
-            expect(element.isolateScope()['pullRequestProgress']).toEqual(prProgress);
+            const bindings = {
+                reviewers
+            };
+            const ctrl = $componentController('approvalProgress', null, bindings) as ApprovalProgressController;
+            ctrl.$onInit();
+            expect(ctrl.pullRequestProgress).toEqual(prProgress);
         });
 
         it("should display proportions value if 'proportions' is set as progress option", () => {
-            prProgress = BitbucketNotifier.PullRequestProgress.PROPORTIONS;
+            prProgress = PullRequestProgress.PROPORTIONS;
             element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
             $scope.$digest();
 
@@ -84,7 +104,7 @@ describe('ApprovalProgressComponent', () => {
         });
 
         it("should display percentage value if 'percentage' is set as progress option", () => {
-            prProgress = BitbucketNotifier.PullRequestProgress.PERCENT;
+            prProgress = PullRequestProgress.PERCENT;
             element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
             $scope.$digest();
 
@@ -92,7 +112,7 @@ describe('ApprovalProgressComponent', () => {
         });
 
         it("should display progress bar of 'progress_bar' is set as progress option", () => {
-            prProgress = BitbucketNotifier.PullRequestProgress.PROGRESS_BAR;
+            prProgress = PullRequestProgress.PROGRESS_BAR;
             element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
             $scope.$digest();
 
@@ -101,11 +121,15 @@ describe('ApprovalProgressComponent', () => {
         });
 
         it('should allow to override progress type by passing it to attribute', () => {
-            prProgress = BitbucketNotifier.PullRequestProgress.PERCENT;
-            element = $compile('<approval-progress reviewers="reviewers" mode="progress_bar"></approval-progress>')($scope);
-            $scope.$digest();
+            prProgress = PullRequestProgress.PERCENT;
+            const bindings = {
+                reviewers,
+                mode: 'progress_bar'
+            };
+            const ctrl = $componentController('approvalProgress', null, bindings) as ApprovalProgressController;
+            ctrl.$onInit();
 
-            expect(element.isolateScope()['pullRequestProgress']).toEqual('progress_bar');
+            expect(ctrl.pullRequestProgress).toEqual('progress_bar');
         });
     });
 });

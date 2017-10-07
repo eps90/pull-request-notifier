@@ -1,17 +1,9 @@
-///<reference path="../../_typings.ts"/>
+import componentTemplate from './pull_request_preview_component.html';
+import './pull_request_preview_component.less';
 
-module BitbucketNotifier {
-    'use strict';
-
-    export class PullRequestPreviewComponent implements ng.IDirective {
-        restrict: string = 'E';
-        templateUrl: string = '../components/pull_request_preview_component/pull_request_preview_component.html';
-        scope: any = {
-            pr: '='
-        };
-
-        static factory(): ng.IDirectiveFactory {
-            return () => new PullRequestPreviewComponent();
-        }
-    }
+export class PullRequestPreviewComponent implements ng.IComponentOptions {
+    public template: string = componentTemplate;
+    public bindings: any = {
+        pr: '='
+    };
 }

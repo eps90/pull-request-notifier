@@ -1,13 +1,19 @@
-///<reference path="../../../../app/_typings.ts"/>
+import {PullRequestRepository} from '../../../../app/services/pull_request_repository';
+import * as angular from 'angular';
+import {PullRequest} from '../../../../app/models/pull_request';
+import {User} from '../../../../app/models/user';
+import {Reviewer} from '../../../../app/models/reviewer';
+import {Project} from '../../../../app/models/project';
+import {ConfigObject} from '../../../../app/models/config_object';
 
 describe('PullRequestsListComponent', () => {
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    var element,
-        $compile: ng.ICompileService,
-        $scope: ng.IRootScopeService,
-        pullRequests: Array<BitbucketNotifier.PullRequest> = [],
-        localStorageService: angular.local.storage.ILocalStorageService,
-        pullRequestRepository: BitbucketNotifier.PullRequestRepository;
+    let element;
+    let $compile: ng.ICompileService;
+    let $scope: ng.IRootScopeService;
+    let pullRequests: PullRequest[] = [];
+    let localStorageService: angular.local.storage.ILocalStorageService;
+    let pullRequestRepository: PullRequestRepository;
 
     beforeEach(() => {
         window['chrome'] = {
@@ -30,8 +36,6 @@ describe('PullRequestsListComponent', () => {
     });
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
-
     beforeEach(
         inject([
             '$compile',
@@ -48,27 +52,27 @@ describe('PullRequestsListComponent', () => {
     );
 
     beforeEach(() => {
-        var loggedInUser: BitbucketNotifier.User = new BitbucketNotifier.User();
+        const loggedInUser: User = new User();
         loggedInUser.displayName = 'John Smith';
         loggedInUser.username = 'john.smith';
 
-        var nonLoggedInUser: BitbucketNotifier.User = new BitbucketNotifier.User();
+        const nonLoggedInUser: User = new User();
         nonLoggedInUser.displayName = 'Anna Kowalsky';
         nonLoggedInUser.username = 'anna.kowalsky';
 
-        var loggedInReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        const loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = true;
 
-        var nonLoggedInReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        const nonLoggedInReviewer: Reviewer = new Reviewer();
         nonLoggedInReviewer.user = nonLoggedInUser;
         nonLoggedInReviewer.approved = false;
 
-        var project: BitbucketNotifier.Project = new BitbucketNotifier.Project();
+        const project: Project = new Project();
         project.name = 'CRM';
         project.fullName = 'dacsoftware/crm';
 
-        var authoredPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        const authoredPullRequest: PullRequest = new PullRequest();
 
         authoredPullRequest.id = 1;
         authoredPullRequest.title = 'This is a pull request';
@@ -77,7 +81,7 @@ describe('PullRequestsListComponent', () => {
         authoredPullRequest.targetRepository = project;
         authoredPullRequest.targetBranch = 'master';
 
-        var assignedPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        const assignedPullRequest: PullRequest = new PullRequest();
         assignedPullRequest.id = 2;
         assignedPullRequest.author = nonLoggedInUser;
         assignedPullRequest.title = 'This is another title';
@@ -92,30 +96,30 @@ describe('PullRequestsListComponent', () => {
 
     describe('Authored mode', () => {
         beforeEach(() => {
-            localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'john.smith');
+            localStorageService.set(ConfigObject.USER, 'john.smith');
         });
 
         it('should render list of pull requests', () => {
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('.pull-requests-list.authored pull-request');
+            const childPullRequest = element.find('.pull-requests-list.authored pull-request');
 
             expect(childPullRequest.length).toEqual(1);
-            expect(childPullRequest.isolateScope().mode).toEqual('AUTHORED');
+            expect(childPullRequest.attr('mode')).toEqual('AUTHORED');
         });
 
         it('should update pull requests list when pull requests repository changes', () => {
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('.pull-requests-list.authored pull-request');
+            let childPullRequest = element.find('.pull-requests-list.authored pull-request');
 
             expect(childPullRequest.length).toEqual(1);
 
-            var loggedInUser = new BitbucketNotifier.User();
+            const loggedInUser = new User();
             loggedInUser.username = 'john.smith';
-            var newPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            const newPullRequest: PullRequest = new PullRequest();
             newPullRequest.author = loggedInUser;
 
             pullRequestRepository.pullRequests.push(newPullRequest);
@@ -137,34 +141,34 @@ describe('PullRequestsListComponent', () => {
 
     describe('Assigned mode', () => {
         beforeEach(() => {
-            localStorageService.set(BitbucketNotifier.ConfigObject.USER, 'anna.kowalsky');
+            localStorageService.set(ConfigObject.USER, 'anna.kowalsky');
         });
 
         it('should render list of pull requests', () => {
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('.pull-requests-list.assigned pull-request');
+            const childPullRequest = element.find('.pull-requests-list.assigned pull-request');
 
             expect(childPullRequest.length).toEqual(2);
-            expect(childPullRequest.isolateScope().mode).toEqual('ASSIGNED');
+            expect(childPullRequest.attr('mode')).toEqual('ASSIGNED');
         });
 
         it('should update pull requests list when pull requests repository changes', () => {
             element = $compile('<pull-requests-list></pull-requests-list>')($scope);
             $scope.$digest();
 
-            var childPullRequest = element.find('.pull-requests-list.assigned pull-request');
+            let childPullRequest = element.find('.pull-requests-list.assigned pull-request');
 
             expect(childPullRequest.length).toEqual(2);
 
-            var loggedInUser = new BitbucketNotifier.User();
+            const loggedInUser = new User();
             loggedInUser.username = 'anna.kowalsky';
-            var loggedInReviewer = new BitbucketNotifier.Reviewer();
+            const loggedInReviewer = new Reviewer();
             loggedInReviewer.user = loggedInUser;
             loggedInReviewer.approved = false;
 
-            var newPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            const newPullRequest: PullRequest = new PullRequest();
             newPullRequest.reviewers.push(loggedInReviewer);
 
             pullRequestRepository.pullRequests.push(newPullRequest);

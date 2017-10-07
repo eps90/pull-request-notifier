@@ -1,23 +1,19 @@
-///<reference path="../_typings.ts"/>
+import {Config} from '../services/config';
+import {PullRequest} from '../models/pull_request';
 
-module BitbucketNotifier {
-    'use strict';
+export function AuthoredFilter(config: Config) {
+    return (pullRequests: PullRequest[]) => {
+        const loggedInUser = config.getUsername();
+        const result: PullRequest[] = [];
 
-    export function AuthoredFilter(config: Config): Function {
-        return (pullRequests: Array<PullRequest>) => {
-            var loggedInUser = config.getUsername();
-            var result: Array<PullRequest> = [];
-
-            for (var prIndex = 0, prsLength = pullRequests.length; prIndex < prsLength; prIndex++) {
-                var pullRequest = pullRequests[prIndex];
-                if (pullRequest.author.username === loggedInUser) {
-                    result.push(pullRequest);
-                }
+        for (const pullRequest of pullRequests) {
+            if (pullRequest.author.username === loggedInUser) {
+                result.push(pullRequest);
             }
+        }
 
-            return result;
-        };
-    }
-
-    AuthoredFilter.$inject = ['Config'];
+        return result;
+    };
 }
+
+AuthoredFilter.$inject = ['Config'];

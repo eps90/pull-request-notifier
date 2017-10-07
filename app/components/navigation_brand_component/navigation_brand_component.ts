@@ -1,18 +1,9 @@
-/// <reference path="../../_typings.ts" />
+import componentTemplate from './navigation_brand_component.html';
 
-module BitbucketNotifier {
-    'use strict';
-
-    export class NavigationBrandComponent {
-        restrict: string = 'E';
-        templateUrl: string = '../components/navigation_brand_component/navigation_brand_component.html';
-        scope: any = {
-            content: '@',
-            icon: '@'
-        };
-
-        static factory(): ng.IDirectiveFactory {
-            return () => new NavigationBrandComponent();
-        }
-    }
+export class NavigationBrandComponent implements ng.IComponentOptions {
+    public template: string = componentTemplate;
+    public bindings: any = {
+        content: '@',
+        icon: '@'
+    };
 }

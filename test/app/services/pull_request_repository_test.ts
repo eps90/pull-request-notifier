@@ -1,9 +1,18 @@
-///<reference path="../../../app/_typings.ts"/>
+import {PullRequestRepository} from '../../../app/services/pull_request_repository';
+import * as angular from 'angular';
+import {PullRequest} from '../../../app/models/pull_request';
+import {Reviewer} from '../../../app/models/reviewer';
+import {User} from '../../../app/models/user';
+import {Project} from '../../../app/models/project';
+import {ChromeExtensionEvent} from '../../../app/models/event/chrome_extension_event';
 
 describe('PullRequestRepository', () => {
-    var pullRequestRepositoryOne: BitbucketNotifier.PullRequestRepository,
-        pullRequestRepositoryTwo: BitbucketNotifier.PullRequestRepository,
-        messageFunc, connectionFunc, connectPort, connectPortFn;
+    let pullRequestRepositoryOne: PullRequestRepository;
+    let pullRequestRepositoryTwo: PullRequestRepository;
+    let messageFunc;
+    let connectionFunc;
+    let connectPort;
+    let connectPortFn;
 
     beforeEach(() => {
         connectPort = {
@@ -41,8 +50,8 @@ describe('PullRequestRepository', () => {
     ]));
 
     it('should keep the same value each time', () => {
-        var pullRequestOne: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-        var pullRequestTwo: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequestOne: PullRequest = new PullRequest();
+        const pullRequestTwo: PullRequest = new PullRequest();
 
         pullRequestRepositoryOne.pullRequests = [pullRequestOne];
         pullRequestRepositoryTwo.pullRequests.push(pullRequestTwo);
@@ -53,8 +62,8 @@ describe('PullRequestRepository', () => {
     it('should set the list of pull requests', () => {
         expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
 
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-        var pullRequestsList = [pullRequest];
+        const pullRequest: PullRequest = new PullRequest();
+        const pullRequestsList = [pullRequest];
 
         pullRequestRepositoryOne.setPullRequests(pullRequestsList);
 
@@ -62,71 +71,71 @@ describe('PullRequestRepository', () => {
     });
 
     it('should be able to detect new assignment', () => {
-        var project = new BitbucketNotifier.Project();
+        const project = new Project();
         project.fullName = 'team_name/repo_name';
 
-        var user = new BitbucketNotifier.User();
+        const user = new User();
         user.username = 'john.smith';
-        var reviewer = new BitbucketNotifier.Reviewer();
+        const reviewer = new Reviewer();
         reviewer.user = user;
         reviewer.approved = false;
 
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest: PullRequest = new PullRequest();
         pullRequest.id = 1;
         pullRequest.targetRepository = project;
         pullRequest.reviewers = [];
 
-        var changedPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        const changedPullRequest: PullRequest = new PullRequest();
         changedPullRequest.id = 1;
         changedPullRequest.targetRepository = project;
         changedPullRequest.reviewers = [reviewer];
 
         pullRequestRepositoryOne.pullRequests = [pullRequest];
-        var actual: boolean = pullRequestRepositoryOne.hasAssignmentChanged(changedPullRequest);
+        const actual: boolean = pullRequestRepositoryOne.hasAssignmentChanged(changedPullRequest);
         expect(actual).toBeTruthy();
     });
 
     it('should be able to detect when user is assigned', () => {
-        var project = new BitbucketNotifier.Project();
+        const project = new Project();
         project.fullName = 'team_name/repo_name';
 
-        var user = new BitbucketNotifier.User();
+        const user = new User();
         user.username = 'john.smith';
-        var newUser = new BitbucketNotifier.User();
+        const newUser = new User();
         newUser.username = 'anna.kowalsky';
 
-        var reviewer = new BitbucketNotifier.Reviewer();
+        const reviewer = new Reviewer();
         reviewer.user = user;
         reviewer.approved = false;
-        var newReviewer = new BitbucketNotifier.Reviewer();
+        const newReviewer = new Reviewer();
         newReviewer.user = newUser;
         newReviewer.approved = false;
 
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest: PullRequest = new PullRequest();
         pullRequest.id = 1;
         pullRequest.targetRepository = project;
         pullRequest.reviewers = [reviewer];
 
-        var changedPullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        const changedPullRequest: PullRequest = new PullRequest();
         changedPullRequest.id = 1;
         changedPullRequest.targetRepository = project;
         changedPullRequest.reviewers = [newReviewer];
 
         pullRequestRepositoryOne.pullRequests = [pullRequest];
-        var actual: boolean = pullRequestRepositoryOne.hasAssignmentChanged(changedPullRequest);
+        const actual: boolean = pullRequestRepositoryOne.hasAssignmentChanged(changedPullRequest);
         expect(actual).toBeTruthy();
     });
 
     it('should determine whether given pull request already exists', () => {
-        var existentPullRequest = new BitbucketNotifier.PullRequest();
+        const existentPullRequest = new PullRequest();
         existentPullRequest.id = 1;
         existentPullRequest.targetRepository.fullName = 'team_name/repo_name';
 
-        var newPullRequest = new BitbucketNotifier.PullRequest();
+        const newPullRequest = new PullRequest();
         newPullRequest.id = 2;
         newPullRequest.targetRepository.fullName = 'team_name/repo_name';
 
-        var anotherNewPullRequest = new BitbucketNotifier.PullRequest();
+        const anotherNewPullRequest = new PullRequest();
         anotherNewPullRequest.id = 1;
         anotherNewPullRequest.targetRepository.fullName = 'another_team/another_repo';
 
@@ -139,81 +148,81 @@ describe('PullRequestRepository', () => {
 
     describe('finding pull request', () => {
         it('should find pull request by id and repository name', () => {
-            var repositoryName = 'team_name/repo_name';
-            var prId = 3;
+            const repositoryName = 'team_name/repo_name';
+            const prId = 3;
 
-            var project = new BitbucketNotifier.Project();
+            const project = new Project();
             project.fullName = repositoryName;
 
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            const pullRequest = new PullRequest();
             pullRequest.targetRepository = project;
             pullRequest.id = prId;
 
             pullRequestRepositoryOne.pullRequests = [pullRequest];
 
-            var actual: BitbucketNotifier.PullRequest = pullRequestRepositoryOne.find(repositoryName, prId);
+            const actual: PullRequest = pullRequestRepositoryOne.find(repositoryName, prId);
             expect(actual).toEqual(pullRequest);
         });
 
         it('should return null if pull request has not been found', () => {
-            var repositoryName = 'team_name/repo_name';
-            var prId = 3;
+            const repositoryName = 'team_name/repo_name';
+            const prId = 3;
 
             pullRequestRepositoryOne.pullRequests = [];
 
-            var actual: BitbucketNotifier.PullRequest = pullRequestRepositoryOne.find(repositoryName, prId);
+            const actual: PullRequest = pullRequestRepositoryOne.find(repositoryName, prId);
             expect(actual).toBeNull();
         });
     });
 
     describe('with chrome events', () => {
         it('should emit chrome event on pull request collection change', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-            var pullRequestsList = [pullRequest];
+            const pullRequest: PullRequest = new PullRequest();
+            const pullRequestsList = [pullRequest];
 
             pullRequestRepositoryOne.setPullRequests(pullRequestsList);
             expect(window['chrome'].extension.sendMessage)
                 .toHaveBeenCalledWith(
-                    new BitbucketNotifier.ChromeExtensionEvent(
-                        BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS,
+                    new ChromeExtensionEvent(
+                        ChromeExtensionEvent.UPDATE_PULLREQUESTS,
                         pullRequestsList
                     )
                 );
         });
 
         it('should listen to event to update pull requests', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-            var pullRequestsList = [pullRequest];
+            const pullRequest: PullRequest = new PullRequest();
+            const pullRequestsList = [pullRequest];
 
             expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
-            messageFunc({type: BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: pullRequestsList});
+            messageFunc({type: ChromeExtensionEvent.UPDATE_PULLREQUESTS, content: pullRequestsList});
             expect(pullRequestRepositoryOne.pullRequests.length).toBe(1);
         });
 
         it('should send all pull requests on connection', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            const pullRequest: PullRequest = new PullRequest();
             pullRequestRepositoryOne.pullRequests = [pullRequest];
 
-            var port = {
+            const port = {
                 postMessage: jasmine.createSpy('port.postMessage')
             };
             connectionFunc(port);
             expect(port.postMessage).toHaveBeenCalledWith(
-                new BitbucketNotifier.ChromeExtensionEvent(
-                    BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS,
+                new ChromeExtensionEvent(
+                    ChromeExtensionEvent.UPDATE_PULLREQUESTS,
                     [pullRequest]
                 )
             );
         });
 
         it('should receive all pull requests on connection', () => {
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
-            var pullRequestsList = [pullRequest];
+            const pullRequest: PullRequest = new PullRequest();
+            const pullRequestsList = [pullRequest];
 
             expect(pullRequestRepositoryOne.pullRequests.length).toBe(0);
             connectPortFn(
-                new BitbucketNotifier.ChromeExtensionEvent(
-                    BitbucketNotifier.ChromeExtensionEvent.UPDATE_PULLREQUESTS,
+                new ChromeExtensionEvent(
+                    ChromeExtensionEvent.UPDATE_PULLREQUESTS,
                     pullRequestsList
                 )
             );

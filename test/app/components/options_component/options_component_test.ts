@@ -1,45 +1,38 @@
-///<reference path="../../../../app/_typings.ts"/>
+import {Config} from '../../../../app/services/config';
+import {Notifier} from '../../../../app/services/notifier';
+import * as angular from 'angular';
+import {Howl} from 'howler';
+import {OptionsController} from '../../../../app/components/options_component/options_controller';
+import {PullRequestProgress} from '../../../../app/models/pull_request_progress';
 
 describe('OptionsComponent', () => {
-    var config: BitbucketNotifier.Config,
-        appUser,
-        socketServer,
-        pullRequestProgress,
-        newPullRequestSound,
-        approvedPullRequestSound,
-        mergedPullRequestSound,
-        reminderSound,
-        element: ng.IAugmentedJQuery,
-        $rootScope: ng.IRootScopeService,
-        $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        growl: angular.growl.IGrowlService,
-        notifier: BitbucketNotifier.Notifier;
-
-    beforeEach(() => {
-        window['createjs'] = {
-            Sound: {
-                registerSound: jasmine.createSpy('createjs.Sound.registerSound'),
-                play: jasmine.createSpy('createjs.Sound.play'),
-                removeSound: jasmine.createSpy('createjs.Sound.removeSound'),
-                addEventListener: jasmine.createSpy('createjs.Sound.addEventListener')
-            }
-        };
-    });
+    let config: Config;
+    let appUser;
+    let socketServer;
+    let pullRequestProgress;
+    let newPullRequestSound;
+    let approvedPullRequestSound;
+    let mergedPullRequestSound;
+    let reminderSound;
+    let element: ng.IAugmentedJQuery;
+    let $rootScope: ng.IRootScopeService;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let growl: angular.growl.IGrowlService;
+    let notifier: Notifier;
+    let $componentController: ng.IComponentControllerService;
 
     beforeEach(angular.mock.module('bitbucketNotifier.options'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
-
     beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
             appUser = null;
             socketServer = null;
-            pullRequestProgress = BitbucketNotifier.PullRequestProgress.PROPORTIONS;
-            newPullRequestSound = '../../assets/sounds/notification2.ogg';
-            approvedPullRequestSound = '../../assets/sounds/notification.ogg';
-            mergedPullRequestSound = '../../assets/sounds/notification.ogg';
-            reminderSound = '../../assets/sounds/nuclear_alarm.ogg';
+            pullRequestProgress = PullRequestProgress.PROPORTIONS;
+            newPullRequestSound = 'ring';
+            approvedPullRequestSound = 'bell';
+            mergedPullRequestSound = 'bell';
+            reminderSound = 'alarm';
 
             $provide.value('Config', {
                 getUsername: jasmine.createSpy('Config.getUsername').and.callFake(() => {
@@ -96,13 +89,15 @@ describe('OptionsComponent', () => {
         '$compile',
         'growl',
         'Notifier',
-        (c, $r, $c, g, n) => {
+        '$componentController',
+        (c, $r, $c, g, n, $cc) => {
             config = c;
             $rootScope = $r;
             $scope = $rootScope;
             $compile = $c;
             growl = g;
             notifier = n;
+            $componentController = $cc;
         }
     ]));
 
@@ -110,64 +105,64 @@ describe('OptionsComponent', () => {
         element = $compile('<options></options>')($scope);
         $scope.$digest();
 
-        var userElement = element.find('#app-user');
-        var socketServerElement = element.find('#socket-server-address');
-        var prProgressElement = element.find('input[name="pull-request-progress"]:checked');
+        const userElement = element.find('#app-user');
+        const socketServerElement = element.find('#socket-server-address');
+        const prProgressElement = element.find('input[name="pull-request-progress"]:checked');
 
-        var newPullRequestSoundElement = element.find('select#new-pull-request-sound');
-        var approvedPullRequestSoundElement = element.find('select#approved-pull-request-sound');
-        var mergedPullRequestSoundElement = element.find('select#merged-pull-request-sound');
-        var reminderSoundElement = element.find('select#reminder-sound');
+        const newPullRequestSoundElement = element.find('select#new-pull-request-sound');
+        const approvedPullRequestSoundElement = element.find('select#approved-pull-request-sound');
+        const mergedPullRequestSoundElement = element.find('select#merged-pull-request-sound');
+        const reminderSoundElement = element.find('select#reminder-sound');
 
         expect(userElement.val()).toEqual('');
         expect(socketServerElement.val()).toEqual('');
-        expect(prProgressElement.val()).toEqual(BitbucketNotifier.PullRequestProgress.PROPORTIONS);
-        expect(newPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/notification2.ogg');
-        expect(approvedPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/notification.ogg');
-        expect(mergedPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/notification.ogg');
-        expect(reminderSoundElement.val()).toEqual('string:../../assets/sounds/nuclear_alarm.ogg');
+        expect(prProgressElement.val()).toEqual(PullRequestProgress.PROPORTIONS);
+        expect(newPullRequestSoundElement.val()).toEqual('string:ring');
+        expect(approvedPullRequestSoundElement.val()).toEqual('string:bell');
+        expect(mergedPullRequestSoundElement.val()).toEqual('string:bell');
+        expect(reminderSoundElement.val()).toEqual('string:alarm');
     });
 
     it('should show completed form if config is set', () => {
         appUser = 'john.smith';
         socketServer = 'http://localhost:1234';
-        pullRequestProgress = BitbucketNotifier.PullRequestProgress.PERCENT;
-        newPullRequestSound = '../../assets/sounds/nuclear_alarm.ogg';
-        approvedPullRequestSound = '../../assets/sounds/nuclear_alarm.ogg';
-        mergedPullRequestSound = '../../assets/sounds/nuclear_alarm.ogg';
-        reminderSound = '../../assets/sounds/nuclear_alarm.ogg';
+        pullRequestProgress = PullRequestProgress.PERCENT;
+        newPullRequestSound = 'ring';
+        approvedPullRequestSound = 'bell';
+        mergedPullRequestSound = 'bell';
+        reminderSound = 'alarm';
 
         element = $compile('<options></options>')($scope);
         $scope.$digest();
 
-        var userElement = element.find('#app-user');
-        var socketServerElement = element.find('#socket-server-address');
-        var prProgressElement = element.find('input[name="pull-request-progress"]:checked');
+        const userElement = element.find('#app-user');
+        const socketServerElement = element.find('#socket-server-address');
+        const prProgressElement = element.find('input[name="pull-request-progress"]:checked');
 
-        var newPullRequestSoundElement = element.find('select#new-pull-request-sound');
-        var approvedPullRequestSoundElement = element.find('select#approved-pull-request-sound');
-        var mergedPullRequestSoundElement = element.find('select#merged-pull-request-sound');
-        var reminderSoundElement = element.find('select#reminder-sound');
+        const newPullRequestSoundElement = element.find('select#new-pull-request-sound');
+        const approvedPullRequestSoundElement = element.find('select#approved-pull-request-sound');
+        const mergedPullRequestSoundElement = element.find('select#merged-pull-request-sound');
+        const reminderSoundElement = element.find('select#reminder-sound');
 
         expect(userElement.val()).toEqual(appUser);
         expect(socketServerElement.val()).toEqual(socketServer);
         expect(prProgressElement.val()).toEqual(pullRequestProgress);
-        expect(newPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/nuclear_alarm.ogg');
-        expect(approvedPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/nuclear_alarm.ogg');
-        expect(mergedPullRequestSoundElement.val()).toEqual('string:../../assets/sounds/nuclear_alarm.ogg');
-        expect(reminderSoundElement.val()).toEqual('string:../../assets/sounds/nuclear_alarm.ogg');
+        expect(newPullRequestSoundElement.val()).toEqual('string:ring');
+        expect(approvedPullRequestSoundElement.val()).toEqual('string:bell');
+        expect(mergedPullRequestSoundElement.val()).toEqual('string:bell');
+        expect(reminderSoundElement.val()).toEqual('string:alarm');
     });
 
     it('should save config', () => {
         element = $compile('<options></options>')($scope);
         $scope.$digest();
 
-        var username = 'aaaaa';
-        var address = 'bbbbb';
-        var newPrSound = '../../assets/sounds/nuclear_alarm.ogg';
-        var approvedPrSound = '../../assets/sounds/nuclear_alarm.ogg';
-        var mergedPrSound = '../../assets/sounds/nuclear_alarm.ogg';
-        var remindSound = '../../assets/sounds/notification2.ogg';
+        const username = 'aaaaa';
+        const address = 'bbbbb';
+        const newPrSound = 'alarm';
+        const approvedPrSound = 'alarm';
+        const mergedPrSound = 'alarm';
+        const remindSound = 'bell';
 
         element.find('#app-user').val(username).trigger('input');
         element.find('#socket-server-address').val(address).trigger('input');
@@ -177,12 +172,12 @@ describe('OptionsComponent', () => {
         element.find('select#merged-pull-request-sound').val(`string:${mergedPrSound}`).trigger('change');
         element.find('select#reminder-sound').val(`string:${remindSound}`).trigger('change');
 
-        var saveButton = element.find('#submit');
+        const saveButton = element.find('#submit');
         saveButton.triggerHandler('click');
 
         expect(config.setUsername).toHaveBeenCalledWith(username);
         expect(config.setSocketServerAddress).toHaveBeenCalledWith(address);
-        expect(config.setPullRequestProgress).toHaveBeenCalledWith(BitbucketNotifier.PullRequestProgress.PERCENT);
+        expect(config.setPullRequestProgress).toHaveBeenCalledWith(PullRequestProgress.PERCENT);
         expect(config.setNewPullRequestSound).toHaveBeenCalledWith(newPrSound);
         expect(config.setApprovedPullRequestSound).toHaveBeenCalledWith(approvedPrSound);
         expect(config.setMergedPullRequestSound).toHaveBeenCalledWith(mergedPrSound);
@@ -193,13 +188,13 @@ describe('OptionsComponent', () => {
         element = $compile('<options></options>')($scope);
         $scope.$digest();
 
-        var username = 'aaaaa';
-        var address = 'bbbbb';
+        const username = 'aaaaa';
+        const address = 'bbbbb';
 
         element.find('#app-user').val(username).trigger('input');
         element.find('#socket-server-address').val(address).trigger('input');
 
-        var saveButton = element.find('#submit');
+        const saveButton = element.find('#submit');
         saveButton.triggerHandler('click');
 
         expect(growl.success).toHaveBeenCalled();
@@ -209,27 +204,26 @@ describe('OptionsComponent', () => {
         element = $compile('<options></options>')($scope);
         $scope.$digest();
 
-        var username = 'aaaaa';
-        var address = 'bbbbb';
+        const username = 'aaaaa';
+        const address = 'bbbbb';
 
         element.find('#app-user').val(username).trigger('input');
         element.find('#socket-server-address').val(address).trigger('input');
 
-        var saveButton = element.find('#submit');
+        const saveButton = element.find('#submit');
         saveButton.triggerHandler('click');
 
         expect(growl.warning).toHaveBeenCalled();
     });
 
     it('should play chosen sound', () => {
-        var chosenSoundPath = 'sample_sound_path';
-        $scope['temp_label'] = chosenSoundPath;
-        element = $compile('<options></options>')($scope);
-        $scope.$digest();
+        spyOn(Howl.prototype, 'play').and.stub();
 
-        $scope['playSound'](chosenSoundPath);
+        const chosenSoundId = 'bell';
+        const ctrl = $componentController('options', null) as OptionsController;
+        ctrl.playSound(chosenSoundId);
 
-        expect(createjs.Sound.registerSound).toHaveBeenCalledWith(chosenSoundPath, 'temp_sound');
+        expect(Howl.prototype.play).toHaveBeenCalled();
     });
 
     describe('Notifications', () => {

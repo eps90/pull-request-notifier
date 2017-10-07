@@ -1,32 +1,28 @@
-///<reference path="../_typings.ts"/>
+import {PullRequestNotification} from '../models/pull_request_notification';
+import {NotificationInterface} from '../models/notification_interface';
 
-module BitbucketNotifier {
-    'use strict';
+export class NotificationRepository {
+    private notifications: NotificationInterface[] = [];
 
-    export class NotificationRepository {
-        private notifications: Array<Notification> = [];
+    public add(notificationId: string, pullRequestLink: string): void {
+        const prNotification = new PullRequestNotification();
+        prNotification.notificationId = notificationId;
+        prNotification.pullRequestHtmlLink = pullRequestLink;
 
-        add(notificationId: string, pullRequestLink: string): void {
-            var prNotification = new PullRequestNotification();
-            prNotification.notificationId = notificationId;
-            prNotification.pullRequestHtmlLink = pullRequestLink;
+        this.notifications.push(prNotification);
+    }
 
-            this.notifications.push(prNotification);
-        }
+    public getAll(): NotificationInterface[] {
+        return this.notifications;
+    }
 
-        getAll(): Array<Notification> {
-            return this.notifications;
-        }
-
-        find(notificationId: string): Notification {
-            for (var notifIdx = 0, notifLen = this.notifications.length; notifIdx < notifLen; notifIdx++) {
-                var notification = this.notifications[notifIdx];
-                if (notification.notificationId === notificationId) {
-                    return notification;
-                }
+    public find(notificationId: string): NotificationInterface {
+        for (const notification of this.notifications) {
+            if (notification.notificationId === notificationId) {
+                return notification;
             }
-
-            return new PullRequestNotification();
         }
+
+        return new PullRequestNotification();
     }
 }

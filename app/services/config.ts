@@ -1,84 +1,86 @@
-///<reference path="../_typings.ts"/>
+import {SoundRepository} from './sound_repository';
+import * as _ from 'lodash';
+import {NotificationSound} from '../models/notification_sound';
+import {ConfigObject} from '../models/config_object';
 
-module BitbucketNotifier {
-    'use strict';
+export class Config {
+    public static $inject: string[] = ['localStorageService', 'SoundRepository'];
 
-    export class Config {
-        static $inject: Array<string> = ['localStorageService', 'SoundRepository'];
+    private soundsDefaults: any = {};
 
-        private soundsDefaults: any = {};
+    constructor(
+        private localStorageService: angular.local.storage.ILocalStorageService,
+        soundRepository: SoundRepository
+    ) {
+        this.soundsDefaults[NotificationSound.NEW_PULLREQUEST] = soundRepository.findById('bell').id;
+        this.soundsDefaults[NotificationSound.APPROVED_PULLREQUEST] = soundRepository.findById('ring').id;
+        this.soundsDefaults[NotificationSound.MERGED_PULLREQUEST] = soundRepository.findById('ring').id;
+        this.soundsDefaults[NotificationSound.REMINDER] = soundRepository.findById('alarm').id;
+    }
 
-        constructor(private localStorageService: angular.local.storage.ILocalStorageService, soundRepository: SoundRepository) {
-            this.soundsDefaults[Sound.NEW_PULLREQUEST] = soundRepository.findByLabel('Bell').path;
-            this.soundsDefaults[Sound.APPROVED_PULLREQUEST] = soundRepository.findByLabel('Ring').path;
-            this.soundsDefaults[Sound.MERGED_PULLREQUEST] = soundRepository.findByLabel('Ring').path;
-            this.soundsDefaults[Sound.REMINDER] = soundRepository.findByLabel('Nuclear alarm').path;
-        }
+    // setting up username
+    public getUsername(): any {
+        return this.localStorageService.get(ConfigObject.USER);
+    }
 
-        // setting up username
-        getUsername(): any {
-            return this.localStorageService.get(ConfigObject.USER);
-        }
+    public setUsername(username: string): void {
+        this.localStorageService.set(ConfigObject.USER, username);
+    }
 
-        setUsername(username: string): void {
-            this.localStorageService.set(ConfigObject.USER, username);
-        }
+    // setting up socker server
+    public getSocketServerAddress(): string {
+        const address: string = this.localStorageService.get(ConfigObject.SOCKET_SERVER) as string;
+        const addressWithHttp = _.trimStart(address, 'http://');
+        return 'http://' + addressWithHttp;
+    }
 
-        // setting up socker server
-        getSocketServerAddress(): string {
-            var address: string = <string>this.localStorageService.get(ConfigObject.SOCKET_SERVER);
-            var addressWithHttp = _.trimStart(address, 'http://');
-            return 'http://' + addressWithHttp;
-        }
+    public setSocketServerAddress(socketServerAddress: string): void {
+        this.localStorageService.set(ConfigObject.SOCKET_SERVER, socketServerAddress);
+    }
 
-        setSocketServerAddress(socketServerAddress: string): void {
-            this.localStorageService.set(ConfigObject.SOCKET_SERVER, socketServerAddress);
-        }
+    // setting up pull request progress
+    public getPullRequestProgress(): string {
+        return this.localStorageService.get<string>(ConfigObject.PULLREQUEST_PROGRESS) || 'proportions';
+    }
 
-        // setting up pull request progress
-        getPullRequestProgress(): string {
-            return this.localStorageService.get<string>(ConfigObject.PULLREQUEST_PROGRESS) || 'proportions';
-        }
+    public setPullRequestProgress(option: string): void {
+        this.localStorageService.set(ConfigObject.PULLREQUEST_PROGRESS, option);
+    }
 
-        setPullRequestProgress(option: string): void {
-            this.localStorageService.set(ConfigObject.PULLREQUEST_PROGRESS, option);
-        }
+    // setting up sounds
+    public setNewPullRequestSound(soundId: string): void {
+        this.localStorageService.set(NotificationSound.NEW_PULLREQUEST, soundId);
+    }
 
-        // setting up sounds
-        setNewPullRequestSound(soundPath: string): void {
-            this.localStorageService.set(Sound.NEW_PULLREQUEST, soundPath);
-        }
+    public getNewPullRequestSound(): string {
+        return this.getSound(NotificationSound.NEW_PULLREQUEST);
+    }
 
-        getNewPullRequestSound(): string {
-            return this.getSound(Sound.NEW_PULLREQUEST);
-        }
+    public setApprovedPullRequestSound(soundId: string): void {
+        this.localStorageService.set(NotificationSound.APPROVED_PULLREQUEST, soundId);
+    }
 
-        setApprovedPullRequestSound(soundPath: string): void {
-            this.localStorageService.set(Sound.APPROVED_PULLREQUEST, soundPath);
-        }
+    public getApprovedPullRequestSound(): string {
+        return this.getSound(NotificationSound.APPROVED_PULLREQUEST);
+    }
 
-        getApprovedPullRequestSound(): string {
-            return this.getSound(Sound.APPROVED_PULLREQUEST);
-        }
+    public setMergedPullRequestSound(soundId: string): void {
+        this.localStorageService.set(NotificationSound.MERGED_PULLREQUEST, soundId);
+    }
 
-        setMergedPullRequestSound(soundPath: string): void {
-            this.localStorageService.set(Sound.MERGED_PULLREQUEST, soundPath);
-        }
+    public getMergedPullRequestSound(): string {
+        return this.getSound(NotificationSound.MERGED_PULLREQUEST);
+    }
 
-        getMergedPullRequestSound(): string {
-            return this.getSound(Sound.MERGED_PULLREQUEST);
-        }
+    public setReminderSound(soundId: string): void {
+        this.localStorageService.set(NotificationSound.REMINDER, soundId);
+    }
 
-        setReminderSound(soundPath: string): void {
-            this.localStorageService.set(Sound.REMINDER, soundPath);
-        }
+    public getReminderSound(): string {
+        return this.getSound(NotificationSound.REMINDER);
+    }
 
-        getReminderSound(): string {
-            return this.getSound(Sound.REMINDER);
-        }
-
-        private getSound(soundId: string): string {
-            return <string> this.localStorageService.get(soundId) || this.soundsDefaults[soundId] || null;
-        }
+    private getSound(soundId: string): string {
+        return this.localStorageService.get(soundId) as string || this.soundsDefaults[soundId] || null;
     }
 }

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-12">
             <section-title icon="code">
-                <span ng-bind-html="pr.title | emoji"></span>
+                <span ng-bind-html="$ctrl.pr.title | emoji"></span>
             </section-title>
         </div>
         <div class="col-sm-8">
@@ -10,22 +10,22 @@
                 <p class="section-label">
                     Title:
                 </p>
-                <span class="full-title" ng-bind-html="pr.title | emoji"></span>
+                <span class="full-title" ng-bind-html="$ctrl.pr.title | emoji"></span>
             </section>
 
             <section class="branch-info">
                 <p class="section-label">
                     Target branch:
                 </p>
-                <span class="target-branch"><i class="fa fa-code-fork"></i> {{ pr.targetBranch }}</span>
+                <span class="target-branch"><i class="fa fa-code-fork"></i> {{ $ctrl.pr.targetBranch }}</span>
             </section>
 
             <section class="description">
                 <p class="section-label">
                     Description:
                 </p>
-                <div class="content" ng-if="pr.description" btf-markdown="pr.description | emoji"></div>
-                <div class="no-content" ng-if="!pr.description">
+                <div class="content" ng-if="$ctrl.pr.description" markdown-to-html="$ctrl.pr.description | emoji"></div>
+                <div class="no-content" ng-if="!$ctrl.pr.description">
                     No description
                 </div>
             </section>
@@ -35,16 +35,16 @@
                 <p class="section-label">
                     Author:
                 </p>
-                <span class="author-name">{{ pr.author.displayName }}</span>
+                <span class="author-name">{{ $ctrl.pr.author.displayName }}</span>
             </section>
             <section class="reviewers">
                 <p class="section-label">
                     Reviewers:
                 </p>
-                <div class="reviewers-list" ng-if="pr.reviewers.length">
-                    <reviewer r="reviewer" ng-repeat="reviewer in pr.reviewers | unapprovedFirst"></reviewer>
+                <div class="reviewers-list" ng-if="$ctrl.pr.reviewers.length">
+                    <reviewer r="reviewer" ng-repeat="reviewer in $ctrl.pr.reviewers | unapprovedFirst"></reviewer>
                 </div>
-                <div class="alert alert-warning" ng-if="!pr.reviewers.length">
+                <div class="alert alert-warning" ng-if="!$ctrl.pr.reviewers.length">
                     <i class="fa fa-exclamation-circle"></i> No reviewers assigned
                 </div>
             </section>
@@ -54,7 +54,7 @@
         <div class="col-sm-12">
             <section class="actions">
                 <pull-request-link pr="pr" size="lg"></pull-request-link>
-                <reminder pull-request="pr" size="lg" ng-if="!pr.isMergeReady()"></reminder>
+                <reminder pull-request="pr" size="lg" ng-if="!$ctrl.pr.isMergeReady()"></reminder>
             </section>
         </div>
     </div>

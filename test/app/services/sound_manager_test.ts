@@ -1,37 +1,47 @@
-///<reference path="../../../app/_typings.ts"/>
+import {SoundManager} from '../../../app/services/sound_manager';
+import {Config} from '../../../app/services/config';
+import {SoundRepository} from '../../../app/services/sound_repository';
+import * as angular from 'angular';
+import {NotificationSound} from '../../../app/models/notification_sound';
+import {Sound} from '../../../app/models/sound';
+import {HowlSoundFactory} from '../../../app/services/factory/howl_sound_factory';
 
 describe('SoundManager', () => {
-    var soundManager: BitbucketNotifier.SoundManager,
-        config: BitbucketNotifier.Config;
+    let soundManager: SoundManager;
+    let soundRepository: SoundRepository;
+    let config: Config;
+    let sounds;
 
     beforeEach(() => {
-        window['createjs'] = {
-            Sound: {
-                registerSound: jasmine.createSpy('createjs.Sound.registerSound'),
-                play: jasmine.createSpy('createjs.Sound.play')
-            }
-        };
+        sounds = {};
+        const counter = 0;
+        spyOn(HowlSoundFactory, 'createSound').and.callFake((soundPath) => {
+            sounds[soundPath] = jasmine.createSpyObj(`Howl#${counter}`, ['play']);
+            return sounds[soundPath];
+        });
     });
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
-            function getFakeSoundPath(soundKey): string {
-                return 'sound__' + soundKey + '.ogg';
-            }
-
             $provide.value('Config', {
-                'getNewPullRequestSound': jasmine.createSpy('Config.getNewPullRequest').and.callFake(() => {
-                    return getFakeSoundPath(BitbucketNotifier.Sound.NEW_PULLREQUEST);
+                getNewPullRequestSound: jasmine.createSpy('Config.getNewPullRequest').and.callFake(() => {
+                    return getFakeSoundId(NotificationSound.NEW_PULLREQUEST);
                 }),
-                'getApprovedPullRequestSound': jasmine.createSpy('Config.getApprovedPullRequest').and.callFake(() => {
-                    return getFakeSoundPath(BitbucketNotifier.Sound.APPROVED_PULLREQUEST);
+                getApprovedPullRequestSound: jasmine.createSpy('Config.getApprovedPullRequest').and.callFake(() => {
+                    return getFakeSoundId(NotificationSound.APPROVED_PULLREQUEST);
                 }),
-                'getMergedPullRequestSound': jasmine.createSpy('Config.getMergedPullRequest').and.callFake(() => {
-                    return getFakeSoundPath(BitbucketNotifier.Sound.MERGED_PULLREQUEST);
+                getMergedPullRequestSound: jasmine.createSpy('Config.getMergedPullRequest').and.callFake(() => {
+                    return getFakeSoundId(NotificationSound.MERGED_PULLREQUEST);
                 }),
-                'getReminderSound': jasmine.createSpy('Config.getReminder').and.callFake(() => {
-                    return getFakeSoundPath(BitbucketNotifier.Sound.REMINDER);
+                getReminderSound: jasmine.createSpy('Config.getReminder').and.callFake(() => {
+                    return getFakeSoundId(NotificationSound.REMINDER);
+                })
+            });
+
+            $provide.value('SoundRepository', {
+                findById: jasmine.createSpy('SoundRepository.findById').and.callFake((soundId: string) => {
+                    return new Sound(soundId, getFakeSoundPath(soundId), 'Fake label');
                 })
             });
         }
@@ -39,45 +49,66 @@ describe('SoundManager', () => {
     beforeEach(inject([
         'SoundManager',
         'Config',
-        (sm, c) => {
+        'SoundRepository',
+        (sm, c, sr) => {
             soundManager = sm;
             config = c;
+            soundRepository = sr;
         }
     ]));
 
     it('it should register sounds from config on startup', () => {
-        var calls = 0;
+        let calls = 0;
         function testSoundRegistration(soundKey): void {
-            var spy = <jasmine.Spy> createjs.Sound.registerSound;
-            expect(spy.calls.argsFor(calls++)).toEqual(['sound__' + soundKey + '.ogg', soundKey]);
+            expect((HowlSoundFactory.createSound as jasmine.Spy).calls.argsFor(calls++))
+                .toEqual(['sound__' + soundKey + '.mp3']);
         }
 
         /* tslint:disable */
-        var soundManagerInstance = new BitbucketNotifier.SoundManager(config);
+        new SoundManager(config, soundRepository);
         /* tslint:enable */
-        testSoundRegistration(BitbucketNotifier.Sound.NEW_PULLREQUEST);
-        testSoundRegistration(BitbucketNotifier.Sound.APPROVED_PULLREQUEST);
-        testSoundRegistration(BitbucketNotifier.Sound.MERGED_PULLREQUEST);
-        testSoundRegistration(BitbucketNotifier.Sound.REMINDER);
+
+        testSoundRegistration(NotificationSound.NEW_PULLREQUEST);
+        testSoundRegistration(NotificationSound.APPROVED_PULLREQUEST);
+        testSoundRegistration(NotificationSound.MERGED_PULLREQUEST);
+        testSoundRegistration(NotificationSound.REMINDER);
     });
 
-    it('should be able to play a new pull request sound', () => {
-        soundManager.playNewPullRequestSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(BitbucketNotifier.Sound.NEW_PULLREQUEST);
+    describe('Sound playing', () => {
+        it('should be able to play a new pull request sound', () => {
+            soundManager.playNewPullRequestSound();
+
+            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.NEW_PULLREQUEST));
+            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+        });
+
+        it('should be able to play an approved pull request sound', () => {
+            soundManager.playApprovedPullRequestSound();
+
+            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.APPROVED_PULLREQUEST));
+            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+        });
+
+        it('should be able to play a merged pull request sound', () => {
+            soundManager.playMergedPullRequestSound();
+
+            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.MERGED_PULLREQUEST));
+            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+        });
+
+        it('should be able to play a reminder sound', () => {
+            soundManager.playReminderSound();
+
+            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.REMINDER));
+            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+        });
     });
 
-    it('should be able to play an approved pull request sound', () => {
-        soundManager.playApprovedPullRequestSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(BitbucketNotifier.Sound.APPROVED_PULLREQUEST);
-    });
+    function getFakeSoundId(soundKey): string {
+        return `sound__${soundKey}`;
+    }
 
-    it('should be able to play a merged pull request sound', () => {
-        soundManager.playMergedPullRequestSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(BitbucketNotifier.Sound.MERGED_PULLREQUEST);
-    });
-
-    it('should be able to play a reminder sound', () => {
-        soundManager.playReminderSound();
-        expect(createjs.Sound.play).toHaveBeenCalledWith(BitbucketNotifier.Sound.REMINDER);
-    });
+    function getFakeSoundPath(soundKey): string {
+        return `${soundKey}.mp3`;
+    }
 });

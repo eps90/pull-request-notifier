@@ -1,33 +1,52 @@
-///<reference path="../_typings.ts"/>
+import {Config} from './config';
+import {SoundRepository} from './sound_repository';
+import {NotificationSound} from '../models/notification_sound';
+import {Sound} from '../models/sound';
+import {HowlSoundFactory} from './factory/howl_sound_factory';
 
-module BitbucketNotifier {
-    'use strict';
+export class SoundManager {
 
-    export class SoundManager {
+    public static $inject: string[] = ['Config', 'SoundRepository'];
 
-        static $inject: string[] = ['Config'];
+    private sounds: {[key: string]: Howl};
 
-        constructor(private config: Config) {
-            createjs.Sound.registerSound(config.getNewPullRequestSound(), Sound.NEW_PULLREQUEST);
-            createjs.Sound.registerSound(config.getApprovedPullRequestSound(), Sound.APPROVED_PULLREQUEST);
-            createjs.Sound.registerSound(config.getMergedPullRequestSound(), Sound.MERGED_PULLREQUEST);
-            createjs.Sound.registerSound(config.getReminderSound(), Sound.REMINDER);
-        }
+    constructor(private config: Config, private soundRepository: SoundRepository) {
+        this.sounds = {};
+        this.addHowlSound(
+            NotificationSound.NEW_PULLREQUEST,
+            soundRepository.findById(config.getNewPullRequestSound())
+        );
+        this.addHowlSound(
+            NotificationSound.APPROVED_PULLREQUEST,
+            soundRepository.findById(config.getApprovedPullRequestSound())
+        );
+        this.addHowlSound(
+            NotificationSound.MERGED_PULLREQUEST,
+            soundRepository.findById(config.getMergedPullRequestSound())
+        );
+        this.addHowlSound(
+            NotificationSound.REMINDER,
+            soundRepository.findById(config.getReminderSound())
+        );
+    }
 
-        playNewPullRequestSound(): void {
-            createjs.Sound.play(Sound.NEW_PULLREQUEST);
-        }
+    public playNewPullRequestSound(): void {
+        this.sounds[NotificationSound.NEW_PULLREQUEST].play();
+    }
 
-        playApprovedPullRequestSound(): void {
-            createjs.Sound.play(Sound.APPROVED_PULLREQUEST);
-        }
+    public playApprovedPullRequestSound(): void {
+        this.sounds[NotificationSound.APPROVED_PULLREQUEST].play();
+    }
 
-        playMergedPullRequestSound(): void {
-            createjs.Sound.play(Sound.MERGED_PULLREQUEST);
-        }
+    public playMergedPullRequestSound(): void {
+        this.sounds[NotificationSound.MERGED_PULLREQUEST].play();
+    }
 
-        playReminderSound(): void {
-            createjs.Sound.play(Sound.REMINDER);
-        }
+    public playReminderSound(): void {
+        this.sounds[NotificationSound.REMINDER].play();
+    }
+
+    private addHowlSound(soundType: string, sound: Sound): void {
+        this.sounds[soundType] = HowlSoundFactory.createSound(sound.soundPath);
     }
 }

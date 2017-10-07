@@ -1,17 +1,24 @@
-///<reference path="../../../app/_typings.ts"/>
+import {Notifier} from '../../../app/services/notifier';
+import {SoundManager} from '../../../app/services/sound_manager';
+import {NotificationRepository} from '../../../app/services/notification_repository';
+import * as angular from 'angular';
+import {NotificationIcon} from '../../../app/models/notification_icon';
+import {PullRequestNotification} from '../../../app/models/pull_request_notification';
+import {User} from '../../../app/models/user';
+import {PullRequest} from '../../../app/models/pull_request';
 
 describe('Notifier', () => {
-    var notifier: BitbucketNotifier.Notifier,
-        expectedOptions,
-        soundManager: BitbucketNotifier.SoundManager,
-        notificationRepostory: BitbucketNotifier.NotificationRepository,
-        notificationStub: BitbucketNotifier.PullRequestNotification,
-        onClickedStub;
+    let notifier: Notifier;
+    let expectedOptions;
+    let soundManager: SoundManager;
+    let notificationRepostory: NotificationRepository;
+    let notificationStub: PullRequestNotification;
+    let onClickedStub;
 
     beforeEach(() => {
         expectedOptions = {
             type: 'basic',
-            iconUrl: '../../assets/img/bitbucket_logo_raw.png',
+            iconUrl: NotificationIcon.DEFAULT,
             title: '',
             message: '',
             contextMessage: '',
@@ -29,6 +36,9 @@ describe('Notifier', () => {
                     addListener: jasmine.createSpy('chrome.notifications.onClicked.addListener').and.callFake((fn) => {
                         onClickedStub = fn;
                     })
+                },
+                onClosed: {
+                    addListener: jasmine.createSpy('chrome.notifications.onClosed.addListener')
                 }
             },
             tabs: {
@@ -67,17 +77,17 @@ describe('Notifier', () => {
 
     it('should create notificaion via Chrome API', () => {
         expectedOptions.title = 'Test title';
-        var notificationId = 'aaabbbb';
-        var notificationLink = 'http://example.com';
+        const notificationId = 'aaabbbb';
+        const notificationLink = 'http://example.com';
         notifier.notify(expectedOptions, notificationId, notificationLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(notificationId, expectedOptions);
         expect(notificationRepostory.add).toHaveBeenCalledWith(notificationId, notificationLink);
     });
 
     it('should open new tab with pull request on click and close the notification', () => {
-        var notification = new BitbucketNotifier.PullRequestNotification();
-        var notificationId = 'abcd123';
-        var pullRequestHtmlLink = 'http://example.com';
+        const notification = new PullRequestNotification();
+        const notificationId = 'abcd123';
+        const pullRequestHtmlLink = 'http://example.com';
         notification.notificationId = notificationId;
         notification.pullRequestHtmlLink = pullRequestHtmlLink;
 
@@ -89,99 +99,99 @@ describe('Notifier', () => {
     });
 
     it('should notify about new pull request', () => {
-        var author = new BitbucketNotifier.User();
+        const author = new User();
         author.displayName = 'John Smith';
 
-        var pullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
         pullRequest.author = author;
 
         expectedOptions.title = 'New pull request assigned to you!';
         expectedOptions.message = pullRequest.title;
         expectedOptions.contextMessage = 'by John Smith';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_new.png';
+        expectedOptions.iconUrl = NotificationIcon.NEW_PULL_REQUEST;
 
         notifier.notifyNewPullRequestAssigned(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
     it('should notify about merged pull request', () => {
-        var author = new BitbucketNotifier.User();
+        const author = new User();
         author.displayName = 'John Smith';
 
-        var pullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
         pullRequest.author = author;
 
         expectedOptions.title = 'Your pull request has been merged';
         expectedOptions.message = pullRequest.title;
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_merged.png';
+        expectedOptions.iconUrl = NotificationIcon.MERGED_PULL_REQUEST;
 
         notifier.notifyPullRequestMerged(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
     it('should notify about approvals', () => {
-        var mergingUser = new BitbucketNotifier.User();
+        const mergingUser = new User();
         mergingUser.displayName = 'John Smith';
 
-        var pullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
         expectedOptions.title = 'Your pull request has been approved';
         expectedOptions.message = pullRequest.title;
         expectedOptions.contextMessage = 'by John Smith';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_approved.png';
+        expectedOptions.iconUrl = NotificationIcon.APPROVED_PULL_REQUEST;
 
         notifier.notifyPullRequestApproved(pullRequest, mergingUser);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
     it('should notify on reminders', () => {
-        var pullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
         expectedOptions.title = 'Someone reminds you to review a pull request';
         expectedOptions.message = pullRequest.title;
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_reminder.png';
+        expectedOptions.iconUrl = NotificationIcon.PULL_REQUEST_REMINDER;
 
         notifier.notifyReminder(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
     it('should filter out emojis from title', () => {
-        var pullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = ':name_badge: This is some title';
         pullRequest.author.displayName = 'John Smith';
 
         expectedOptions.title = 'New pull request assigned to you!';
         expectedOptions.message = 'This is some title';
         expectedOptions.contextMessage = 'by John Smith';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_new.png';
+        expectedOptions.iconUrl = NotificationIcon.NEW_PULL_REQUEST;
 
         notifier.notifyNewPullRequestAssigned(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
     it('should notify about pull request update', () => {
-        const pullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
         pullRequest.author.displayName = 'John Kowalsky';
 
         expectedOptions.title = 'Pull request has been updated';
         expectedOptions.message = 'This is some title';
         expectedOptions.contextMessage = 'by John Kowalsky';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_updated.png';
+        expectedOptions.iconUrl = NotificationIcon.UPDATED_PULL_REQUEST;
 
         notifier.notifyPullRequestUpdated(pullRequest);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
     it('should notify about new comment', () => {
-        const pullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
-        const commentingUser = new BitbucketNotifier.User();
+        const commentingUser = new User();
         commentingUser.displayName = 'John Smith';
 
         const commentLink = 'http://example.com';
@@ -189,17 +199,17 @@ describe('Notifier', () => {
         expectedOptions.title = 'New comment on your pull request!';
         expectedOptions.message = 'This is some title';
         expectedOptions.contextMessage = 'by John Smith';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_new_comment.png';
+        expectedOptions.iconUrl = NotificationIcon.NEW_COMMENT_ON_PULL_REQUEST;
 
         notifier.notifyNewCommentAdded(pullRequest, commentingUser, commentLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
     });
 
     it('should notify about new reply for a comment', () => {
-        const pullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest = new PullRequest();
         pullRequest.title = 'This is some title';
 
-        const replyingUser = new BitbucketNotifier.User();
+        const replyingUser = new User();
         replyingUser.displayName = 'John Smith';
 
         const commentLink = 'http://example.com';
@@ -207,7 +217,7 @@ describe('Notifier', () => {
         expectedOptions.title = 'New reply for your comment';
         expectedOptions.message = 'This is some title';
         expectedOptions.contextMessage = 'by John Smith';
-        expectedOptions.iconUrl = '../../assets/img/bitbucket_new_reply.png';
+        expectedOptions.iconUrl = NotificationIcon.NEW_REPLY_ON_PULL_REQUEST;
 
         notifier.notifyNewReplyOnComment(pullRequest, replyingUser, commentLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(jasmine.anything(), expectedOptions);
@@ -215,25 +225,25 @@ describe('Notifier', () => {
 
     describe('with sounds', () => {
         it('should play a notification sound for new pull request notification', () => {
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            const pullRequest = new PullRequest();
             notifier.notifyNewPullRequestAssigned(pullRequest);
             expect(soundManager.playNewPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for approved pull request notification', () => {
-            var pullRequest = new BitbucketNotifier.PullRequest();
-            notifier.notifyPullRequestApproved(pullRequest, new BitbucketNotifier.User());
+            const pullRequest = new PullRequest();
+            notifier.notifyPullRequestApproved(pullRequest, new User());
             expect(soundManager.playApprovedPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for merged pull request notification', () => {
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            const pullRequest = new PullRequest();
             notifier.notifyPullRequestMerged(pullRequest);
             expect(soundManager.playMergedPullRequestSound).toHaveBeenCalled();
         });
 
         it('should play a notification sound for reminder notification', () => {
-            var pullRequest = new BitbucketNotifier.PullRequest();
+            const pullRequest = new PullRequest();
             notifier.notifyReminder(pullRequest);
             expect(soundManager.playReminderSound).toHaveBeenCalled();
         });

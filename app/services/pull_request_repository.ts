@@ -1,80 +1,79 @@
-///<reference path="../_typings.ts"/>
+// @todo Move event handling to some "Chrome events handler/emitter"
+import * as _ from 'lodash';
+import {PullRequest} from '../models/pull_request';
+import {ChromeExtensionEvent} from '../models/event/chrome_extension_event';
+import {PullRequestFactory} from './factory/pull_request_factory';
 
-module BitbucketNotifier {
-    'use strict';
+export class PullRequestRepository {
+    public pullRequests: PullRequest[] = [];
 
-    // @todo Move event handling to some "Chrome events handler/emitter"
-    export class PullRequestRepository {
-        static $inject: Array<string> = ['$rootScope'];
+    public static $inject: string[] = ['$rootScope'];
 
-        pullRequests: Array<PullRequest> = [];
+    constructor(private $rootScope: ng.IRootScopeService) {
+        window['chrome'].extension.onConnect.addListener((chromePort) => {
+            chromePort.postMessage(
+                new ChromeExtensionEvent(ChromeExtensionEvent.UPDATE_PULLREQUESTS, this.pullRequests)
+            );
+        });
 
-        constructor(private $rootScope: ng.IRootScopeService) {
-            window['chrome'].extension.onConnect.addListener((port) => {
-                port.postMessage(new ChromeExtensionEvent(ChromeExtensionEvent.UPDATE_PULLREQUESTS, this.pullRequests));
+        const port = window['chrome'].extension.connect({name: 'Bitbucket Notifier'});
+        port.onMessage.addListener((message: ChromeExtensionEvent) => {
+            this.$rootScope.$apply(() => {
+                this.pullRequests = PullRequestFactory.createFromArray(message.content);
             });
+        });
 
-            var port = window['chrome'].extension.connect({name: "Bitbucket Notifier"});
-            port.onMessage.addListener((message: ChromeExtensionEvent) => {
-                this.$rootScope.$apply(() => {
+        window['chrome'].extension.onMessage.addListener((message: ChromeExtensionEvent) => {
+            if (message.type === ChromeExtensionEvent.UPDATE_PULLREQUESTS && !ChromeExtensionEvent.isBackground()) {
+                $rootScope.$apply(() => {
                     this.pullRequests = PullRequestFactory.createFromArray(message.content);
                 });
-            });
+            }
+        });
+    }
 
-            window['chrome'].extension.onMessage.addListener((message: ChromeExtensionEvent) => {
-                if (message.type === ChromeExtensionEvent.UPDATE_PULLREQUESTS && !ChromeExtensionEvent.isBackground()) {
-                    $rootScope.$apply(() => {
-                        this.pullRequests = PullRequestFactory.createFromArray(message.content);
-                    });
-                }
-            });
-        }
+    public setPullRequests(pullRequests: PullRequest[]): void {
+        this.pullRequests = pullRequests;
+        window['chrome'].extension.sendMessage(
+            new ChromeExtensionEvent(
+                ChromeExtensionEvent.UPDATE_PULLREQUESTS,
+                this.pullRequests
+            )
+        );
+    }
 
-        setPullRequests(pullRequests: Array<PullRequest>): void {
-            this.pullRequests = pullRequests;
-            window['chrome'].extension.sendMessage(
-                new ChromeExtensionEvent(
-                    ChromeExtensionEvent.UPDATE_PULLREQUESTS,
-                    this.pullRequests
-                )
-            );
-        }
+    public hasAssignmentChanged(newPullRequest: PullRequest): boolean {
+        for (const pullRequest of this.pullRequests) {
+            if (pullRequest.equals(newPullRequest)) {
+                if (newPullRequest.reviewers.length !== pullRequest.reviewers.length) {
+                    return true;
+                } else {
+                    const usersDiff = _.difference(
+                        newPullRequest.getReviewersList(),
+                        pullRequest.getReviewersList()
+                    );
 
-        hasAssignmentChanged(newPullRequest: PullRequest): boolean {
-            for (var prIdx = 0, prLen = this.pullRequests.length; prIdx < prLen; prIdx++) {
-                var pullRequest = this.pullRequests[prIdx];
-                if (pullRequest.equals(newPullRequest)) {
-                    if (newPullRequest.reviewers.length !== pullRequest.reviewers.length) {
+                    if (usersDiff.length > 0) {
                         return true;
-                    } else {
-                        var usersDiff = _.difference(
-                            newPullRequest.getReviewersList(),
-                            pullRequest.getReviewersList()
-                        );
-
-                        if (usersDiff.length > 0) {
-                            return true;
-                        }
                     }
                 }
             }
-
-            return false;
         }
 
-        find(repositoryName: string, pullRequestId: number): PullRequest {
-            for (let prIdx = 0, len = this.pullRequests.length; prIdx < len; prIdx++) {
-                var pullRequest = this.pullRequests[prIdx];
-                if (pullRequest.id === pullRequestId && pullRequest.targetRepository.fullName === repositoryName) {
-                    return pullRequest;
-                }
+        return false;
+    }
+
+    public find(repositoryName: string, pullRequestId: number): PullRequest {
+        for (const pullRequest of this.pullRequests) {
+            if (pullRequest.id === pullRequestId && pullRequest.targetRepository.fullName === repositoryName) {
+                return pullRequest;
             }
-
-            return null;
         }
 
-        exists(pullRequest: PullRequest): boolean {
-            return this.find(pullRequest.targetRepository.fullName, pullRequest.id) !== null;
-        }
+        return null;
+    }
+
+    public exists(pullRequest: PullRequest): boolean {
+        return this.find(pullRequest.targetRepository.fullName, pullRequest.id) !== null;
     }
 }

@@ -1,13 +1,14 @@
-///<reference path="../../../../app/_typings.ts"/>
+import {Config} from '../../../../app/services/config';
+import * as angular from 'angular';
+import {User} from '../../../../app/models/user';
+import {Reviewer} from '../../../../app/models/reviewer';
 
 describe('UserVoteComponent', () => {
-    var $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        config: BitbucketNotifier.Config;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let config: Config;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
-
     beforeEach(angular.mock.module([
         '$provide', ($provide: ng.auto.IProvideService) => {
             $provide.value('Config', {
@@ -30,16 +31,16 @@ describe('UserVoteComponent', () => {
     ]));
 
     it('should set awaiting icon if user has not voted yet', () => {
-        var loggedInUser: BitbucketNotifier.User = new BitbucketNotifier.User();
+        const loggedInUser: User = new User();
         loggedInUser.username = 'john.smith';
 
-        var loggedInReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        const loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = false;
 
         $scope['reviewers'] = [loggedInReviewer];
 
-        var element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
+        const element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
         $scope.$digest();
 
         expect(element.find('.pr-icon').length).toEqual(1);
@@ -48,16 +49,16 @@ describe('UserVoteComponent', () => {
     });
 
     it('should set approved icon if user has approved a pull request', () => {
-        var loggedInUser: BitbucketNotifier.User = new BitbucketNotifier.User();
+        const loggedInUser: User = new User();
         loggedInUser.username = 'john.smith';
 
-        var loggedInReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
+        const loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
         loggedInReviewer.approved = true;
 
         $scope['reviewers'] = [loggedInReviewer];
 
-        var element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
+        const element = $compile('<user-vote reviewers="reviewers"></user-vote>')($scope);
         $scope.$digest();
 
         expect(element.find('.pr-icon').length).toEqual(1);

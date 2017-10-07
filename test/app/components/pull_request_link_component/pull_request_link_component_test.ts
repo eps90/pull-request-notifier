@@ -1,13 +1,13 @@
-///<reference path="../../../../app/_typings.ts"/>
+import * as angular from 'angular';
+import {PullRequest} from '../../../../app/models/pull_request';
 
 describe('PullRequestLinkComponent', () => {
-    var $scope: ng.IScope,
-        $compile: ng.ICompileService,
-        element: ng.IAugmentedJQuery,
-        newTabObj;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
+    let element: ng.IAugmentedJQuery;
+    let newTabObj;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
     beforeEach(() => {
         window['chrome'] = {
             tabs: {
@@ -28,7 +28,7 @@ describe('PullRequestLinkComponent', () => {
     ]));
 
     it('should display external link icon', () => {
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequest: PullRequest = new PullRequest();
         pullRequest.links.html = 'http://example.com';
 
         $scope['pullRequest'] = pullRequest;
@@ -36,13 +36,13 @@ describe('PullRequestLinkComponent', () => {
         element = $compile('<pull-request-link pr="pullRequest"></pull-request-link>')($scope);
         $scope.$digest();
 
-        var linkElement = element.find('i.external-link-icon');
+        const linkElement = element.find('i.external-link-icon');
         expect(linkElement.hasClass('fa-external-link')).toBeTruthy();
     });
 
     it('should open new tab with given pull request', () => {
-        var pullRequestLink = 'http://example.com';
-        var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+        const pullRequestLink = 'http://example.com';
+        const pullRequest: PullRequest = new PullRequest();
         pullRequest.links.html = pullRequestLink;
 
         $scope['pullRequest'] = pullRequest;
@@ -50,8 +50,8 @@ describe('PullRequestLinkComponent', () => {
         element = $compile('<pull-request-link pr="pullRequest"></pull-request-link>')($scope);
         $scope.$digest();
 
-        var linkElement = element.find('a');
-        var handler = <JQueryEventObject>{type: 'click', which: 1};
+        const linkElement = element.find('a');
+        const handler = {type: 'click', which: 1} as JQueryEventObject;
         linkElement.triggerHandler(handler);
 
         expect(window['chrome'].tabs.create).toHaveBeenCalled();
@@ -60,8 +60,8 @@ describe('PullRequestLinkComponent', () => {
 
     describe('with large size', () => {
         it('should be able to render large button', () => {
-            var pullRequestLink = 'http://example.com';
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            const pullRequestLink = 'http://example.com';
+            const pullRequest: PullRequest = new PullRequest();
             pullRequest.links.html = pullRequestLink;
 
             $scope['pullRequest'] = pullRequest;
@@ -69,14 +69,13 @@ describe('PullRequestLinkComponent', () => {
             element = $compile('<pull-request-link  size="lg" pr="pullRequest"></pull-request-link>')($scope);
             $scope.$digest();
 
-
             expect(element.find('.pull-request-link-button').length).toEqual(1);
             expect(element.find('.pull-request-link').length).toEqual(0);
         });
 
         it('should open new tab with given pull request', () => {
-            var pullRequestLink = 'http://example.com';
-            var pullRequest: BitbucketNotifier.PullRequest = new BitbucketNotifier.PullRequest();
+            const pullRequestLink = 'http://example.com';
+            const pullRequest: PullRequest = new PullRequest();
             pullRequest.links.html = pullRequestLink;
 
             $scope['pullRequest'] = pullRequest;
@@ -84,8 +83,8 @@ describe('PullRequestLinkComponent', () => {
             element = $compile('<pull-request-link size="lg" pr="pullRequest"></pull-request-link>')($scope);
             $scope.$digest();
 
-            var linkElement = element.find('a');
-            var handler = <JQueryEventObject>{type: 'click', which: 1};
+            const linkElement = element.find('a');
+            const handler = {type: 'click', which: 1} as JQueryEventObject;
             linkElement.triggerHandler(handler);
 
             expect(window['chrome'].tabs.create).toHaveBeenCalled();

@@ -1,9 +1,11 @@
-///<reference path="../../../app/_typings.ts"/>
+import {SocketManager} from '../../../app/services/socket_manager';
+import * as angular from 'angular';
+import {SocketClientEvent} from '../../../app/models/event/socket_client_event';
 
 describe('SocketManager', () => {
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
-    var socketManager: BitbucketNotifier.SocketManager,
-        secondSocketManager: BitbucketNotifier.SocketClientEvent;
+    let socketManager: SocketManager;
+    let secondSocketManager: SocketClientEvent;
 
     beforeEach(inject([
         'SocketManager',

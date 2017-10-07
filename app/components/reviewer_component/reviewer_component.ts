@@ -1,17 +1,9 @@
-/// <reference path="../../_typings.ts" />
+import componentTemplate from './reviewer_component.html';
+import './reviewer_component.less';
 
-module BitbucketNotifier {
-    'use strict';
-
-    export class ReviewerComponent implements ng.IDirective {
-        restrict: string = 'E';
-        scope: any = {
-            reviewer: '=r'
-        };
-        templateUrl: string = '../components/reviewer_component/reviewer_component.html';
-
-        static factory(): ng.IDirectiveFactory {
-            return () => new ReviewerComponent();
-        }
-    }
+export class ReviewerComponent implements ng.IComponentOptions {
+    public bindings: any = {
+        reviewer: '=r'
+    };
+    public template: string = componentTemplate;
 }

@@ -1,7 +1,9 @@
-///<reference path="../../../app/_typings.ts"/>
+import {SoundRepository} from '../../../app/services/sound_repository';
+import * as angular from 'angular';
+import {Sound} from '../../../app/models/sound';
 
 describe('SoundRepository', () => {
-    var soundRepository: BitbucketNotifier.SoundRepository;
+    let soundRepository: SoundRepository;
 
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(inject([
@@ -12,21 +14,21 @@ describe('SoundRepository', () => {
     ]));
 
     it('should return all available sounds', () => {
-        var actual = soundRepository.findAll();
+        const actual = soundRepository.findAll();
         expect(actual.length).toBeGreaterThan(0);
 
-        for (let i = 0, len = actual.length; i < len; i++) {
-            expect(actual[i] instanceof BitbucketNotifier.Sound).toBeTruthy();
+        for (const actualSound of actual) {
+            expect(actualSound instanceof Sound).toBeTruthy();
         }
     });
 
-    it('should return a sound by its label', () => {
-        var labelToFindBy: string = 'Ring';
-        var actual: BitbucketNotifier.Sound = soundRepository.findByLabel(labelToFindBy);
-        expect(actual.label).toEqual('Ring');
+    it('should return a sound by its id', () => {
+        const idToFindBy: string = 'ring';
+        const foundSound: Sound = soundRepository.findById(idToFindBy);
+        expect(foundSound.label).toEqual('Ring');
 
-        var nonExistantSoundLabel: string = 'Not found';
-        actual = soundRepository.findByLabel(nonExistantSoundLabel);
-        expect(actual).toBeNull();
+        const missingSoundId: string = 'Not found';
+        const missingSound = soundRepository.findById(missingSoundId);
+        expect(missingSound).toBeNull();
     });
 });

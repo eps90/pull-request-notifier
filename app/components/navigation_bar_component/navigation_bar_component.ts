@@ -1,23 +1,8 @@
-///<reference path="../../_typings.ts"/>
+import componentTemplate from './navigation_bar_component.html';
+import './navigation_bar_component.less';
+import {NavigationBarController} from './navigation_bar_controller';
 
-module BitbucketNotifier {
-    'use strict';
-
-    export class NavigationBarComponent implements ng.IDirective {
-        restrict: string = 'E';
-        templateUrl: string = '../components/navigation_bar_component/navigation_bar_component.html';
-
-        constructor(private bitbucketUrl: string) {}
-
-        link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
-            scope['appVersion'] = 'v' + window['chrome'].runtime.getManifest().version;
-
-        };
-
-        static factory(): ng.IDirectiveFactory {
-            var component = (bitbucketUrl) => new NavigationBarComponent(bitbucketUrl);
-            component.$inject = ['bitbucketUrl'];
-            return component;
-        }
-    }
+export class NavigationBarComponent implements ng.IComponentOptions {
+    public template: string = componentTemplate;
+    public controller = NavigationBarController;
 }

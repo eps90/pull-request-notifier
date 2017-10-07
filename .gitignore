@@ -1,7 +1,7 @@
 bower_components
 node_modules
-typings
 dist
 build
 .tmp
 shipitfile.local.js
+/.env

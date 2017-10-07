@@ -2,31 +2,31 @@
     <div class="col-sm-12">
         <section-title icon="code-fork">Active pull requests</section-title>
         <uib-tabset justified="true" type="pills">
-            <uib-tab>
+            <uib-tab select="$ctrl.onSelect('ASSIGNED')">
                 <uib-tab-heading>
                     <i class="fa fa-thumb-tack tab-icon"></i> Assigned
                 </uib-tab-heading>
                 <div class="col-sm-12 pull-requests-list assigned">
                     <div class="row">
-                        <div class="alert alert-info" ng-if="(pullRequests | assigned).length === 0">
+                        <div class="alert alert-info" ng-if="($ctrl.pullRequests | assigned).length === 0">
                             <i class="fa fa-info-circle"></i> There are no pull requests assigned to you
                         </div>
-                        <pull-requests-header mode="ASSIGNED" ng-if="(pullRequests | assigned).length"></pull-requests-header>
-                        <pull-request ng-repeat="pr in pullRequests | assigned" pr="pr" mode="ASSIGNED"></pull-request>
+                        <pull-requests-header mode="ASSIGNED" ng-if="($ctrl.pullRequests | assigned).length"></pull-requests-header>
+                        <pull-request ng-repeat="pr in $ctrl.pullRequests | assigned" pr="pr" mode="ASSIGNED"></pull-request>
                     </div>
                 </div>
             </uib-tab>
-            <uib-tab>
+            <uib-tab select="$ctrl.onSelect('AUTHORED')">
                 <uib-tab-heading>
                     <i class="fa fa-user tab-icon"></i> Authored
                 </uib-tab-heading>
                 <div class="col-sm-12 pull-requests-list authored">
                     <div class="row">
-                        <div class="alert alert-info" ng-if="(pullRequests | authored).length === 0">
+                        <div class="alert alert-info" ng-if="($ctrl.pullRequests | authored).length === 0">
                             <i class="fa fa-info-circle"></i> There are no pull requests created by you
                         </div>
-                        <pull-requests-header mode="AUTHORED" ng-if="(pullRequests | authored).length"></pull-requests-header>
-                        <pull-request ng-repeat="pr in pullRequests | authored" pr="pr" mode="AUTHORED"></pull-request>
+                        <pull-requests-header mode="AUTHORED" ng-if="($ctrl.pullRequests | authored).length"></pull-requests-header>
+                        <pull-request ng-repeat="pr in $ctrl.pullRequests | authored" pr="pr" mode="AUTHORED"></pull-request>
                     </div>
                 </div>
             </uib-tab>

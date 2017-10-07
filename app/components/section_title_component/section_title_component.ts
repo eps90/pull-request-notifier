@@ -1,25 +1,13 @@
-///<reference path="../../_typings.ts"/>
+import componentTemplate from './section_title_component.html';
+import './section_title_component.less';
+import {SectionTileController} from './section_tile_controller';
 
-module BitbucketNotifier {
-    'use strict';
+export class SectionTitleComponent implements ng.IComponentOptions {
+    public template: string = componentTemplate;
+    public bindings: any = {
+        icon: '@'
+    };
+    public transclude: boolean = true;
 
-    export class SectionTitleComponent implements ng.IDirective {
-        restrict: string = 'E';
-        templateUrl: string = '../components/section_title_component/section_title_component.html';
-        scope: any = {
-            icon: '@'
-        };
-        transclude: boolean = true;
-
-        link: ng.IDirectiveLinkFn = (scope: ng.IScope) => {
-            if (scope['icon'] !== undefined) {
-                var iconClass = 'fa-' + scope['icon'];
-                scope['_icon'] = 'fa ' + iconClass;
-            }
-        };
-
-        static factory(): ng.IDirectiveFactory {
-            return () => new SectionTitleComponent();
-        }
-    }
+    public controller = SectionTileController;
 }

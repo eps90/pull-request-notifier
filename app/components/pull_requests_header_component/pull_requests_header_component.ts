@@ -1,17 +1,9 @@
-///<reference path="../../_typings.ts"/>
+import componentTemplate from './pull_requests_header_component.html';
+import './pull_requests_header_component.less';
 
-module BitbucketNotifier {
-    'use strict';
-
-    export class PullRequestsHeaderComponent implements ng.IDirective {
-        restrict: string =  'E';
-        templateUrl: string = '../components/pull_requests_header_component/pull_requests_header_component.html';
-        scope: any = {
-            mode: '@'
-        };
-
-        static factory(): ng.IDirectiveFactory {
-            return () => new PullRequestsHeaderComponent();
-        }
-    }
+export class PullRequestsHeaderComponent implements ng.IComponentOptions {
+    public template: string = componentTemplate;
+    public bindings: any = {
+        mode: '@'
+    };
 }

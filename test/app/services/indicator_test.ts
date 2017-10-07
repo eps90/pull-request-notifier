@@ -1,7 +1,8 @@
-///<reference path="../../../app/_typings.ts"/>
+import {Indicator} from '../../../app/services/indicator';
+import * as angular from 'angular';
 
 describe('Indicator', () => {
-    var indicator: BitbucketNotifier.Indicator;
+    let indicator: Indicator;
 
     beforeEach(() => {
         window['chrome'] = {
@@ -19,12 +20,12 @@ describe('Indicator', () => {
     ]));
 
     it('should set up default text on badge', () => {
-        var defaultBadgeText = '?';
+        const defaultBadgeText = '?';
         expect(window['chrome'].browserAction.setBadgeText).toHaveBeenCalledWith({text: defaultBadgeText});
     });
 
     it('should be able to set badge text', () => {
-        var badgeText = '1234';
+        const badgeText = '1234';
         indicator.setText(badgeText);
         expect(window['chrome'].browserAction.setBadgeText).toHaveBeenCalledWith({text: badgeText});
     });

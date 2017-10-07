@@ -1,7 +1,9 @@
-///<reference path="../../../app/_typings.ts"/>
+import {NotificationRepository} from '../../../app/services/notification_repository';
+import * as angular from 'angular';
+import {PullRequestNotification} from '../../../app/models/pull_request_notification';
 
 describe('NotificationRepository', () => {
-    var notificationRepository: BitbucketNotifier.NotificationRepository;
+    let notificationRepository: NotificationRepository;
 
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(inject([
@@ -12,19 +14,19 @@ describe('NotificationRepository', () => {
     ]));
 
     it('should add notification to repository', () => {
-        var notificationId = 'aaaa';
-        var prLink = 'http://example.com';
+        const notificationId = 'aaaa';
+        const prLink = 'http://example.com';
 
         notificationRepository.add(notificationId, prLink);
         expect(notificationRepository.getAll().length).toEqual(1);
     });
 
     it('should find single notification', () => {
-        var notificationId = 'abcd';
-        var prLink = 'http://example.com';
+        const notificationId = 'abcd';
+        const prLink = 'http://example.com';
 
         notificationRepository.add(notificationId, prLink);
-        var actualNotification = <BitbucketNotifier.PullRequestNotification> notificationRepository.find(notificationId);
+        const actualNotification = notificationRepository.find(notificationId) as PullRequestNotification;
 
         expect(actualNotification.pullRequestHtmlLink).toEqual('http://example.com');
     });

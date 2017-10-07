@@ -1,13 +1,12 @@
-/// <reference path="../../../../app/_typings.ts" />
+import * as angular from 'angular';
+import {Reviewer} from '../../../../app/models/reviewer';
 
 describe('ReviewerComponent', () => {
-    var element: ng.IAugmentedJQuery,
-        $scope: ng.IScope,
-        $compile: ng.ICompileService;
+    let element: ng.IAugmentedJQuery;
+    let $scope: ng.IScope;
+    let $compile: ng.ICompileService;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(angular.mock.module('bitbucketNotifier.templates'));
-
     beforeEach(
         inject([
             '$rootScope',
@@ -20,8 +19,8 @@ describe('ReviewerComponent', () => {
     );
 
     it('should display user name', () => {
-        var reviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
-        reviewer.user.displayName = "John Smith";
+        const reviewer: Reviewer = new Reviewer();
+        reviewer.user.displayName = 'John Smith';
         $scope['reviewer'] = reviewer;
 
         element = $compile('<reviewer r="reviewer"></reviewer>')($scope);
@@ -32,8 +31,8 @@ describe('ReviewerComponent', () => {
 
     describe('approval status', () => {
         it('should display approval status for up-vote', () => {
-            var approvedReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
-            approvedReviewer.user.displayName = "John Smith";
+            const approvedReviewer: Reviewer = new Reviewer();
+            approvedReviewer.user.displayName = 'John Smith';
             approvedReviewer.approved = true;
 
             $scope['reviewer'] = approvedReviewer;
@@ -45,8 +44,8 @@ describe('ReviewerComponent', () => {
         });
 
         it('should display approval status for up-vote', () => {
-            var unapprovedReviewer: BitbucketNotifier.Reviewer = new BitbucketNotifier.Reviewer();
-            unapprovedReviewer.user.displayName = "John Smith";
+            const unapprovedReviewer: Reviewer = new Reviewer();
+            unapprovedReviewer.user.displayName = 'John Smith';
             unapprovedReviewer.approved = false;
 
             $scope['reviewer'] = unapprovedReviewer;

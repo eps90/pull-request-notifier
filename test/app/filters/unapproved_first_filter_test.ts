@@ -1,7 +1,8 @@
-/// <reference path="../../../app/_typings.ts" />
+import * as angular from 'angular';
+import {Reviewer} from '../../../app/models/reviewer';
 
 describe('UnapprovedFirstFilter', () => {
-    var $filter;
+    let $filter;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(inject([
@@ -12,22 +13,22 @@ describe('UnapprovedFirstFilter', () => {
     ]));
 
     it('should sort reviewers with unapproved first', () => {
-        var approvedReviewer = new BitbucketNotifier.Reviewer();
+        const approvedReviewer = new Reviewer();
         approvedReviewer.approved = true;
 
-        var unapprovedReviewer = new BitbucketNotifier.Reviewer();
+        const unapprovedReviewer = new Reviewer();
         unapprovedReviewer.approved = false;
 
-        var otherApproved = new BitbucketNotifier.Reviewer();
+        const otherApproved = new Reviewer();
         otherApproved.approved = true;
 
-        var otherUnapproved = new BitbucketNotifier.Reviewer();
+        const otherUnapproved = new Reviewer();
         otherUnapproved.approved = false;
 
-        var reviewers = [approvedReviewer, unapprovedReviewer, otherApproved, otherUnapproved];
+        const reviewers = [approvedReviewer, unapprovedReviewer, otherApproved, otherUnapproved];
 
-        var unapprovedFirstFilter = $filter('unapprovedFirst');
-        var actual = unapprovedFirstFilter(reviewers);
+        const unapprovedFirstFilter = $filter('unapprovedFirst');
+        const actual = unapprovedFirstFilter(reviewers);
 
         expect(actual).toEqual([unapprovedReviewer, otherUnapproved, approvedReviewer, otherApproved]);
     });
