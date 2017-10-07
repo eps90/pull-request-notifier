@@ -1,4 +1,4 @@
-var gulp = require('gulp');
+const gulp = require('gulp');
 require('gulp-stats')(gulp);
 
 gulp.task('copy-img', function ()  {
@@ -18,18 +18,25 @@ gulp.task('manifest', ['copy-img'], function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('pack', ['manifest'], function () {
-    var crx = require('gulp-crx-pack'),
-        merge = require('merge-stream'),
-        zip = require('gulp-zip'),
+gulp.task('zip', ['manifest'], function () {
+    "use strict";
+    const zip = require('gulp-zip');
+    const targetZipFileName = 'pull-request-notifier.zip';
+
+    return gulp.src('dist/**/*')
+        .pipe(zip(targetZipFileName))
+        .pipe(gulp.dest('build'));
+});
+
+gulp.task('crx', ['manifest', 'zip'], function () {
+    const crx = require('gulp-crx-pack'),
         fs = require('fs'),
         url = require('url'),
         manifest = require('./manifest.json'),
-        targetCrxFilename = 'pull-request-notifier.crx',
-        targetZipFileName = 'pull-request-notifier.zip';
+        targetCrxFilename = 'pull-request-notifier.crx';
 
-    var updateUrlParts = url.parse(manifest.update_url || '');
-    var codeBase = url.resolve(
+    const updateUrlParts = url.parse(manifest.update_url || '');
+    const codeBase = url.resolve(
         url.format({
             protocol: updateUrlParts.protocol,
             host: updateUrlParts.host
@@ -37,7 +44,7 @@ gulp.task('pack', ['manifest'], function () {
         '/' + targetCrxFilename
     );
 
-    var crxPipeline = gulp.src('dist')
+    return gulp.src('dist')
         .pipe(crx({
             privateKey: fs.readFileSync(process.env.CRX_PEM_PATH || '../bbnotifier.pem'),
             filename: 'pull-request-notifier.crx',
@@ -45,25 +52,19 @@ gulp.task('pack', ['manifest'], function () {
             updateXmlFilename: 'update.xml'
         }))
         .pipe(gulp.dest('build'));
-
-    var zipPipeline = gulp.src('dist/**/*')
-        .pipe(zip(targetZipFileName))
-        .pipe(gulp.dest('build'));
-
-    return merge(crxPipeline, zipPipeline);
 });
 
 gulp.task('deploy', function (cb) {
-    var shipitfile = require('./shipitfile.js');
-    var config = shipitfile.config;
-    var options = shipitfile.options;
+    const shipitfile = require('./shipitfile.js');
+    const config = shipitfile.config;
+    const options = shipitfile.options;
 
-    var shipItCaptain = require('shipit-captain');
+    const shipItCaptain = require('shipit-captain');
     shipItCaptain(config, options, cb);
 });
 
 gulp.task('release', function () {
-    var bump = require('gulp-bump'),
+    const bump = require('gulp-bump'),
         git = require('gulp-git'),
         filter = require('gulp-filter'),
         tagVersion = require('gulp-tag-version'),

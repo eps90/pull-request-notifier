@@ -117,17 +117,28 @@ yarn run build:dev
 ### Production version
 
 Production version is almost the same as development but it takes much more time to build
-because of more aggressive code uglification. The result of the `prod` build is an extension file,
-ready to publish in the store or loading in your browser by drag-and-dropping it on the
-[extensions page](chrome://extensions). The file will be generated into `build` directory.
+because of more aggressive code uglification. The result of the `prod` build is a zipped extension,
+ready to publish in the store. You can find it in `build` directory.
 
 To build production version of the project, run the following in your terminal:
 
 ```bash
 yarn run build:prod
-```
+``` 
+ 
+If you'd like to create an extension file, ready to use in your browser without publishing it in the store, you can run
+alternative prod build by calling
 
-> **Note:** To build the extension properly, it needs a key for package signature.
+
+```bash
+yarn run build:crx
+```
+ 
+You can find the result file with `*.crx` extension in `build` directory. To install it, simply  drag-and-drop it onto the
+[extensions page](chrome://extensions). 
+
+
+> **Note:** To build the CRX file properly, it needs a key for package signature.
 > To point where is your key, use `CRX_PEM_PATH` environment variable.  
 
 ### Build steps on environments
