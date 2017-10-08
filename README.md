@@ -49,7 +49,7 @@ on Github.
 * Google Analytics tracking
 * Error and logs tracking with [Loggly](https://www.loggly.com/)
 
-## Build with
+## Built with
 
 * [Typescript](https://www.typescriptlang.org/)
 * [AngularJS](https://angularjs.org/)
