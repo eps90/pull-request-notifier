@@ -21,6 +21,7 @@ import {Config} from '../services/config';
 import {RoutingConfiguration} from '../config/routing';
 import 'angular-loggly-logger';
 import 'angular-google-analytics';
+import 'angular-translate';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
@@ -37,7 +38,8 @@ const application = angular.module(MODULE_NAME, [
     'ng-showdown',
     'ngAnimate',
     'logglyLogger',
-    'angular-google-analytics'
+    'angular-google-analytics',
+    'pascalprecht.translate'
 ]);
 application.component('pullRequest', new PullRequestComponent());
 application.component('pullRequestsList', new PullRequestsListComponent());

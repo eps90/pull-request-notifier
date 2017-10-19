@@ -12,6 +12,7 @@ import {Notifier} from '../services/notifier';
 import {NotificationRepository} from '../services/notification_repository';
 import 'angular-loggly-logger';
 import 'angular-google-analytics';
+import 'angular-translate';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
@@ -24,7 +25,8 @@ const application = angular.module(
         'LocalStorageModule',
         'angular-growl',
         'logglyLogger',
-        'angular-google-analytics'
+        'angular-google-analytics',
+        'pascalprecht.translate'
     ]);
 
 application.component('options', new OptionsComponent());
