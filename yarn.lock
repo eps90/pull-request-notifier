@@ -33,6 +33,12 @@
   dependencies:
     "@types/angular" "*"
 
+"@types/angular-translate@^2.15.1":
+  version "2.15.1"
+  resolved "https://registry.yarnpkg.com/@types/angular-translate/-/angular-translate-2.15.1.tgz#ae974dc5036122cc97419520f0f25f3a738bc5f8"
+  dependencies:
+    "@types/angular" "*"
+
 "@types/angular-ui-router@^1.1.36":
   version "1.1.36"
   resolved "https://registry.yarnpkg.com/@types/angular-ui-router/-/angular-ui-router-1.1.36.tgz#24479af00ab6926d04ada3a633bee41a3dd72806"
