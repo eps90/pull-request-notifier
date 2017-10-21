@@ -8,44 +8,44 @@
         <div class="col-sm-8">
             <section class="title">
                 <p class="section-label">
-                    Title:
+                    {{'PREVIEW.TITLE'|translate}}:
                 </p>
                 <span class="full-title" ng-bind-html="$ctrl.pr.title | emoji"></span>
             </section>
 
             <section class="branch-info">
                 <p class="section-label">
-                    Target branch:
+                    {{'PREVIEW.TARGET_BRANCH'|translate}}:
                 </p>
                 <span class="target-branch"><i class="fa fa-code-fork"></i> {{ $ctrl.pr.targetBranch }}</span>
             </section>
 
             <section class="description">
                 <p class="section-label">
-                    Description:
+                    {{'PREVIEW.DESCRIPTION'|translate}}:
                 </p>
                 <div class="content" ng-if="$ctrl.pr.description" markdown-to-html="$ctrl.pr.description | emoji"></div>
                 <div class="no-content" ng-if="!$ctrl.pr.description">
-                    No description
+                    {{'PREVIEW.NO_DESCRIPTION'|translate}}
                 </div>
             </section>
         </div>
         <div class="col-sm-4">
             <section class="author">
                 <p class="section-label">
-                    Author:
+                    {{'PREVIEW.AUTHOR'|translate}}:
                 </p>
                 <span class="author-name">{{ $ctrl.pr.author.displayName }}</span>
             </section>
             <section class="reviewers">
                 <p class="section-label">
-                    Reviewers:
+                    {{'PREVIEW.REVIEWERS'|translate}}:
                 </p>
                 <div class="reviewers-list" ng-if="$ctrl.pr.reviewers.length">
                     <reviewer r="reviewer" ng-repeat="reviewer in $ctrl.pr.reviewers | unapprovedFirst"></reviewer>
                 </div>
                 <div class="alert alert-warning" ng-if="!$ctrl.pr.reviewers.length">
-                    <i class="fa fa-exclamation-circle"></i> No reviewers assigned
+                    <i class="fa fa-exclamation-circle"></i> {{'PREVIEW.NO_REVIEWERS'|translate}}
                 </div>
             </section>
         </div>

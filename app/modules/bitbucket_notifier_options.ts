@@ -15,6 +15,7 @@ import 'angular-google-analytics';
 import 'angular-translate';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
+import {setUpI18n} from '../helpers/i18n';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
 
@@ -61,5 +62,6 @@ if (PRODUCTION) {
 setUpLogglyLogger(application);
 setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'options.html');
+setUpI18n(application);
 
 application.run(['Analytics', (analytics) => {}]);

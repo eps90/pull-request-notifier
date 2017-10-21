@@ -25,6 +25,7 @@ import 'angular-translate';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
+import {setUpI18n} from '../helpers/i18n';
 import {TimeTracker} from '../services/time_tracker';
 
 export const MODULE_NAME = 'bitbucketNotifier';
@@ -79,6 +80,7 @@ if (PRODUCTION) {
 setUpLogglyLogger(application);
 setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'popup.html');
+setUpI18n(application);
 
 application.run(['Analytics', (analytics) => {
     if (!TEST) {
