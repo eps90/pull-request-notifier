@@ -22,6 +22,7 @@ import {RoutingConfiguration} from '../config/routing';
 import 'angular-loggly-logger';
 import 'angular-google-analytics';
 import 'angular-translate';
+import 'angular-translate-handler-log';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';

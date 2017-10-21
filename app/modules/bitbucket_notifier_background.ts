@@ -13,6 +13,7 @@ import {SoundRepository} from '../services/sound_repository';
 import 'angular-loggly-logger';
 import 'angular-google-analytics';
 import 'angular-translate';
+import 'angular-translate-handler-log';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {setUpI18n} from '../helpers/i18n';

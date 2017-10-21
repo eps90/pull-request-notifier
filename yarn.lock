@@ -250,7 +250,13 @@ angular-socket.io-mock@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/angular-socket.io-mock/-/angular-socket.io-mock-1.2.0.tgz#087c9c1c4828430c189cf81f58e3769fee5a5376"
 
-angular-translate@^2.15.2:
+angular-translate-handler-log@^2.15.2:
+  version "2.15.2"
+  resolved "https://registry.yarnpkg.com/angular-translate-handler-log/-/angular-translate-handler-log-2.15.2.tgz#8720d3823673384688973f98cbd7e0f7fe4b1234"
+  dependencies:
+    angular-translate "~2.15.2"
+
+angular-translate@^2.15.2, angular-translate@~2.15.2:
   version "2.15.2"
   resolved "https://registry.yarnpkg.com/angular-translate/-/angular-translate-2.15.2.tgz#f9a3c2b8d5daeb7d76c9e2c01ff3c3d57fe12b90"
   dependencies:
