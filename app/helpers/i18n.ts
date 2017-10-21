@@ -13,7 +13,8 @@ export function setUpI18n(application: ng.IModule): void {
                     }
                 )
                 .determinePreferredLanguage()
-                .useSanitizeValueStrategy('escape');
+                .useSanitizeValueStrategy('escape')
+                .useMissingTranslationHandlerLog();
         }
     ]);
 }
