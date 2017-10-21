@@ -73,7 +73,7 @@ export class Notifier {
         const options = {
             title: this.$translate.instant('NOTIFICATIONS.NEW_PR'),
             message: pullRequest.title,
-            contextMessage: 'by ' + pullRequest.author.displayName,
+            contextMessage: `${this.$translate.instant('COMMON.BY')} ${pullRequest.author.displayName}`,
             iconUrl: NotificationIcon.NEW_PULL_REQUEST
         };
         const notificationId = this.getNotificationId(pullRequest);
@@ -86,7 +86,7 @@ export class Notifier {
 
     public notifyPullRequestMerged(pullRequest: PullRequest): void {
         const options = {
-            title: this.$translate.instant('NOTIFICATIONS.APPROVED_PR'),
+            title: this.$translate.instant('NOTIFICATIONS.MERGED_PR'),
             message: pullRequest.title,
             iconUrl: NotificationIcon.MERGED_PULL_REQUEST
         };
@@ -100,9 +100,9 @@ export class Notifier {
 
     public notifyPullRequestApproved(pullRequest: PullRequest, actor: User): void {
         const options = {
-            title: this.$translate.instant('NOTIFICATIONS.MERGED_PR'),
+            title: this.$translate.instant('NOTIFICATIONS.APPROVED_PR'),
             message: pullRequest.title,
-            contextMessage: this.$translate.instant('COMMON.BY') + actor.displayName,
+            contextMessage: `${this.$translate.instant('COMMON.BY')} ${actor.displayName}`,
             iconUrl: NotificationIcon.APPROVED_PULL_REQUEST
         };
         const notificationId = this.getNotificationId(pullRequest);
@@ -131,7 +131,7 @@ export class Notifier {
         const options = {
             title: this.$translate.instant('NOTIFICATIONS.UPDATED_PR'),
             message: pullRequest.title,
-            contextMessage: this.$translate.instant('COMMON.BY') + pullRequest.author.displayName,
+            contextMessage: `${this.$translate.instant('COMMON.BY')} ${pullRequest.author.displayName}`,
             iconUrl: NotificationIcon.UPDATED_PULL_REQUEST
         };
         const notificationId = this.getNotificationId(pullRequest);

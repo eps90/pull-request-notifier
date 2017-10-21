@@ -6,7 +6,7 @@ export class UserVoteController implements ng.IComponentController {
     public label: string;
     public reviewers: Reviewer[];
 
-    public static $inject: string[] = ['Config'];
+    public static $inject: string[] = ['Config', '$translate'];
 
     constructor(private config: Config, private $translate: angular.translate.ITranslateService) {}
 
