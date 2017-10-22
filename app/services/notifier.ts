@@ -26,8 +26,7 @@ export class Notifier {
         'NotificationRepository',
         'SoundManager',
         'AnalyticsEventDispatcher',
-        'TimeTracker',
-        '$translate'
+        'TimeTracker'
     ];
 
     private chrome: any;
@@ -35,8 +34,7 @@ export class Notifier {
         private notificationRepository: NotificationRepository,
         private soundManager: SoundManager,
         private analyticsEventDispatcher: AnalyticsEventDispatcher,
-        private timeTracker: TimeTracker,
-        private $translate: angular.translate.ITranslateService
+        private timeTracker: TimeTracker
     ) {
         this.chrome = window['chrome'];
         this.chrome.notifications.onClicked.addListener((notificationId) => {
@@ -71,9 +69,9 @@ export class Notifier {
 
     public notifyNewPullRequestAssigned(pullRequest: PullRequest): void {
         const options = {
-            title: this.$translate.instant('NOTIFICATIONS.NEW_PR'),
+            title: 'New pull request assigned to you!',
             message: pullRequest.title,
-            contextMessage: `${this.$translate.instant('COMMON.BY')} ${pullRequest.author.displayName}`,
+            contextMessage: 'by ' + pullRequest.author.displayName,
             iconUrl: NotificationIcon.NEW_PULL_REQUEST
         };
         const notificationId = this.getNotificationId(pullRequest);
@@ -86,7 +84,7 @@ export class Notifier {
 
     public notifyPullRequestMerged(pullRequest: PullRequest): void {
         const options = {
-            title: this.$translate.instant('NOTIFICATIONS.MERGED_PR'),
+            title: 'Your pull request has been merged',
             message: pullRequest.title,
             iconUrl: NotificationIcon.MERGED_PULL_REQUEST
         };
@@ -100,9 +98,9 @@ export class Notifier {
 
     public notifyPullRequestApproved(pullRequest: PullRequest, actor: User): void {
         const options = {
-            title: this.$translate.instant('NOTIFICATIONS.APPROVED_PR'),
+            title: 'Your pull request has been approved',
             message: pullRequest.title,
-            contextMessage: `${this.$translate.instant('COMMON.BY')} ${actor.displayName}`,
+            contextMessage: 'by ' + actor.displayName,
             iconUrl: NotificationIcon.APPROVED_PULL_REQUEST
         };
         const notificationId = this.getNotificationId(pullRequest);
@@ -115,7 +113,7 @@ export class Notifier {
 
     public notifyReminder(pullRequest: PullRequest): void {
         const options = {
-            title: this.$translate.instant('NOTIFICATIONS.REMINDER'),
+            title: 'Someone reminds you to review a pull request',
             message: pullRequest.title,
             iconUrl: NotificationIcon.PULL_REQUEST_REMINDER
         };
@@ -129,9 +127,9 @@ export class Notifier {
 
     public notifyPullRequestUpdated(pullRequest: PullRequest): void {
         const options = {
-            title: this.$translate.instant('NOTIFICATIONS.UPDATED_PR'),
+            title: 'Pull request has been updated',
             message: pullRequest.title,
-            contextMessage: `${this.$translate.instant('COMMON.BY')} ${pullRequest.author.displayName}`,
+            contextMessage: 'by ' + pullRequest.author.displayName,
             iconUrl: NotificationIcon.UPDATED_PULL_REQUEST
         };
         const notificationId = this.getNotificationId(pullRequest);
@@ -143,9 +141,9 @@ export class Notifier {
 
     public notifyNewCommentAdded(pullRequest: PullRequest, commentingUser: User, commentLink: string): void {
         const options = {
-            title: this.$translate.instant('NOTIFICATIONS.COMMENTED_PR'),
+            title: 'New comment on your pull request!',
             message: pullRequest.title,
-            contextMessage: `${this.$translate.instant('COMMON.BY')} ${commentingUser.displayName}`,
+            contextMessage: `by ${commentingUser.displayName}`,
             iconUrl: NotificationIcon.NEW_COMMENT_ON_PULL_REQUEST
         };
         const notificationId = this.getNotificationId(pullRequest);
@@ -157,9 +155,9 @@ export class Notifier {
 
     public notifyNewReplyOnComment(pullRequest: PullRequest, replyingUser: User, commentLink: string): void {
         const options = {
-            title: this.$translate.instant('NOTIFICATIONS.REPLIED_PR'),
+            title: 'New reply for your comment',
             message: pullRequest.title,
-            contextMessage: `${this.$translate.instant('COMMON.BY')} ${replyingUser.displayName}`,
+            contextMessage: `by ${replyingUser.displayName}`,
             iconUrl: NotificationIcon.NEW_REPLY_ON_PULL_REQUEST
         };
         const notificationId = this.getNotificationId(pullRequest);

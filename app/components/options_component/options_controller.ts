@@ -11,15 +11,14 @@ export class OptionsController implements ng.IComponentController {
     public options: any;
     public sounds: Sound[];
 
-    public static $inject: string[] = ['Config', 'growl', '$interval', 'SoundRepository', 'Notifier', '$translate'];
+    public static $inject: string[] = ['Config', 'growl', '$interval', 'SoundRepository', 'Notifier'];
 
     constructor(
         private config: Config,
         private growl: angular.growl.IGrowlService,
         private $interval: ng.IIntervalService,
         private soundRepository: SoundRepository,
-        private notifier: Notifier,
-        private $translate: angular.translate.ITranslateService
+        private notifier: Notifier
     ) {}
 
     public $onInit = () => {
@@ -91,9 +90,9 @@ export class OptionsController implements ng.IComponentController {
         this.config.setMergedPullRequestSound(this.options.mergedPullRequestSound);
         this.config.setReminderSound(this.options.reminderSound);
 
-        this.growl.success(this.$translate.instant('OPTIONS.GROWL.SETTINGS_APPLIED'));
+        this.growl.success('Settings applied!');
         this.growl.warning(
-            this.$translate.instant('OPTIONS.GROWL.EXTENSION_WILL_CLOSE'),
+            'Extension will reboot in in 5 seconds',
             {
                 disableCountDown: false,
                 onclose: (): void => {

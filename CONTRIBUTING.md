@@ -20,35 +20,6 @@ Please note we have a code of conduct, please follow it in all your interactions
 5. The Pull Request will be merged once it's reviewed by repository owner and/or contributors 
 and gets approvals from all people involved in a code review.
 
-## Internationalization
-
-### Application messages
-
-1. Find a file with original English translations in `app/lang/en.json` 
-and make a copy with name of desired language code, e.g. `de.json`
-2. Replace original translations with messages in the chosen language
-3. Load new messages file and add a location to language mapping in `app/helpers/i18n.ts`, e.g.:
-```typescript
-// ...
-$translateProvider
-    .translations('en', require('./../lang/en.json'))
-    .translations('de', require('./../lang/de.json'))  // HERE
-    .registerAvailableLanguageKeys(
-        ['en', 'de'],
-        {
-            'en_*': 'en',
-            'en-*': 'en',
-            'de-*': 'de',                              // HERE
-            'de_*': 'de',                              // HERE
-            '*': 'en'
-        }
-    )
-// ...
-```
-4. Create a pull request following [Pull Request Process](#pull-request-process) chapter
-
-> *Note:* You can use [ngTranslateEditor](http://mrhieu.github.io/ngTranslateEditor) to create new translations from existing file.
-
 
 ## Contributor Covenant Code of Conduct
 

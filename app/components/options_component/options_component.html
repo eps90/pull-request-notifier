@@ -1,7 +1,7 @@
 <div class="row options">
     <div class="col-sm-12">
         <div class="row">
-            <section-title icon="cogs">{{ 'OPTIONS.OPTIONS'|translate }}</section-title>
+            <section-title icon="cogs">Options</section-title>
             <div class="col-sm-9">
                 <div class="row">
                     <div growl></div>
@@ -9,36 +9,36 @@
                 <div class="row">
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label for="app-user" class="col-sm-3 control-label">{{ 'OPTIONS.USER.BITBUCKET_LOGIN'|translate }}</label>
+                            <label for="app-user" class="col-sm-3 control-label">Bitbucket username</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="app-user" placeholder="{{ 'COMMON.EG_ABBR'|translate }} john.kowalsky" ng-model="$ctrl.options.appUser">
+                                <input type="text" class="form-control" id="app-user" placeholder="e.g. john.kowalsky" ng-model="$ctrl.options.appUser">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="socket-server-address" class="col-sm-3 control-label">{{ 'OPTIONS.USER.SOCKET_ADDRESS'|translate }}</label>
+                            <label for="socket-server-address" class="col-sm-3 control-label">Socket server address</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="socket-server-address" placeholder="{{'COMMON.EG_ABBR'|translate}} http://localhost:8888" ng-model="$ctrl.options.socketServerAddress">
+                                <input type="text" class="form-control" id="socket-server-address" placeholder="e.g. http://localhost:8888" ng-model="$ctrl.options.socketServerAddress">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{'OPTIONS.PR_PROGRESS.TITLE'|translate}}</label>
+                            <label class="col-sm-3 control-label">Pull Request progress</label>
                             <div class="col-sm-5">
                                 <div class="radio">
                                     <label>
                                         <input type="radio" name="pull-request-progress" ng-model="$ctrl.options.pullRequestProgress" value="proportions">
-                                        {{'OPTIONS.PR_PROGRESS.PROPORTIONS'|translate}}
+                                        Proportions
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
                                         <input type="radio" name="pull-request-progress" ng-model="$ctrl.options.pullRequestProgress" value="percent">
-                                        {{'OPTIONS.PR_PROGRESS.PERCENTAGE'|translate}}
+                                        Percentage
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
                                         <input type="radio" name="pull-request-progress" ng-model="$ctrl.options.pullRequestProgress" value="progress_bar">
-                                        {{'OPTIONS.PR_PROGRESS.PROGRESS_BAR'|translate}}
+                                        Progress bar
                                     </label>
                                 </div>
                             </div>
@@ -62,9 +62,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{'OPTIONS.NOTIFICATIONS.TITLE'|translate}}</label>
+                            <label class="col-sm-3 control-label">Notification sounds</label>
                             <div class="col-sm-4">
-                                <p class="form-control-static">{{'OPTIONS.NOTIFICATIONS.NEW_PR'|translate}}</p>
+                                <p class="form-control-static">New pull request</p>
                             </div>
                             <div class="col-sm-4">
                                 <select name="new-pull-request-sound" id="new-pull-request-sound" class="form-control"
@@ -78,7 +78,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <p class="form-control-static">{{'OPTIONS.NOTIFICATIONS.APPROVED_PR'|translate}}</p>
+                                <p class="form-control-static">Approved pull request</p>
                             </div>
                             <div class="col-sm-4">
                                 <select name="approved-pull-request-sound" id="approved-pull-request-sound" class="form-control"
@@ -92,7 +92,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <p class="form-control-static">{{'OPTIONS.NOTIFICATIONS.MERGED_PR'|translate}}</p>
+                                <p class="form-control-static">Merged pull request</p>
                             </div>
                             <div class="col-sm-4">
                                 <select name="merged-pull-request-sound" id="merged-pull-request-sound" class="form-control"
@@ -106,7 +106,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <p class="form-control-static">{{'OPTIONS.NOTIFICATIONS.REMINDER'|translate}}</p>
+                                <p class="form-control-static">Reminder</p>
                             </div>
                             <div class="col-sm-4">
                                 <select name="reminder-sound" id="reminder-sound" class="form-control"
@@ -120,38 +120,38 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-9 col-sm-offset-3">
-                                <button type="submit" class="btn btn-primary btn-lg" id="submit" ng-click="$ctrl.saveOptions()">{{'OPTIONS.NOTIFICATIONS.SAVE'|translate}}</button>
+                                <button type="submit" class="btn btn-primary btn-lg" id="submit" ng-click="$ctrl.saveOptions()">Save</button>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="row">
-                    <section-title icon="terminal">{{'OPTIONS.DEVELOPER_OPTIONS.TITLE'|translate}}</section-title>
+                    <section-title icon="terminal">Developer options</section-title>
                     <div class="col-sm-12">
-                        <h3>{{'OPTIONS.DEVELOPER_OPTIONS.NOTIFICATIONS'|translate}}</h3>
+                        <h3>Notifications</h3>
                     </div>
                     <div class="col-sm-12">
                         <div class="btn-group">
                             <button id="assigned" ng-click="$ctrl.showNotification('assigned')" class="btn btn-primary">
-                                {{'OPTIONS.DEVELOPER_OPTIONS.NEW_PR'|translate}}
+                                Assigned
                             </button>
                             <button id="approved" ng-click="$ctrl.showNotification('approved')" class="btn btn-primary">
-                                {{'OPTIONS.DEVELOPER_OPTIONS.APPROVED_PR'|translate}}
+                                Approved
                             </button>
                             <button id="merged" ng-click="$ctrl.showNotification('merged')" class="btn btn-primary">
-                                {{'OPTIONS.DEVELOPER_OPTIONS.MERGED_PR'|translate}}
+                                Merged
                             </button>
                             <button id="remind" class="btn btn-primary" ng-click="$ctrl.showNotification('remind')">
-                                {{'OPTIONS.DEVELOPER_OPTIONS.REMINDER'|translate}}
+                                Remind
                             </button>
                             <button id="updated" ng-click="$ctrl.showNotification('updated')" class="btn btn-primary">
-                                {{'OPTIONS.DEVELOPER_OPTIONS.UPDATED_PR'|translate}}
+                                Update
                             </button>
                             <button id="commented" ng-click="$ctrl.showNotification('commented')" class="btn btn-primary">
-                                {{'OPTIONS.DEVELOPER_OPTIONS.COMMENTED_PR'|translate}}
+                                Commented
                             </button>
                             <button id="replied" class="btn btn-primary" ng-click="$ctrl.showNotification('replied')">
-                                {{'OPTIONS.DEVELOPER_OPTIONS.REPLIED_PR'|translate}}
+                                Replied
                             </button>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-<a class="remind-link" ng-click="$ctrl.remind($event)" uib-tooltip="{{'REMINDER.REMIND_ASSIGNEES'|translate}}" ng-if="!$ctrl.isLarge() && !$ctrl.disabled" >
+<a class="remind-link" ng-click="$ctrl.remind($event)" uib-tooltip="Remind assignees" ng-if="!$ctrl.isLarge() && !$ctrl.disabled" >
     <i class="fa fa-bell"></i>
 </a>
 <a class="remind-link" disabled="disabled" ng-if="!$ctrl.isLarge() && $ctrl.disabled" >
@@ -6,9 +6,9 @@
 </a>
 
 <a class="remind-button btn btn-danger" ng-click="$ctrl.remind($event)" ng-if="$ctrl.isLarge() && !$ctrl.disabled">
-    <i class="fa fa-bell"></i> {{'REMINDER.REMIND_ASSIGNEES'|translate}}
+    <i class="fa fa-bell"></i> Remind assignees
 </a>
 
 <a class="remind-button btn btn-default" disabled="disabled" ng-if="$ctrl.isLarge() && $ctrl.disabled">
-    <i class="fa fa-check"></i> {{'REMINDER.REMIND_ASSIGNEES'|translate}}
+    <i class="fa fa-check"></i> Remind assignees
 </a>
