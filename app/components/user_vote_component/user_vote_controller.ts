@@ -6,9 +6,9 @@ export class UserVoteController implements ng.IComponentController {
     public label: string;
     public reviewers: Reviewer[];
 
-    public static $inject: string[] = ['Config'];
+    public static $inject: string[] = ['Config', '$translate'];
 
-    constructor(private config: Config) {}
+    constructor(private config: Config, private $translate: angular.translate.ITranslateService) {}
 
     public $onInit = () => {
         const classes = ['fa'];
@@ -17,10 +17,10 @@ export class UserVoteController implements ng.IComponentController {
             if (reviewer.user.username === this.config.getUsername()) {
                 if (reviewer.approved) {
                     classes.push('fa-check-circle', 'icon-approved');
-                    label = 'Approved';
+                    label = this.$translate.instant('USER_VOTE.APPROVED');
                 } else {
                     classes.push('fa-clock-o', 'icon-waiting');
-                    label = 'Waiting';
+                    label = this.$translate.instant('USER_VOTE.WAITING');
                 }
                 break;
             }
