@@ -1,6 +1,6 @@
 {
   "name": "pull-request-notifier",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Pull reuqests notifications",
   "author": "Jakub Turek <ja@kubaturek.pl>",
   "repository": {
