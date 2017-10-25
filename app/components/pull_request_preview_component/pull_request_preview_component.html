@@ -53,8 +53,8 @@
     <div class="row">
         <div class="col-sm-12">
             <section class="actions">
-                <pull-request-link pr="pr" size="lg"></pull-request-link>
-                <reminder pull-request="pr" size="lg" ng-if="!$ctrl.pr.isMergeReady()"></reminder>
+                <pull-request-link pr="$ctrl.pr" size="lg"></pull-request-link>
+                <reminder pull-request="$ctrl.pr" size="lg" ng-if="!$ctrl.pr.isMergeReady()"></reminder>
             </section>
         </div>
     </div>
