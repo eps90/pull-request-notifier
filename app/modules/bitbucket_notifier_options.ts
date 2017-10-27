@@ -12,8 +12,11 @@ import {Notifier} from '../services/notifier';
 import {NotificationRepository} from '../services/notification_repository';
 import 'angular-loggly-logger';
 import 'angular-google-analytics';
+import 'angular-translate';
+import 'angular-translate-handler-log';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
+import {setUpI18n} from '../helpers/i18n';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
 
@@ -24,7 +27,8 @@ const application = angular.module(
         'LocalStorageModule',
         'angular-growl',
         'logglyLogger',
-        'angular-google-analytics'
+        'angular-google-analytics',
+        'pascalprecht.translate'
     ]);
 
 application.component('options', new OptionsComponent());
@@ -59,5 +63,6 @@ if (PRODUCTION) {
 setUpLogglyLogger(application);
 setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'options.html');
+setUpI18n(application);
 
 application.run(['Analytics', (analytics) => {}]);

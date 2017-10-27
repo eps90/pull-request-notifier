@@ -1,15 +1,15 @@
 <div class="row pull-requests">
     <div class="col-sm-12">
-        <section-title icon="code-fork">Active pull requests</section-title>
+        <section-title icon="code-fork">{{ 'PR_LIST.ACTIVE_PRS_TITLE' | translate }}</section-title>
         <uib-tabset justified="true" type="pills">
             <uib-tab select="$ctrl.onSelect('ASSIGNED')">
                 <uib-tab-heading>
-                    <i class="fa fa-thumb-tack tab-icon"></i> Assigned
+                    <i class="fa fa-thumb-tack tab-icon"></i> {{'PR_LIST.TAB_TITLE.ASSIGNED'|translate}}
                 </uib-tab-heading>
                 <div class="col-sm-12 pull-requests-list assigned">
                     <div class="row">
                         <div class="alert alert-info" ng-if="($ctrl.pullRequests | assigned).length === 0">
-                            <i class="fa fa-info-circle"></i> There are no pull requests assigned to you
+                            <i class="fa fa-info-circle"></i> {{'PR_LIST.NO_PRS_MSG.ASSIGNED'|translate}}
                         </div>
                         <pull-requests-header mode="ASSIGNED" ng-if="($ctrl.pullRequests | assigned).length"></pull-requests-header>
                         <pull-request ng-repeat="pr in $ctrl.pullRequests | assigned" pr="pr" mode="ASSIGNED"></pull-request>
@@ -18,12 +18,12 @@
             </uib-tab>
             <uib-tab select="$ctrl.onSelect('AUTHORED')">
                 <uib-tab-heading>
-                    <i class="fa fa-user tab-icon"></i> Authored
+                    <i class="fa fa-user tab-icon"></i> {{'PR_LIST.TAB_TITLE.AUTHORED'|translate}}
                 </uib-tab-heading>
                 <div class="col-sm-12 pull-requests-list authored">
                     <div class="row">
                         <div class="alert alert-info" ng-if="($ctrl.pullRequests | authored).length === 0">
-                            <i class="fa fa-info-circle"></i> There are no pull requests created by you
+                            <i class="fa fa-info-circle"></i> {{'PR_LIST.NO_PRS_MSG.AUTHORED'|translate}}
                         </div>
                         <pull-requests-header mode="AUTHORED" ng-if="($ctrl.pullRequests | authored).length"></pull-requests-header>
                         <pull-request ng-repeat="pr in $ctrl.pullRequests | authored" pr="pr" mode="AUTHORED"></pull-request>
@@ -31,7 +31,7 @@
                 </div>
             </uib-tab>
             <uib-tab disable="true">
-                <uib-tab-heading><i class="fa fa-eye tab-icon"></i> Subscribed</uib-tab-heading>
+                <uib-tab-heading><i class="fa fa-eye tab-icon"></i> {{'PR_LIST.TAB_TITLE.SUBSCRIBED'|translate}}</uib-tab-heading>
             </uib-tab>
         </uib-tabset>
     </div>

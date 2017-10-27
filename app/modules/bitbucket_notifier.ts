@@ -21,9 +21,12 @@ import {Config} from '../services/config';
 import {RoutingConfiguration} from '../config/routing';
 import 'angular-loggly-logger';
 import 'angular-google-analytics';
+import 'angular-translate';
+import 'angular-translate-handler-log';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
+import {setUpI18n} from '../helpers/i18n';
 import {TimeTracker} from '../services/time_tracker';
 
 export const MODULE_NAME = 'bitbucketNotifier';
@@ -37,7 +40,8 @@ const application = angular.module(MODULE_NAME, [
     'ng-showdown',
     'ngAnimate',
     'logglyLogger',
-    'angular-google-analytics'
+    'angular-google-analytics',
+    'pascalprecht.translate'
 ]);
 application.component('pullRequest', new PullRequestComponent());
 application.component('pullRequestsList', new PullRequestsListComponent());
@@ -77,6 +81,7 @@ if (PRODUCTION) {
 setUpLogglyLogger(application);
 setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'popup.html');
+setUpI18n(application);
 
 application.run(['Analytics', (analytics) => {
     if (!TEST) {

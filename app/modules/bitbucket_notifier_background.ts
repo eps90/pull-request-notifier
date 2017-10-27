@@ -12,8 +12,11 @@ import {SoundManager} from '../services/sound_manager';
 import {SoundRepository} from '../services/sound_repository';
 import 'angular-loggly-logger';
 import 'angular-google-analytics';
+import 'angular-translate';
+import 'angular-translate-handler-log';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
+import {setUpI18n} from '../helpers/i18n';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
 import {PopupOpenedTimingEvent} from '../models/analytics_event/popup_opened_timing_event';
@@ -25,7 +28,8 @@ const application = angular.module(
         'LocalStorageModule',
         'btford.socket-io',
         'logglyLogger',
-        'angular-google-analytics'
+        'angular-google-analytics',
+        'pascalprecht.translate'
     ]);
 
 application.directive('background', BackgroundComponent.factory());
@@ -53,6 +57,7 @@ if (PRODUCTION) {
 setUpLogglyLogger(application);
 setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'background.html');
+setUpI18n(application);
 
 application.run(['Analytics', 'TimeTracker', (analytics, timeTracker: TimeTracker) => {
     if (!TEST) {
