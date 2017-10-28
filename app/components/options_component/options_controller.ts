@@ -5,13 +5,24 @@ import {Howl} from 'howler';
 import {Sound} from '../../models/sound';
 import {PullRequest} from '../../models/pull_request';
 import {User} from '../../models/user';
+import {LanguageRepositoryInterface} from '../../services/language_repository/language_repository_interface';
+import {Language} from '../../models/language';
 
 export class OptionsController implements ng.IComponentController {
     public examples: any;
     public options: any;
     public sounds: Sound[];
+    public languages: Language[];
 
-    public static $inject: string[] = ['Config', 'growl', '$interval', 'SoundRepository', 'Notifier', '$translate'];
+    public static $inject: string[] = [
+        'Config',
+        'growl',
+        '$interval',
+        'SoundRepository',
+        'Notifier',
+        'LanguageRepository',
+        '$translate'
+    ];
 
     constructor(
         private config: Config,
@@ -19,6 +30,7 @@ export class OptionsController implements ng.IComponentController {
         private $interval: ng.IIntervalService,
         private soundRepository: SoundRepository,
         private notifier: Notifier,
+        private languageRepository: LanguageRepositoryInterface,
         private $translate: angular.translate.ITranslateService
     ) {}
 
@@ -76,10 +88,12 @@ export class OptionsController implements ng.IComponentController {
             newPullRequestSound: this.config.getNewPullRequestSound(),
             approvedPullRequestSound: this.config.getApprovedPullRequestSound(),
             mergedPullRequestSound: this.config.getApprovedPullRequestSound(),
-            reminderSound: this.config.getReminderSound()
+            reminderSound: this.config.getReminderSound(),
+            chosenLanguage: this.config.getLanguage()
         };
 
         this.sounds = this.soundRepository.findAll();
+        this.languages = this.languageRepository.findAll();
     }
 
     public saveOptions(): void {
@@ -90,6 +104,7 @@ export class OptionsController implements ng.IComponentController {
         this.config.setApprovedPullRequestSound(this.options.approvedPullRequestSound);
         this.config.setMergedPullRequestSound(this.options.mergedPullRequestSound);
         this.config.setReminderSound(this.options.reminderSound);
+        this.config.setLanguage(this.options.chosenLanguage);
 
         this.growl.success(this.$translate.instant('OPTIONS.GROWL.SETTINGS_APPLIED'));
         this.growl.warning(

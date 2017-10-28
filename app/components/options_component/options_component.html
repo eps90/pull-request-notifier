@@ -21,6 +21,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="language" class="col-sm-3 control-label">{{ 'OPTIONS.LANGUAGE'|translate }}</label>
+                            <div class="col-sm-9">
+                                <select name="language" id="language" class="form-control"
+                                        ng-model="$ctrl.options.chosenLanguage" ng-options="selectLang.code as selectLang.name for selectLang in $ctrl.languages"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label">{{'OPTIONS.PR_PROGRESS.TITLE'|translate}}</label>
                             <div class="col-sm-5">
                                 <div class="radio">
