@@ -1,5 +1,6 @@
 import {LangMetaFileInterface} from '../models/lang_meta_file_interface';
 import {TranslationInterface} from '../models/translation_interface';
+import {Language} from '../models/language';
 
 export function setUpI18n(application: ng.IModule): void {
     application.config([
@@ -13,6 +14,17 @@ export function setUpI18n(application: ng.IModule): void {
                 .useMissingTranslationHandlerLog();
         }
     ]);
+}
+
+export function getLanguages(): Language[] {
+    const translations = loadTranslations();
+    return translations.map((translation: TranslationInterface) => {
+        return new Language(
+            translation.code,
+            translation.name,
+            translation.isDefault
+        );
+    });
 }
 
 function loadTranslations(): TranslationInterface[] {
@@ -36,6 +48,7 @@ function loadTranslations(): TranslationInterface[] {
 
         translations.push({
             code: metaFile.code,
+            name: metaFile.name,
             translations: currentLanguage,
             availableKeys: metaFile.availableKeys || [],
             isDefault: metaFile.isDefault || false

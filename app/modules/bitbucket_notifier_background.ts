@@ -16,7 +16,7 @@ import 'angular-translate';
 import 'angular-translate-handler-log';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
-import {setUpI18n} from '../helpers/i18n';
+import {getLanguages, setUpI18n} from '../helpers/i18n';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
 import {PopupOpenedTimingEvent} from '../models/analytics_event/popup_opened_timing_event';
@@ -45,6 +45,8 @@ application.service('SoundManager', SoundManager);
 application.service('SoundRepository', SoundRepository);
 application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 application.service('TimeTracker', TimeTracker);
+
+application.value('languages', getLanguages());
 
 if (PRODUCTION) {
     application.config(['$compileProvider', ($compileProvider: ng.ICompileProvider) =>  {

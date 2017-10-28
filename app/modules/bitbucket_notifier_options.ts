@@ -16,7 +16,7 @@ import 'angular-translate';
 import 'angular-translate-handler-log';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
-import {setUpI18n} from '../helpers/i18n';
+import {getLanguages, setUpI18n} from '../helpers/i18n';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
 
@@ -45,6 +45,7 @@ application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 application.service('TimeTracker', TimeTracker);
 
 application.value('bitbucketUrl', 'https://bitbucket.org');
+application.value('languages', getLanguages());
 
 application.config(['growlProvider', (growlProvider: angular.growl.IGrowlProvider) => {
     growlProvider.globalPosition('top-center');
