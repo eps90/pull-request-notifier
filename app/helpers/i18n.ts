@@ -3,7 +3,7 @@ export function setUpI18n(application: ng.IModule): void {
         '$translateProvider',
         ($translateProvider: angular.translate.ITranslateProvider) => {
             $translateProvider
-                .translations('en', require('./../lang/en.json'))
+                .translations('en', require('../lang/en/en.json'))
                 .registerAvailableLanguageKeys(
                     ['en'],
                     {
