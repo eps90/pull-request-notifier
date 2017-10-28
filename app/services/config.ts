@@ -2,15 +2,17 @@ import {SoundRepository} from './sound_repository';
 import * as _ from 'lodash';
 import {NotificationSound} from '../models/notification_sound';
 import {ConfigObject} from '../models/config_object';
+import {LanguageRepositoryInterface} from './language_repository/language_repository_interface';
 
 export class Config {
-    public static $inject: string[] = ['localStorageService', 'SoundRepository'];
+    public static $inject: string[] = ['localStorageService', 'SoundRepository', 'LanguageRepository'];
 
     private soundsDefaults: any = {};
 
     constructor(
         private localStorageService: angular.local.storage.ILocalStorageService,
-        soundRepository: SoundRepository
+        soundRepository: SoundRepository,
+        private languageRepository: LanguageRepositoryInterface
     ) {
         this.soundsDefaults[NotificationSound.NEW_PULLREQUEST] = soundRepository.findById('bell').id;
         this.soundsDefaults[NotificationSound.APPROVED_PULLREQUEST] = soundRepository.findById('ring').id;
@@ -78,6 +80,14 @@ export class Config {
 
     public getReminderSound(): string {
         return this.getSound(NotificationSound.REMINDER);
+    }
+
+    public getLanguage(): string {
+        return this.localStorageService.get('language') || this.languageRepository.findDefault().code;
+    }
+
+    public setLanguage(language: string) {
+        this.localStorageService.set('language', language);
     }
 
     private getSound(soundId: string): string {

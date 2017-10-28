@@ -4,6 +4,7 @@ import * as angular from 'angular';
 import {ConfigObject} from '../../../app/models/config_object';
 import {PullRequestProgress} from '../../../app/models/pull_request_progress';
 import {NotificationSound} from '../../../app/models/notification_sound';
+import {languages} from './mock/languages';
 
 describe('Config', () => {
     let config: Config;
@@ -11,6 +12,12 @@ describe('Config', () => {
     let soundRepository: SoundRepository;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
+    beforeEach(angular.mock.module([
+        '$provide',
+        ($provide: ng.auto.IProvideService) => {
+            $provide.value('languages', languages);
+        }
+    ]));
     beforeEach(inject([
         'Config',
         'localStorageService',
@@ -140,6 +147,25 @@ describe('Config', () => {
             it('should return default sound for reminder', () => {
                 expect(config.getReminderSound()).toEqual(soundRepository.findById('alarm').id);
             });
+        });
+    });
+
+    describe('of language', () => {
+        it('should get default language', () => {
+            const expectedLang = 'en';
+            expect(config.getLanguage()).toEqual(expectedLang);
+        });
+
+        it('should return set language', () => {
+            const setLanguage = 'pl';
+            localStorageService.set('language', setLanguage);
+            expect(config.getLanguage()).toEqual(setLanguage);
+        });
+
+        it('should set a language', () => {
+            const setLanguage = 'fr';
+            config.setLanguage(setLanguage);
+            expect(config.getLanguage()).toEqual(setLanguage);
         });
     });
 });
