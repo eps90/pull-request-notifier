@@ -76,8 +76,9 @@
         "GROWL": {
             "SETTINGS_APPLIED": "Settings applied!",
             "EXTENSION_WILL_CLOSE": "Extension will reboot in in 5 seconds"
-        }
-    },
+        },
+        "LANGUAGE": "Language"
+   },
     "NOTIFICATIONS": {
         "NEW_PR": "New pull request assigned to you!",
         "APPROVED_PR": "Your pull request has been approved",
