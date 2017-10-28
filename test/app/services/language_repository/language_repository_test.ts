@@ -1,20 +1,17 @@
 import * as angular from 'angular';
 import {Language} from '../../../../app/models/language';
 import {LanguageRepository} from '../../../../app/services/language_repository/language_repository';
+import {languages} from '../mock/languages';
 
 describe('Language Repository', () => {
-    const languages = [
-        new Language('en', 'English', true),
-        new Language('de', 'German'),
-        new Language('fr', 'French')
-    ];
+    const definedLanguages = languages;
     let languageRepository: LanguageRepository;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {
-            $provide.value('languages', languages);
+            $provide.value('languages', definedLanguages);
         }
     ]));
     beforeEach(angular.mock.inject([
@@ -26,11 +23,11 @@ describe('Language Repository', () => {
 
     it('should return all languages', () => {
         const foundLangs = languageRepository.findAll();
-        expect(foundLangs).toEqual(languages);
+        expect(foundLangs).toEqual(definedLanguages);
     });
 
     it('should find the default language', () => {
-        const expectedLanguage = languages[0];
+        const expectedLanguage = definedLanguages[0];
         const actualLanguage = languageRepository.findDefault();
 
         expect(expectedLanguage).toEqual(actualLanguage);
