@@ -24,31 +24,54 @@ and gets approvals from all people involved in a code review.
 
 ### Application messages
 
-1. Find a file with original English translations in `app/lang/en.json` 
-and make a copy with name of desired language code, e.g. `de.json`
-2. Replace original translations with messages in the chosen language
-3. Load new messages file and add a location to language mapping in `app/helpers/i18n.ts`, e.g.:
-```typescript
-// ...
-$translateProvider
-    .translations('en', require('./../lang/en.json'))
-    .translations('de', require('./../lang/de.json'))  // HERE
-    .registerAvailableLanguageKeys(
-        ['en', 'de'],
-        {
-            'en_*': 'en',
-            'en-*': 'en',
-            'de-*': 'de',                              // HERE
-            'de_*': 'de',                              // HERE
-            '*': 'en'
-        }
-    )
-// ...
-```
+1. In `app/lang`, please find a directory with language code you're going to translation from (e.g. `app/lang/en`) 
+and make its copy, calling it with the desired translations' language code, e.g. `app/lang/de`.
+2. Edit copied JSON files with correct translations. You can create separate JSON files and import them later.
+3. Customize `meta.json` file in new directory with your translation's metadata. Please find detailed description of 
+translation metadata files below. 
 4. Create a pull request following [Pull Request Process](#pull-request-process) chapter
 
-> *Note:* You can use [ngTranslateEditor](http://mrhieu.github.io/ngTranslateEditor) to create new translations from existing file.
+> *Note:* You can use [ngTranslateEditor](http://mrhieu.github.io/ngTranslateEditor) to create new translations 
+from existing file.
 
+
+### Translation metadata files
+
+Every translation directory has to contain metadata file. It contains basic language info and files that should be imported. 
+It **must be** called `meta.json`. Here's an example of metadata file for polish translations:
+
+```json
+{
+    "name": "Polish",
+    "code": "pl",
+    "isDefault": false,
+    "files": [
+        "pl.json",
+        "messages_pl.json",
+        "subdir/other_messages.json"
+    ],
+    "availableKeys": [
+        "pl_*",
+        "PL-*"
+    ]
+}
+```
+
+Each metadata file **must** contain several obligatory fields:
+
+* **name** - The name of the language. This name will be displayed in application settings
+* **code** - This is the language code, which must be unique among all the languages. It will be used as key for translation
+module configuration. You don't have to follow ISO codes here.
+* **files** - The array of paths to translation paths, relative to `meta.json` file. You can load files from subdirectories here.
+You must provide **at least one** path to translation.
+
+Moreover, there are some properties which are not required: 
+* **availableKeys** - This is the array of language codes provided by browsers to determine user's language. Since there's
+no single standard for such language, you can provide multiple languages and wildcards in languages codes.
+The codes in the example above will match `pl_pl`, `pl_PL`, `PL-PL`, `pl-pl` codes. This property is not obligatory, but if you
+pass nothing there, the application won't switch to the browser's language if it find translation for it.
+* **isDefault** which tells the translation module that this language should be application's default language if none of languages
+provided so far won't be able to resolve to browser's language. If not provided, will be resolved to `false` by default.
 
 ## Contributor Covenant Code of Conduct
 
