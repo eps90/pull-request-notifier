@@ -62,22 +62,30 @@ function configureTranslations(
     translations: TranslationInterface[],
     provider: angular.translate.ITranslateProvider
 ): void {
-    const availableKeys = {};
-    const availableLanguages: string[] = [];
+    let availableKeys = {};
+    let defaultLang;
+    const availableLanguages = new Set<string>();
 
     translations.forEach((translation) => {
-        availableLanguages.push(translation.code);
+        availableLanguages.add(translation.code);
         provider.translations(translation.code, translation.translations);
         translation.availableKeys.forEach((availableKey) => {
             availableKeys[availableKey] = translation.code;
         });
         if (translation.isDefault) {
             assertDefaultLanguageIsNotReassigned(availableKeys);
-            availableKeys['*'] = translation.code;
+            defaultLang = translation.code;
         }
     });
 
-    provider.registerAvailableLanguageKeys(availableLanguages, availableKeys);
+    if (defaultLang !== undefined) {
+        availableKeys = {
+            ...availableKeys,
+            '*': defaultLang
+        };
+    }
+
+    provider.registerAvailableLanguageKeys([...availableLanguages], availableKeys);
 }
 
 function assertDefaultLanguageIsNotReassigned(availableKeys: any) {
