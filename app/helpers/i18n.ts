@@ -8,10 +8,15 @@ export function setUpI18n(application: ng.IModule): void {
         ($translateProvider: angular.translate.ITranslateProvider) => {
             const translations = loadTranslations();
             configureTranslations(translations, $translateProvider);
-            $translateProvider
-                .determinePreferredLanguage()
-                .useSanitizeValueStrategy('escape')
-                .useMissingTranslationHandlerLog();
+
+            if (!TEST) {
+                $translateProvider
+                    .determinePreferredLanguage()
+                    .useMissingTranslationHandlerLog()
+                    .useSanitizeValueStrategy('escape');
+            } else {
+                $translateProvider.use('en');
+            }
         }
     ]);
 }
