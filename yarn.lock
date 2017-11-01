@@ -197,6 +197,10 @@ angular-animate@^1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/angular-animate/-/angular-animate-1.6.5.tgz#3817c75880d05fc899a6c8d4b09d1cc62a71e93a"
 
+"angular-cookies@>=1.2.26 <1.7":
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/angular-cookies/-/angular-cookies-1.6.6.tgz#311642dafdbc4ff7cd69220b8925b88359fba148"
+
 angular-emoji-filter-hd@^0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/angular-emoji-filter-hd/-/angular-emoji-filter-hd-0.0.9.tgz#10800fbfa6680817238a8dd31f988bd30d41e6df"
@@ -255,6 +259,20 @@ angular-translate-handler-log@^2.15.2:
   resolved "https://registry.yarnpkg.com/angular-translate-handler-log/-/angular-translate-handler-log-2.15.2.tgz#8720d3823673384688973f98cbd7e0f7fe4b1234"
   dependencies:
     angular-translate "~2.15.2"
+
+angular-translate-storage-cookie@~2.15.2:
+  version "2.15.2"
+  resolved "https://registry.yarnpkg.com/angular-translate-storage-cookie/-/angular-translate-storage-cookie-2.15.2.tgz#be3d68b54353802da10724d38d0b694e5d43f5ca"
+  dependencies:
+    angular-cookies ">=1.2.26 <1.7"
+    angular-translate "~2.15.2"
+
+angular-translate-storage-local@^2.15.2:
+  version "2.15.2"
+  resolved "https://registry.yarnpkg.com/angular-translate-storage-local/-/angular-translate-storage-local-2.15.2.tgz#919db2774f98d110cfbe02ba212bbc618974771a"
+  dependencies:
+    angular-translate "~2.15.2"
+    angular-translate-storage-cookie "~2.15.2"
 
 angular-translate@^2.15.2, angular-translate@~2.15.2:
   version "2.15.2"
