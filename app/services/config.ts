@@ -5,14 +5,15 @@ import {ConfigObject} from '../models/config_object';
 import {LanguageRepositoryInterface} from './language_repository/language_repository_interface';
 
 export class Config {
-    public static $inject: string[] = ['localStorageService', 'SoundRepository', 'LanguageRepository'];
+    public static $inject: string[] = ['localStorageService', 'SoundRepository', 'LanguageRepository', '$translate'];
 
     private soundsDefaults: any = {};
 
     constructor(
         private localStorageService: angular.local.storage.ILocalStorageService,
         soundRepository: SoundRepository,
-        private languageRepository: LanguageRepositoryInterface
+        private languageRepository: LanguageRepositoryInterface,
+        private $translate: angular.translate.ITranslateService
     ) {
         this.soundsDefaults[NotificationSound.NEW_PULLREQUEST] = soundRepository.findById('bell').id;
         this.soundsDefaults[NotificationSound.APPROVED_PULLREQUEST] = soundRepository.findById('ring').id;
@@ -88,6 +89,7 @@ export class Config {
 
     public setLanguage(language: string) {
         this.localStorageService.set('language', language);
+        this.$translate.use(language);
     }
 
     private getSound(soundId: string): string {

@@ -10,6 +10,7 @@ describe('Config', () => {
     let config: Config;
     let localStorageService: angular.local.storage.ILocalStorageService;
     let soundRepository: SoundRepository;
+    let $translate: angular.translate.ITranslateService;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(angular.mock.module([
@@ -22,10 +23,12 @@ describe('Config', () => {
         'Config',
         'localStorageService',
         'SoundRepository',
-        (c, l, sr) => {
+        '$translate',
+        (c, l, sr, $t) => {
             config = c;
             localStorageService = l;
             soundRepository = sr;
+            $translate = $t;
         }
     ]));
 
@@ -166,6 +169,15 @@ describe('Config', () => {
             const setLanguage = 'fr';
             config.setLanguage(setLanguage);
             expect(config.getLanguage()).toEqual(setLanguage);
+        });
+
+        it('should use newly set translation', () => {
+            spyOn($translate, 'use');
+
+            const setLang = 'de';
+            config.setLanguage(setLang);
+
+            expect($translate.use as jasmine.Spy).toHaveBeenCalledWith(setLang);
         });
     });
 });
