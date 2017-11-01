@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import 'angular-cookies';
 
 import {PullRequestComponent} from '../components/pull_request_component/pull_request_component';
 import {PullRequestsListComponent} from '../components/pull_requests_list_component/pull_requests_list_component';
@@ -22,6 +23,8 @@ import {RoutingConfiguration} from '../config/routing';
 import 'angular-loggly-logger';
 import 'angular-google-analytics';
 import 'angular-translate';
+import 'angular-translate-storage-local';
+import 'angular-translate-storage-cookie';
 import 'angular-translate-handler-log';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
@@ -42,7 +45,8 @@ const application = angular.module(MODULE_NAME, [
     'ngAnimate',
     'logglyLogger',
     'angular-google-analytics',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'ngCookies'
 ]);
 application.component('pullRequest', new PullRequestComponent());
 application.component('pullRequestsList', new PullRequestsListComponent());

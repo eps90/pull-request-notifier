@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import 'angular-cookies';
 
 import {BackgroundComponent} from '../components/background_component/background_component';
 import {PullRequestRepository} from '../services/pull_request_repository';
@@ -13,6 +14,8 @@ import {SoundRepository} from '../services/sound_repository';
 import 'angular-loggly-logger';
 import 'angular-google-analytics';
 import 'angular-translate';
+import 'angular-translate-storage-local';
+import 'angular-translate-storage-cookie';
 import 'angular-translate-handler-log';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
@@ -30,7 +33,8 @@ const application = angular.module(
         'btford.socket-io',
         'logglyLogger',
         'angular-google-analytics',
-        'pascalprecht.translate'
+        'pascalprecht.translate',
+        'ngCookies'
     ]);
 
 application.directive('background', BackgroundComponent.factory());

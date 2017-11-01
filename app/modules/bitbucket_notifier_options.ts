@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import 'angular-cookies';
 
 import {OptionsComponent} from '../components/options_component/options_component';
 import {SectionTitleComponent} from '../components/section_title_component/section_title_component';
@@ -14,6 +15,8 @@ import 'angular-loggly-logger';
 import 'angular-google-analytics';
 import 'angular-translate';
 import 'angular-translate-handler-log';
+import 'angular-translate-storage-local';
+import 'angular-translate-storage-cookie';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {getLanguages, setUpI18n} from '../helpers/i18n';
@@ -29,7 +32,8 @@ const application = angular.module(
         'angular-growl',
         'logglyLogger',
         'angular-google-analytics',
-        'pascalprecht.translate'
+        'pascalprecht.translate',
+        'ngCookies'
     ]);
 
 application.component('options', new OptionsComponent());
