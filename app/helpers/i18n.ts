@@ -11,6 +11,7 @@ export function setUpI18n(application: ng.IModule): void {
 
             if (!TEST) {
                 $translateProvider
+                    .useLocalStorage()
                     .determinePreferredLanguage()
                     .useMissingTranslationHandlerLog()
                     .useSanitizeValueStrategy('escape');
