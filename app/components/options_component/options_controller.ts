@@ -162,4 +162,8 @@ export class OptionsController implements ng.IComponentController {
                 break;
         }
     }
+
+    public changeLanguage() {
+        this.config.setLanguage(this.options.chosenLanguage);
+    }
 }

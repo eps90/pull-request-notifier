@@ -283,4 +283,16 @@ describe('OptionsComponent', () => {
             expect(notifierFunc).toHaveBeenCalled();
         }
     });
+
+    describe('Language', () => {
+        it('should save language config immediately', () => {
+            element = $compile('<options></options>')($scope);
+            $scope.$digest();
+
+            const languageElement = element.find('select#language');
+            languageElement.val('string:fr').triggerHandler('change');
+
+            expect(config.setLanguage).toHaveBeenCalledWith('fr');
+        });
+    });
 });
