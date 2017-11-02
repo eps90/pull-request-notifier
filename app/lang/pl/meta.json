@@ -1,0 +1,12 @@
+{
+    "name": "Polski",
+    "code": "pl",
+    "files": [
+        "pl.json"
+    ],
+    "availableKeys": [
+        "pl_*",
+        "pl-*",
+        "pl"
+    ]
+}

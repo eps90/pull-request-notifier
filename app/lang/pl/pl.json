@@ -1,0 +1,95 @@
+{
+    "PR_LIST": {
+        "ACTIVE_PRS_TITLE": "Aktywne Pull Requesty",
+        "TAB_TITLE": {
+            "ASSIGNED": "Przypisane",
+            "AUTHORED": "Założone",
+            "SUBSCRIBED": "Obserwowane"
+        },
+        "NO_PRS_MSG": {
+            "ASSIGNED": "Brak przypisanych Pull Requestów",
+            "AUTHORED": "Brak stworzonych Pull Requestów"
+        },
+        "PR_LINK": {
+            "OPEN": "Otwórz Pull Request"
+        },
+        "HEADER": {
+            "ID": "Id",
+            "TITLE": "Tytuł",
+            "PROJECT": "Projekt",
+            "AUTHOR": "Autor",
+            "PROGRESS": "Postęp",
+            "ACTIONS": "Akcje",
+            "VOTING": "Postęp"
+        }
+    },
+    "PREVIEW": {
+        "TITLE": "Tytuł",
+        "TARGET_BRANCH": "Branch",
+        "DESCRIPTION": "Opis",
+        "NO_DESCRIPTION": "Brak opisu",
+        "AUTHOR": "Autor",
+        "REVIEWERS": "Przypisani",
+        "NO_REVIEWERS": "Brak przypisanych"
+    },
+    "APPROVAL_PROGRESS": {
+        "NO_ASSIGNEES": "Brak przypisanych"
+    },
+    "REMINDER": {
+        "REMIND_ASSIGNEES": "Przypomnij przypisanym"
+    },
+    "USER_VOTE": {
+        "WAITING": "Oczekuje",
+        "APPROVED": "Zatwierdzono"
+    },
+    "OPTIONS": {
+        "OPTIONS": "Opcje",
+        "USER": {
+            "BITBUCKET_LOGIN": "Login na Bitbucket",
+            "SOCKET_ADDRESS": "Adres serwera socket"
+        },
+        "PR_PROGRESS": {
+            "TITLE": "Postęp pull requesta",
+            "PROPORTIONS": "Propocje",
+            "PERCENTAGE": "Procent",
+            "PROGRESS_BAR": "Pasek postępu"
+        },
+        "NOTIFICATIONS": {
+            "TITLE": "Dźwięki powiadomień",
+            "NEW_PR": "Nowy pull request",
+            "APPROVED_PR": "Zatwierdzony pull request",
+            "MERGED_PR": "Zmerge'owany pull request",
+            "REMINDER": "Przypomnienie",
+            "SAVE": "Zapisz"
+        },
+        "DEVELOPER_OPTIONS": {
+            "TITLE": "Opcje programisty",
+            "NOTIFICATIONS": "Powiadomienia",
+            "NEW_PR": "Przypisany",
+            "APPROVED_PR": "Zatwierdzony",
+            "MERGED_PR": "Zmerge'owany",
+            "REMINDER": "Przypomnij",
+            "UPDATED_PR": "Zaktualizowany",
+            "COMMENTED_PR": "Komentarz",
+            "REPLIED_PR": "Odpowiedź na komentarz"
+        },
+        "GROWL": {
+            "SETTINGS_APPLIED": "Ustawienia zapisane!",
+            "EXTENSION_WILL_CLOSE": "Rozszerzenie zostanie uruchomione w ciągu 5 sekend"
+        },
+        "LANGUAGE": "Język"
+   },
+    "NOTIFICATIONS": {
+        "NEW_PR": "Pull request został przypisany!",
+        "APPROVED_PR": "Twój pull request zostal zatwierdzony",
+        "MERGED_PR": "Twój pull request został zmerge'owany",
+        "REMINDER": "Przejrzyj pull requesta!",
+        "UPDATED_PR": "Pull request zaktualizowany",
+        "COMMENTED_PR": "Nowy komentarz do pull requesta!",
+        "REPLIED_PR": "Nowa odpowiedź na komentarz"
+    },
+    "COMMON": {
+        "EG_ABBR": "np.",
+        "BY": "od"
+    }
+}
