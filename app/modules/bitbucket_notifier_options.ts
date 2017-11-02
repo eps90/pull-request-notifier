@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import 'angular-cookies';
 
 import {OptionsComponent} from '../components/options_component/options_component';
 import {SectionTitleComponent} from '../components/section_title_component/section_title_component';
@@ -14,11 +15,14 @@ import 'angular-loggly-logger';
 import 'angular-google-analytics';
 import 'angular-translate';
 import 'angular-translate-handler-log';
+import 'angular-translate-storage-local';
+import 'angular-translate-storage-cookie';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
-import {setUpI18n} from '../helpers/i18n';
+import {getLanguages, setUpI18n} from '../helpers/i18n';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
+import {LanguageRepository} from '../services/language_repository/language_repository';
 
 export const MODULE_NAME = 'bitbucketNotifier.options';
 const application = angular.module(
@@ -28,7 +32,8 @@ const application = angular.module(
         'angular-growl',
         'logglyLogger',
         'angular-google-analytics',
-        'pascalprecht.translate'
+        'pascalprecht.translate',
+        'ngCookies'
     ]);
 
 application.component('options', new OptionsComponent());
@@ -43,8 +48,10 @@ application.service('Notifier', Notifier);
 application.service('NotificationRepository', NotificationRepository);
 application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 application.service('TimeTracker', TimeTracker);
+application.service('LanguageRepository', LanguageRepository);
 
 application.value('bitbucketUrl', 'https://bitbucket.org');
+application.value('languages', getLanguages());
 
 application.config(['growlProvider', (growlProvider: angular.growl.IGrowlProvider) => {
     growlProvider.globalPosition('top-center');

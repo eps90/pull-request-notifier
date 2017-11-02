@@ -3,7 +3,7 @@
 
 var browsers = process.env.hasOwnProperty('CI_BROWSER')
     ? [process.env.CI_BROWSER]
-    : ['Chrome', 'PhantomJS'];
+    : ['Chrome'];
 var generateCoverage = !!process.env['GENERATE_COVERAGE'] || false;
 module.exports = function (config) {
     var karmaConfig = {

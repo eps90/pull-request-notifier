@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import 'angular-cookies';
 
 import {BackgroundComponent} from '../components/background_component/background_component';
 import {PullRequestRepository} from '../services/pull_request_repository';
@@ -13,13 +14,16 @@ import {SoundRepository} from '../services/sound_repository';
 import 'angular-loggly-logger';
 import 'angular-google-analytics';
 import 'angular-translate';
+import 'angular-translate-storage-local';
+import 'angular-translate-storage-cookie';
 import 'angular-translate-handler-log';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
-import {setUpI18n} from '../helpers/i18n';
+import {getLanguages, setUpI18n} from '../helpers/i18n';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
 import {PopupOpenedTimingEvent} from '../models/analytics_event/popup_opened_timing_event';
+import {LanguageRepository} from '../services/language_repository/language_repository';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
 const application = angular.module(
@@ -29,7 +33,8 @@ const application = angular.module(
         'btford.socket-io',
         'logglyLogger',
         'angular-google-analytics',
-        'pascalprecht.translate'
+        'pascalprecht.translate',
+        'ngCookies'
     ]);
 
 application.directive('background', BackgroundComponent.factory());
@@ -45,6 +50,9 @@ application.service('SoundManager', SoundManager);
 application.service('SoundRepository', SoundRepository);
 application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 application.service('TimeTracker', TimeTracker);
+application.service('LanguageRepository', LanguageRepository);
+
+application.value('languages', getLanguages());
 
 if (PRODUCTION) {
     application.config(['$compileProvider', ($compileProvider: ng.ICompileProvider) =>  {

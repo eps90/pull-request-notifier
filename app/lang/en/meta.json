@@ -1,0 +1,12 @@
+{
+    "name": "English",
+    "code": "en",
+    "isDefault": true,
+    "files": [
+        "en.json"
+    ],
+    "availableKeys": [
+        "en_*",
+        "en-*"
+    ]
+}
