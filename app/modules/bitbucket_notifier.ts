@@ -26,6 +26,8 @@ import 'angular-translate';
 import 'angular-translate-storage-local';
 import 'angular-translate-storage-cookie';
 import 'angular-translate-handler-log';
+import 'messageformat';
+import 'angular-translate-interpolation-messageformat';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
