@@ -24,6 +24,7 @@ import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
 import {PopupOpenedTimingEvent} from '../models/analytics_event/popup_opened_timing_event';
 import {LanguageRepository} from '../services/language_repository/language_repository';
+import {DoNotDisturbService} from '../services/do_not_disturb_service';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
 const application = angular.module(
@@ -51,6 +52,7 @@ application.service('SoundRepository', SoundRepository);
 application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 application.service('TimeTracker', TimeTracker);
 application.service('LanguageRepository', LanguageRepository);
+application.service('DndService', DoNotDisturbService);
 
 application.value('languages', getLanguages());
 

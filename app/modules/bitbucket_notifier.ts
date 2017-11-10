@@ -32,6 +32,7 @@ import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {setUpI18n, getLanguages} from '../helpers/i18n';
 import {TimeTracker} from '../services/time_tracker';
 import {LanguageRepository} from '../services/language_repository/language_repository';
+import {DoNotDisturbService} from '../services/do_not_disturb_service';
 
 export const MODULE_NAME = 'bitbucketNotifier';
 
@@ -71,6 +72,7 @@ application.service('Config', Config);
 application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 application.service('TimeTracker', TimeTracker);
 application.service('LanguageRepository', LanguageRepository);
+application.service('DndService', DoNotDisturbService);
 
 application.value('bitbucketUrl', 'https://bitbucket.org');
 application.value('languages', getLanguages());

@@ -23,6 +23,7 @@ import {getLanguages, setUpI18n} from '../helpers/i18n';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
 import {LanguageRepository} from '../services/language_repository/language_repository';
+import {DoNotDisturbService} from '../services/do_not_disturb_service';
 
 export const MODULE_NAME = 'bitbucketNotifier.options';
 const application = angular.module(
@@ -49,6 +50,7 @@ application.service('NotificationRepository', NotificationRepository);
 application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 application.service('TimeTracker', TimeTracker);
 application.service('LanguageRepository', LanguageRepository);
+application.service('DndService', DoNotDisturbService);
 
 application.value('bitbucketUrl', 'https://bitbucket.org');
 application.value('languages', getLanguages());
