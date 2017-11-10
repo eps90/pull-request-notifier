@@ -3,25 +3,26 @@ import {Duration} from '../services/dnd/duration';
 import {HOURS, MINUTES} from '../services/dnd/duration_unit';
 
 export function setUpDnd(
-    dndService: DoNotDisturbService
+    dndService: DoNotDisturbService,
+    $translate: angular.translate.ITranslateService
 ) {
-    const durations: Map<Duration, string> = new Map();
-    durations.set(new Duration(10, MINUTES), '10 minutes');
-    durations.set(new Duration(30, MINUTES), '30 minutes');
-    durations.set(new Duration(1, HOURS), '1 hour');
-    durations.set(new Duration(4, HOURS), '4 hours');
-    durations.set(new Duration(8, HOURS), '8 hours');
+    const durations: Set<Duration> = new Set();
+    durations.add(new Duration(10, MINUTES));
+    durations.add(new Duration(30, MINUTES));
+    durations.add(new Duration(1, HOURS));
+    durations.add(new Duration(4, HOURS));
+    durations.add(new Duration(8, HOURS));
 
     const parentMenuId = 'DND__parentMenu';
     chrome.contextMenus.create({
         id: parentMenuId,
-        title: 'Do not disturb',
+        title: $translate.instant('DND.TITLE'),
         contexts: ['browser_action']
     });
 
     chrome.contextMenus.create({
         id: 'DND__off',
-        title: 'Turn off',
+        title: $translate.instant('DND.TURN_OFF'),
         contexts: ['browser_action'],
         checked: true,
         parentId: parentMenuId,
@@ -35,10 +36,13 @@ export function setUpDnd(
         contexts: ['browser_action']
     });
 
-    durations.forEach((label, duration) => {
+    durations.forEach((duration) => {
         chrome.contextMenus.create({
             id: `DND__${duration}`,
-            title: label,
+            title: $translate.instant(
+                `DND.DURATION.${duration.unit.toUpperCase()}`,
+                {VAL: duration.value}
+            ),
             contexts: ['browser_action'],
             parentId: parentMenuId,
             onclick: () => dndService.turnOnDnd(duration)
