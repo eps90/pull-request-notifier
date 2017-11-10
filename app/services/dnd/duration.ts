@@ -14,6 +14,10 @@ export class Duration {
         return this._unit;
     }
 
+    public toString(): string {
+        return `${this._value} ${this._unit}`;
+    }
+
     private assertValidDurationValue(value: number) {
         if (value < 0) {
             throw new Error('Duration value must be greater or equal than zero');

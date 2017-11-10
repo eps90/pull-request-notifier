@@ -19,4 +19,12 @@ describe('Duration', () => {
     it('should throw when unit is invalid', () => {
         expect(() => {new Duration(100, 'invalid unit'); }).toThrow();
     });
+
+    it('should be able to be casted to string', () => {
+        const someDuration = new Duration(10, MINUTES);
+        const expectedString = '10 minutes';
+        const actualString = String(someDuration);
+
+        expect(actualString).toEqual(expectedString);
+    });
 });
