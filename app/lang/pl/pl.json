@@ -88,6 +88,14 @@
         "COMMENTED_PR": "Nowy komentarz do pull requesta!",
         "REPLIED_PR": "Nowa odpowiedź na komentarz"
     },
+    "DND": {
+        "TITLE": "Nie przeszkadzać",
+        "TURN_OFF": "Wyłącz",
+        "DURATION": {
+            "MINUTES": "{VAL} {VAL, plural, one{minuta} few{minuty} many{minut} other{minut}}",
+            "HOURS": "{VAL} {VAL, plural, one{godzina} few{godziny} many{godzin} other{godzin}}"
+        }
+    },
     "COMMON": {
         "EG_ABBR": "np.",
         "BY": "od"
