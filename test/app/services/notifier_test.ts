@@ -14,6 +14,7 @@ describe('Notifier', () => {
     let notificationRepostory: NotificationRepository;
     let notificationStub: PullRequestNotification;
     let onClickedStub;
+    let isDndOn: boolean;
 
     beforeEach(() => {
         expectedOptions = {
@@ -25,6 +26,7 @@ describe('Notifier', () => {
             priority: 2,
             requireInteraction: true
         };
+        isDndOn = false;
     });
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(() => {
@@ -62,6 +64,11 @@ describe('Notifier', () => {
                 playMergedPullRequestSound: jasmine.createSpy('SoundManager.playMergedPullRequestSound'),
                 playReminderSound: jasmine.createSpy('SoundManager.playReminderSound')
             });
+            $provide.value('DndService', {
+                isDndOn: jasmine.createSpy('DndService.isDndOn').and.callFake(() => {
+                    return isDndOn;
+                })
+            });
         }
     ]));
     beforeEach(inject([
@@ -82,6 +89,15 @@ describe('Notifier', () => {
         notifier.notify(expectedOptions, notificationId, notificationLink);
         expect(window['chrome'].notifications.create).toHaveBeenCalledWith(notificationId, expectedOptions);
         expect(notificationRepostory.add).toHaveBeenCalledWith(notificationId, notificationLink);
+    });
+
+    it('should not show the notification if DND is on', () => {
+        isDndOn = true;
+        const notificationId = '23121321312';
+        const notificationLink = 'http://example.com';
+        notifier.notify(expectedOptions, notificationId, notificationLink);
+        expect(window['chrome'].notifications.create).not.toHaveBeenCalled();
+        expect(notificationRepostory.add).not.toHaveBeenCalled();
     });
 
     it('should open new tab with pull request on click and close the notification', () => {
