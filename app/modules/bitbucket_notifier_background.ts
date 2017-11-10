@@ -22,6 +22,7 @@ import 'angular-translate-interpolation-messageformat';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {getLanguages, setUpI18n} from '../helpers/i18n';
+import {setUpDnd} from '../helpers/dnd';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
 import {PopupOpenedTimingEvent} from '../models/analytics_event/popup_opened_timing_event';
@@ -71,15 +72,29 @@ setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'background.html');
 setUpI18n(application);
 
-application.run(['Analytics', 'TimeTracker', (analytics, timeTracker: TimeTracker) => {
-    if (!TEST) {
-        window['chrome'].runtime.onConnect.addListener((externalPort) => {
-            const event = new PopupOpenedTimingEvent();
-            timeTracker.start(event);
+application.run(
+    [
+        'Analytics',
+        'TimeTracker',
+        'DndService',
+        '$translate',
+        (
+            analytics,
+            timeTracker: TimeTracker,
+            dndService: DoNotDisturbService,
+            $translate: angular.translate.ITranslateService
+        ) => {
+            if (!TEST) {
+                chrome.runtime.onConnect.addListener((externalPort) => {
+                    const event = new PopupOpenedTimingEvent();
+                    timeTracker.start(event);
 
-            externalPort.onDisconnect.addListener(() => {
-                timeTracker.stop(event);
-            });
-        });
-    }
-}]);
+                    externalPort.onDisconnect.addListener(() => {
+                        timeTracker.stop(event);
+                    });
+                });
+                setUpDnd(dndService, $translate);
+            }
+        }
+    ]
+);
