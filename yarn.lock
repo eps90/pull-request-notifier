@@ -51,9 +51,25 @@
   dependencies:
     "@types/jquery" "*"
 
+"@types/chrome@^0.0.52":
+  version "0.0.52"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.52.tgz#e1bf0c461cf9feb7f529cc70767132eb1730c157"
+  dependencies:
+    "@types/filesystem" "*"
+
 "@types/createjs-lib@*":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/createjs-lib/-/createjs-lib-0.0.29.tgz#fae82e3ba8606663b190e789cec7d9c728fc41d7"
+
+"@types/filesystem@*":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@types/filesystem/-/filesystem-0.0.28.tgz#3fd7735830f2c7413cb5ac45780bc45904697b0e"
+  dependencies:
+    "@types/filewriter" "*"
+
+"@types/filewriter@*":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@types/filewriter/-/filewriter-0.0.28.tgz#c054e8af4d9dd75db4e63abc76f885168714d4b3"
 
 "@types/howler@^2.0.2":
   version "2.0.2"
