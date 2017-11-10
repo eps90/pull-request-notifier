@@ -10,20 +10,20 @@ export class PullRequestRepository {
     public static $inject: string[] = ['$rootScope'];
 
     constructor(private $rootScope: ng.IRootScopeService) {
-        window['chrome'].extension.onConnect.addListener((chromePort) => {
+        chrome.runtime.onConnect.addListener((chromePort) => {
             chromePort.postMessage(
                 new ChromeExtensionEvent(ChromeExtensionEvent.UPDATE_PULLREQUESTS, this.pullRequests)
             );
         });
 
-        const port = window['chrome'].extension.connect({name: 'Bitbucket Notifier'});
+        const port = chrome.runtime.connect({name: 'Bitbucket Notifier'});
         port.onMessage.addListener((message: ChromeExtensionEvent) => {
             this.$rootScope.$apply(() => {
                 this.pullRequests = PullRequestFactory.createFromArray(message.content);
             });
         });
 
-        window['chrome'].extension.onMessage.addListener((message: ChromeExtensionEvent) => {
+        chrome.runtime.onMessage.addListener((message: ChromeExtensionEvent) => {
             if (message.type === ChromeExtensionEvent.UPDATE_PULLREQUESTS && !ChromeExtensionEvent.isBackground()) {
                 $rootScope.$apply(() => {
                     this.pullRequests = PullRequestFactory.createFromArray(message.content);
@@ -34,7 +34,7 @@ export class PullRequestRepository {
 
     public setPullRequests(pullRequests: PullRequest[]): void {
         this.pullRequests = pullRequests;
-        window['chrome'].extension.sendMessage(
+        chrome.runtime.sendMessage(
             new ChromeExtensionEvent(
                 ChromeExtensionEvent.UPDATE_PULLREQUESTS,
                 this.pullRequests

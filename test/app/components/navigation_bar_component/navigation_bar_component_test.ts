@@ -8,16 +8,10 @@ describe('NavigationBarComponent', () => {
     const bitbucketUrl = 'http://example.com';
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
-    beforeEach(() => [
-        window['chrome'] = {
-            runtime: {
-                getManifest: jasmine.createSpy('chrome.runtime.getManifest').and.returnValue({version: appVersion})
-            },
-            tabs: {
-                create: jasmine.createSpy('chrome.tabs.create')
-            }
-        }
-    ]);
+    beforeEach(() => {
+        spyOn(chrome.runtime, 'getManifest').and.returnValue({version: appVersion});
+        spyOn(chrome.tabs, 'create');
+    });
     beforeEach(angular.mock.module([
         '$provide',
         ($provide: ng.auto.IProvideService) => {

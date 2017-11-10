@@ -20,7 +20,7 @@ export class ReminderController implements ng.IComponentController {
     public remind($event: ng.IAngularEvent): void {
         $event.stopPropagation();
         this.disabled = true;
-        window['chrome'].extension.sendMessage(
+        chrome.runtime.sendMessage(
             new ChromeExtensionEvent(
                 ChromeExtensionEvent.REMIND,
                 this.pullRequest

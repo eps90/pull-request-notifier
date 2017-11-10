@@ -68,15 +68,7 @@ describe('SocketHandler', () => {
                 })
         });
 
-        window['chrome'] = {
-            extension: {
-                onMessage: {
-                    addListener: jasmine.createSpy('chrome.extension.onMessage.addListener').and.callFake((fn) => {
-                        extensionListener = fn;
-                    })
-                }
-            }
-        };
+        spyOn(chrome.runtime.onMessage, 'addListener').and.callFake(fn => extensionListener = fn);
     }]));
     beforeEach(inject([
         'SocketHandler',

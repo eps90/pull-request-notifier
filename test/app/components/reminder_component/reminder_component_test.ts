@@ -9,11 +9,7 @@ describe('ReminderComponent', () => {
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(() => {
-        window['chrome'] = {
-            extension: {
-                sendMessage: jasmine.createSpy('chrome.extension.sendMessage')
-            }
-        };
+        spyOn(chrome.runtime, 'sendMessage');
     });
 
     beforeEach(inject([
@@ -44,7 +40,7 @@ describe('ReminderComponent', () => {
         const linkElement = element.find('a');
         linkElement.triggerHandler('click');
 
-        expect(window['chrome'].extension.sendMessage).toHaveBeenCalledWith(
+        expect(chrome.runtime.sendMessage).toHaveBeenCalledWith(
             new ChromeExtensionEvent(
                 ChromeExtensionEvent.REMIND,
                 pullRequest
@@ -98,7 +94,7 @@ describe('ReminderComponent', () => {
             const linkElement = element.find('a.remind-button');
             linkElement.triggerHandler('click');
 
-            expect(window['chrome'].extension.sendMessage).toHaveBeenCalledWith(
+            expect(chrome.runtime.sendMessage).toHaveBeenCalledWith(
                 new ChromeExtensionEvent(
                     ChromeExtensionEvent.REMIND,
                     pullRequest

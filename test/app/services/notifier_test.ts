@@ -30,23 +30,11 @@ describe('Notifier', () => {
     });
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(() => {
-        window['chrome'] = {
-            notifications: {
-                create: jasmine.createSpy('chrome.notifications.create'),
-                clear: jasmine.createSpy('chrome.notifications.clear'),
-                onClicked: {
-                    addListener: jasmine.createSpy('chrome.notifications.onClicked.addListener').and.callFake((fn) => {
-                        onClickedStub = fn;
-                    })
-                },
-                onClosed: {
-                    addListener: jasmine.createSpy('chrome.notifications.onClosed.addListener')
-                }
-            },
-            tabs: {
-                create: jasmine.createSpy('chrome.tabs.create')
-            }
-        };
+        spyOn(chrome.notifications, 'create');
+        spyOn(chrome.notifications, 'clear');
+        spyOn(chrome.notifications.onClicked, 'addListener').and.callFake((fn) => onClickedStub = fn);
+        spyOn(chrome.notifications.onClosed, 'addListener');
+        spyOn(chrome.tabs, 'create');
     });
     beforeEach(angular.mock.module([
         '$provide',

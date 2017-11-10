@@ -5,11 +5,7 @@ describe('Indicator', () => {
     let indicator: Indicator;
 
     beforeEach(() => {
-        window['chrome'] = {
-            browserAction: {
-                setBadgeText: jasmine.createSpy('chrome.browserAction.setBadgeText')
-            }
-        };
+        spyOn(chrome.browserAction, 'setBadgeText');
     });
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(inject([
@@ -31,7 +27,7 @@ describe('Indicator', () => {
     });
 
     it('should be able to set default by resetting', () => {
-        window['chrome'].browserAction.setBadgeText.calls.reset();
+        (chrome.browserAction.setBadgeText as jasmine.Spy).calls.reset();
         indicator.reset();
         expect(window['chrome'].browserAction.setBadgeText).toHaveBeenCalledWith({text: '?'});
     });

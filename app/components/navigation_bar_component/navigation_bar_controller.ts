@@ -6,6 +6,6 @@ export class NavigationBarController implements ng.IComponentController {
     constructor(private bitbucketUrl: string) {}
 
     public $onInit = () => {
-        this.appVersion = 'v' + window['chrome'].runtime.getManifest().version;
+        this.appVersion = 'v' + chrome.runtime.getManifest().version;
     }
 }
