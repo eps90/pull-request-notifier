@@ -30,6 +30,7 @@
     "angular-socket-io": "^0.7.0",
     "angular-translate": "^2.15.2",
     "angular-translate-handler-log": "^2.15.2",
+    "angular-translate-interpolation-messageformat": "^2.16.0",
     "angular-translate-storage-local": "^2.15.2",
     "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-router": "^0.4.2",
