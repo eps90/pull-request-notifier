@@ -180,4 +180,26 @@ describe('Config', () => {
             expect($translate.use as jasmine.Spy).toHaveBeenCalledWith(setLang);
         });
     });
+
+    describe('of DND mode', () => {
+        it('should return null if it is not defined', () => {
+            expect(config.getDndToTime()).toBeNull();
+        });
+
+        it('should return set expire time', () => {
+            const dndTime = (new Date()).getTime();
+            config.setDndToTime(dndTime);
+
+            expect(config.getDndToTime()).toEqual(dndTime);
+        });
+
+        it('should be able to clear the DND', () => {
+            const dndTime = (new Date()).getTime();
+            config.setDndToTime(dndTime);
+
+            config.clearDndToTime();
+
+            expect(config.getDndToTime()).toBeNull();
+        });
+    });
 });

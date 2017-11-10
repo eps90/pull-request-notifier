@@ -92,6 +92,18 @@ export class Config {
         this.$translate.use(language);
     }
 
+    public getDndToTime(): number {
+        return this.localStorageService.get('dndToTime');
+    }
+
+    public setDndToTime(dndToTime: number): void {
+        this.localStorageService.set('dndToTime', dndToTime);
+    }
+
+    public clearDndToTime(): void {
+        this.localStorageService.remove('dndToTime');
+    }
+
     private getSound(soundId: string): string {
         return this.localStorageService.get(soundId) as string || this.soundsDefaults[soundId] || null;
     }
