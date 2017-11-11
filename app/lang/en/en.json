@@ -88,6 +88,14 @@
         "COMMENTED_PR": "New comment on your pull request!",
         "REPLIED_PR": "New reply for your comment"
     },
+    "DND": {
+        "TITLE": "Do not disturb",
+        "TURN_OFF": "Turn off",
+        "DURATION": {
+            "MINUTES": "{VAL} {VAL, plural, =1{minute} other{minutes}}",
+            "HOURS": "{VAL} {VAL, plural, =1{minute} other{minutes}}"
+        }
+    },
     "COMMON": {
         "EG_ABBR": "e.g.",
         "BY": "by"

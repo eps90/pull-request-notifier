@@ -1,5 +1,6 @@
 import './../app/vendor';
 import 'angular-mocks';
+import './chrome-mock';
 
 import './../app/modules/bitbucket_notifier';
 import './../app/modules/bitbucket_notifier_background';

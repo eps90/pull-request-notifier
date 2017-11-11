@@ -17,13 +17,17 @@ import 'angular-translate';
 import 'angular-translate-storage-local';
 import 'angular-translate-storage-cookie';
 import 'angular-translate-handler-log';
+import 'messageformat';
+import 'angular-translate-interpolation-messageformat';
 import {setUpLogglyLogger} from '../helpers/loggly';
 import {setUpAnalytics, setUpAnalyticsTrackPrefix} from '../helpers/analytics';
 import {getLanguages, setUpI18n} from '../helpers/i18n';
+import {setUpDnd} from '../helpers/dnd';
 import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
 import {PopupOpenedTimingEvent} from '../models/analytics_event/popup_opened_timing_event';
 import {LanguageRepository} from '../services/language_repository/language_repository';
+import {DoNotDisturbService} from '../services/do_not_disturb_service';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
 const application = angular.module(
@@ -51,6 +55,7 @@ application.service('SoundRepository', SoundRepository);
 application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 application.service('TimeTracker', TimeTracker);
 application.service('LanguageRepository', LanguageRepository);
+application.service('DndService', DoNotDisturbService);
 
 application.value('languages', getLanguages());
 
@@ -67,15 +72,29 @@ setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'background.html');
 setUpI18n(application);
 
-application.run(['Analytics', 'TimeTracker', (analytics, timeTracker: TimeTracker) => {
-    if (!TEST) {
-        window['chrome'].runtime.onConnect.addListener((externalPort) => {
-            const event = new PopupOpenedTimingEvent();
-            timeTracker.start(event);
+application.run(
+    [
+        'Analytics',
+        'TimeTracker',
+        'DndService',
+        '$translate',
+        (
+            analytics,
+            timeTracker: TimeTracker,
+            dndService: DoNotDisturbService,
+            $translate: angular.translate.ITranslateService
+        ) => {
+            if (!TEST) {
+                chrome.runtime.onConnect.addListener((externalPort) => {
+                    const event = new PopupOpenedTimingEvent();
+                    timeTracker.start(event);
 
-            externalPort.onDisconnect.addListener(() => {
-                timeTracker.stop(event);
-            });
-        });
-    }
-}]);
+                    externalPort.onDisconnect.addListener(() => {
+                        timeTracker.stop(event);
+                    });
+                });
+                setUpDnd(dndService, $translate);
+            }
+        }
+    ]
+);

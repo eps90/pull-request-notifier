@@ -16,23 +16,15 @@ describe('PullRequestsListComponent', () => {
     let pullRequestRepository: PullRequestRepository;
 
     beforeEach(() => {
-        window['chrome'] = {
-            extension: {
-                connect: jasmine.createSpy('chrome.extension.connect').and.callFake(() => {
-                    return {
-                        onMessage: {
-                            addListener: jasmine.createSpy('port.onMessage.addListener')
-                        }
-                    };
-                }),
+        spyOn(chrome.runtime, 'connect').and.callFake(() => {
+            return {
                 onMessage: {
-                    addListener: jasmine.createSpy('chrome.extension.onMessage.addListener')
-                },
-                onConnect: {
-                    addListener: jasmine.createSpy('chrome.extension.onConnect.addListener')
+                    addListener: jasmine.createSpy('port.onMessage.addListener')
                 }
-            }
-        };
+            };
+        });
+        spyOn(chrome.runtime.onMessage, 'addListener');
+        spyOn(chrome.runtime.onConnect, 'addListener');
     });
 
     beforeEach(angular.mock.module('bitbucketNotifier'));

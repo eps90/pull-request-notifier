@@ -5,12 +5,15 @@ import * as angular from 'angular';
 import {NotificationSound} from '../../../app/models/notification_sound';
 import {Sound} from '../../../app/models/sound';
 import {HowlSoundFactory} from '../../../app/services/factory/howl_sound_factory';
+import {DoNotDisturbService} from '../../../app/services/do_not_disturb_service';
 
 describe('SoundManager', () => {
     let soundManager: SoundManager;
     let soundRepository: SoundRepository;
     let config: Config;
+    let dndService: DoNotDisturbService;
     let sounds;
+    let isDndOn: boolean;
 
     beforeEach(() => {
         sounds = {};
@@ -19,6 +22,7 @@ describe('SoundManager', () => {
             sounds[soundPath] = jasmine.createSpyObj(`Howl#${counter}`, ['play']);
             return sounds[soundPath];
         });
+        isDndOn = false;
     });
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(angular.mock.module([
@@ -44,16 +48,21 @@ describe('SoundManager', () => {
                     return new Sound(soundId, getFakeSoundPath(soundId), 'Fake label');
                 })
             });
+            $provide.value('DndService', {
+                isDndOn: jasmine.createSpy('DndService.isDndOn').and.callFake(() => isDndOn)
+            });
         }
     ]));
     beforeEach(inject([
         'SoundManager',
         'Config',
         'SoundRepository',
-        (sm, c, sr) => {
+        'DndService',
+        (sm, c, sr, dnd) => {
             soundManager = sm;
             config = c;
             soundRepository = sr;
+            dndService = dnd;
         }
     ]));
 
@@ -65,7 +74,7 @@ describe('SoundManager', () => {
         }
 
         /* tslint:disable */
-        new SoundManager(config, soundRepository);
+        new SoundManager(config, soundRepository, dndService);
         /* tslint:enable */
 
         testSoundRegistration(NotificationSound.NEW_PULLREQUEST);
@@ -77,31 +86,57 @@ describe('SoundManager', () => {
     describe('Sound playing', () => {
         it('should be able to play a new pull request sound', () => {
             soundManager.playNewPullRequestSound();
-
-            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.NEW_PULLREQUEST));
-            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+            assertExpectedSoundCalled(NotificationSound.NEW_PULLREQUEST);
         });
 
         it('should be able to play an approved pull request sound', () => {
             soundManager.playApprovedPullRequestSound();
-
-            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.APPROVED_PULLREQUEST));
-            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+            assertExpectedSoundCalled(NotificationSound.APPROVED_PULLREQUEST);
         });
 
         it('should be able to play a merged pull request sound', () => {
             soundManager.playMergedPullRequestSound();
-
-            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.MERGED_PULLREQUEST));
-            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+            assertExpectedSoundCalled(NotificationSound.MERGED_PULLREQUEST);
         });
 
         it('should be able to play a reminder sound', () => {
             soundManager.playReminderSound();
-
-            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.REMINDER));
-            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+            assertExpectedSoundCalled(NotificationSound.REMINDER);
         });
+
+        function assertExpectedSoundCalled(soundId: string): void {
+            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(soundId));
+            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+        }
+    });
+
+    describe('Sound muting in DND mode', () => {
+        beforeEach(() => isDndOn = true);
+
+        it('should not play a new pull request sound', () => {
+            soundManager.playNewPullRequestSound();
+            assertExpectedSoundNotCalled(NotificationSound.NEW_PULLREQUEST);
+        });
+
+        it('should not play an approved pull request sound', () => {
+            soundManager.playApprovedPullRequestSound();
+            assertExpectedSoundNotCalled(NotificationSound.APPROVED_PULLREQUEST);
+        });
+
+        it('should not play a merged pull request sound', () => {
+            soundManager.playMergedPullRequestSound();
+            assertExpectedSoundNotCalled(NotificationSound.MERGED_PULLREQUEST);
+        });
+
+        it('should not play a reminder sound', () => {
+            soundManager.playReminderSound();
+            assertExpectedSoundNotCalled(NotificationSound.REMINDER);
+        });
+
+        function assertExpectedSoundNotCalled(soundId: string): void {
+            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(soundId));
+            expect(sounds[expectedSoundPath].play).not.toHaveBeenCalled();
+        }
     });
 
     function getFakeSoundId(soundKey): string {

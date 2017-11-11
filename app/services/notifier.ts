@@ -10,6 +10,7 @@ import {NotificationOpenedEvent} from '../models/analytics_event/notification_op
 import {PullRequestOpenedEvent} from '../models/analytics_event/pull_request_opened_event';
 import {TimeTracker} from './time_tracker';
 import {NotificationOpenedTimingEvent} from '../models/analytics_event/notification_opened_timing_event';
+import {DoNotDisturbService} from './do_not_disturb_service';
 
 interface NotificationOptions {
     type?: string;
@@ -27,7 +28,8 @@ export class Notifier {
         'SoundManager',
         'AnalyticsEventDispatcher',
         'TimeTracker',
-        '$translate'
+        '$translate',
+        'DndService'
     ];
 
     private chrome: any;
@@ -36,7 +38,8 @@ export class Notifier {
         private soundManager: SoundManager,
         private analyticsEventDispatcher: AnalyticsEventDispatcher,
         private timeTracker: TimeTracker,
-        private $translate: angular.translate.ITranslateService
+        private $translate: angular.translate.ITranslateService,
+        private dndService: DoNotDisturbService
     ) {
         this.chrome = window['chrome'];
         this.chrome.notifications.onClicked.addListener((notificationId) => {
@@ -53,6 +56,10 @@ export class Notifier {
     }
 
     public notify(opts: NotificationOptions, notificationId: string, pullRequestLink: string): void {
+        if (this.dndService.isDndOn()) {
+            return;
+        }
+
         const defaultOptions: NotificationOptions = {
             type: 'basic',
             iconUrl: NotificationIcon.DEFAULT,

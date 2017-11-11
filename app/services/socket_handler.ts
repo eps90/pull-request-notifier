@@ -38,7 +38,7 @@ export class SocketHandler {
     }
 
     private initChromeEvents(): void {
-        window['chrome'].extension.onMessage.addListener((event: ChromeExtensionEvent) => {
+        chrome.runtime.onMessage.addListener((event: ChromeExtensionEvent) => {
             if (event.type === ChromeExtensionEvent.REMIND) {
                 this.socketManager.socket.emit(SocketClientEvent.REMIND, event.content);
             }

@@ -9,13 +9,7 @@ describe('PullRequestLinkComponent', () => {
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(() => {
-        window['chrome'] = {
-            tabs: {
-                create: jasmine.createSpy('chrome.tabs.create').and.callFake((obj) => {
-                    newTabObj = obj;
-                })
-            }
-        };
+        spyOn(chrome.tabs, 'create').and.callFake((obj) => newTabObj = obj);
     });
 
     beforeEach(inject([

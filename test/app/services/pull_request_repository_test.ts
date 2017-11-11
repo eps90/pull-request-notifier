@@ -22,22 +22,10 @@ describe('PullRequestRepository', () => {
                 })
             }
         };
-        window['chrome'] = {
-            extension: {
-                connect: jasmine.createSpy('chrome.extension.connect').and.returnValue(connectPort),
-                sendMessage: jasmine.createSpy('chrome.extension.sendMessage'),
-                onMessage: {
-                    addListener: jasmine.createSpy('chrome.extension.onMessage.addListener').and.callFake((fn) => {
-                        messageFunc = fn;
-                    })
-                },
-                onConnect: {
-                    addListener: jasmine.createSpy('chrome.extension.onConnect.addListener').and.callFake((fn) => {
-                        connectionFunc = fn;
-                    })
-                }
-            }
-        };
+        spyOn(chrome.runtime, 'connect').and.returnValue(connectPort);
+        spyOn(chrome.runtime, 'sendMessage');
+        spyOn(chrome.runtime.onMessage, 'addListener').and.callFake((fn) => messageFunc = fn);
+        spyOn(chrome.runtime.onConnect, 'addListener').and.callFake((fn) => connectionFunc = fn);
     });
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(inject([
@@ -181,7 +169,7 @@ describe('PullRequestRepository', () => {
             const pullRequestsList = [pullRequest];
 
             pullRequestRepositoryOne.setPullRequests(pullRequestsList);
-            expect(window['chrome'].extension.sendMessage)
+            expect(chrome.runtime.sendMessage)
                 .toHaveBeenCalledWith(
                     new ChromeExtensionEvent(
                         ChromeExtensionEvent.UPDATE_PULLREQUESTS,
