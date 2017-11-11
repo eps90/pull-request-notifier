@@ -3,14 +3,19 @@ import {SoundRepository} from './sound_repository';
 import {NotificationSound} from '../models/notification_sound';
 import {Sound} from '../models/sound';
 import {HowlSoundFactory} from './factory/howl_sound_factory';
+import {DoNotDisturbService} from './do_not_disturb_service';
 
 export class SoundManager {
 
-    public static $inject: string[] = ['Config', 'SoundRepository'];
+    public static $inject: string[] = ['Config', 'SoundRepository', 'DndService'];
 
     private sounds: {[key: string]: Howl};
 
-    constructor(private config: Config, private soundRepository: SoundRepository) {
+    constructor(
+        private config: Config,
+        private soundRepository: SoundRepository,
+        private dndService: DoNotDisturbService
+    ) {
         this.sounds = {};
         this.addHowlSound(
             NotificationSound.NEW_PULLREQUEST,
@@ -51,6 +56,8 @@ export class SoundManager {
     }
 
     private playSound(soundId: string): void {
-        this.sounds[soundId].play();
+        if (!this.dndService.isDndOn()) {
+            this.sounds[soundId].play();
+        }
     }
 }
