@@ -77,31 +77,28 @@ describe('SoundManager', () => {
     describe('Sound playing', () => {
         it('should be able to play a new pull request sound', () => {
             soundManager.playNewPullRequestSound();
-
-            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.NEW_PULLREQUEST));
-            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+            assertExpectedSoundCalled(NotificationSound.NEW_PULLREQUEST);
         });
 
         it('should be able to play an approved pull request sound', () => {
             soundManager.playApprovedPullRequestSound();
-
-            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.APPROVED_PULLREQUEST));
-            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+            assertExpectedSoundCalled(NotificationSound.APPROVED_PULLREQUEST);
         });
 
         it('should be able to play a merged pull request sound', () => {
             soundManager.playMergedPullRequestSound();
-
-            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.MERGED_PULLREQUEST));
-            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+            assertExpectedSoundCalled(NotificationSound.MERGED_PULLREQUEST);
         });
 
         it('should be able to play a reminder sound', () => {
             soundManager.playReminderSound();
-
-            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(NotificationSound.REMINDER));
-            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+            assertExpectedSoundCalled(NotificationSound.REMINDER);
         });
+
+        function assertExpectedSoundCalled(soundId: string): void {
+            const expectedSoundPath = getFakeSoundPath(getFakeSoundId(soundId));
+            expect(sounds[expectedSoundPath].play).toHaveBeenCalled();
+        }
     });
 
     function getFakeSoundId(soundKey): string {

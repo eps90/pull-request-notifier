@@ -31,22 +31,26 @@ export class SoundManager {
     }
 
     public playNewPullRequestSound(): void {
-        this.sounds[NotificationSound.NEW_PULLREQUEST].play();
+        this.playSound(NotificationSound.NEW_PULLREQUEST);
     }
 
     public playApprovedPullRequestSound(): void {
-        this.sounds[NotificationSound.APPROVED_PULLREQUEST].play();
+        this.playSound(NotificationSound.APPROVED_PULLREQUEST);
     }
 
     public playMergedPullRequestSound(): void {
-        this.sounds[NotificationSound.MERGED_PULLREQUEST].play();
+        this.playSound(NotificationSound.MERGED_PULLREQUEST);
     }
 
     public playReminderSound(): void {
-        this.sounds[NotificationSound.REMINDER].play();
+        this.playSound(NotificationSound.REMINDER);
     }
 
     private addHowlSound(soundType: string, sound: Sound): void {
         this.sounds[soundType] = HowlSoundFactory.createSound(sound.soundPath);
+    }
+
+    private playSound(soundId: string): void {
+        this.sounds[soundId].play();
     }
 }
