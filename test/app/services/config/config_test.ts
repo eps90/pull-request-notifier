@@ -1,22 +1,40 @@
+import * as angular from 'angular';
 import {ConfigStorageInterface} from '../../../../app/services/config/config_storage';
 import {InMemoryConfigStorage} from '../../../../app/services/config/in_memory_config_storage';
 import {Config} from '../../../../app/services/config/config';
+import {ConfigProvider} from '../../../../app/services/config/config_provider';
 
 describe('Config', () => {
     let configStorage: ConfigStorageInterface;
     let config: Config;
 
+    beforeEach(angular.mock.module('eps.config'));
+    beforeEach(angular.mock.module([
+        '$provide',
+        'configProvider',
+        ($provide: ng.auto.IProvideService, configProvider: ConfigProvider) => {
+            $provide.service('config.storage', InMemoryConfigStorage);
+            const defaults = new Map([
+                ['sounds.new_pr', 'new_pr_sound.mp3']
+            ]);
+            configProvider.setDefaults(defaults);
+        }
+    ]));
+    beforeEach(angular.mock.inject([
+        'config',
+        'config.storage',
+        (c, cs) => {
+            config = c;
+            configStorage = cs;
+        }
+    ]));
     beforeEach(() => {
         const store = new Map([
             ['host', 'http://localhost'],
             ['user', 'admin'],
             ['language', 'en']
         ]);
-        const defaults = new Map([
-            ['sounds.new_pr', 'new_pr_sound.mp3']
-        ]);
-        configStorage = new InMemoryConfigStorage(store);
-        config = new Config(configStorage, defaults);
+        configStorage.save(store);
     });
 
     it('should get item from storage', () => {
