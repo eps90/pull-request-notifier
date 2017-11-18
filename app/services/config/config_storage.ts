@@ -4,4 +4,5 @@ export interface ConfigStorageInterface {
     removeItem(itemKey: string): void;
     allItems(): Map<string, any>;
     save(config: Map<string, any>): void;
+    clear(): void;
 }

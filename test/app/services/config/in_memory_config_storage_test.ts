@@ -30,4 +30,11 @@ describe('InMemoryConfigStorage', () => {
         storage.removeItem('host');
         expect(storage.hasItem('host')).toBeFalsy();
     });
+
+    it('should be able to clear all store', () => {
+        storage.clear();
+        expect(storage.hasItem('host')).toBeFalsy();
+        expect(storage.hasItem('user')).toBeFalsy();
+        expect(storage.hasItem('language')).toBeFalsy();
+    });
 });

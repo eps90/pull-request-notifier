@@ -26,4 +26,8 @@ export class InMemoryConfigStorage implements ConfigStorageInterface {
     public save(config: Map<string, any>): void {
         this.storage = config;
     }
+
+    public clear(): void {
+        this.storage.clear();
+    }
 }
