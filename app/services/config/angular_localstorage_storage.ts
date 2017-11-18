@@ -35,3 +35,5 @@ export class AngularLocalStorageStorage implements ConfigStorageInterface {
         this.localStorageService.clearAll();
     }
 }
+
+AngularLocalStorageStorage.$inject = ['localStorageService'];
