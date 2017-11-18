@@ -2,7 +2,7 @@ import {ConfigStorageInterface} from '../../../../app/services/config/config_sto
 import {InMemoryConfigStorage} from '../../../../app/services/config/in_memory_config_storage';
 import {Config} from '../../../../app/services/config/config';
 
-fdescribe('Config', () => {
+describe('Config', () => {
     let configStorage: ConfigStorageInterface;
     let config: Config;
 
