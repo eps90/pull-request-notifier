@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import {AngularLocalStorageStorage} from '../../../../app/services/config/angular_localstorage_storage';
 
-fdescribe('AngularLocalStorageStorage', () => {
+describe('AngularLocalStorageStorage', () => {
     let storage: AngularLocalStorageStorage;
     let localStorageService: angular.local.storage.ILocalStorageService;
 
