@@ -7,7 +7,6 @@ import {NotificationRepository} from '../services/notification_repository';
 import {SocketManager} from '../services/socket_manager';
 import {SocketHandler} from '../services/socket_handler';
 import {Notifier} from '../services/notifier';
-import {Config} from '../services/config';
 import {Indicator} from '../services/indicator';
 import {SoundManager} from '../services/sound_manager';
 import {SoundRepository} from '../services/sound_repository';
@@ -28,17 +27,18 @@ import {TimeTracker} from '../services/time_tracker';
 import {PopupOpenedTimingEvent} from '../models/analytics_event/popup_opened_timing_event';
 import {LanguageRepository} from '../services/language_repository/language_repository';
 import {DoNotDisturbService} from '../services/do_not_disturb_service';
+import './eps_config';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
 const application = angular.module(
     MODULE_NAME,
     [
-        'LocalStorageModule',
         'btford.socket-io',
         'logglyLogger',
         'angular-google-analytics',
         'pascalprecht.translate',
-        'ngCookies'
+        'ngCookies',
+        'eps.config'
     ]);
 
 application.directive('background', BackgroundComponent.factory());
@@ -48,7 +48,6 @@ application.service('NotificationRepository', NotificationRepository);
 application.service('SocketManager', SocketManager);
 application.service('SocketHandler', SocketHandler);
 application.service('Notifier', Notifier);
-application.service('Config', Config);
 application.service('Indicator', Indicator);
 application.service('SoundManager', SoundManager);
 application.service('SoundRepository', SoundRepository);

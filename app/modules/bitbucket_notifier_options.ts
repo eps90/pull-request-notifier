@@ -6,7 +6,6 @@ import {SectionTitleComponent} from '../components/section_title_component/secti
 import {NavigationBarComponent} from '../components/navigation_bar_component/navigation_bar_component';
 import {NavigationBrandComponent} from '../components/navigation_brand_component/navigation_brand_component';
 import {ApprovalProgressComponent} from '../components/approval_progress_component/approval_progress_component';
-import {Config} from '../services/config';
 import {SoundManager} from '../services/sound_manager';
 import {SoundRepository} from '../services/sound_repository';
 import {Notifier} from '../services/notifier';
@@ -26,17 +25,18 @@ import {AnalyticsEventDispatcher} from '../services/analytics_event_dispatcher';
 import {TimeTracker} from '../services/time_tracker';
 import {LanguageRepository} from '../services/language_repository/language_repository';
 import {DoNotDisturbService} from '../services/do_not_disturb_service';
+import './eps_config';
 
 export const MODULE_NAME = 'bitbucketNotifier.options';
 const application = angular.module(
     MODULE_NAME,
     [
-        'LocalStorageModule',
         'angular-growl',
         'logglyLogger',
         'angular-google-analytics',
         'pascalprecht.translate',
-        'ngCookies'
+        'ngCookies',
+        'eps.config'
     ]);
 
 application.component('options', new OptionsComponent());
@@ -44,7 +44,6 @@ application.component('sectionTitle', new SectionTitleComponent());
 application.component('navigationBar', new NavigationBarComponent());
 application.component('navigationBrand', new NavigationBrandComponent());
 application.component('approvalProgress', new ApprovalProgressComponent());
-application.service('Config', Config);
 application.service('SoundManager', SoundManager);
 application.service('SoundRepository', SoundRepository);
 application.service('Notifier', Notifier);
