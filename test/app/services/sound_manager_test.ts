@@ -1,11 +1,14 @@
 import {SoundManager} from '../../../app/services/sound_manager';
-import {Config} from '../../../app/services/config';
 import {SoundRepository} from '../../../app/services/sound_repository';
 import * as angular from 'angular';
 import {NotificationSound} from '../../../app/models/notification_sound';
 import {Sound} from '../../../app/models/sound';
 import {HowlSoundFactory} from '../../../app/services/factory/howl_sound_factory';
 import {DoNotDisturbService} from '../../../app/services/do_not_disturb_service';
+import {Config} from '../../../app/services/config/config';
+import {ConfigProvider} from '../../../app/services/config/config_provider';
+import {InMemoryConfigStorage} from '../../../app/services/config/in_memory_config_storage';
+import {ConfigObject} from '../../../app/models/config_object';
 
 describe('SoundManager', () => {
     let soundManager: SoundManager;
@@ -27,21 +30,15 @@ describe('SoundManager', () => {
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
     beforeEach(angular.mock.module([
         '$provide',
-        ($provide: ng.auto.IProvideService) => {
-            $provide.value('Config', {
-                getNewPullRequestSound: jasmine.createSpy('Config.getNewPullRequest').and.callFake(() => {
-                    return getFakeSoundId(NotificationSound.NEW_PULLREQUEST);
-                }),
-                getApprovedPullRequestSound: jasmine.createSpy('Config.getApprovedPullRequest').and.callFake(() => {
-                    return getFakeSoundId(NotificationSound.APPROVED_PULLREQUEST);
-                }),
-                getMergedPullRequestSound: jasmine.createSpy('Config.getMergedPullRequest').and.callFake(() => {
-                    return getFakeSoundId(NotificationSound.MERGED_PULLREQUEST);
-                }),
-                getReminderSound: jasmine.createSpy('Config.getReminder').and.callFake(() => {
-                    return getFakeSoundId(NotificationSound.REMINDER);
-                })
-            });
+        'configProvider',
+        ($provide: ng.auto.IProvideService, configProvider: ConfigProvider) => {
+            configProvider.useCustomStorage(new InMemoryConfigStorage());
+            configProvider.setDefaults(new Map([
+                [ConfigObject.NEW_PULLREQUEST_SOUND, getFakeSoundId(NotificationSound.NEW_PULLREQUEST)],
+                [ConfigObject.APPROVED_PULLREQUEST_SOUND, getFakeSoundId(NotificationSound.APPROVED_PULLREQUEST)],
+                [ConfigObject.MERGED_PULLREQUEST_SOUND, getFakeSoundId(NotificationSound.MERGED_PULLREQUEST)],
+                [ConfigObject.REMINDER_SOUND, getFakeSoundId(NotificationSound.REMINDER)],
+            ]));
 
             $provide.value('SoundRepository', {
                 findById: jasmine.createSpy('SoundRepository.findById').and.callFake((soundId: string) => {
@@ -55,7 +52,7 @@ describe('SoundManager', () => {
     ]));
     beforeEach(inject([
         'SoundManager',
-        'Config',
+        'config',
         'SoundRepository',
         'DndService',
         (sm, c, sr, dnd) => {

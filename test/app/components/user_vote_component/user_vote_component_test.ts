@@ -1,7 +1,10 @@
-import {Config} from '../../../../app/services/config';
 import * as angular from 'angular';
 import {User} from '../../../../app/models/user';
 import {Reviewer} from '../../../../app/models/reviewer';
+import {ConfigProvider} from '../../../../app/services/config/config_provider';
+import {InMemoryConfigStorage} from '../../../../app/services/config/in_memory_config_storage';
+import {ConfigObject} from '../../../../app/models/config_object';
+import {Config} from '../../../../app/services/config/config';
 
 describe('UserVoteComponent', () => {
     let $scope: ng.IScope;
@@ -10,19 +13,18 @@ describe('UserVoteComponent', () => {
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(angular.mock.module([
-        '$provide', ($provide: ng.auto.IProvideService) => {
-            $provide.value('Config', {
-                getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
-                    return 'john.smith';
-                })
-            });
+        'configProvider', (configProvider: ConfigProvider) => {
+            configProvider.useCustomStorage(new InMemoryConfigStorage());
+            configProvider.setDefaults(new Map([
+                [ConfigObject.USER, 'john.smith']
+            ]));
         }
     ]));
 
     beforeEach(inject([
         '$rootScope',
         '$compile',
-        'Config',
+        'config',
         ($s, $c, c) => {
             $scope = $s;
             $compile = $c;

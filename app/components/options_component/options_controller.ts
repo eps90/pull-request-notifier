@@ -1,4 +1,3 @@
-import {Config} from '../../services/config';
 import {SoundRepository} from '../../services/sound_repository';
 import {Notifier} from '../../services/notifier';
 import {Howl} from 'howler';
@@ -7,6 +6,8 @@ import {PullRequest} from '../../models/pull_request';
 import {User} from '../../models/user';
 import {LanguageRepositoryInterface} from '../../services/language_repository/language_repository_interface';
 import {Language} from '../../models/language';
+import {Config} from '../../services/config/config';
+import {ConfigObject} from '../../models/config_object';
 
 export class OptionsController implements ng.IComponentController {
     public examples: any;
@@ -15,7 +16,7 @@ export class OptionsController implements ng.IComponentController {
     public languages: Language[];
 
     public static $inject: string[] = [
-        'Config',
+        'config',
         'growl',
         '$interval',
         'SoundRepository',
@@ -82,14 +83,14 @@ export class OptionsController implements ng.IComponentController {
         );
 
         this.options = {
-            appUser: this.config.getUsername(),
-            socketServerAddress: this.config.getSocketServerAddress(),
-            pullRequestProgress: this.config.getPullRequestProgress(),
-            newPullRequestSound: this.config.getNewPullRequestSound(),
-            approvedPullRequestSound: this.config.getApprovedPullRequestSound(),
-            mergedPullRequestSound: this.config.getApprovedPullRequestSound(),
-            reminderSound: this.config.getReminderSound(),
-            chosenLanguage: this.config.getLanguage()
+            appUser: this.config.getItem(ConfigObject.USER),
+            socketServerAddress: this.config.getItem(ConfigObject.SOCKET_SERVER),
+            pullRequestProgress: this.config.getItem(ConfigObject.PULLREQUEST_PROGRESS),
+            newPullRequestSound: this.config.getItem(ConfigObject.NEW_PULLREQUEST_SOUND),
+            approvedPullRequestSound: this.config.getItem(ConfigObject.APPROVED_PULLREQUEST_SOUND),
+            mergedPullRequestSound: this.config.getItem(ConfigObject.MERGED_PULLREQUEST_SOUND),
+            reminderSound: this.config.getItem(ConfigObject.REMINDER_SOUND),
+            chosenLanguage: this.config.getItem(ConfigObject.LANGUAGE)
         };
 
         this.sounds = this.soundRepository.findAll();
@@ -97,14 +98,16 @@ export class OptionsController implements ng.IComponentController {
     }
 
     public saveOptions(): void {
-        this.config.setUsername(this.options.appUser);
-        this.config.setSocketServerAddress(this.options.socketServerAddress);
-        this.config.setPullRequestProgress(this.options.pullRequestProgress);
-        this.config.setNewPullRequestSound(this.options.newPullRequestSound);
-        this.config.setApprovedPullRequestSound(this.options.approvedPullRequestSound);
-        this.config.setMergedPullRequestSound(this.options.mergedPullRequestSound);
-        this.config.setReminderSound(this.options.reminderSound);
-        this.config.setLanguage(this.options.chosenLanguage);
+        this.config.save(new Map([
+            [ConfigObject.USER, this.options.appUser],
+            [ConfigObject.SOCKET_SERVER, this.options.socketServerAddress],
+            [ConfigObject.PULLREQUEST_PROGRESS, this.options.pullRequestProgress],
+            [ConfigObject.NEW_PULLREQUEST_SOUND, this.options.newPullRequestSound],
+            [ConfigObject.APPROVED_PULLREQUEST_SOUND, this.options.approvedPullRequestSound],
+            [ConfigObject.MERGED_PULLREQUEST_SOUND, this.options.mergedPullRequestSound],
+            [ConfigObject.REMINDER_SOUND, this.options.reminderSound],
+            [ConfigObject.LANGUAGE, this.options.chosenLanguage],
+        ]));
 
         this.growl.success(this.$translate.instant('OPTIONS.GROWL.SETTINGS_APPLIED'));
         this.growl.warning(
@@ -164,6 +167,6 @@ export class OptionsController implements ng.IComponentController {
     }
 
     public changeLanguage() {
-        this.config.setLanguage(this.options.chosenLanguage);
+        this.config.setItem(ConfigObject.LANGUAGE, this.options.chosenLanguage);
     }
 }

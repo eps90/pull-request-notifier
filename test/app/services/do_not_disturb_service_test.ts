@@ -1,12 +1,15 @@
 import * as angular from 'angular';
 import {DoNotDisturbService} from '../../../app/services/do_not_disturb_service';
-import {Config} from '../../../app/services/config';
 import {Duration} from '../../../app/services/dnd/duration';
 import {MINUTES} from '../../../app/services/dnd/duration_unit';
+import {Config} from '../../../app/services/config/config';
+import {ConfigProvider} from '../../../app/services/config/config_provider';
+import {InMemoryConfigStorage} from '../../../app/services/config/in_memory_config_storage';
+import {ConfigObject} from '../../../app/models/config_object';
 
 describe('DoNotDisturbService', () => {
     let dndService: DoNotDisturbService;
-    let config: Config|any;
+    let config: Config;
     const currentTimeMock = new Date('2017-01-03 12:00:00');
 
     beforeEach(function mockTime() {
@@ -20,19 +23,14 @@ describe('DoNotDisturbService', () => {
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(angular.mock.module([
-        '$provide',
-        ($provide: ng.auto.IProvideService) => {
-            $provide.value('Config', {
-                dndTime: null,
-                setDndToTime: (time) => this.dndTime = time,
-                clearDndToTime: () => this.dndTime = null,
-                getDndToTime: () => this.dndTime
-            });
+        'configProvider',
+        (configProvider: ConfigProvider) => {
+            configProvider.useCustomStorage(new InMemoryConfigStorage());
         }
     ]));
     beforeEach(inject([
         'DndService',
-        'Config',
+        'config',
         (dnd, c) => {
             dndService = dnd;
             config = c;
@@ -44,14 +42,14 @@ describe('DoNotDisturbService', () => {
         dndService.turnOnDnd(dndDuration);
 
         const expectedEndDate = (new Date('2017-01-03 12:05:00')).getTime();
-        const actualEndDate = config.getDndToTime();
+        const actualEndDate = config.getItem(ConfigObject.DND_END_TIME);
 
         expect(actualEndDate).toEqual(expectedEndDate);
     });
 
     it('should be able to turn off DND', () => {
         dndService.turnOffDnd();
-        expect(config.getDndToTime()).toBeNull();
+        expect(config.getItem(ConfigObject.DND_END_TIME)).toBeUndefined();
     });
 
     it('should determine if DND is active yet', () => {

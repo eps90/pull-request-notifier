@@ -1,13 +1,14 @@
-import {Config} from './config';
 import {SoundRepository} from './sound_repository';
 import {NotificationSound} from '../models/notification_sound';
 import {Sound} from '../models/sound';
 import {HowlSoundFactory} from './factory/howl_sound_factory';
 import {DoNotDisturbService} from './do_not_disturb_service';
+import {Config} from './config/config';
+import {ConfigObject} from '../models/config_object';
 
 export class SoundManager {
 
-    public static $inject: string[] = ['Config', 'SoundRepository', 'DndService'];
+    public static $inject: string[] = ['config', 'SoundRepository', 'DndService'];
 
     private sounds: {[key: string]: Howl};
 
@@ -19,19 +20,19 @@ export class SoundManager {
         this.sounds = {};
         this.addHowlSound(
             NotificationSound.NEW_PULLREQUEST,
-            soundRepository.findById(config.getNewPullRequestSound())
+            soundRepository.findById(config.getItem(ConfigObject.NEW_PULLREQUEST_SOUND))
         );
         this.addHowlSound(
             NotificationSound.APPROVED_PULLREQUEST,
-            soundRepository.findById(config.getApprovedPullRequestSound())
+            soundRepository.findById(config.getItem(ConfigObject.APPROVED_PULLREQUEST_SOUND))
         );
         this.addHowlSound(
             NotificationSound.MERGED_PULLREQUEST,
-            soundRepository.findById(config.getMergedPullRequestSound())
+            soundRepository.findById(config.getItem(ConfigObject.MERGED_PULLREQUEST_SOUND))
         );
         this.addHowlSound(
             NotificationSound.REMINDER,
-            soundRepository.findById(config.getReminderSound())
+            soundRepository.findById(config.getItem(ConfigObject.REMINDER_SOUND))
         );
     }
 

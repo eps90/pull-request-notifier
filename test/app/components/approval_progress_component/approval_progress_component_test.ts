@@ -1,4 +1,3 @@
-import {Config} from '../../../../app/services/config';
 import * as angular from 'angular';
 import {MODULE_NAME} from '../../../../app/modules/bitbucket_notifier';
 import {
@@ -7,31 +6,32 @@ import {
 import {PullRequestProgress} from '../../../../app/models/pull_request_progress';
 import {User} from '../../../../app/models/user';
 import {Reviewer} from '../../../../app/models/reviewer';
+import {InMemoryConfigStorage} from '../../../../app/services/config/in_memory_config_storage';
+import {ConfigObject} from '../../../../app/models/config_object';
+import {ConfigProvider} from '../../../../app/services/config/config_provider';
+import {Config} from '../../../../app/services/config/config';
 
 describe('ApprovalProgressComponent', () => {
     let $scope: ng.IScope;
     let $compile: ng.ICompileService;
     let config: Config;
     let element;
-    let prProgress = null;
 
     beforeEach(angular.mock.module(MODULE_NAME));
     beforeEach(angular.mock.module([
-        '$provide',
-        ($provide: ng.auto.IProvideService) => {
-            prProgress = PullRequestProgress.PROPORTIONS;
-
-            $provide.value('Config', {
-                getPullRequestProgress: jasmine.createSpy('Config.getPullRequestProgress').and.callFake(() => {
-                    return prProgress;
-                })
-            });
+        'configProvider',
+        (configProvider: ConfigProvider) => {
+            const defaults = new Map([
+                [ConfigObject.PULLREQUEST_PROGRESS, PullRequestProgress.PROPORTIONS]
+            ]);
+            configProvider.setDefaults(defaults);
+            configProvider.useCustomStorage(new InMemoryConfigStorage());
         }
     ]));
     beforeEach(inject([
         '$compile',
         '$rootScope',
-        'Config',
+        'config',
         ($c, $r, c) => {
             $compile = $c;
             $scope = $r.$new();
@@ -92,11 +92,12 @@ describe('ApprovalProgressComponent', () => {
             };
             const ctrl = $componentController('approvalProgress', null, bindings) as ApprovalProgressController;
             ctrl.$onInit();
-            expect(ctrl.pullRequestProgress).toEqual(prProgress);
+            expect(ctrl.pullRequestProgress).toEqual(PullRequestProgress.PROPORTIONS);
         });
 
         it("should display proportions value if 'proportions' is set as progress option", () => {
-            prProgress = PullRequestProgress.PROPORTIONS;
+            config.setItem(ConfigObject.PULLREQUEST_PROGRESS, PullRequestProgress.PROPORTIONS);
+
             element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
             $scope.$digest();
 
@@ -104,7 +105,8 @@ describe('ApprovalProgressComponent', () => {
         });
 
         it("should display percentage value if 'percentage' is set as progress option", () => {
-            prProgress = PullRequestProgress.PERCENT;
+            config.setItem(ConfigObject.PULLREQUEST_PROGRESS, PullRequestProgress.PERCENT);
+
             element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
             $scope.$digest();
 
@@ -112,7 +114,8 @@ describe('ApprovalProgressComponent', () => {
         });
 
         it("should display progress bar of 'progress_bar' is set as progress option", () => {
-            prProgress = PullRequestProgress.PROGRESS_BAR;
+            config.setItem(ConfigObject.PULLREQUEST_PROGRESS, PullRequestProgress.PROGRESS_BAR);
+
             element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
             $scope.$digest();
 
@@ -121,15 +124,16 @@ describe('ApprovalProgressComponent', () => {
         });
 
         it('should allow to override progress type by passing it to attribute', () => {
-            prProgress = PullRequestProgress.PERCENT;
+            config.setItem(ConfigObject.PULLREQUEST_PROGRESS, PullRequestProgress.PROGRESS_BAR);
+
             const bindings = {
                 reviewers,
-                mode: 'progress_bar'
+                mode: PullRequestProgress.PROGRESS_BAR
             };
             const ctrl = $componentController('approvalProgress', null, bindings) as ApprovalProgressController;
             ctrl.$onInit();
 
-            expect(ctrl.pullRequestProgress).toEqual('progress_bar');
+            expect(ctrl.pullRequestProgress).toEqual(PullRequestProgress.PROGRESS_BAR);
         });
     });
 });

@@ -1,5 +1,4 @@
 import {SocketManager} from '../../../app/services/socket_manager';
-import {Config} from '../../../app/services/config';
 import {Notifier} from '../../../app/services/notifier';
 import {PullRequestRepository} from '../../../app/services/pull_request_repository';
 import {Indicator} from '../../../app/services/indicator';
@@ -13,6 +12,10 @@ import {User} from '../../../app/models/user';
 import {Reviewer} from '../../../app/models/reviewer';
 import {WebhookEvent} from '../../../app/models/event/webhook_event';
 import {PullRequestCommentEvent} from '../../../app/models/event/pull_request_comment_event';
+import {Config} from '../../../app/services/config/config';
+import {ConfigProvider} from '../../../app/services/config/config_provider';
+import {InMemoryConfigStorage} from '../../../app/services/config/in_memory_config_storage';
+import {ConfigObject} from '../../../app/models/config_object';
 require('./../../angular-socket.io-mock');
 
 describe('SocketHandler', () => {
@@ -27,53 +30,54 @@ describe('SocketHandler', () => {
     let extensionListener: (chromeEvent) => void;
 
     beforeEach(angular.mock.module('bitbucketNotifier.background'));
-    beforeEach(angular.mock.module(['$provide', ($p: ng.auto.IProvideService) => {
-        $p.value('Notifier', {
-            notifyNewPullRequestAssigned: jasmine.createSpy('notifyNewPullRequestAssigned'),
-            notifyPullRequestMerged: jasmine.createSpy('notifyPullRequestMerged'),
-            notifyPullRequestApproved: jasmine.createSpy('notifyPullRequestApproved'),
-            notifyReminder: jasmine.createSpy('notifyReminder'),
-            notifyPullRequestUpdated: jasmine.createSpy('notifyPullRequestUpdated'),
-            notifyNewCommentAdded: jasmine.createSpy('notifyNewCommentAdded'),
-            notifyNewReplyOnComment: jasmine.createSpy('notifyNewReplyOnComment')
-        });
+    beforeEach(angular.mock.module([
+        '$provide',
+        'configProvider',
+        ($p: ng.auto.IProvideService, configProvider: ConfigProvider) => {
+            configProvider.useCustomStorage(new InMemoryConfigStorage());
+            configProvider.setDefaults(new Map([
+                [ConfigObject.USER, 'john.smith'],
+                [ConfigObject.SOCKET_SERVER, 'http://localhost:1234'],
+            ]));
 
-        $p.value('Config', {
-            getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
-                return 'john.smith';
-            }),
-            getSocketServerAddress: jasmine.createSpy('getSocketServerAddress').and.callFake(() => {
-                return 'http://localhost:1234';
-            })
-        });
+            $p.value('Notifier', {
+                notifyNewPullRequestAssigned: jasmine.createSpy('notifyNewPullRequestAssigned'),
+                notifyPullRequestMerged: jasmine.createSpy('notifyPullRequestMerged'),
+                notifyPullRequestApproved: jasmine.createSpy('notifyPullRequestApproved'),
+                notifyReminder: jasmine.createSpy('notifyReminder'),
+                notifyPullRequestUpdated: jasmine.createSpy('notifyPullRequestUpdated'),
+                notifyNewCommentAdded: jasmine.createSpy('notifyNewCommentAdded'),
+                notifyNewReplyOnComment: jasmine.createSpy('notifyNewReplyOnComment')
+            });
 
-        $p.value('Indicator', {
-            reset: jasmine.createSpy('Indicator.reset'),
-            setText: jasmine.createSpy('Indicator.setText')
-        });
+            $p.value('Indicator', {
+                reset: jasmine.createSpy('Indicator.reset'),
+                setText: jasmine.createSpy('Indicator.setText')
+            });
 
-        $p.value('PullRequestRepository', {
-            pullRequests: [],
-            setPullRequests: jasmine.createSpy('PullRequestRepository.setpullRequests')
-                .and.callFake((pullRequests: PullRequest[]) => {
-                    this.pullRequests = pullRequests;
-                }),
-            hasAssignmentChanged: jasmine.createSpy('PullRequestRepository.hasAssignmentChanged')
-                .and.callFake(() => {
-                    return hasAssignmentChanged;
-                }),
-            exists: jasmine.createSpy('PullRequestRepository.exists')
-                .and.callFake(() => {
-                    return exists;
-                })
-        });
+            $p.value('PullRequestRepository', {
+                pullRequests: [],
+                setPullRequests: jasmine.createSpy('PullRequestRepository.setpullRequests')
+                    .and.callFake((pullRequests: PullRequest[]) => {
+                        this.pullRequests = pullRequests;
+                    }),
+                hasAssignmentChanged: jasmine.createSpy('PullRequestRepository.hasAssignmentChanged')
+                    .and.callFake(() => {
+                        return hasAssignmentChanged;
+                    }),
+                exists: jasmine.createSpy('PullRequestRepository.exists')
+                    .and.callFake(() => {
+                        return exists;
+                    })
+            });
 
-        spyOn(chrome.runtime.onMessage, 'addListener').and.callFake(fn => extensionListener = fn);
-    }]));
+            spyOn(chrome.runtime.onMessage, 'addListener').and.callFake(fn => extensionListener = fn);
+        }])
+    );
     beforeEach(inject([
         'SocketHandler',
         'SocketManager',
-        'Config',
+        'config',
         'PullRequestRepository',
         'Notifier',
         'Indicator',

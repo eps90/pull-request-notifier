@@ -1,30 +1,29 @@
-import {Config} from '../../../app/services/config';
 import * as angular from 'angular';
 import {PullRequest} from '../../../app/models/pull_request';
 import {Reviewer} from '../../../app/models/reviewer';
 import {User} from '../../../app/models/user';
+import {ConfigProvider} from '../../../app/services/config/config_provider';
+import {InMemoryConfigStorage} from '../../../app/services/config/in_memory_config_storage';
+import {ConfigObject} from '../../../app/models/config_object';
+import {Config} from '../../../app/services/config/config';
 
 describe('AssignedFilter', () => {
     let $filter;
-    let config: Config;
     let pullRequests: PullRequest[];
     let assignedFilter;
-    let loggedInUser: string;
+    let config: Config;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(angular.mock.module([
-        '$provide', ($provide: ng.auto.IProvideService) => {
-            $provide.value('Config', {
-                getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
-                    return loggedInUser;
-                })
-            });
+        'configProvider',
+        (configProvider: ConfigProvider) => {
+            configProvider.useCustomStorage(new InMemoryConfigStorage());
         }
     ]));
 
     beforeEach(inject([
         '$filter',
-        'Config',
+        'config',
         ($f, c) => {
             $filter = $f;
             config = c;
@@ -62,7 +61,7 @@ describe('AssignedFilter', () => {
     });
 
     it('should include only pull requests authored by logged in user', () => {
-        loggedInUser = 'john.smith';
+        config.setItem(ConfigObject.USER, 'john.smith');
 
         const actual: PullRequest[] = assignedFilter(pullRequests);
         expect(actual.length).toEqual(2);
@@ -71,12 +70,12 @@ describe('AssignedFilter', () => {
     });
 
     it('should return empty set if there are no pull requests authored by a user', () => {
-        loggedInUser = 'jon.snow';
+        config.setItem(ConfigObject.USER, 'jon.snow');
         expect(assignedFilter(pullRequests).length).toEqual(0);
     });
 
     it('should not return duplicates', () => {
-        loggedInUser = 'john.smith';
+        config.setItem(ConfigObject.USER, 'john.smith');
 
         const assignedUser: User = new User();
         assignedUser.username = 'john.smith';
