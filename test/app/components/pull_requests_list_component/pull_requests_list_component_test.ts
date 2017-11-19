@@ -5,6 +5,7 @@ import {User} from '../../../../app/models/user';
 import {Reviewer} from '../../../../app/models/reviewer';
 import {Project} from '../../../../app/models/project';
 import {ConfigObject} from '../../../../app/models/config_object';
+import {Config} from '../../../../app/services/config/config';
 
 describe('PullRequestsListComponent', () => {
     beforeEach(angular.mock.module('bitbucketNotifier'));
@@ -12,8 +13,8 @@ describe('PullRequestsListComponent', () => {
     let $compile: ng.ICompileService;
     let $scope: ng.IRootScopeService;
     let pullRequests: PullRequest[] = [];
-    let localStorageService: angular.local.storage.ILocalStorageService;
     let pullRequestRepository: PullRequestRepository;
+    let config: Config;
 
     beforeEach(() => {
         spyOn(chrome.runtime, 'connect').and.callFake(() => {
@@ -32,13 +33,13 @@ describe('PullRequestsListComponent', () => {
         inject([
             '$compile',
             '$rootScope',
-            'localStorageService',
             'PullRequestRepository',
-            ($c, $s, $l, $p) => {
+            'config',
+            ($c, $s, $p, c) => {
                 $compile = $c;
                 $scope = $s;
-                localStorageService = $l;
                 pullRequestRepository = $p;
+                config = c;
             }
         ])
     );
@@ -88,7 +89,7 @@ describe('PullRequestsListComponent', () => {
 
     describe('Authored mode', () => {
         beforeEach(() => {
-            localStorageService.set(ConfigObject.USER, 'john.smith');
+            config.setItem(ConfigObject.USER, 'john.smith');
         });
 
         it('should render list of pull requests', () => {
@@ -133,7 +134,7 @@ describe('PullRequestsListComponent', () => {
 
     describe('Assigned mode', () => {
         beforeEach(() => {
-            localStorageService.set(ConfigObject.USER, 'anna.kowalsky');
+            config.setItem(ConfigObject.USER, 'anna.kowalsky');
         });
 
         it('should render list of pull requests', () => {
