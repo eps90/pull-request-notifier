@@ -21,6 +21,11 @@ describe('InMemoryConfigStorage', () => {
         expect(storage.getItem('user')).toEqual('admin');
     });
 
+    it('should save single item', () => {
+        storage.setItem('newKey', 'newValue');
+        expect(storage.getItem('newKey')).toEqual('newValue');
+    });
+
     it('should determine if storage has value', () => {
         expect(storage.hasItem('password')).toBeFalsy();
         expect(storage.hasItem('user')).toBeTruthy();

@@ -1,5 +1,6 @@
 export interface ConfigStorageInterface {
     getItem(itemKey: string): any;
+    setItem(itemKey: string, itemValue: any): void;
     hasItem(itemKey: string): boolean;
     removeItem(itemKey: string): void;
     allItems(): Map<string, any>;

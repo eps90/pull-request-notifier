@@ -1,5 +1,6 @@
 import * as angular from 'angular';
 import {AngularLocalStorageStorage} from '../../../../app/services/config/angular_localstorage_storage';
+import hideInputView = chrome.input.ime.hideInputView;
 
 describe('AngularLocalStorageStorage', () => {
     let storage: AngularLocalStorageStorage;
@@ -24,6 +25,14 @@ describe('AngularLocalStorageStorage', () => {
         localStorageService.set(inputKey, inputValue);
 
         expect(storage.getItem(inputKey)).toEqual(inputValue);
+    });
+
+    it('should save single item', () => {
+        const inputKey = 'newItem';
+        const someValue = 'newValue';
+        storage.setItem(inputKey, someValue);
+
+        expect(storage.getItem(inputKey)).toEqual(someValue);
     });
 
     it('should determine whether it has an item', () => {

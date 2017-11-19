@@ -7,6 +7,10 @@ export class AngularLocalStorageStorage implements ConfigStorageInterface {
         return this.localStorageService.get(itemKey);
     }
 
+    public setItem(itemKey: string, itemValue: any): void {
+        this.localStorageService.set(itemKey, itemValue);
+    }
+
     public hasItem(itemKey: string): boolean {
         return this.localStorageService.get(itemKey) !== null;
     }

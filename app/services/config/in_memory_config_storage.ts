@@ -11,6 +11,10 @@ export class InMemoryConfigStorage implements ConfigStorageInterface {
         return this.storage.get(itemKey);
     }
 
+    public setItem(itemKey: string, itemValue: any): void {
+        this.storage.set(itemKey, itemValue);
+    }
+
     public hasItem(itemKey: string): boolean {
         return this.storage.has(itemKey);
     }
