@@ -1,9 +1,10 @@
-import {Config} from '../services/config';
 import {PullRequest} from '../models/pull_request';
+import {Config} from '../services/config/config';
+import {ConfigObject} from '../models/config_object';
 
 export function AuthoredFilter(config: Config) {
     return (pullRequests: PullRequest[]) => {
-        const loggedInUser = config.getUsername();
+        const loggedInUser = config.getItem(ConfigObject.USER);
         const result: PullRequest[] = [];
 
         for (const pullRequest of pullRequests) {
@@ -16,4 +17,4 @@ export function AuthoredFilter(config: Config) {
     };
 }
 
-AuthoredFilter.$inject = ['Config'];
+AuthoredFilter.$inject = ['config'];

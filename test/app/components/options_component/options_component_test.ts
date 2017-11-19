@@ -1,4 +1,3 @@
-import {Config} from '../../../../app/services/config';
 import {Notifier} from '../../../../app/services/notifier';
 import * as angular from 'angular';
 import {Howl} from 'howler';
@@ -6,17 +5,13 @@ import {OptionsController} from '../../../../app/components/options_component/op
 import {PullRequestProgress} from '../../../../app/models/pull_request_progress';
 import {languages} from '../../services/mock/languages';
 import {LanguageRepositoryInterface} from '../../../../app/services/language_repository/language_repository_interface';
+import {ConfigProvider} from '../../../../app/services/config/config_provider';
+import {InMemoryConfigStorage} from '../../../../app/services/config/in_memory_config_storage';
+import {ConfigObject} from '../../../../app/models/config_object';
+import {Config} from '../../../../app/services/config/config';
 
 describe('OptionsComponent', () => {
     let config: Config;
-    let appUser;
-    let socketServer;
-    let pullRequestProgress;
-    let newPullRequestSound;
-    let approvedPullRequestSound;
-    let mergedPullRequestSound;
-    let reminderSound;
-    let chosenLanguage;
     let element: ng.IAugmentedJQuery;
     let $rootScope: ng.IRootScopeService;
     let $scope: ng.IScope;
@@ -28,51 +23,21 @@ describe('OptionsComponent', () => {
 
     beforeEach(angular.mock.module('bitbucketNotifier.options'));
     beforeEach(angular.mock.module([
+        'configProvider',
         '$provide',
-        ($provide: ng.auto.IProvideService) => {
-            appUser = null;
-            socketServer = null;
-            pullRequestProgress = PullRequestProgress.PROPORTIONS;
-            newPullRequestSound = 'ring';
-            approvedPullRequestSound = 'bell';
-            mergedPullRequestSound = 'bell';
-            reminderSound = 'alarm';
-            chosenLanguage = languages[0].code;
-
+        (configProvider: ConfigProvider, $provide: ng.auto.IProvideService) => {
             $provide.value('languages', languages);
 
-            $provide.value('Config', {
-                getUsername: jasmine.createSpy('Config.getUsername').and.callFake(() => {
-                    return appUser;
-                }),
-                getSocketServerAddress: jasmine.createSpy('Config.getSocketServerAddress').and.callFake(() => {
-                    return socketServer;
-                }),
-                getPullRequestProgress: jasmine.createSpy('Config.getPullRequestProgress').and.callFake(() => {
-                    return pullRequestProgress;
-                }),
-                getNewPullRequestSound: jasmine.createSpy('Config.getNewPullRequestSound').and.callFake(() => {
-                    return newPullRequestSound;
-                }),
-                getApprovedPullRequestSound: jasmine.createSpy('Config.getNewPullRequestSound').and.callFake(() => {
-                    return approvedPullRequestSound;
-                }),
-                getMergedPullRequestSound: jasmine.createSpy('Config.getNewPullRequestSound').and.callFake(() => {
-                    return mergedPullRequestSound;
-                }),
-                getReminderSound: jasmine.createSpy('Config.getNewPullRequestSound').and.callFake(() => {
-                    return reminderSound;
-                }),
-                getLanguage: jasmine.createSpy('Config.getLanguage').and.returnValue(chosenLanguage),
-                setUsername: jasmine.createSpy('Config.setUsername'),
-                setSocketServerAddress: jasmine.createSpy('Config.setSocketServerAddress'),
-                setPullRequestProgress: jasmine.createSpy('Config.setPullRequestProgress'),
-                setNewPullRequestSound: jasmine.createSpy('Config.setNewPullRequestSound'),
-                setApprovedPullRequestSound: jasmine.createSpy('Config.setApprovedPullRequestSound'),
-                setMergedPullRequestSound: jasmine.createSpy('Config.setMergedPullRequestSound'),
-                setReminderSound: jasmine.createSpy('Config.setReminderRequestSound'),
-                setLanguage: jasmine.createSpy('Config.setLanguage')
-            });
+            const configDefaults = new Map([
+                [ConfigObject.PULLREQUEST_PROGRESS, PullRequestProgress.PROPORTIONS],
+                [ConfigObject.NEW_PULLREQUEST_SOUND, 'ring'],
+                [ConfigObject.APPROVED_PULLREQUEST_SOUND, 'bell'],
+                [ConfigObject.MERGED_PULLREQUEST_SOUND, 'bell'],
+                [ConfigObject.REMINDER_SOUND, 'alarm'],
+                [ConfigObject.LANGUAGE, languages[0].code]
+            ]);
+            configProvider.useCustomStorage(new InMemoryConfigStorage());
+            configProvider.setDefaults(configDefaults);
 
             $provide.value('growl', {
                 success: jasmine.createSpy('growl.success'),
@@ -93,7 +58,7 @@ describe('OptionsComponent', () => {
         }
     ]));
     beforeEach(inject([
-        'Config',
+        'config',
         '$rootScope',
         '$compile',
         'growl',
@@ -136,15 +101,17 @@ describe('OptionsComponent', () => {
         expect(languageElement.val()).toEqual('string:en');
     });
 
-    it('should show completed form if config is set', () => {
-        appUser = 'john.smith';
-        socketServer = 'http://localhost:1234';
-        pullRequestProgress = PullRequestProgress.PERCENT;
-        newPullRequestSound = 'ring';
-        approvedPullRequestSound = 'bell';
-        mergedPullRequestSound = 'bell';
-        reminderSound = 'alarm';
-        chosenLanguage = 'pl';
+    it('should show completed form if config is set', async () => {
+        await config.save(new Map([
+            [ConfigObject.USER, 'john.smith'],
+            [ConfigObject.SOCKET_SERVER, 'http://localhost:1234'],
+            [ConfigObject.PULLREQUEST_PROGRESS, PullRequestProgress.PERCENT],
+            [ConfigObject.NEW_PULLREQUEST_SOUND, 'ring'],
+            [ConfigObject.APPROVED_PULLREQUEST_SOUND, 'bell'],
+            [ConfigObject.MERGED_PULLREQUEST_SOUND, 'bell'],
+            [ConfigObject.REMINDER_SOUND, 'alarm'],
+            [ConfigObject.LANGUAGE, 'en']
+        ]));
 
         element = $compile('<options></options>')($scope);
         $scope.$digest();
@@ -159,9 +126,9 @@ describe('OptionsComponent', () => {
         const reminderSoundElement = element.find('select#reminder-sound');
         const languageElement = element.find('select#language');
 
-        expect(userElement.val()).toEqual(appUser);
-        expect(socketServerElement.val()).toEqual(socketServer);
-        expect(prProgressElement.val()).toEqual(pullRequestProgress);
+        expect(userElement.val()).toEqual('john.smith');
+        expect(socketServerElement.val()).toEqual('http://localhost:1234');
+        expect(prProgressElement.val()).toEqual(PullRequestProgress.PERCENT);
         expect(newPullRequestSoundElement.val()).toEqual('string:ring');
         expect(approvedPullRequestSoundElement.val()).toEqual('string:bell');
         expect(mergedPullRequestSoundElement.val()).toEqual('string:bell');
@@ -193,14 +160,14 @@ describe('OptionsComponent', () => {
         const saveButton = element.find('#submit');
         saveButton.triggerHandler('click');
 
-        expect(config.setUsername).toHaveBeenCalledWith(username);
-        expect(config.setSocketServerAddress).toHaveBeenCalledWith(address);
-        expect(config.setPullRequestProgress).toHaveBeenCalledWith(PullRequestProgress.PERCENT);
-        expect(config.setNewPullRequestSound).toHaveBeenCalledWith(newPrSound);
-        expect(config.setApprovedPullRequestSound).toHaveBeenCalledWith(approvedPrSound);
-        expect(config.setMergedPullRequestSound).toHaveBeenCalledWith(mergedPrSound);
-        expect(config.setReminderSound).toHaveBeenCalledWith(remindSound);
-        expect(config.setLanguage).toHaveBeenCalledWith(newLanguage);
+        expect(config.getItem(ConfigObject.USER)).toEqual(username);
+        expect(config.getItem(ConfigObject.SOCKET_SERVER)).toEqual(address);
+        expect(config.getItem(ConfigObject.PULLREQUEST_PROGRESS)).toEqual(PullRequestProgress.PERCENT);
+        expect(config.getItem(ConfigObject.NEW_PULLREQUEST_SOUND)).toEqual(newPrSound);
+        expect(config.getItem(ConfigObject.APPROVED_PULLREQUEST_SOUND)).toEqual(approvedPrSound);
+        expect(config.getItem(ConfigObject.MERGED_PULLREQUEST_SOUND)).toEqual(mergedPrSound);
+        expect(config.getItem(ConfigObject.REMINDER_SOUND)).toEqual(remindSound);
+        expect(config.getItem(ConfigObject.LANGUAGE)).toEqual(newLanguage);
     });
 
     it('should show growl message on save', () => {
@@ -292,7 +259,7 @@ describe('OptionsComponent', () => {
             const languageElement = element.find('select#language');
             languageElement.val('string:fr').triggerHandler('change');
 
-            expect(config.setLanguage).toHaveBeenCalledWith('fr');
+            expect(config.getItem(ConfigObject.LANGUAGE)).toEqual('fr');
         });
     });
 });

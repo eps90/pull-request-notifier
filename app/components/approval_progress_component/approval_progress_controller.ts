@@ -1,5 +1,6 @@
-import {Config} from '../../services/config';
 import {Reviewer} from '../../models/reviewer';
+import {Config} from '../../services/config/config';
+import {ConfigObject} from '../../models/config_object';
 
 export class ApprovalProgressController implements ng.IComponentController {
     public reviewers: Reviewer[];
@@ -9,13 +10,13 @@ export class ApprovalProgressController implements ng.IComponentController {
     public approvalsCount: number;
     public progress: any;
 
-    public static $inject: string[] = ['Config'];
+    public static $inject: string[] = ['config'];
 
     constructor(private config: Config) {}
 
     public $onInit = () => {
         this.reviewers = this.reviewers || [];
-        this.pullRequestProgress = this.mode || this.config.getPullRequestProgress();
+        this.pullRequestProgress = this.mode || this.config.getItem(ConfigObject.PULLREQUEST_PROGRESS);
     }
 
     public $doCheck = () => {

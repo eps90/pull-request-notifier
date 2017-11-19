@@ -1,9 +1,10 @@
-import {Config} from '../services/config';
 import {PullRequest} from '../models/pull_request';
+import {Config} from '../services/config/config';
+import {ConfigObject} from '../models/config_object';
 
 export function AssignedFilter(config: Config) {
     return (pullRequests: PullRequest[]) => {
-        const loggedInUser = config.getUsername();
+        const loggedInUser = config.getItem(ConfigObject.USER);
         const result: PullRequest[] = [];
 
         for (const pullRequest of pullRequests) {
@@ -19,4 +20,4 @@ export function AssignedFilter(config: Config) {
     };
 }
 
-AssignedFilter.$inject = ['Config'];
+AssignedFilter.$inject = ['config'];

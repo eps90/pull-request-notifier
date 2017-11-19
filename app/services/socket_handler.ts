@@ -1,7 +1,6 @@
 // @todo TO REFACTOR!!!
 // @todo Move socket handling into another service?
 import {SocketManager} from './socket_manager';
-import {Config} from './config';
 import {Notifier} from './notifier';
 import {Indicator} from './indicator';
 import {PullRequestRepository} from './pull_request_repository';
@@ -15,11 +14,13 @@ import {WebhookEvent} from '../models/event/webhook_event';
 import {PullRequestEventFactory} from './factory/pull_request_event_factory';
 import {AnalyticsEventDispatcher} from './analytics_event_dispatcher';
 import {SocketEvent} from '../models/analytics_event/socket_event';
+import {Config} from './config/config';
+import {ConfigObject} from '../models/config_object';
 
 export class SocketHandler {
     public static $inject: string[] = [
         'SocketManager',
-        'Config',
+        'config',
         'PullRequestRepository',
         'Notifier',
         'Indicator',
@@ -47,7 +48,7 @@ export class SocketHandler {
 
     private initListeners(): void {
         this.socketManager.socket.on('connect', () => {
-            const loggedInUser = this.config.getUsername();
+            const loggedInUser = this.config.getItem(ConfigObject.USER);
             this.socketManager.socket.emit(SocketClientEvent.INTRODUCE, loggedInUser);
             this.analyticsEventDispatcher.dispatch(
                 SocketEvent.connected()
@@ -85,7 +86,7 @@ export class SocketHandler {
         this.socketManager.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
             userPrs = PullRequestEventFactory.create(userPrs);
 
-            const loggedInUser = this.config.getUsername();
+            const loggedInUser = this.config.getItem(ConfigObject.USER);
             this.pullRequestRepository.setPullRequests(userPrs.pullRequests);
             this.indicator.setText(this.pullRequestRepository.pullRequests.length.toString());
 
@@ -101,7 +102,7 @@ export class SocketHandler {
         this.socketManager.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: PullRequestEvent) => {
             userPrs = PullRequestEventFactory.create(userPrs);
 
-            const loggedInUser = this.config.getUsername();
+            const loggedInUser = this.config.getItem(ConfigObject.USER);
 
             const contextPr: PullRequest = userPrs.context;
             const sourceEvent: string = userPrs.sourceEvent;

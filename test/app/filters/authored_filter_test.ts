@@ -1,30 +1,29 @@
-import {Config} from '../../../app/services/config';
 import * as angular from 'angular';
 import {PullRequest} from '../../../app/models/pull_request';
 import {User} from '../../../app/models/user';
+import {ConfigProvider} from '../../../app/services/config/config_provider';
+import {InMemoryConfigStorage} from '../../../app/services/config/in_memory_config_storage';
+import {Config} from '../../../app/services/config/config';
+import {ConfigObject} from '../../../app/models/config_object';
 
 describe('AuthoredFilter', () => {
     let $filter;
     let config: Config;
     let pullRequests: PullRequest[];
     let authoredFilter;
-    let loggedInUsername: string;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
 
     beforeEach(angular.mock.module([
-        '$provide', ($provide: ng.auto.IProvideService) => {
-            $provide.value('Config', {
-                getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
-                    return loggedInUsername;
-                })
-            });
+        'configProvider',
+        (configProvider: ConfigProvider) => {
+            configProvider.useCustomStorage(new InMemoryConfigStorage());
         }
     ]));
 
     beforeEach(inject([
         '$filter',
-        'Config',
+        'config',
         ($f, c) => {
             $filter = $f;
             config = c;
@@ -55,7 +54,7 @@ describe('AuthoredFilter', () => {
     });
 
     it('should include only pull requests authored by logged in user', () => {
-        loggedInUsername = 'john.smith';
+        config.setItem(ConfigObject.USER, 'john.smith');
 
         const result: PullRequest[] = authoredFilter(pullRequests);
         expect(result.length).toEqual(2);
@@ -64,7 +63,7 @@ describe('AuthoredFilter', () => {
     });
 
     it('should return empty set if there are no pull requests authored by a user', () => {
-        loggedInUsername = 'jon.snow';
+        config.setItem(ConfigObject.USER, 'jon.snow');
         expect(authoredFilter(pullRequests).length).toEqual(0);
     });
 });

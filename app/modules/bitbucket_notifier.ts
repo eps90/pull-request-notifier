@@ -18,7 +18,6 @@ import {AssignedFilter} from '../filters/assigned_filter';
 import {UnapprovedFirst} from '../filters/unapproved_first_filter';
 import {PullRequestRepository} from '../services/pull_request_repository';
 import {SoundRepository} from '../services/sound_repository';
-import {Config} from '../services/config';
 import {RoutingConfiguration} from '../config/routing';
 import 'angular-loggly-logger';
 import 'angular-google-analytics';
@@ -35,11 +34,12 @@ import {setUpI18n, getLanguages} from '../helpers/i18n';
 import {TimeTracker} from '../services/time_tracker';
 import {LanguageRepository} from '../services/language_repository/language_repository';
 import {DoNotDisturbService} from '../services/do_not_disturb_service';
+import './eps_config';
+import {setUpConfig} from '../helpers/config';
 
 export const MODULE_NAME = 'bitbucketNotifier';
 
 const application = angular.module(MODULE_NAME, [
-    'LocalStorageModule',
     'ui.bootstrap',
     'dbaq.emoji',
     'ngSanitize',
@@ -49,7 +49,8 @@ const application = angular.module(MODULE_NAME, [
     'logglyLogger',
     'angular-google-analytics',
     'pascalprecht.translate',
-    'ngCookies'
+    'ngCookies',
+    'eps.config'
 ]);
 application.component('pullRequest', new PullRequestComponent());
 application.component('pullRequestsList', new PullRequestsListComponent());
@@ -70,7 +71,6 @@ application.filter('unapprovedFirst', UnapprovedFirst);
 
 application.service('PullRequestRepository', PullRequestRepository);
 application.service('SoundRepository', SoundRepository);
-application.service('Config', Config);
 application.service('AnalyticsEventDispatcher', AnalyticsEventDispatcher);
 application.service('TimeTracker', TimeTracker);
 application.service('LanguageRepository', LanguageRepository);
@@ -93,6 +93,7 @@ setUpLogglyLogger(application);
 setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'popup.html');
 setUpI18n(application);
+setUpConfig(application);
 
 application.run(['Analytics', (analytics) => {
     if (!TEST) {
