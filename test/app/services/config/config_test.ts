@@ -45,6 +45,16 @@ describe('Config', () => {
         expect(config.getItem('sounds.new_pr')).toEqual('new_pr_sound.mp3');
     });
 
+    it('shold save single item', () => {
+        config.setItem('someKey', 'someValue');
+        expect(config.getItem('someKey')).toEqual('someValue');
+    });
+
+    it('should remove single item', () => {
+        config.removeItem('host');
+        expect(configStorage.hasItem('host')).toBeFalsy();
+    });
+
     it('should save new config', (done) => {
         const newConfig = new Map([
             ['host', 'http://myhost.com'],
