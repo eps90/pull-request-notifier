@@ -28,6 +28,7 @@ import {PopupOpenedTimingEvent} from '../models/analytics_event/popup_opened_tim
 import {LanguageRepository} from '../services/language_repository/language_repository';
 import {DoNotDisturbService} from '../services/do_not_disturb_service';
 import './eps_config';
+import {setUpConfig} from '../helpers/config';
 
 export const MODULE_NAME = 'bitbucketNotifier.background';
 const application = angular.module(
@@ -70,6 +71,7 @@ setUpLogglyLogger(application);
 setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'background.html');
 setUpI18n(application);
+setUpConfig(application);
 
 application.run(
     [

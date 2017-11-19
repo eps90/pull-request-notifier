@@ -26,6 +26,7 @@ import {TimeTracker} from '../services/time_tracker';
 import {LanguageRepository} from '../services/language_repository/language_repository';
 import {DoNotDisturbService} from '../services/do_not_disturb_service';
 import './eps_config';
+import {setUpConfig} from '../helpers/config';
 
 export const MODULE_NAME = 'bitbucketNotifier.options';
 const application = angular.module(
@@ -74,5 +75,6 @@ setUpLogglyLogger(application);
 setUpAnalytics(application);
 setUpAnalyticsTrackPrefix(application, 'options.html');
 setUpI18n(application);
+setUpConfig(application);
 
 application.run(['Analytics', (analytics) => {}]);
