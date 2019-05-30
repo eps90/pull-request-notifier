@@ -28,15 +28,15 @@ describe('Config', () => {
 
     describe('of app user', () => {
         it('should fetch currently logged in user', () => {
-            const username = 'some_user';
-            localStorageService.set(ConfigObject.USER, username);
-            expect(config.getUsername()).toEqual(username);
+            const userUuid = 'some_user';
+            localStorageService.set(ConfigObject.USER, userUuid);
+            expect(config.getUserUuid()).toEqual(userUuid);
         });
 
         it('should save logged in user', () => {
-            const username = 'some_user';
-            config.setUsername(username);
-            expect(localStorageService.get(ConfigObject.USER)).toEqual(username);
+            const userUuid = 'some_user';
+            config.setUserUuid(userUuid);
+            expect(localStorageService.get(ConfigObject.USER)).toEqual(userUuid);
         });
     });
 

@@ -18,13 +18,13 @@ export class Config {
         this.soundsDefaults[NotificationSound.REMINDER] = soundRepository.findById('alarm').id;
     }
 
-    // setting up username
-    public getUsername(): any {
+    // setting up uuid
+    public getUserUuid(): any {
         return this.localStorageService.get(ConfigObject.USER);
     }
 
-    public setUsername(username: string): void {
-        this.localStorageService.set(ConfigObject.USER, username);
+    public setUserUuid(userUuid: string): void {
+        this.localStorageService.set(ConfigObject.USER, userUuid);
     }
 
     // setting up socker server
