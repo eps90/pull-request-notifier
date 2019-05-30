@@ -3,11 +3,11 @@ import {PullRequest} from '../models/pull_request';
 
 export function AuthoredFilter(config: Config) {
     return (pullRequests: PullRequest[]) => {
-        const loggedInUser = config.getUsername();
+        const loggedInUser = config.getUserUuid();
         const result: PullRequest[] = [];
 
         for (const pullRequest of pullRequests) {
-            if (pullRequest.author.username === loggedInUser) {
+            if (pullRequest.author.uuid === loggedInUser) {
                 result.push(pullRequest);
             }
         }

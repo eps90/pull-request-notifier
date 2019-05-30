@@ -8,15 +8,15 @@ describe('AuthoredFilter', () => {
     let config: Config;
     let pullRequests: PullRequest[];
     let authoredFilter;
-    let loggedInUsername: string;
+    let loggedInUserUuid: string;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
 
     beforeEach(angular.mock.module([
         '$provide', ($provide: ng.auto.IProvideService) => {
             $provide.value('Config', {
-                getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
-                    return loggedInUsername;
+                getUserUuid: jasmine.createSpy('getUserUuid').and.callFake(() => {
+                    return loggedInUserUuid;
                 })
             });
         }
@@ -33,10 +33,10 @@ describe('AuthoredFilter', () => {
 
     beforeEach(() => {
         const loggedInUser: User = new User();
-        loggedInUser.username = 'john.smith';
+        loggedInUser.uuid = 'userUuid';
 
         const anotherUser: User = new User();
-        anotherUser.username = 'anna.kowalsky';
+        anotherUser.uuid = 'userUuid2';
 
         const authoredPullRequest: PullRequest = new PullRequest();
         authoredPullRequest.id = 101;
@@ -55,7 +55,7 @@ describe('AuthoredFilter', () => {
     });
 
     it('should include only pull requests authored by logged in user', () => {
-        loggedInUsername = 'john.smith';
+        loggedInUserUuid = 'userUuid';
 
         const result: PullRequest[] = authoredFilter(pullRequests);
         expect(result.length).toEqual(2);
@@ -64,7 +64,7 @@ describe('AuthoredFilter', () => {
     });
 
     it('should return empty set if there are no pull requests authored by a user', () => {
-        loggedInUsername = 'jon.snow';
+        loggedInUserUuid = 'jon.snow';
         expect(authoredFilter(pullRequests).length).toEqual(0);
     });
 });
