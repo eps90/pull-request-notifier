@@ -54,11 +54,11 @@ describe('PullRequestsListComponent', () => {
     beforeEach(() => {
         const loggedInUser: User = new User();
         loggedInUser.displayName = 'John Smith';
-        loggedInUser.username = 'john.smith';
+        loggedInUser.uuid = 'john.smith';
 
         const nonLoggedInUser: User = new User();
         nonLoggedInUser.displayName = 'Anna Kowalsky';
-        nonLoggedInUser.username = 'anna.kowalsky';
+        nonLoggedInUser.uuid = 'anna.kowalsky';
 
         const loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
@@ -118,7 +118,7 @@ describe('PullRequestsListComponent', () => {
             expect(childPullRequest.length).toEqual(1);
 
             const loggedInUser = new User();
-            loggedInUser.username = 'john.smith';
+            loggedInUser.uuid = 'john.smith';
             const newPullRequest: PullRequest = new PullRequest();
             newPullRequest.author = loggedInUser;
 
@@ -163,7 +163,7 @@ describe('PullRequestsListComponent', () => {
             expect(childPullRequest.length).toEqual(2);
 
             const loggedInUser = new User();
-            loggedInUser.username = 'anna.kowalsky';
+            loggedInUser.uuid = 'anna.kowalsky';
             const loggedInReviewer = new Reviewer();
             loggedInReviewer.user = loggedInUser;
             loggedInReviewer.approved = false;
