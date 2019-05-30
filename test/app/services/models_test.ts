@@ -37,11 +37,11 @@ describe('Models', () => {
             expect(samePullRequest.equals(differentPullRequest)).toBeFalsy();
         });
 
-        it('should be able to return reviewers as an array of usernames', () => {
+        it('should be able to return reviewers as an array of user uuids', () => {
             const userOne = new User();
-            userOne.username = 'john.smith';
+            userOne.uuid = 'uuidhash';
             const userTwo = new User();
-            userTwo.username = 'anna.kowalsky';
+            userTwo.uuid = 'uuidhash2';
 
             const reviewerOne = new Reviewer();
             reviewerOne.user = userOne;
@@ -52,7 +52,7 @@ describe('Models', () => {
             const pullRequest = new PullRequest();
             pullRequest.reviewers = [reviewerOne, reviewerTwo];
 
-            expect(pullRequest.getReviewersList()).toEqual(['john.smith', 'anna.kowalsky']);
+            expect(pullRequest.getReviewersList()).toEqual(['uuidhash', 'uuidhash2']);
         });
 
         it('should be able to determine whether is is merge-ready', () => {
@@ -80,7 +80,7 @@ describe('Models', () => {
     describe('Project', () => {
         describe('slugify', () => {
             it('should slugify repository name', () => {
-                const projectProvider: [{repoName: string; expectedSlug: string}] = [
+                const projectProvider: Array<{ repoName: string; expectedSlug: string }> = [
                     {
                         repoName: 'team/repo',
                         expectedSlug: 'team__repo'
@@ -106,7 +106,7 @@ describe('Models', () => {
             });
 
             it('should deslugify slugified repository name', () => {
-                const slugsProvider: [{slug: string; expected: string}] = [
+                const slugsProvider: Array<{slug: string; expected: string}> = [
                     {
                         slug: 'team__repo',
                         expected: 'team/repo'

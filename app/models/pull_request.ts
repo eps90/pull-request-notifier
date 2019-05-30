@@ -23,7 +23,7 @@ export class PullRequest {
 
     public getReviewersList(): string[] {
         return _.map(this.reviewers, (reviewer: Reviewer) => {
-            return reviewer.user.username;
+            return reviewer.user.uuid;
         });
     }
 

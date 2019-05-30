@@ -1,4 +1,4 @@
 export class User {
-    public username: string = '';
+    public uuid: string = '';
     public displayName: string = '';
 }
