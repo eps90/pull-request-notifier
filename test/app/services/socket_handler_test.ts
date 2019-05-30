@@ -39,8 +39,8 @@ describe('SocketHandler', () => {
         });
 
         $p.value('Config', {
-            getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
-                return 'john.smith';
+            getUserUuid: jasmine.createSpy('getUserUuid').and.callFake(() => {
+                return 'loggedInUserUuid';
             }),
             getSocketServerAddress: jasmine.createSpy('getSocketServerAddress').and.callFake(() => {
                 return 'http://localhost:1234';
@@ -98,7 +98,7 @@ describe('SocketHandler', () => {
     it('should emit client:introduce event with logged in user, on connection', () => {
         socketManager.socket.receive('connect');
         expect(socketManager.socket.emits).toEqual(jasmine.objectContaining({'client:introduce': jasmine.anything()}));
-        expect(socketManager.socket.emits[SocketClientEvent.INTRODUCE][0]).toEqual(['john.smith']);
+        expect(socketManager.socket.emits[SocketClientEvent.INTRODUCE][0]).toEqual(['loggedInUserUuid']);
     });
 
     it('should update pull request repository on server:pullrequests:updated', () => {
@@ -148,12 +148,12 @@ describe('SocketHandler', () => {
             pullRequestEvent.context = pullRequest;
 
             johnSmith = new User();
-            johnSmith.username = 'john.smith';
+            johnSmith.uuid = 'loggedInUserUuid';
             johnSmith.displayName = 'John Smith';
 
             annaKowalsky = new User();
             annaKowalsky.displayName = 'Anna Kowalsky';
-            annaKowalsky.username = 'anna.kowalsky';
+            annaKowalsky.uuid = 'uuid2';
         });
 
         describe('on introduce', () => {

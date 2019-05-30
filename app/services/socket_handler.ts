@@ -47,7 +47,7 @@ export class SocketHandler {
 
     private initListeners(): void {
         this.socketManager.socket.on('connect', () => {
-            const loggedInUser = this.config.getUsername();
+            const loggedInUser = this.config.getUserUuid();
             this.socketManager.socket.emit(SocketClientEvent.INTRODUCE, loggedInUser);
             this.analyticsEventDispatcher.dispatch(
                 SocketEvent.connected()
@@ -71,7 +71,7 @@ export class SocketHandler {
         });
 
         this.socketManager.socket.on(SocketServerEvent.NEW_COMMENT, (prEvent: PullRequestCommentEvent) => {
-            if (prEvent.pullRequest.author.username !== prEvent.actor.username) {
+            if (prEvent.pullRequest.author.uuid !== prEvent.actor.uuid) {
                 const commentLink = prEvent.comment.links.html.href;
                 this.notifier.notifyNewCommentAdded(prEvent.pullRequest, prEvent.actor, commentLink);
             }
@@ -85,13 +85,13 @@ export class SocketHandler {
         this.socketManager.socket.on(SocketServerEvent.INTRODUCED, (userPrs: PullRequestEvent) => {
             userPrs = PullRequestEventFactory.create(userPrs);
 
-            const loggedInUser = this.config.getUsername();
+            const loggedInUser = this.config.getUserUuid();
             this.pullRequestRepository.setPullRequests(userPrs.pullRequests);
             this.indicator.setText(this.pullRequestRepository.pullRequests.length.toString());
 
             for (const pr of userPrs.pullRequests) {
                 for (const reviewer of pr.reviewers) {
-                    if (reviewer.user.username === loggedInUser && !reviewer.approved) {
+                    if (reviewer.user.uuid === loggedInUser && !reviewer.approved) {
                         this.notifier.notifyNewPullRequestAssigned(pr);
                     }
                 }
@@ -101,7 +101,7 @@ export class SocketHandler {
         this.socketManager.socket.on(SocketServerEvent.PULLREQUESTS_UPDATED, (userPrs: PullRequestEvent) => {
             userPrs = PullRequestEventFactory.create(userPrs);
 
-            const loggedInUser = this.config.getUsername();
+            const loggedInUser = this.config.getUserUuid();
 
             const contextPr: PullRequest = userPrs.context;
             const sourceEvent: string = userPrs.sourceEvent;
@@ -111,7 +111,7 @@ export class SocketHandler {
                 && !this.pullRequestRepository.exists(contextPr)
             ) {
                 for (const reviewer of contextPr.reviewers) {
-                    if (reviewer.user.username === loggedInUser) {
+                    if (reviewer.user.uuid === loggedInUser) {
                         this.notifier.notifyNewPullRequestAssigned(contextPr);
                         break;
                     }
@@ -123,17 +123,17 @@ export class SocketHandler {
 
             if (sourceEvent === WebhookEvent.PULLREQUEST_CREATED) {
                 for (const reviewer of contextPr.reviewers) {
-                    if (reviewer.user.username === loggedInUser) {
+                    if (reviewer.user.uuid === loggedInUser) {
                         this.notifier.notifyNewPullRequestAssigned(contextPr);
                         break;
                     }
                 }
             } else if (sourceEvent === WebhookEvent.PULLREQUEST_FULFILLED) {
-                if (contextPr.author.username === loggedInUser) {
+                if (contextPr.author.uuid === loggedInUser) {
                     this.notifier.notifyPullRequestMerged(contextPr);
                 }
             } else if (sourceEvent === WebhookEvent.PULLREQUEST_APPROVED) {
-                if (contextPr.author.username === loggedInUser) {
+                if (contextPr.author.uuid === loggedInUser) {
                     this.notifier.notifyPullRequestApproved(contextPr, userPrs.actor);
                 }
             }
