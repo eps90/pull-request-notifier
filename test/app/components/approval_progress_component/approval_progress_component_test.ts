@@ -48,7 +48,7 @@ describe('ApprovalProgressComponent', () => {
         disapprovingReviewer.user = new User();
         disapprovingReviewer.approved = false;
 
-        $scope.reviewers = [approvingReviewer, disapprovingReviewer];
+        $scope['reviewers'] = [approvingReviewer, disapprovingReviewer];
         element = $compile('<approval-progress reviewers="reviewers"></approval-progress>')($scope);
         $scope.$digest();
 
