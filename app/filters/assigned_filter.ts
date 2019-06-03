@@ -3,13 +3,13 @@ import {PullRequest} from '../models/pull_request';
 
 export function AssignedFilter(config: Config) {
     return (pullRequests: PullRequest[]) => {
-        const loggedInUser = config.getUsername();
+        const loggedInUser = config.getUserUuid();
         const result: PullRequest[] = [];
 
         for (const pullRequest of pullRequests) {
             const reviewers = pullRequest.reviewers;
             for (const reviewer of reviewers) {
-                if (reviewer.user.username === loggedInUser && result.indexOf(pullRequest) === -1) {
+                if (reviewer.user.uuid === loggedInUser && result.indexOf(pullRequest) === -1) {
                     result.push(pullRequest);
                 }
             }

@@ -35,7 +35,7 @@ describe('OptionsComponent', () => {
             reminderSound = 'alarm';
 
             $provide.value('Config', {
-                getUsername: jasmine.createSpy('Config.getUsername').and.callFake(() => {
+                getUserUuid: jasmine.createSpy('Config.getUserUuid').and.callFake(() => {
                     return appUser;
                 }),
                 getSocketServerAddress: jasmine.createSpy('Config.getSocketServerAddress').and.callFake(() => {
@@ -56,7 +56,7 @@ describe('OptionsComponent', () => {
                 getReminderSound: jasmine.createSpy('Config.getNewPullRequestSound').and.callFake(() => {
                     return reminderSound;
                 }),
-                setUsername: jasmine.createSpy('Config.setUsername'),
+                setUserUuid: jasmine.createSpy('Config.setUserUuid'),
                 setSocketServerAddress: jasmine.createSpy('Config.setSocketServerAddress'),
                 setPullRequestProgress: jasmine.createSpy('Config.setPullRequestProgress'),
                 setNewPullRequestSound: jasmine.createSpy('Config.setNewPullRequestSound'),
@@ -157,16 +157,17 @@ describe('OptionsComponent', () => {
         element = $compile('<options></options>')($scope);
         $scope.$digest();
 
-        const username = 'aaaaa';
+        const userUuid = 'aaaaa';
         const address = 'bbbbb';
         const newPrSound = 'alarm';
         const approvedPrSound = 'alarm';
         const mergedPrSound = 'alarm';
         const remindSound = 'bell';
 
-        element.find('#app-user').val(username).trigger('input');
+        element.find('#app-user').val(userUuid).trigger('input');
         element.find('#socket-server-address').val(address).trigger('input');
         element.find('input[name="pull-request-progress"][value="percent"]').click().triggerHandler('click');
+        element.find('input[name="pull-request-progress"]').trigger('change');
         element.find('select#new-pull-request-sound').val(`string:${newPrSound}`).trigger('change');
         element.find('select#approved-pull-request-sound').val(`string:${approvedPrSound}`).trigger('change');
         element.find('select#merged-pull-request-sound').val(`string:${mergedPrSound}`).trigger('change');
@@ -175,7 +176,7 @@ describe('OptionsComponent', () => {
         const saveButton = element.find('#submit');
         saveButton.triggerHandler('click');
 
-        expect(config.setUsername).toHaveBeenCalledWith(username);
+        expect(config.setUserUuid).toHaveBeenCalledWith(userUuid);
         expect(config.setSocketServerAddress).toHaveBeenCalledWith(address);
         expect(config.setPullRequestProgress).toHaveBeenCalledWith(PullRequestProgress.PERCENT);
         expect(config.setNewPullRequestSound).toHaveBeenCalledWith(newPrSound);
@@ -188,10 +189,10 @@ describe('OptionsComponent', () => {
         element = $compile('<options></options>')($scope);
         $scope.$digest();
 
-        const username = 'aaaaa';
+        const userUuid = 'aaaaa';
         const address = 'bbbbb';
 
-        element.find('#app-user').val(username).trigger('input');
+        element.find('#app-user').val(userUuid).trigger('input');
         element.find('#socket-server-address').val(address).trigger('input');
 
         const saveButton = element.find('#submit');
@@ -204,10 +205,10 @@ describe('OptionsComponent', () => {
         element = $compile('<options></options>')($scope);
         $scope.$digest();
 
-        const username = 'aaaaa';
+        const userUuid = 'aaaaa';
         const address = 'bbbbb';
 
-        element.find('#app-user').val(username).trigger('input');
+        element.find('#app-user').val(userUuid).trigger('input');
         element.find('#socket-server-address').val(address).trigger('input');
 
         const saveButton = element.find('#submit');

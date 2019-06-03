@@ -75,7 +75,7 @@ describe('PullRequestRepository', () => {
         project.fullName = 'team_name/repo_name';
 
         const user = new User();
-        user.username = 'john.smith';
+        user.uuid = 'john.smith';
         const reviewer = new Reviewer();
         reviewer.user = user;
         reviewer.approved = false;
@@ -100,9 +100,9 @@ describe('PullRequestRepository', () => {
         project.fullName = 'team_name/repo_name';
 
         const user = new User();
-        user.username = 'john.smith';
+        user.uuid = 'john.smith';
         const newUser = new User();
-        newUser.username = 'anna.kowalsky';
+        newUser.uuid = 'anna.kowalsky';
 
         const reviewer = new Reviewer();
         reviewer.user = user;

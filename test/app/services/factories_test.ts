@@ -14,12 +14,12 @@ describe('Factories', () => {
         it('should create User object from raw object', () => {
             const rawObject = {
                 displayName: 'John Kowalsky',
-                username: 'john.kowalsky'
+                uuid: 'userUuid'
             };
 
             const user: User = UserFactory.create(rawObject);
             expect(user.displayName).toEqual('John Kowalsky');
-            expect(user.username).toEqual('john.kowalsky');
+            expect(user.uuid).toEqual('userUuid');
         });
     });
 
@@ -40,14 +40,14 @@ describe('Factories', () => {
         it('should create a Reviewer object from raw object', () => {
             const rawObject = {
                 user: {
-                    username: 'john.kowalsky',
+                    uuid: 'userUuid',
                     displayName: 'John Kowalsky'
                 },
                 approved: true
             };
 
             const reviewer = ReviewerFactory.create(rawObject);
-            expect(reviewer.user.username).toEqual('john.kowalsky');
+            expect(reviewer.user.uuid).toEqual('userUuid');
             expect(reviewer.user.displayName).toEqual('John Kowalsky');
             expect(reviewer.approved).toEqual(true);
         });
@@ -73,7 +73,7 @@ describe('Factories', () => {
                 title: 'This is a title',
                 description: 'This is a description',
                 author: {
-                    username: 'john.kowalsky',
+                    uuid: 'userUuid',
                     displayName: 'John Kowalsky'
                 },
                 targetRepository: {
@@ -84,7 +84,7 @@ describe('Factories', () => {
                 reviewers: [
                     {
                         user: {
-                            username: 'anna.smith',
+                            uuid: 'userUuid2',
                             displayName: 'Anna Smith'
                         },
                         approved: true
@@ -101,13 +101,13 @@ describe('Factories', () => {
             expect(pullRequest.id).toEqual(1);
             expect(pullRequest.title).toEqual('This is a title');
             expect(pullRequest.description).toEqual('This is a description');
-            expect(pullRequest.author.username).toEqual('john.kowalsky');
+            expect(pullRequest.author.uuid).toEqual('userUuid');
             expect(pullRequest.author.displayName).toEqual('John Kowalsky');
             expect(pullRequest.targetRepository.name).toEqual('Awesome project');
             expect(pullRequest.targetRepository.fullName).toEqual('dacsoftware/awesome_project');
             expect(pullRequest.targetBranch).toEqual('master');
             expect(pullRequest.reviewers.length).toEqual(1);
-            expect(pullRequest.reviewers[0].user.username).toEqual('anna.smith');
+            expect(pullRequest.reviewers[0].user.uuid).toEqual('userUuid2');
             expect(pullRequest.reviewers[0].user.displayName).toEqual('Anna Smith');
             expect(pullRequest.reviewers[0].approved).toEqual(true);
             expect(pullRequest.state).toBe(PullRequestState.Open);
@@ -145,7 +145,7 @@ describe('Factories', () => {
         it('should create a PullRequestEvent object from raw object', () => {
             const rawObject = {
                 actor: {
-                    username: 'john.kowalsky',
+                    uuid: 'userUuid',
                     displayName: 'John Kowalsky'
                 },
                 sourceEvent: 'webhook:pullrequest:updated',
@@ -162,7 +162,7 @@ describe('Factories', () => {
             };
 
             const event = PullRequestEventFactory.create(rawObject);
-            expect(event.actor.username).toEqual('john.kowalsky');
+            expect(event.actor.uuid).toEqual('userUuid');
             expect(event.actor.displayName).toEqual('John Kowalsky');
             expect(event.sourceEvent).toEqual('webhook:pullrequest:updated');
             expect(event.pullRequests.length).toBe(1);

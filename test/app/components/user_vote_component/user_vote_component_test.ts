@@ -12,8 +12,8 @@ describe('UserVoteComponent', () => {
     beforeEach(angular.mock.module([
         '$provide', ($provide: ng.auto.IProvideService) => {
             $provide.value('Config', {
-                getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
-                    return 'john.smith';
+                getUserUuid: jasmine.createSpy('getUserUuid').and.callFake(() => {
+                    return 'userUuid';
                 })
             });
         }
@@ -32,7 +32,7 @@ describe('UserVoteComponent', () => {
 
     it('should set awaiting icon if user has not voted yet', () => {
         const loggedInUser: User = new User();
-        loggedInUser.username = 'john.smith';
+        loggedInUser.uuid = 'userUuid';
 
         const loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;
@@ -50,7 +50,7 @@ describe('UserVoteComponent', () => {
 
     it('should set approved icon if user has approved a pull request', () => {
         const loggedInUser: User = new User();
-        loggedInUser.username = 'john.smith';
+        loggedInUser.uuid = 'userUuid';
 
         const loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = loggedInUser;

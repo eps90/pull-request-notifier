@@ -14,7 +14,7 @@ export class UserVoteController implements ng.IComponentController {
         const classes = ['fa'];
         let label = '';
         for (const reviewer of this.reviewers) {
-            if (reviewer.user.username === this.config.getUsername()) {
+            if (reviewer.user.uuid === this.config.getUserUuid()) {
                 if (reviewer.approved) {
                     classes.push('fa-check-circle', 'icon-approved');
                     label = 'Approved';

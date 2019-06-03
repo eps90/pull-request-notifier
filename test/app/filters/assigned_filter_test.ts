@@ -9,14 +9,14 @@ describe('AssignedFilter', () => {
     let config: Config;
     let pullRequests: PullRequest[];
     let assignedFilter;
-    let loggedInUser: string;
+    let loggedInUserUuid: string;
 
     beforeEach(angular.mock.module('bitbucketNotifier'));
     beforeEach(angular.mock.module([
         '$provide', ($provide: ng.auto.IProvideService) => {
             $provide.value('Config', {
-                getUsername: jasmine.createSpy('getUsername').and.callFake(() => {
-                    return loggedInUser;
+                getUserUuid: jasmine.createSpy('getUserUuid').and.callFake(() => {
+                    return loggedInUserUuid;
                 })
             });
         }
@@ -35,10 +35,10 @@ describe('AssignedFilter', () => {
         assignedFilter = $filter('assigned');
 
         const assignedUser: User = new User();
-        assignedUser.username = 'john.smith';
+        assignedUser.uuid = 'uuid';
 
         const anotherAssignedUser: User = new User();
-        anotherAssignedUser.username = 'anna.kowalsky';
+        anotherAssignedUser.uuid = 'uuid2';
 
         const loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = assignedUser;
@@ -62,7 +62,7 @@ describe('AssignedFilter', () => {
     });
 
     it('should include only pull requests authored by logged in user', () => {
-        loggedInUser = 'john.smith';
+        loggedInUserUuid = 'uuid';
 
         const actual: PullRequest[] = assignedFilter(pullRequests);
         expect(actual.length).toEqual(2);
@@ -71,15 +71,15 @@ describe('AssignedFilter', () => {
     });
 
     it('should return empty set if there are no pull requests authored by a user', () => {
-        loggedInUser = 'jon.snow';
+        loggedInUserUuid = 'jon.snow';
         expect(assignedFilter(pullRequests).length).toEqual(0);
     });
 
     it('should not return duplicates', () => {
-        loggedInUser = 'john.smith';
+        loggedInUserUuid = 'uuid';
 
         const assignedUser: User = new User();
-        assignedUser.username = 'john.smith';
+        assignedUser.uuid = 'uuid';
 
         const loggedInReviewer: Reviewer = new Reviewer();
         loggedInReviewer.user = assignedUser;

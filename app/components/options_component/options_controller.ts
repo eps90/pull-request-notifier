@@ -69,7 +69,7 @@ export class OptionsController implements ng.IComponentController {
         );
 
         this.options = {
-            appUser: this.config.getUsername(),
+            appUser: this.config.getUserUuid(),
             socketServerAddress: this.config.getSocketServerAddress(),
             pullRequestProgress: this.config.getPullRequestProgress(),
             newPullRequestSound: this.config.getNewPullRequestSound(),
@@ -82,7 +82,7 @@ export class OptionsController implements ng.IComponentController {
     }
 
     public saveOptions(): void {
-        this.config.setUsername(this.options.appUser);
+        this.config.setUserUuid(this.options.appUser);
         this.config.setSocketServerAddress(this.options.socketServerAddress);
         this.config.setPullRequestProgress(this.options.pullRequestProgress);
         this.config.setNewPullRequestSound(this.options.newPullRequestSound);
