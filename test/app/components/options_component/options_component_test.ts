@@ -167,6 +167,7 @@ describe('OptionsComponent', () => {
         element.find('#app-user').val(userUuid).trigger('input');
         element.find('#socket-server-address').val(address).trigger('input');
         element.find('input[name="pull-request-progress"][value="percent"]').click().triggerHandler('click');
+        element.find('input[name="pull-request-progress"]').trigger('change');
         element.find('select#new-pull-request-sound').val(`string:${newPrSound}`).trigger('change');
         element.find('select#approved-pull-request-sound').val(`string:${approvedPrSound}`).trigger('change');
         element.find('select#merged-pull-request-sound').val(`string:${mergedPrSound}`).trigger('change');
